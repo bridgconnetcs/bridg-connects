@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRIDG CONNECTS - Cotizador Express</title>
+    <style>
+        :root {
+            --bg-dark: #22252a;
+            --bg-light: #f4f4f4;
+            --orange-brand: #ff6600;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+            --gray-card: #2f333a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .cotizador-container {
+            background-color: var(--gray-card);
+            border-top: 5px solid var(--orange-brand);
+            border-radius: 8px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .logo-placeholder {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        
+        .logo-sub {
+            text-align: center;
+            font-size: 11px;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .logo-placeholder span {
+            color: var(--orange-brand);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            background-color: #1e2126;
+            color: var(--text-light);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--orange-brand);
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: 1xl;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .radio-btn {
+            background: #1e2126;
+            border: 1px solid #444;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .radio-btn.active {
+            border-color: var(--orange-brand);
+            background-color: rgba(255, 102, 0, 0.1);
+            color: var(--orange-brand);
+            font-weight: bold;
+        }
+
+        .btn-calcular {
+            width: 100%;
+            background-color: var(--orange-brand);
+            color: var(--text-light);
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .btn-calcular:hover {
+            background-color: #e05500;
+        }
+
+        .resultado-box {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #1e2126;
+            border-radius: 4px;
+            border-left: 4px solid var(--orange-brand);
+            display: none;
+            text-align: center;
+        }
+
+        .resultado-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        .precio-estimado {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .nota-estimado {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .btn-contactar {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--orange-brand);
+            border: 2px solid var(--orange-brand);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-contactar:hover {
+            background-color: var(--orange-brand);
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+
+<div class="cotizador-container">
+    <div class="logo-placeholder">BRIDG<span>CONNECTS</span></div>
+    <div class="logo-sub">- Novar Holding Company -</div>
+    
+    <h2>Calcula el Estimado de tu Delivery</h2>
+    
+    <div class="form-group">
+        <label for="distancia">Distancia estimada (en millas):</label>
+        <input type="number" id="distancia" placeholder="Ej. 15" min="1" required>
+    </div>
+
+    <div class="form-group">
+        <label>Tipo de Carga / Vehículo requerido:</label>
+        <div class="radio-group">
+            <div class="radio-btn" onclick="selectCarga('ligera', this)">Paquetes / Carga Ligera (Auto)</div>
+            <div class="radio-btn active" onclick="selectCarga('mediana', this)">Materiales / Carga Mediana (Pick-up Truck)</div>
+            <div class="radio-btn" onclick="selectCarga('pesada', this)">Carga Pesada / Volumen (Sujeto a dimensiones)</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="prioridad">Tipo de Servicio:</label>
+        <select id="prioridad">
+            <option value="programado">Entrega Programada (Tarifa Estándar)</option>
+            <option value="mismo-dia">Mismo Día</option>
+            <option value="urgente">Urgente / Exprés (Demanda Alta)</option>
+        </select>
+    </div>
+
+    <button class="btn-calcular" onclick="calcularTarifa()">Ver Estimado Instantáneo</button>
+
+    <div id="resultado" class="resultado-box">
+        <h3>Tu estimado de entrega:</h3>
+        <div class="precio-estimado" id="precio-texto">$0.00</div>
+        <div class="nota-estimado">*El precio final puede variar según las dimensiones exactas y tiempos de carga/descarga.</div>
+        <a href="https://wa.me/13235965896?text=Hola%20Kerry,%20quiero%20programar%20un%20delivery%20con%20BRIDG" target="_blank" class="btn-contactar">Ordenar por Teléfono / WhatsApp</a>
+    </div>
+</div>
+
+<script>
+    let tipoCarga = 'mediana'; // Carga por defecto
+
+    function selectCarga(tipo, elemento) {
+        tipoCarga = tipo;
+        // Remover clase activa de todos
+        document.querySelectorAll('.radio-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        // Agregar al seleccionado
+        elemento.classList.add('active');
+    }
+
+    function calcularTarifa() {
+        const distancia = parseFloat(document.getElementById('distancia').value);
+        const prioridad = document.getElementById('prioridad').value;
+        
+        if (!distancia || distancia <= 0) {
+            alert("Por favor, ingresa una distancia válida en millas.");
+            return;
+        }
+
+        // --- LÓGICA BASE INSPIRADA EN DEMANDA DE LOGÍSTICA DE ÚLTIMA MILLA ---
+        let basePrice = 25; // Tarifa base inicial
+        let pricePerMile = 2.50; // Precio por milla base
+        let multiplicadorPrioridad = 1.0;
+
+        // Ajustes por tipo de carga
+        if (tipoCarga === 'ligera') {
+            basePrice = 15;
+            pricePerMile = 1.80;
+        } else if (tipoCarga === 'pesada') {
+            basePrice = 45;
+            pricePerMile = 3.50;
+        }
+
+        // Ajustes por prioridad/demanda (estilo Curri/Uber)
+        if (prioridad === 'mismo-dia') {
+            multiplicadorPrioridad = 1.25; // +25%
+        } else if (prioridad === 'urgente') {
+            multiplicadorPrioridad = 1.50; // +50% por urgencia
+        }
+
+        // Cálculo Final
+        let costoTotal = (basePrice + (distancia * pricePerMile)) * multiplicadorPrioridad;
+        
+        // Mostrar resultado redondeado a dos decimales
+        document.getElementById('precio-texto').innerText = `$${costoTotal.toFixed(2)}`;
+        document.getElementById('resultado').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
