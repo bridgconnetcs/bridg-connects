@@ -1,0 +1,141 @@
+function setLang(l){
+  document.body.classList.toggle('es',l==='es');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===l.toUpperCase()));
+}
+
+function calcEst(){
+  // Captura estricta de todos los campos obligatorios
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pu = document.getElementById('pickup').value.trim();
+  const dr = document.getElementById('dropoff').value.trim();
+  
+  const load = document.getElementById('loadType').value;
+  const win = document.getElementById('window').value;
+  const es = document.body.classList.contains('es');
+  
+  // BLOQUEO: Si falta CUALQUIER información de contacto u obra, no se genera el estimado
+  if(!name || !phone || !pu || !dr){
+    alert(es ? '❌ Por favor, completa tu Nombre, Teléfono, Recogida y Entrega antes de calcular tu tarifa.' : '❌ Please fill out your Name, Phone, Pickup, and Delivery location before calculating your rate.');
+    return;
+  }
+
+  // --- LÓGICA DE ESTIMACIÓN REALISTA Y DINÁMICA ---
+  const base = 35; 
+  
+  // Simulación inteligente de distancia en SoCal basada en texto
+  let checkText = (pu + " " + dr).toLowerCase();
+  let distEst = Math.floor(Math.random() * 12) + 8; // Rango local base (8-20 millas)
+  if (checkText.includes('palmdale') || checkText.includes('lancaster')) {
+    if (checkText.includes('los angeles') || checkText.includes('alhambra') || checkText.includes('long beach') || checkText.includes('pasadena')) {
+      distEst = Math.floor(Math.random() * 15) + 55; // Distancia real cruzando hacia la cuenca de LA (55-70 mi)
+    }
+  }
+  
+  const costPerMile = 2.25; 
+  const distCharge = Math.round(distEst * costPerMile);
+
+  // Recargos por volumen de carga (Pick-up truck vs Carga Ligera)
+  const lm = { light: 0, medium: 20, heavy: 45, xl: 85 };
+  // Recargos por urgencia / demanda (ASAP vs Programado)
+  const wm = { asap: 25, today: 0, scheduled: -5 };
+  
+  const lf = lm[load] !== undefined ? lm[load] : 0;
+  const pf = wm[win] !== undefined ? wm[win] : 0;
+  
+  const tot = base + distCharge + lf + pf;
+  
+  // Desglose transparente en la UI
+  document.getElementById('br').textContent = '$' + base;
+  document.getElementById('dc').textContent = '$' + distCharge + ' (~' + distEst + ' mi)';
+  document.getElementById('lc').textContent = '$' + lf;
+  document.getElementById('pc').textContent = '$' + pf;
+  document.getElementById('tot').textContent = 'EST. $' + tot;
+  
+  // Almacenar el total calculado para la orden final
+  document.getElementById('tot').setAttribute('data-calculated-total', tot);
+  
+  // Mostrar la caja de resultados de forma elegante
+  const ep = document.getElementById('ep');
+  ep.classList.add('show');
+  ep.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function confirmOrd(){
+  const es = document.body.classList.contains('es');
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pu = document.getElementById('pickup').value.trim();
+  const dr = document.getElementById('dropoff').value.trim();
+  const notes = document.getElementById('notes').value.trim() || (es ? 'Sin notas adicionales' : 'No extra notes');
+  const load = document.getElementById('loadType').options[document.getElementById('loadType').selectedIndex].text;
+  const win = document.getElementById('window').options[document.getElementById('window').selectedIndex].text;
+  const totalEstimado = document.getElementById('tot').getAttribute('data-calculated-total') || '0';
+
+  // 1. ESTRUCTURAR EMAIL PARA TU GMAIL CORPORATIVO
+  const emailDestino = "K.vargas@novarholding.com";
+  const emailAsunto = encodeURIComponent(`[BRIDG Delivery Request] - ${name} - Est: $${totalEstimado}`);
+  
+  let emailCuerpo = `NEW DELIVERY REQUEST VIA LANDING PAGE%0A%0A` +
+                    `Client Name: ${name}%0A` +
+                    `Phone: ${phone}%0A` +
+                    `Pickup Location: ${pu}%0A` +
+                    `Delivery Job Site: ${dr}%0A` +
+                    `Load Class: ${load}%0A` +
+                    `Urgency/Window: ${win}%0A` +
+                    `Estimated Total: $${totalEstimado}.00%0A%0A` +
+                    `Materials/Notes:%0A${notes}%0A%0A` +
+                    `-- Sent via Bridg Connects Platform --`;
+
+  if (es) {
+    emailCuerpo = `NUEVA SOLICITUD DE ENTREGA VIA LANDING PAGE%0A%0A` +
+                  `Nombre del Cliente: ${name}%0A` +
+                  `Teléfono: ${phone}%0A` +
+                  `Lugar de Recogida: ${pu}%0A` +
+                  `Obra de Entrega: ${dr}%0A` +
+                  `Clase de Carga: ${load}%0A` +
+                  `Urgencia/Ventana: ${win}%0A` +
+                  `Total Estimado: $${totalEstimado}.00%0A%0A` +
+                  `Materiales/Notas:%0A${notes}%0A%0A` +
+                  `-- Enviado vía Bridg Connects Platform --`;
+  }
+
+  // URL para disparar el correo en tu ecosistema Google
+  const gmailUrl = `mailto:${emailDestino}?subject=${emailAsunto}&body=${emailCuerpo}`;
+
+  // 2. ESTRUCTURAR MENSAJE PARA WHATSAPP (Respuesta Comercial Inmediata)
+  let wsMensaje = `Hello BRIDG Connects! I want to book this delivery request:%0A%0A` +
+                  `*Name:* ${name}%0A` +
+                  `*Phone:* ${phone}%0A` +
+                  `*Pickup:* ${pu}%0A` +
+                  `*Job Site:* ${dr}%0A` +
+                  `*Load:* ${load}%0A` +
+                  `*Window:* ${win}%0A` +
+                  `*Est. Price:* $${totalEstimado}.00%0A%0A` +
+                  `Please dispatch a driver.`;
+
+  if (es) {
+    wsMensaje = `¡Hola BRIDG Connects! Quiero reservar esta solicitud de entrega:%0A%0A` +
+                `*Nombre:* ${name}%0A` +
+                `*Teléfono:* ${phone}%0A` +
+                `*Recogida:* ${pu}%0A` +
+                `*Obra/Entrega:* ${dr}%0A` +
+                `*Carga:* ${load}%0A` +
+                `*Ventana:* ${win}%0A` +
+                `*Precio Est:* $${totalEstimado}.00%0A%0A` +
+                `Por favor despachen al conductor asignado.`;
+  }
+
+  const whatsappUrl = `https://wa.me/13235965896?text=${wsMensaje}`;
+
+  // Enviar por correo de respaldo primero y luego abrir el canal de cierre rápido (WhatsApp)
+  window.location.href = gmailUrl;
+  
+  setTimeout(function(){
+    window.open(whatsappUrl, '_blank');
+  }, 800);
+}
+
+// Animación de aparición fluida en scroll
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}}),{threshold:0.1});
+document.querySelectorAll('.step,.scard,.pcard,.chip').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .5s ease,transform .5s ease';obs.observe(el)});
