@@ -1,564 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Bridg Connects — Last-Mile Delivery SoCal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:#0f0f0f !important;color:#ffffff !important;font-family:'DM Sans',sans-serif;overflow-x:hidden}
-
-/* FORCE dark background everywhere */
-html,body{background-color:#0f0f0f !important}
-
-:root{
-  --orange:#FF640D;
-  --orange2:#e0520a;
-  --oglow:rgba(255,100,13,0.15);
-  --black:#0f0f0f;
-  --dark:#1a1a1a;
-  --iron:#222222;
-  --steel:#2a2a2a;
-  --wire:#3a3a3a;
-  --ash:#686868;
-  --silver:#a5a5a5;
-  --white:#ffffff;
-  --F:Bebas Neue,sans-serif;
-  --FB:DM Sans,sans-serif;
-  --FM:Space Mono,monospace;
-}
-
-/* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;height:54px;background:#0f0f0f;border-bottom:1px solid var(--wire)}
-.nav-logo img{height:34px;width:auto;display:block}
-.nav-links{display:flex;gap:1.8rem;list-style:none}
-.nav-links a{font-family:var(--FM);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
-.nav-links a:hover{color:var(--orange)}
-.lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
-.lang-btn{background:transparent;border:none;color:var(--ash);font-family:var(--FM);font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
-.lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
-.lang-btn:hover:not(.active){background:var(--iron);color:#fff}
-
-/* HERO */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:54px;background:#0f0f0f;position:relative;overflow:hidden}
-.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 3rem 5rem 4rem;position:relative;z-index:2}
-.hero-logo{margin-bottom:1.8rem}
-.hero-logo img{height:65px;width:auto}
-.eyebrow{font-family:var(--FM);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:1.2rem;display:flex;align-items:center;gap:.7rem}
-.eyebrow::before{content:'';width:26px;height:1px;background:var(--orange)}
-h1{font-family:var(--F);font-size:clamp(3.5rem,7.5vw,7.5rem);line-height:.92;letter-spacing:.02em;color:#ffffff;margin-bottom:.3rem}
-h1 .ac{color:var(--orange);display:block}
-.hero-sub{font-size:1rem;font-weight:300;color:var(--silver);line-height:1.65;margin:1.5rem 0 2rem;max-width:420px}
-.ctas{display:flex;gap:1rem;flex-wrap:wrap}
-
-/* BUTTONS */
-.btn{background:var(--orange);color:#fff;font-family:var(--FM);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 1.8rem;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
-.btn:hover{background:var(--orange2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,100,13,.35)}
-.btn-o{background:transparent;color:#fff;font-family:var(--FM);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 1.8rem;border:1px solid var(--wire);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s}
-.btn-o:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px)}
-
-/* HERO RIGHT */
-.hero-right{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#0f0f0f}
-.hgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,100,13,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,100,13,.05) 1px,transparent 1px);background-size:50px 50px}
-.hgrid::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(255,100,13,.08) 0%,transparent 65%)}
-.rdiagram{width:320px;height:320px;position:relative;z-index:2}
-.rdiagram svg{width:100%;height:100%}
-
-/* STATS */
-.stats{background:var(--iron);border-top:1px solid var(--wire);border-bottom:1px solid var(--wire);display:flex}
-.stat{flex:1;padding:1.6rem 1rem;border-right:1px solid var(--wire);text-align:center;background:var(--iron)}
-.stat:last-child{border-right:none}
-.stat:hover{background:var(--steel)}
-.stat-n{font-family:var(--F);font-size:2.4rem;color:var(--orange);letter-spacing:.05em;line-height:1}
-.stat-l{font-family:var(--FM);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin-top:.3rem}
-
-/* SECTIONS */
-section{padding:5.5rem 4rem;background:#0f0f0f}
-section.dark{background:var(--dark)}
-.stag{font-family:var(--FM);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:.7rem;display:flex;align-items:center;gap:.7rem}
-.stag::before{content:'';width:18px;height:1px;background:var(--orange)}
-h2{font-family:var(--F);font-size:clamp(2.5rem,5vw,4.5rem);line-height:.95;letter-spacing:.02em;color:#ffffff;margin-bottom:.8rem}
-h2 em{font-style:normal;color:var(--orange)}
-
-/* STEPS */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:3rem;border:1px solid var(--wire)}
-.step{padding:2.2rem 1.8rem;border-right:1px solid var(--wire);background:#0f0f0f;transition:background .3s}
-.step:last-child{border-right:none}
-.step:hover{background:var(--iron)}
-.snum{font-family:var(--F);font-size:4.5rem;color:var(--wire);line-height:1;margin-bottom:.7rem;transition:color .3s}
-.step:hover .snum{color:var(--orange)}
-.sicon{font-size:1.3rem;margin-bottom:.5rem}
-.stitle{font-family:var(--F);font-size:1.25rem;letter-spacing:.05em;color:#ffffff;margin-bottom:.5rem}
-.sdesc{font-size:.82rem;font-weight:300;color:var(--silver);line-height:1.6}
-
-/* SERVE */
-.serve-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2.5rem;background:var(--wire)}
-.scard{background:var(--dark);padding:2.8rem 2.2rem;position:relative;overflow:hidden;transition:background .3s}
-.scard:hover{background:var(--iron)}
-.scard::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--orange);transition:height .4s}
-.scard:hover::before{height:100%}
-.sbadge{font-family:var(--FM);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);background:var(--oglow);border:1px solid rgba(255,100,13,.2);padding:.25rem .65rem;display:inline-block;margin-bottom:1rem}
-.stit{font-family:var(--F);font-size:1.9rem;color:#ffffff;letter-spacing:.04em;margin-bottom:.7rem}
-.sdsc{font-size:.86rem;font-weight:300;color:var(--silver);line-height:1.7;margin-bottom:1.5rem}
-.slist{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.slist li{font-family:var(--FM);font-size:.68rem;color:var(--silver);display:flex;align-items:center;gap:.5rem}
-.slist li::before{content:'→';color:var(--orange)}
-
-/* COVERAGE */
-.cov{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
-.cities{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--wire);margin-top:1.8rem}
-.chip{background:var(--dark);padding:.85rem 1rem;font-family:var(--FM);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);transition:all .2s}
-.chip:hover{background:var(--iron);color:var(--orange)}
-.dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--orange);margin-right:.45rem;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-.chip:nth-child(2) .dot{animation-delay:.3s}.chip:nth-child(3) .dot{animation-delay:.6s}
-.chip:nth-child(4) .dot{animation-delay:.9s}.chip:nth-child(5) .dot{animation-delay:1.2s}
-.mapbox{border:1px solid var(--wire);background:var(--iron);aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.mapbox::before{content:'SOCAL COVERAGE';position:absolute;top:.8rem;left:.8rem;font-family:var(--FM);font-size:.5rem;letter-spacing:.2em;color:var(--ash)}
-
-/* PRICING */
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--wire);margin-top:2.5rem}
-.pcard{background:var(--dark);padding:2.2rem 1.8rem;position:relative;transition:background .3s}
-.pcard.feat{background:var(--iron)}
-.pcard:hover{background:var(--iron)}
-.pcard.feat::after{content:'POPULAR';position:absolute;top:0;right:0;background:var(--orange);color:#fff;font-family:var(--FM);font-size:.5rem;font-weight:700;letter-spacing:.15em;padding:.25rem .65rem}
-.ptier{font-family:var(--FM);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-bottom:.7rem}
-.pamount{font-family:var(--F);font-size:3rem;color:var(--orange);line-height:1;margin-bottom:.2rem}
-.punit{font-size:.76rem;font-weight:300;color:var(--ash);margin-bottom:1.3rem}
-.pfeat{list-style:none;display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.5rem}
-.pfeat li{font-size:.78rem;font-weight:300;color:var(--silver);display:flex;gap:.45rem}
-.pfeat li::before{content:'✓';color:var(--orange);font-weight:700}
-
-/* DRIVER */
-.drv{background:var(--orange);padding:5rem 4rem}
-.drv-in{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.drv .stag{color:#343434}.drv .stag::before{background:#343434}
-.drv h2{color:#343434}.drv h2 em{color:#fff}
-.drv-desc{font-size:.92rem;font-weight:300;color:rgba(52,52,52,.75);line-height:1.7;margin-top:.8rem;max-width:400px}
-.perks{list-style:none;display:flex;flex-direction:column;gap:.9rem}
-.perk{display:flex;gap:.9rem;align-items:flex-start}
-.picon{width:38px;height:38px;border:1px solid rgba(52,52,52,.25);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
-.plabel{font-family:var(--F);font-size:1rem;color:#343434;letter-spacing:.04em}
-.psub{font-size:.73rem;font-weight:300;color:rgba(52,52,52,.65)}
-.btn-dark{background:#343434;color:var(--orange);font-family:var(--FM);font-size:.68rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 1.8rem;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;margin-top:1.8rem}
-.btn-dark:hover{background:#0f0f0f;transform:translateY(-2px)}
-
-/* QUOTE */
-.qin{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;align-items:start}
-.qform{background:var(--dark);border:1px solid var(--wire);padding:2.2rem}
-.ftit{font-family:var(--F);font-size:1.6rem;color:#ffffff;letter-spacing:.04em;margin-bottom:1.6rem;display:flex;align-items:center;gap:1rem}
-.ftit::after{content:'';flex:1;height:1px;background:var(--wire)}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
-.fg{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.8rem}
-label{font-family:var(--FM);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash)}
-input,select,textarea{background:var(--iron);border:1px solid var(--wire);color:#ffffff;font-family:'DM Sans',sans-serif;font-size:.84rem;padding:.62rem .85rem;width:100%;outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none}
-input:focus,select:focus,textarea:focus{border-color:var(--orange);background:var(--steel)}
-input::placeholder,textarea::placeholder{color:var(--wire)}
-select option{background:var(--iron);color:#fff}
-textarea{resize:vertical;min-height:70px}
-.ep{background:var(--iron);border:1px solid var(--wire);padding:1.6rem;margin-top:.8rem;display:none}
-.ep.show{display:block}
-.el{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--wire);font-size:.8rem;color:var(--silver)}
-.el:last-child{border-bottom:none}
-.el .v{font-family:var(--FM);color:var(--orange)}
-.etot{font-family:var(--F);font-size:2rem;color:var(--orange);text-align:right;margin-top:.8rem;letter-spacing:.05em}
-
-/* FOOTER */
-footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4rem;display:flex;justify-content:space-between;align-items:center}
-.flogo img{height:30px;width:auto}
-.fcopy{font-family:var(--FM);font-size:.55rem;letter-spacing:.12em;color:var(--ash)}
-.flinks{display:flex;gap:1.6rem;list-style:none}
-.flinks a{font-family:var(--FM);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
-.flinks a:hover{color:var(--orange)}
-
-/* ROUTE ANIMATION */
-@keyframes drawLine{from{stroke-dashoffset:500}to{stroke-dashoffset:0}}
-.rl{stroke-dasharray:500;animation:drawLine 2.5s ease forwards .8s;stroke-dashoffset:500}
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-.au{animation:fadeUp .7s ease forwards;opacity:0}
-.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.45s}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr}
-  .hero-right{display:none}
-  .steps{grid-template-columns:1fr 1fr}
-  .serve-grid{grid-template-columns:1fr}
-  .pgrid{grid-template-columns:1fr}
-  .drv-in{grid-template-columns:1fr}
-  .qin{grid-template-columns:1fr}
-  .cov{grid-template-columns:1fr}
-  .stats{flex-wrap:wrap}
-  .stat{min-width:50%}
-  section{padding:4rem 1.5rem}
-  .drv{padding:4rem 1.5rem}
-  footer{flex-direction:column;gap:1.2rem;text-align:center;padding:2rem 1.5rem}
-  .nav-links{display:none}
-  .frow{grid-template-columns:1fr}
-}
-
-/* LANG */
-[data-lang="es"]{display:none}
-body.es [data-lang="es"]{display:block}
-body.es [data-lang="en"]{display:none}
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABDCAYAAADZL0qFAAALa0lEQVR42u3afYwcZR0H8O/veWb2dnu9QpcrXAsYsa2YtmB4UeRFAkSJITTGwNW3gBAjUBBBxRiiuF0jJgoEigQlBiNRIdxpCAVBSOWuSIESwADXVmgFykvvuLve7cvt7s3M8zw//9iZMlzv2isU7MHvk0zudvfZmeeZeV5+v5kFhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhPj/o5lacWbeq7oTEQDw+7HveP+8t3WfTp2mW5e9Of4+Pq8sA2T/GhgagHs3Fya++Cq+sHafnkgiOOd0fE7tVPVjZkp/NvF1up5KKcvM76Z9BID31Mb4XFI8SN2HvbN/pBQKBbU/D/DdzcSFQkFNt/7vpZ1xHWhfrZISYu3H9WRmbN++Pdfe3v5rrfVJAGYB8InogOlcdCKqAhhwzr0ahuHdra2t9ySzd/K3r69v9qJFi57wPG9BPKtON7xxzLwdwBvOuQ0jIyO3dXR0vJVeHZhZE5FtNBq/9H3/XAARAD06Orpy3rx5PV1dXbqzs9MBwOjo6Jy2trYbiOh4ADki8gHMYeYkLEt39KQOEYASM2+x1m5yzq3N5XJrd7dqVSqVU3K53HKl1FIACwHMZWavuTva0+BzRKSccw/4vn8eMysich+2AeLNkNWCiMj19fW1L1iw4LLkfWNMBcB16es28bvOOaWUIgDnKqVOUEqd4HneV/v7+88gop6k48bFQ6XUbwHMneYAIQBsjDnc87yLlFJHa63PyufzX9+2bdtJcYedGEIt1VovTr2eDwDz5s2juGO6/v7+w+fOnfvtpEAYhkNa65viiWKyMIicc21EdIzWernWejmAHwdBsGbz5s3fAFBPTQaKiFy9Xv9ZLpcrps7ls0qpNQDGmv2fzZ4XKCZr7YtTnXvxwYZTeO655w4Lw7DKzJaZbaPReG66+4iiaBUzG2YeY2YeGBj4CgD09PS850li9erVLcaYLcwcxHXjoaGhI+NepFLxPsbHx++Ky9SZ2Q4ODnYm9UjKDg0NfcoYE1lrI2a25XL50enWpV6r387MUbx/LpfL58fH95IVtqenZ3YYhiVmdswcGmOG16xZM0t62gxdQSZMW16SaAPI9PX1ZZYuXcphGC7zPG+tUspzzpFSKr2KtCilMgAcgNZ6vf6Hjo6Oe+LZ1KRDrMWLF6/VWnfEZTWAAydZSZiIxph5HIAmooOUUrMBwFpbC8Pwuvb29pemCDvUhI0mGcxERJ5SysXJegsz+6mEeqprGY2NjQ3E/xsAVmt96MSCQRBknHMm3p+vta4tX74czJwBwLVK7Wu52bk7ALBKn8g4pCOiMgDjnNP1ev3etra2Cya2lQFCJxSWxO3bBEYXHNHMWmlm1ABpNBq7jJdly5ZF8XL/WhRFPw+CwEezV+3skJ7n+WEYfjmTyRwPwGSz2bOGh4fPVEo9nNwVSwYcEX1aa52NOzsz87VE1NBaw1pLcSeZA+A7WusFyUHGx8cfHB8fv75UKj17xBFHlN5LTB4EASZEUkxE0WR3vFId1xKRq1aryecWQEuqbZNdewtAO+e0UqqR7HtkZGSdb/wL48mFlFLxX3AQRLlsNnuT7/sZpRSY+WNTxJ6MbtiZfc90hg2QIAiSGTSJj00yoxLRDgCrp/rujh07TD6fPwZAoJTqIKJTmPnh9GVzzjGAcrJCOedGMpnMNZPtb/v27dfn8/lrPM9bqbX2MpnMqVrriud51wIo7WZwuLjeJl6heJKkP8k1TFwXE7+/u9mXSqXSJ7LZ7Bfi163xOfsXAHR3d/OKFSuYmemZZ56pKqUGABwJwDFzvlQqnVYoFNYVi0WXz+dfA3DHFMdRQRAUARwAQMf53a4DtqtT47GHjoVzHwfYAzAEf+6zdOMbIwwQSc6y73OQTZs2zQ+CIOJ36k9tQ5Nt1tpS+gvGmFdHRkaOZmZiZpXE5n19ffkwDF1SLooi3rp168Fx/O7Hf704zAMAlMvlz4Vh+Eh6/2EYdler1WXx/imdgwRBcH+67NDQ0Dcn5iBbtmxZxLvqn2qz1g5aa8tJQWttFEXRs9VqtTOdB6X/L5VKx0dR9IQxxqS+V7HWDjLzgLV2iJkHU9sQMw8aYxrpStVqtV+k28ed0ACBL2u7m6/ymL+nma/QzFdq5otbAv7BwsMZIC5AyQqyjxSLRRd3tIF6vX4KEX1GKdWmtdbOudx0Uhdrbc05V3bOvfLmm28+vnDhwnIcsrhUmFS11q5USrXr5kUfLpVKo0RkpniOoIjoSQBn1Gq1c1paWhZprZXWeq5SajER9aVuPXO8Kt1orX1ca+2stWyMWQ8Avb297vTTT0/a+XKj0TjZ87zjlFKztdaecy47VeOUUlEURaG1dtg59waA/2az2RdTt3TdhFvSRERPAzixUqksyWQyiz3P63DOtfu+n3HOeXFddzmW1toCqEdRVLPWvtDa2tob768ZTi0Bx039CxrkwdJhcOxD0yiUWg9qHWleVFlB9vdk/x2hwVSzGgMq/T4DxJ3QXIDHBSju6tJTPTPgTui47G5ny+as+z608enbfOYpHhT2FDzu6tTv/5mm1DbzzLhaxw/U9qbelshn5khjY7fG+Cjj5bUOG7sZq8AT76ows8aDN3v42HwGNoKWFcM9dsQCPCpqA0VgG3kAQMozYLvLQKBuZaHU2+VImcnC8TgU2jmwSPkGDHDfnRm81v/O9h98ssNxx8U76QV6e4HeoqNiM0HnAhSK4Mni/tTT9ubWu8rDacstcNx0Zvgpf86SDHqKE3UuQKEXitbByADZH1aIOBHk78/JI4iuh5d5HZEZBoEAOGRBCL2NuKXcAwC4sr0DpvEraP8lhFEZBILSDjAnw+k/0a3VBwCAL2ldBs+sAtMzUP465I99iorrDV+a+yts9De6bfwuAOBLcyfAc1fB0FOA/6i6tbqB4YEvzd5nXHib/7vwfgYIK3PHQ9OPoDPPIzJuZ/1aFMF692D1yH8IYL649TT4tNLCW69txDvLZTTB6Xvp5tHXmsedfSqy9FkEcIjCU6D1IKC3QoPgtfwZNw4PEIF55azz4dEKOL0e7Ci+AW0APQp9YDet3laSZHoGPgeZfmYPQhGMamU+Ds5eCJp/EUz4ELyahlEW2RxQCcfQWVbUDRuOlRb5Hf55UIevQFDbANQUskc5lDf8BvUgAvAAACCsLcJBs86BOeifqL71Rex44lt8+exXkQ3PQYVfBXBX85Zb4ygc2Houwvzf0Rg42303cwH07DeQHT/bG1WPAbifADZhcLo+pKUT9cwwNEfxvOxARKFW2UzSDlNfjjltK/T8k6/GW5sNTJ3gESObA2AHgdFmu+eNPYalneuBLmBd7gYo/058/swbsfEpH8VtAd6EAmChVAaKZoH1wVCkADAUHYIo+CSyuG9n1vQR/8XWh3eAJEngofNfwVDlCujX22Dc2eB45g0qCpG3kbrRywDhoLbnMRr+EOrlQ3eWqzzJ0O4aZGetAcJkze1Dla7F6gdvJ1oW8uWYg4hOBPFPQC2PAEGczWIDxnAt3TLwR7gIvBJzYcdOAvBTZGb9AxhvFsu1daMSeeD6MNhxfCOYoRVlyJWTMAm51t9j3Izg5XVfgrVAcw1h1CsEk1kD4HUGqFm+G4ACX9JyNUi9QCu6LTMcFcHcBQcCoPW/oU0NYTALBAUCg2kbiDaDsrUPd3whPpgwbhrJdZLUy9mamT4ScwQX4GHTJLH0EvDORBYgFKB3Kdf8qYTbpVwRlgCe8JOKt8sxCKugqdhMSvdUbtL6dcMlOUB8J0ztqdwu7U4da8JnCpsmuf5LQEmdhRBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCiP3e/wCnH9wLXJoA2AAAAABJRU5ErkJggg==" alt="Bridg Connects"/></div>
-  <ul class="nav-links">
-    <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
-    <li><a href="#serve" data-lang="en">Who We Serve</a><a href="#serve" data-lang="es">Clientes</a></li>
-    <li><a href="#quote" data-lang="en">Get a Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
-    <li><a href="#drivers" data-lang="en">Drive With Us</a><a href="#drivers" data-lang="es">Manejar</a></li>
-  </ul>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-logo au"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAABrCAYAAAAGjFvrAAATj0lEQVR42u3de3BcV30H8O/vnLu7Wr0lW/JDjuNHcCAuMRkHJjzGsdtMQ4EJT4kBypQkJZCEdICSQFpaSTMkZYbEdXhOIClNgTYjQ2kYysCQqU2YkKeTP0jsxIpt2ZEfelharV6793F+/UN35fVKq4djmxC+nxlNxtKec889995zfudxNwAREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREREb3qCKtgdqoqAGzhn+e47p2IuEWW61yXSeNy6SLrzJTJN5ovL1U1Ren1HNzfiz6ncuXcvXu32bp1a2neZ/02XOh9QfRH3+DGDcirrVz2NVjX5kzO67VYF3/qPFbBrFEMenp66pqamq7xPO/NxphlAFLx31VEoqn/LD6SMMYAgDrnJlS1LwzDl8bH/adE5Jn5yiUieuDAgWUrWlbc4RmvQVUhcnbaTGOMOudyzrlh51yP7/vP9/b2PikiQ/Oda+HvR48eXd3U1HQHgFrV6Y9LGIZ9Bw4cuG3Tpk3DzrkZeRXS9/X1ra+rq7vGGLPRGNPgnPPivzsRcQutc2MMRCSMoijnnBsVkZNhGB71fX//0NDQPhHpKzSEi4m8RSQCgMHBwTek0+mN1tqLRGS5MaYGQFpEUs6dlYDNAdAgCH5YVVX1s8WUk+isRDzDw8M/0vNoYmLil4cOHVpeLhLs6uqyAPDSSy+9/XyVKQiCE2NjY/9YNDyds876+/vfVS6vJ5988s9my6dwvvv376/N5/PHzvU5hWE47Pv+L4eHhz9Q3OEtJDLPZrM3+L6/JwzD8DzV/w/iMiT4ZDICPN8aAETOudAYY+Ne2Y6Pjz9qrf2xtdZEUTTdK1s79+jIOSfxnFSdiHwkmUxeFM8bCQCk0+mrGxsbvyIif6uqHoCwOH1bW5sDgGQy+czk5ORHPM9riqJo3uMuoEwAkATwRs/zPmStTcRlEs/zlnme95XBwUEVkTtV1RaioDL5BXG5nXPOFqIx3/fVGBOWnagT0RdeeCEpItVxenXOGWOMA2CGh4e/m06n91lrJYqiOSNAay2CIICIJMXapoS1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" alt="Bridg Connects"/></div>
-    <div data-lang="en">
-      <p class="eyebrow au d1">Southern California's Logistics Platform</p>
-      <h1 class="au d1">FAST<br><span class="ac">DELIVERY.</span>BUILT<br>FOR THE<br>JOB SITE.</h1>
-      <p class="hero-sub au d2">Bridg Connects links construction crews, landscapers, and contractors with same-day delivery from hardware stores, nurseries, and suppliers — on demand.</p>
-      <div class="ctas au d3">
-        <a href="#quote" class="btn">Get Instant Quote →</a>
-        <a href="#drivers" class="btn-o">Drive With Us</a>
-      </div>
-    </div>
-    <div data-lang="es">
-      <p class="eyebrow au d1">La Plataforma Logística del Sur de California</p>
-      <h1 class="au d1">ENTREGA<br><span class="ac">RÁPIDA.</span>HECHA<br>PARA LA<br>OBRA.</h1>
-      <p class="hero-sub au d2">Bridg Connects une a constructores, jardineros y contratistas con entregas el mismo día desde ferreterías, viveros y distribuidores — cuando lo necesites.</p>
-      <div class="ctas au d3">
-        <a href="#quote" class="btn">Cotización Instantánea →</a>
-        <a href="#drivers" class="btn-o">Maneja Con Nosotros</a>
-      </div>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="hgrid"></div>
-    <div class="rdiagram">
-      <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="160" x2="320" y2="160" stroke="#2a2a2a" stroke-width="1"/>
-        <line x1="160" y1="0" x2="160" y2="320" stroke="#2a2a2a" stroke-width="1"/>
-        <path class="rl" d="M 55 255 L 55 190 L 160 160 L 265 115 L 265 65" stroke="#FF640D" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
-        <rect x="32" y="232" width="46" height="46" fill="#1a1a1a" stroke="#FF640D" stroke-width="1.5"/>
-        <text x="55" y="252" text-anchor="middle" fill="#FF640D" font-family="Bebas Neue" font-size="8" letter-spacing="1">HOME</text>
-        <text x="55" y="264" text-anchor="middle" fill="#FF640D" font-family="Bebas Neue" font-size="8" letter-spacing="1">DEPOT</text>
-        <circle cx="55" cy="278" r="3" fill="#FF640D"/>
-        <circle cx="160" cy="160" r="17" fill="#1a1a1a" stroke="#FF640D" stroke-width="1.5"/>
-        <text x="160" y="156" text-anchor="middle" fill="#FF640D" font-family="Bebas Neue" font-size="8" letter-spacing="1">BRIDG</text>
-        <text x="160" y="167" text-anchor="middle" fill="#a5a5a5" font-family="Bebas Neue" font-size="7">HUB</text>
-        <polygon points="265,42 288,84 242,84" fill="#1a1a1a" stroke="#FF640D" stroke-width="1.5"/>
-        <text x="265" y="70" text-anchor="middle" fill="#FF640D" font-family="Bebas Neue" font-size="9" letter-spacing="1">JOB SITE</text>
-        <g transform="translate(147,147)">
-          <rect x="-7" y="-4" width="14" height="9" rx="1" fill="#FF640D"/>
-          <rect x="5" y="-3" width="5" height="5" rx="1" fill="#1a1a1a"/>
-          <circle cx="-3" cy="5" r="2" fill="#1a1a1a"/>
-          <circle cx="5" cy="5" r="2" fill="#1a1a1a"/>
-        </g>
-        <circle cx="55" cy="255" r="8" fill="none" stroke="#FF640D" stroke-width="0.8">
-          <animate attributeName="r" values="8;28" dur="2s" repeatCount="indefinite"/>
-          <animate attributeName="opacity" values=".5;0" dur="2s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="265" cy="65" r="8" fill="none" stroke="#FF640D" stroke-width="0.8">
-          <animate attributeName="r" values="8;25" dur="2.5s" repeatCount="indefinite"/>
-          <animate attributeName="opacity" values=".5;0" dur="2.5s" repeatCount="indefinite"/>
-        </circle>
-        <path d="M0 18 L0 0 L18 0" stroke="#FF640D" stroke-width="1.5" fill="none" opacity=".4"/>
-        <path d="M302 0 L320 0 L320 18" stroke="#FF640D" stroke-width="1.5" fill="none" opacity=".4"/>
-        <path d="M0 302 L0 320 L18 320" stroke="#FF640D" stroke-width="1.5" fill="none" opacity=".4"/>
-        <path d="M302 320 L320 320 L320 302" stroke="#FF640D" stroke-width="1.5" fill="none" opacity=".4"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stats">
-  <div class="stat"><div class="stat-n">2HR</div><div class="stat-l" data-lang="en">Avg Delivery</div><div class="stat-l" data-lang="es">Entrega Promedio</div></div>
-  <div class="stat"><div class="stat-n">SoCal</div><div class="stat-l" data-lang="en">Coverage</div><div class="stat-l" data-lang="es">Cobertura</div></div>
-  <div class="stat"><div class="stat-n">EN/ES</div><div class="stat-l" data-lang="en">Bilingual</div><div class="stat-l" data-lang="es">Bilingüe</div></div>
-  <div class="stat"><div class="stat-n">24/7</div><div class="stat-l" data-lang="en">On-Demand</div><div class="stat-l" data-lang="es">Bajo Demanda</div></div>
-</div>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <p class="stag" data-lang="en">The Process</p><p class="stag" data-lang="es">El Proceso</p>
-  <h2 data-lang="en">HOW BRIDG <em>WORKS</em></h2><h2 data-lang="es">CÓMO <em>FUNCIONA</em></h2>
-  <div class="steps">
-    <div class="step"><div class="snum">01</div><div class="sicon">📋</div><div class="stitle" data-lang="en">PLACE ORDER</div><div class="stitle" data-lang="es">HAZ TU PEDIDO</div><p class="sdesc" data-lang="en">Submit your delivery request online or call us. Tell us what materials you need, from where, and when.</p><p class="sdesc" data-lang="es">Envía tu pedido en línea o llámanos. Dinos qué materiales necesitas, de dónde y cuándo.</p></div>
-    <div class="step"><div class="snum">02</div><div class="sicon">💰</div><div class="stitle" data-lang="en">GET QUOTE</div><div class="stitle" data-lang="es">COTIZACIÓN</div><p class="sdesc" data-lang="en">Receive an instant price estimate based on distance, load size, and delivery window.</p><p class="sdesc" data-lang="es">Recibe un estimado instantáneo basado en distancia, tamaño y ventana de entrega.</p></div>
-    <div class="step"><div class="snum">03</div><div class="sicon">🚛</div><div class="stitle" data-lang="en">WE DISPATCH</div><div class="stitle" data-lang="es">DESPACHAMOS</div><p class="sdesc" data-lang="en">A vetted Bridg driver is assigned immediately. Track your delivery in real time.</p><p class="sdesc" data-lang="es">Se asigna un conductor verificado de inmediato. Rastrea tu entrega en tiempo real.</p></div>
-    <div class="step"><div class="snum">04</div><div class="sicon">✅</div><div class="stitle" data-lang="en">JOB DONE</div><div class="stitle" data-lang="es">TRABAJO HECHO</div><p class="sdesc" data-lang="en">Materials arrive at your job site. Invoice sent digitally. Your crew keeps working.</p><p class="sdesc" data-lang="es">Los materiales llegan a tu obra. Factura digital enviada. Tu equipo sigue trabajando.</p></div>
-  </div>
-</section>
-
-<!-- SERVE -->
-<section id="serve" class="dark">
-  <p class="stag" data-lang="en">Our Clients</p><p class="stag" data-lang="es">Nuestros Clientes</p>
-  <h2 data-lang="en">WHO WE <em>SERVE</em></h2><h2 data-lang="es">A QUIÉN <em>SERVIMOS</em></h2>
-  <div class="serve-grid">
-    <div class="scard">
-      <span class="sbadge" data-lang="en">Contractors & Builders</span><span class="sbadge" data-lang="es">Contratistas y Constructores</span>
-      <h3 class="stit" data-lang="en">CONSTRUCTION CREWS</h3><h3 class="stit" data-lang="es">EQUIPOS DE CONSTRUCCIÓN</h3>
-      <p class="sdsc" data-lang="en">Your job site can't stop for a hardware run. We deliver lumber, tools, concrete, and supplies directly to your location — same day.</p>
-      <p class="sdsc" data-lang="es">Tu obra no puede parar. Entregamos madera, herramientas, concreto y suministros directo a tu ubicación — el mismo día.</p>
-      <ul class="slist">
-        <li data-lang="en">Home Depot / Lowe's pickups</li><li data-lang="es">Recogidas de Home Depot / Lowe's</li>
-        <li data-lang="en">Lumber & heavy material runs</li><li data-lang="es">Corridas de madera y materiales pesados</li>
-        <li data-lang="en">Tool & equipment delivery</li><li data-lang="es">Entrega de herramientas y equipo</li>
-        <li data-lang="en">Emergency supply runs</li><li data-lang="es">Corridas de emergencia</li>
-      </ul>
-    </div>
-    <div class="scard">
-      <span class="sbadge" data-lang="en">Landscaping & Nurseries</span><span class="sbadge" data-lang="es">Jardinería y Viveros</span>
-      <h3 class="stit" data-lang="en">LANDSCAPING TEAMS</h3><h3 class="stit" data-lang="es">EQUIPOS DE JARDINERÍA</h3>
-      <p class="sdsc" data-lang="en">Plants, soil, mulch, pavers — we handle the heavy haul so your crew focuses on the install, not the pickup.</p>
-      <p class="sdsc" data-lang="es">Plantas, tierra, mantillo, adoquines — nos encargamos del transporte para que tu equipo se enfoque en la instalación.</p>
-      <ul class="slist">
-        <li data-lang="en">Nursery & plant delivery</li><li data-lang="es">Entrega de vivero y plantas</li>
-        <li data-lang="en">Mulch, soil & aggregate loads</li><li data-lang="es">Cargas de mantillo, tierra y agregados</li>
-        <li data-lang="en">Paver & stone material runs</li><li data-lang="es">Corridas de adoquines y piedra</li>
-        <li data-lang="en">Multi-stop job routes</li><li data-lang="es">Rutas de múltiples paradas</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- COVERAGE -->
-<section>
-  <div class="cov">
-    <div>
-      <p class="stag" data-lang="en">Service Area</p><p class="stag" data-lang="es">Área de Servicio</p>
-      <h2 data-lang="en">WE COVER <em>ALL OF SOCAL</em></h2><h2 data-lang="es">CUBRIMOS <em>TODO SOCAL</em></h2>
-      <p style="font-size:.86rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem" data-lang="en">From the Antelope Valley to Long Beach, the Inland Empire to the Westside — Bridg operates across LA, San Bernardino, Riverside, and Ventura counties.</p>
-      <p style="font-size:.86rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem" data-lang="es">Desde el Valle de Antelope hasta Long Beach — Bridg opera en Los Ángeles, San Bernardino, Riverside y Ventura.</p>
-      <div class="cities">
-        <div class="chip"><span class="dot"></span>Los Angeles</div>
-        <div class="chip"><span class="dot"></span>Alhambra</div>
-        <div class="chip"><span class="dot"></span>Pasadena</div>
-        <div class="chip"><span class="dot"></span>Palmdale</div>
-        <div class="chip"><span class="dot"></span>Lancaster</div>
-        <div class="chip"><span class="dot"></span>San Bernardino</div>
-        <div class="chip"><span class="dot"></span>Riverside</div>
-        <div class="chip"><span class="dot"></span>Long Beach</div>
-        <div class="chip"><span class="dot"></span>Pomona</div>
-        <div class="chip"><span class="dot"></span>Ontario</div>
-        <div class="chip"><span class="dot"></span>Ventura</div>
-        <div class="chip"><span class="dot"></span>+ More</div>
-      </div>
-    </div>
-    <div class="mapbox">
-      <svg viewBox="0 0 400 400" fill="none" width="100%">
-        <path d="M50 80 L150 60 L250 55 L350 80 L370 150 L360 220 L330 280 L290 320 L240 350 L180 360 L120 340 L80 290 L55 220 L40 150 Z" fill="#1e1e1e" stroke="#3a3a3a" stroke-width="1.5"/>
-        <path d="M150 60 L180 360" stroke="#2a2a2a" stroke-width=".8" stroke-dasharray="4 4"/>
-        <path d="M50 200 L370 200" stroke="#2a2a2a" stroke-width=".8" stroke-dasharray="4 4"/>
-        <circle cx="145" cy="195" r="5" fill="#FF640D"/>
-        <text x="155" y="199" fill="#a5a5a5" font-family="Space Mono" font-size="8">LA</text>
-        <circle cx="175" cy="185" r="3.5" fill="#FF640D" opacity=".8"/>
-        <text x="182" y="189" fill="#686868" font-family="Space Mono" font-size="7">Alhambra</text>
-        <circle cx="130" cy="110" r="3" fill="#FF640D" opacity=".6"/>
-        <text x="137" y="114" fill="#686868" font-family="Space Mono" font-size="7">Palmdale</text>
-        <circle cx="255" cy="205" r="3" fill="#FF640D" opacity=".6"/>
-        <text x="262" y="209" fill="#686868" font-family="Space Mono" font-size="7">SB</text>
-        <circle cx="280" cy="230" r="3" fill="#FF640D" opacity=".6"/>
-        <circle cx="145" cy="195" r="8" fill="none" stroke="#FF640D" stroke-width=".8">
-          <animate attributeName="r" values="8;25" dur="2s" repeatCount="indefinite"/>
-          <animate attributeName="opacity" values=".4;0" dur="2s" repeatCount="indefinite"/>
-        </circle>
-        <text x="200" y="390" text-anchor="middle" fill="#3a3a3a" font-family="Bebas Neue" font-size="11" letter-spacing="3">SOUTHERN CALIFORNIA</text>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing" class="dark">
-  <p class="stag" data-lang="en">Transparent Pricing</p><p class="stag" data-lang="es">Precios Transparentes</p>
-  <h2 data-lang="en">SIMPLE <em>RATES</em></h2><h2 data-lang="es"><em>TARIFAS</em> SIMPLES</h2>
-  <div class="pgrid">
-    <div class="pcard">
-      <div class="ptier" data-lang="en">Local Run</div><div class="ptier" data-lang="es">Corrida Local</div>
-      <div class="pamount">$35</div>
-      <div class="punit" data-lang="en">starting / per delivery</div><div class="punit" data-lang="es">desde / por entrega</div>
-      <ul class="pfeat">
-        <li data-lang="en">Up to 10 miles</li><li data-lang="es">Hasta 10 millas</li>
-        <li data-lang="en">Standard load (under 200 lbs)</li><li data-lang="es">Carga estándar (menos de 200 lbs)</li>
-        <li data-lang="en">2–4 hr window</li><li data-lang="es">Ventana de 2–4 hrs</li>
-        <li data-lang="en">Digital invoice</li><li data-lang="es">Factura digital</li>
-      </ul>
-      <a href="#quote" class="btn-o" data-lang="en">Get Quote</a><a href="#quote" class="btn-o" data-lang="es">Cotizar</a>
-    </div>
-    <div class="pcard feat">
-      <div class="ptier" data-lang="en">Priority Delivery</div><div class="ptier" data-lang="es">Entrega Prioritaria</div>
-      <div class="pamount">$75</div>
-      <div class="punit" data-lang="en">starting / per delivery</div><div class="punit" data-lang="es">desde / por entrega</div>
-      <ul class="pfeat">
-        <li data-lang="en">Up to 30 miles</li><li data-lang="es">Hasta 30 millas</li>
-        <li data-lang="en">Heavy load (up to 500 lbs)</li><li data-lang="es">Carga pesada (hasta 500 lbs)</li>
-        <li data-lang="en">1–2 hr window</li><li data-lang="es">Ventana de 1–2 hrs</li>
-        <li data-lang="en">Real-time tracking</li><li data-lang="es">Rastreo en tiempo real</li>
-        <li data-lang="en">Digital invoice + receipt</li><li data-lang="es">Factura + recibo digital</li>
-      </ul>
-      <a href="#quote" class="btn" data-lang="en">Get Quote →</a><a href="#quote" class="btn" data-lang="es">Cotizar →</a>
-    </div>
-    <div class="pcard">
-      <div class="ptier" data-lang="en">Business Account</div><div class="ptier" data-lang="es">Cuenta Empresarial</div>
-      <div class="pamount">CUSTOM</div>
-      <div class="punit" data-lang="en">monthly billing</div><div class="punit" data-lang="es">facturación mensual</div>
-      <ul class="pfeat">
-        <li data-lang="en">Unlimited mileage</li><li data-lang="es">Millaje ilimitado</li>
-        <li data-lang="en">Dedicated driver pool</li><li data-lang="es">Pool dedicado de conductores</li>
-        <li data-lang="en">Multi-stop routes</li><li data-lang="es">Rutas de múltiples paradas</li>
-        <li data-lang="en">Monthly consolidated invoice</li><li data-lang="es">Factura mensual consolidada</li>
-        <li data-lang="en">Account manager</li><li data-lang="es">Gerente de cuenta</li>
-      </ul>
-      <a href="#quote" class="btn-o" data-lang="en">Contact Us</a><a href="#quote" class="btn-o" data-lang="es">Contáctenos</a>
-    </div>
-  </div>
-</section>
-
-<!-- QUOTE -->
-<section id="quote">
-  <div class="qin">
-    <div>
-      <p class="stag" data-lang="en">Instant Estimate</p><p class="stag" data-lang="es">Estimado Instantáneo</p>
-      <h2 data-lang="en">GET YOUR <em>QUOTE</em></h2><h2 data-lang="es">OBTÉN TU <em>COTIZACIÓN</em></h2>
-      <p style="font-size:.86rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem" data-lang="en">Fill out the form and we'll calculate your delivery cost instantly. No hidden fees. No surprises.</p>
-      <p style="font-size:.86rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem" data-lang="es">Completa el formulario y calcularemos el costo de tu entrega de inmediato. Sin cargos ocultos.</p>
-      <div style="margin-top:1.8rem;padding:1.6rem;border:1px solid var(--wire);background:var(--dark)">
-        <div style="display:flex;flex-direction:column;gap:.8rem">
-          <div style="display:flex;gap:.9rem;align-items:center"><span style="color:var(--orange);font-size:1.1rem">⚡</span><div><div style="font-family:var(--F);font-size:.95rem;letter-spacing:.05em;color:#fff" data-lang="en">FASTER THAN FRAYT</div><div style="font-family:var(--F);font-size:.95rem;letter-spacing:.05em;color:#fff" data-lang="es">MÁS RÁPIDO QUE FRAYT</div><div style="font-size:.73rem;font-weight:300;color:var(--ash)" data-lang="en">Built for SoCal job sites</div><div style="font-size:.73rem;font-weight:300;color:var(--ash)" data-lang="es">Construido para SoCal</div></div></div>
-          <div style="display:flex;gap:.9rem;align-items:center"><span style="color:var(--orange);font-size:1.1rem">🌎</span><div><div style="font-family:var(--F);font-size:.95rem;letter-spacing:.05em;color:#fff" data-lang="en">BILINGUAL TEAM</div><div style="font-family:var(--F);font-size:.95rem;letter-spacing:.05em;color:#fff" data-lang="es">EQUIPO BILINGÜE</div><div style="font-size:.73rem;font-weight:300;color:var(--ash)" data-lang="en">English & Spanish always</div><div style="font-size:.73rem;font-weight:300;color:var(--ash)" data-lang="es">Inglés y español siempre</div></div></div>
-          <div style="display:flex;gap:.9rem;align-items:center"><span style="color:var(--orange);font-size:1.1rem">🔒</span><div><div style="font-family:var(--F);font-size:.95rem;letter-spacing:.05em;color:#fff" data-lang="en">VETTED DRIVERS ONLY</div><div style="font-family:var(--F);font-size:.95rem;letter-spacing:.05em;color:#fff" data-lang="es">SOLO CONDUCTORES VERIFICADOS</div><div style="font-size:.73rem;font-weight:300;color:var(--ash)" data-lang="en">Background checked, insured</div><div style="font-size:.73rem;font-weight:300;color:var(--ash)" data-lang="es">Verificados y asegurados</div></div></div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="qform">
-        <div class="ftit" data-lang="en">REQUEST A DELIVERY</div><div class="ftit" data-lang="es">SOLICITAR ENTREGA</div>
-        <div class="frow">
-          <div class="fg"><label data-lang="en">Your Name</label><label data-lang="es">Nombre</label><input type="text" id="name" placeholder="John Doe"/></div>
-          <div class="fg"><label data-lang="en">Phone</label><label data-lang="es">Teléfono</label><input type="tel" id="phone" placeholder="(818) 555-0100"/></div>
-        </div>
-        <div class="fg"><label data-lang="en">Pickup Location</label><label data-lang="es">Lugar de Recogida</label><input type="text" id="pickup" placeholder="Home Depot, 123 Main St, Los Angeles"/></div>
-        <div class="fg"><label data-lang="en">Delivery Address</label><label data-lang="es">Dirección de Entrega</label><input type="text" id="dropoff" placeholder="456 Job Site Ave, Alhambra, CA"/></div>
-        <div class="frow">
-          <div class="fg">
-            <label data-lang="en">Load Type</label><label data-lang="es">Tipo de Carga</label>
-            <select id="loadType">
-              <option value="light">Light / Ligera (&lt;100 lbs)</option>
-              <option value="medium">Medium / Mediana (100–300 lbs)</option>
-              <option value="heavy">Heavy / Pesada (300–800 lbs)</option>
-              <option value="xl">XL / Pallet / Tarima</option>
-            </select>
-          </div>
-          <div class="fg">
-            <label data-lang="en">Delivery Window</label><label data-lang="es">Ventana</label>
-            <select id="window">
-              <option value="asap">ASAP (1–2 hrs)</option>
-              <option value="today">Today / Hoy (2–4 hrs)</option>
-              <option value="scheduled">Scheduled / Programado</option>
-            </select>
-          </div>
-        </div>
-        <div class="fg"><label data-lang="en">Materials / Notes</label><label data-lang="es">Materiales / Notas</label><textarea id="notes" placeholder="e.g. 10 bags of concrete, 4 sheets of plywood..."></textarea></div>
-        <button class="btn" style="width:100%;margin-top:.4rem;justify-content:center" onclick="calcEst()">
-          <span data-lang="en">Calculate Estimate →</span><span data-lang="es">Calcular Estimado →</span>
-        </button>
-        <div class="ep" id="ep">
-          <div class="el"><span data-lang="en">Base Rate</span><span data-lang="es">Tarifa Base</span><span class="v" id="br">$35</span></div>
-          <div class="el"><span data-lang="en">Distance Charge</span><span data-lang="es">Cargo Distancia</span><span class="v" id="dc">$0</span></div>
-          <div class="el"><span data-lang="en">Load Surcharge</span><span data-lang="es">Recargo Carga</span><span class="v" id="lc">$0</span></div>
-          <div class="el"><span data-lang="en">Priority Fee</span><span data-lang="es">Cargo Prioridad</span><span class="v" id="pc">$0</span></div>
-          <div class="etot" id="tot">EST. $35</div>
-          <button class="btn" style="width:100%;margin-top:.8rem;justify-content:center" onclick="confirmOrd()">
-            <span data-lang="en">Confirm & Book →</span><span data-lang="es">Confirmar y Reservar →</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DRIVERS -->
-<section id="drivers" class="drv">
-  <div class="drv-in">
-    <div>
-      <p class="stag" data-lang="en">Join the Fleet</p><p class="stag" data-lang="es">Únete a la Flota</p>
-      <h2 data-lang="en">DRIVE WITH <em>BRIDG.</em><br>EARN MORE.</h2>
-      <h2 data-lang="es">MANEJA CON <em>BRIDG.</em><br>GANA MÁS.</h2>
-      <p class="drv-desc" data-lang="en">Join our network of professional drivers. Higher pay, better loads, fewer dead miles. We serve construction — not food delivery.</p>
-      <p class="drv-desc" data-lang="es">Únete a nuestra red. Mayor paga, mejores cargas, menos millas vacías. Servimos construcción — no comida.</p>
-      <a href="mailto:drivers@bridgconnects.com" class="btn-dark" data-lang="en">Apply to Drive →</a>
-      <a href="mailto:conductores@bridgconnects.com" class="btn-dark" data-lang="es">Aplicar →</a>
-    </div>
-    <ul class="perks">
-      <div class="perk"><div class="picon">💵</div><div><div class="plabel" data-lang="en">HIGHER EARNINGS</div><div class="plabel" data-lang="es">MAYORES GANANCIAS</div><div class="psub" data-lang="en">Industrial loads pay more than food delivery</div><div class="psub" data-lang="es">Las cargas industriales pagan más</div></div></div>
-      <div class="perk"><div class="picon">📅</div><div><div class="plabel" data-lang="en">FLEXIBLE SCHEDULE</div><div class="plabel" data-lang="es">HORARIO FLEXIBLE</div><div class="psub" data-lang="en">Work when you want. Day, evening, weekends.</div><div class="psub" data-lang="es">Trabaja cuando quieras.</div></div></div>
-      <div class="perk"><div class="picon">🔧</div><div><div class="plabel" data-lang="en">NO SPECIAL EQUIPMENT</div><div class="plabel" data-lang="es">SIN EQUIPO ESPECIAL</div><div class="psub" data-lang="en">Pickup truck, SUV, or cargo van qualifies</div><div class="psub" data-lang="es">Camioneta, SUV o furgoneta califica</div></div></div>
-      <div class="perk"><div class="picon">🌎</div><div><div class="plabel" data-lang="en">BILINGUAL TEAM</div><div class="plabel" data-lang="es">EQUIPO BILINGÜE</div><div class="psub" data-lang="en">Full support in English and Spanish</div><div class="psub" data-lang="es">Soporte completo en inglés y español</div></div></div>
-    </ul>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="flogo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
-  <ul class="flinks">
-    <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
-    <li><a href="#serve" data-lang="en">Services</a><a href="#serve" data-lang="es">Servicios</a></li>
-    <li><a href="#quote" data-lang="en">Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
-    <li><a href="#drivers" data-lang="en">Drive</a><a href="#drivers" data-lang="es">Manejar</a></li>
-    <li><a href="mailto:hello@bridgconnects.com">hello@bridgconnects.com</a></li>
-  </ul>
-  <div class="fcopy">© 2025 Bridg Connects LLC · SoCal</div>
-</footer>
-
-<script>
 function setLang(l){
   document.body.classList.toggle('es',l==='es');
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===l.toUpperCase()));
 }
+
 function calcEst(){
-  const load=document.getElementById('loadType').value;
-  const win=document.getElementById('window').value;
-  const pu=document.getElementById('pickup').value.trim();
-  const dr=document.getElementById('dropoff').value.trim();
-  const es=document.body.classList.contains('es');
-  if(!pu||!dr){alert(es?'Por favor completa la dirección de recogida y entrega.':'Please fill in pickup and delivery addresses.');return;}
-  const base=35,dist=Math.floor(Math.random()*30)+10;
-  const lm={light:0,medium:15,heavy:35,xl:60};
-  const wm={asap:20,today:0,scheduled:-5};
-  const lf=lm[load]||0,pf=Math.max(0,wm[win]||0);
-  const tot=base+dist+lf+pf;
-  document.getElementById('br').textContent='$'+base;
-  document.getElementById('dc').textContent='$'+dist;
-  document.getElementById('lc').textContent='$'+lf;
-  document.getElementById('pc').textContent='$'+pf;
-  document.getElementById('tot').textContent='EST. $'+tot;
-  const ep=document.getElementById('ep');
+  // Captura estricta de todos los campos obligatorios
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pu = document.getElementById('pickup').value.trim();
+  const dr = document.getElementById('dropoff').value.trim();
+  
+  const load = document.getElementById('loadType').value;
+  const win = document.getElementById('window').value;
+  const es = document.body.classList.contains('es');
+  
+  // BLOQUEO: Si falta CUALQUIER información de contacto u obra, no se genera el estimado
+  if(!name || !phone || !pu || !dr){
+    alert(es ? '❌ Por favor, completa tu Nombre, Teléfono, Recogida y Entrega antes de calcular tu tarifa.' : '❌ Please fill out your Name, Phone, Pickup, and Delivery location before calculating your rate.');
+    return;
+  }
+
+  // --- LÓGICA DE ESTIMACIÓN REALISTA Y DINÁMICA ---
+  const base = 35; 
+  
+  // Simulación inteligente de distancia en SoCal basada en texto
+  let checkText = (pu + " " + dr).toLowerCase();
+  let distEst = Math.floor(Math.random() * 12) + 8; // Rango local base (8-20 millas)
+  if (checkText.includes('palmdale') || checkText.includes('lancaster')) {
+    if (checkText.includes('los angeles') || checkText.includes('alhambra') || checkText.includes('long beach') || checkText.includes('pasadena')) {
+      distEst = Math.floor(Math.random() * 15) + 55; // Distancia real cruzando hacia la cuenca de LA (55-70 mi)
+    }
+  }
+  
+  const costPerMile = 2.25; 
+  const distCharge = Math.round(distEst * costPerMile);
+
+  // Recargos por volumen de carga (Pick-up truck vs Carga Ligera)
+  const lm = { light: 0, medium: 20, heavy: 45, xl: 85 };
+  // Recargos por urgencia / demanda (ASAP vs Programado)
+  const wm = { asap: 25, today: 0, scheduled: -5 };
+  
+  const lf = lm[load] !== undefined ? lm[load] : 0;
+  const pf = wm[win] !== undefined ? wm[win] : 0;
+  
+  const tot = base + distCharge + lf + pf;
+  
+  // Desglose transparente en la UI
+  document.getElementById('br').textContent = '$' + base;
+  document.getElementById('dc').textContent = '$' + distCharge + ' (~' + distEst + ' mi)';
+  document.getElementById('lc').textContent = '$' + lf;
+  document.getElementById('pc').textContent = '$' + pf;
+  document.getElementById('tot').textContent = 'EST. $' + tot;
+  
+  // Almacenar el total calculado para la orden final
+  document.getElementById('tot').setAttribute('data-calculated-total', tot);
+  
+  // Mostrar la caja de resultados de forma elegante
+  const ep = document.getElementById('ep');
   ep.classList.add('show');
   ep.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
 function confirmOrd(){
-  const es=document.body.classList.contains('es');
-  alert(es?'✅ ¡Solicitud enviada! Un representante de Bridg Connects se comunicará contigo en menos de 15 minutos.':'✅ Request submitted! A Bridg Connects representative will contact you within 15 minutes.');
+  const es = document.body.classList.contains('es');
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pu = document.getElementById('pickup').value.trim();
+  const dr = document.getElementById('dropoff').value.trim();
+  const notes = document.getElementById('notes').value.trim() || (es ? 'Sin notas adicionales' : 'No extra notes');
+  const load = document.getElementById('loadType').options[document.getElementById('loadType').selectedIndex].text;
+  const win = document.getElementById('window').options[document.getElementById('window').selectedIndex].text;
+  const totalEstimado = document.getElementById('tot').getAttribute('data-calculated-total') || '0';
+
+  // 1. ESTRUCTURAR EMAIL PARA TU GMAIL CORPORATIVO
+  const emailDestino = "K.vargas@novarholding.com";
+  const emailAsunto = encodeURIComponent(`[BRIDG Delivery Request] - ${name} - Est: $${totalEstimado}`);
+  
+  let emailCuerpo = `NEW DELIVERY REQUEST VIA LANDING PAGE%0A%0A` +
+                    `Client Name: ${name}%0A` +
+                    `Phone: ${phone}%0A` +
+                    `Pickup Location: ${pu}%0A` +
+                    `Delivery Job Site: ${dr}%0A` +
+                    `Load Class: ${load}%0A` +
+                    `Urgency/Window: ${win}%0A` +
+                    `Estimated Total: $${totalEstimado}.00%0A%0A` +
+                    `Materials/Notes:%0A${notes}%0A%0A` +
+                    `-- Sent via Bridg Connects Platform --`;
+
+  if (es) {
+    emailCuerpo = `NUEVA SOLICITUD DE ENTREGA VIA LANDING PAGE%0A%0A` +
+                  `Nombre del Cliente: ${name}%0A` +
+                  `Teléfono: ${phone}%0A` +
+                  `Lugar de Recogida: ${pu}%0A` +
+                  `Obra de Entrega: ${dr}%0A` +
+                  `Clase de Carga: ${load}%0A` +
+                  `Urgencia/Ventana: ${win}%0A` +
+                  `Total Estimado: $${totalEstimado}.00%0A%0A` +
+                  `Materiales/Notas:%0A${notes}%0A%0A` +
+                  `-- Enviado vía Bridg Connects Platform --`;
+  }
+
+  // URL para disparar el correo en tu ecosistema Google
+  const gmailUrl = `mailto:${emailDestino}?subject=${emailAsunto}&body=${emailCuerpo}`;
+
+  // 2. ESTRUCTURAR MENSAJE PARA WHATSAPP (Respuesta Comercial Inmediata)
+  let wsMensaje = `Hello BRIDG Connects! I want to book this delivery request:%0A%0A` +
+                  `*Name:* ${name}%0A` +
+                  `*Phone:* ${phone}%0A` +
+                  `*Pickup:* ${pu}%0A` +
+                  `*Job Site:* ${dr}%0A` +
+                  `*Load:* ${load}%0A` +
+                  `*Window:* ${win}%0A` +
+                  `*Est. Price:* $${totalEstimado}.00%0A%0A` +
+                  `Please dispatch a driver.`;
+
+  if (es) {
+    wsMensaje = `¡Hola BRIDG Connects! Quiero reservar esta solicitud de entrega:%0A%0A` +
+                `*Nombre:* ${name}%0A` +
+                `*Teléfono:* ${phone}%0A` +
+                `*Recogida:* ${pu}%0A` +
+                `*Obra/Entrega:* ${dr}%0A` +
+                `*Carga:* ${load}%0A` +
+                `*Ventana:* ${win}%0A` +
+                `*Precio Est:* $${totalEstimado}.00%0A%0A` +
+                `Por favor despachen al conductor asignado.`;
+  }
+
+  const whatsappUrl = `https://wa.me/13235965896?text=${wsMensaje}`;
+
+  // Enviar por correo de respaldo primero y luego abrir el canal de cierre rápido (WhatsApp)
+  window.location.href = gmailUrl;
+  
+  setTimeout(function(){
+    window.open(whatsappUrl, '_blank');
+  }, 800);
 }
+
+// Animación de aparición fluida en scroll
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}}),{threshold:0.1});
 document.querySelectorAll('.step,.scard,.pcard,.chip').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .5s ease,transform .5s ease';obs.observe(el)});
-</script>
-</body>
-</html>
