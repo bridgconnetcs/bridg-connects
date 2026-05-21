@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bridg Connects — Last-Mile Delivery for Contractors & Landscapers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #0a0a0a;
+    --charcoal: #141414;
+    --iron: #1e1e1e;
+    --steel: #2a2a2a;
+    --wire: #3d3d3d;
+    --ash: #6b6b6b;
+    --silver: #a8a8a8;
+    --white: #f0ede8;
+    --accent: #e8b84b;
+    --accent2: #e05c2a;
+    --accent-glow: rgba(232,184,75,0.15);
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── LANG TOGGLE ── */
+  .lang-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    height: 52px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--wire);
+  }
+
+  .lang-bar .logo-sm {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .lang-bar .logo-sm span { color: var(--white); }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--wire);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--ash);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: var(--black);
+    font-weight: 700;
+  }
+
+  .lang-btn:hover:not(.active) { background: var(--iron); color: var(--white); }
+
+  /* ── NAV LINKS ── */
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    padding-top: 52px;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 3rem 5rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 8vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-headline .accent-line {
+    color: var(--accent);
+    display: block;
+    -webkit-text-stroke: 0px;
+  }
+
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.6;
+    margin: 1.8rem 0 2.5rem;
+    max-width: 420px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--black);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.25s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(232,184,75,0.3);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--wire);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.25s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* ── HERO RIGHT / VISUAL ── */
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,184,75,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,184,75,0.06) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .hero-grid-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, rgba(232,184,75,0.08) 0%, transparent 65%);
+  }
+
+  .hero-visual {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .route-diagram {
+    width: 340px;
+    height: 340px;
+    position: relative;
+  }
+
+  .route-diagram svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--iron);
+    border-top: 1px solid var(--wire);
+    border-bottom: 1px solid var(--wire);
+    display: flex;
+    overflow: hidden;
+  }
+
+  .stat-item {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid var(--wire);
+    text-align: center;
+    transition: background 0.3s;
+  }
+
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--steel); }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-top: 0.4rem;
+  }
+
+  /* ── HOW IT WORKS ── */
+  section {
+    padding: 6rem 4rem;
+    position: relative;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .section-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  /* ── STEPS ── */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+    border: 1px solid var(--wire);
+  }
+
+  .step {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--wire);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .step:last-child { border-right: none; }
+  .step:hover { background: var(--iron); }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--wire);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+
+  .step:hover .step-num { color: var(--accent); }
+
+  .step-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .step-desc {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.6;
+  }
+
+  /* ── WHO WE SERVE ── */
+  .serve-section {
+    background: var(--charcoal);
+  }
+
+  .serve-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 3rem;
+    background: var(--wire);
+  }
+
+  .serve-card {
+    background: var(--charcoal);
+    padding: 3.5rem 3rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .serve-card:hover { background: var(--iron); }
+
+  .serve-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+
+  .serve-card:hover::before { height: 100%; }
+
+  .serve-badge {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid rgba(232,184,75,0.2);
+    padding: 0.3rem 0.75rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+
+  .serve-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+  }
+
+  .serve-desc {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .serve-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .serve-list li {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--silver);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .serve-list li::before {
+    content: '→';
+    color: var(--accent);
+  }
+
+  /* ── COVERAGE MAP SECTION ── */
+  .coverage-section {
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .coverage-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .coverage-cities {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--wire);
+    margin-top: 2rem;
+  }
+
+  .city-chip {
+    background: var(--charcoal);
+    padding: 1rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--silver);
+    transition: all 0.2s;
+  }
+
+  .city-chip:hover {
+    background: var(--iron);
+    color: var(--accent);
+  }
+
+  .city-chip .dot {
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-right: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  /* stagger pulse */
+  .city-chip:nth-child(2) .dot { animation-delay: 0.3s; }
+  .city-chip:nth-child(3) .dot { animation-delay: 0.6s; }
+  .city-chip:nth-child(4) .dot { animation-delay: 0.9s; }
+  .city-chip:nth-child(5) .dot { animation-delay: 1.2s; }
+  .city-chip:nth-child(6) .dot { animation-delay: 1.5s; }
+
+  /* ── SVG MAP VISUAL ── */
+  .map-visual {
+    position: relative;
+  }
+
+  .map-frame {
+    border: 1px solid var(--wire);
+    background: var(--iron);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-frame::before {
+    content: 'SOCAL COVERAGE';
+    position: absolute;
+    top: 1rem; left: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--ash);
+  }
+
+  /* ── PRICING / QUOTE ── */
+  .pricing-section {
+    background: var(--charcoal);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--wire);
+    margin-top: 3rem;
+  }
+
+  .price-card {
+    background: var(--charcoal);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .price-card.featured {
+    background: var(--iron);
+  }
+
+  .price-card:hover { background: var(--iron); }
+
+  .price-card.featured::after {
+    content: 'POPULAR';
+    position: absolute;
+    top: 0; right: 0;
+    background: var(--accent);
+    color: var(--black);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 0.3rem 0.75rem;
+  }
+
+  .price-tier {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 1rem;
+  }
+
+  .price-amount {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .price-unit {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--ash);
+    margin-bottom: 1.5rem;
+  }
+
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .price-features li {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--silver);
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .price-features li::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── DRIVER CTA ── */
+  .driver-section {
+    background: var(--accent);
+    padding: 5rem 4rem;
+  }
+
+  .driver-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .driver-section .section-tag { color: var(--black); }
+  .driver-section .section-tag::before { background: var(--black); }
+  .driver-section .section-title { color: var(--black); }
+  .driver-section .section-title em { color: var(--charcoal); }
+
+  .driver-desc {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(10,10,10,0.7);
+    line-height: 1.7;
+    margin-top: 1rem;
+    max-width: 400px;
+  }
+
+  .driver-perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .driver-perk {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .perk-icon {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(10,10,10,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .perk-label {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--black);
+    letter-spacing: 0.04em;
+  }
+
+  .perk-sub {
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: rgba(10,10,10,0.6);
+  }
+
+  .btn-dark {
+    background: var(--black);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.25s;
+    margin-top: 2rem;
+  }
+
+  .btn-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  /* ── QUOTE FORM ── */
+  .quote-section {
+    background: var(--black);
+  }
+
+  .quote-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .quote-form {
+    background: var(--charcoal);
+    border: 1px solid var(--wire);
+    padding: 2.5rem;
+  }
+
+  .form-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .form-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--wire);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+
+  input, select, textarea {
+    background: var(--iron);
+    border: 1px solid var(--wire);
+    border-radius: 0;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    padding: 0.7rem 1rem;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    background: var(--steel);
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--wire); }
+
+  select option { background: var(--iron); }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .form-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .estimate-preview {
+    background: var(--iron);
+    border: 1px solid var(--wire);
+    padding: 2rem;
+    margin-top: 1rem;
+    display: none;
+  }
+
+  .estimate-preview.show { display: block; }
+
+  .estimate-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--wire);
+    font-size: 0.85rem;
+    color: var(--silver);
+  }
+
+  .estimate-line:last-child { border-bottom: none; }
+
+  .estimate-line .val {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .estimate-total {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--accent);
+    text-align: right;
+    margin-top: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid var(--wire);
+    padding: 3rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--ash);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes drawLine {
+    from { stroke-dashoffset: 500; }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  .animate-up {
+    animation: fadeUp 0.7s ease forwards;
+    opacity: 0;
+  }
+
+  .delay-1 { animation-delay: 0.15s; }
+  .delay-2 { animation-delay: 0.3s; }
+  .delay-3 { animation-delay: 0.45s; }
+  .delay-4 { animation-delay: 0.6s; }
+
+  .route-line {
+    stroke-dasharray: 500;
+    animation: drawLine 2.5s ease forwards 0.8s;
+    stroke-dashoffset: 500;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .serve-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .driver-inner { grid-template-columns: 1fr; }
+    .quote-inner { grid-template-columns: 1fr; }
+    .coverage-inner { grid-template-columns: 1fr; }
+    .stats-bar { flex-wrap: wrap; }
+    .stat-item { min-width: 50%; }
+    section { padding: 4rem 2rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .nav-links { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── HIDDEN LANG CONTENT ── */
+  [data-lang="es"] { display: none; }
+  body.es [data-lang="es"] { display: block; }
+  body.es [data-lang="en"] { display: none; }
+</style>
+</head>
+<body id="top">
+
+<!-- ══════════════════════════════════════
+     NAV BAR
+══════════════════════════════════════ -->
+<nav class="lang-bar">
+  <div class="logo-sm">BRIDG<span> CONNECTS</span></div>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#serve">Who We Serve</a></li>
+    <li><a href="#quote">Get a Quote</a></li>
+    <li><a href="#drivers">Drive With Us</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-left">
+
+    <!-- EN -->
+    <div data-lang="en">
+      <p class="hero-eyebrow animate-up">Southern California's Logistics Platform</p>
+      <h1 class="hero-headline animate-up delay-1">
+        FAST<br>
+        <span class="accent-line">DELIVERY.</span>
+        BUILT<br>FOR THE<br>JOB SITE.
+      </h1>
+      <p class="hero-sub animate-up delay-2">
+        Bridg Connects links construction crews, landscapers, and contractors with same-day delivery from hardware stores, nurseries, and suppliers — on demand.
+      </p>
+      <div class="hero-ctas animate-up delay-3">
+        <a href="#quote" class="btn-primary">Get Instant Quote →</a>
+        <a href="#drivers" class="btn-secondary">Drive With Us</a>
+      </div>
+    </div>
+
+    <!-- ES -->
+    <div data-lang="es">
+      <p class="hero-eyebrow animate-up">La Plataforma Logística del Sur de California</p>
+      <h1 class="hero-headline animate-up delay-1">
+        ENTREGA<br>
+        <span class="accent-line">RÁPIDA.</span>
+        HECHA<br>PARA LA<br>OBRA.
+      </h1>
+      <p class="hero-sub animate-up delay-2">
+        Bridg Connects une a constructores, jardineros y contratistas con entregas el mismo día desde ferreterías, viveros y distribuidores — cuando lo necesites.
+      </p>
+      <div class="hero-ctas animate-up delay-3">
+        <a href="#quote" class="btn-primary">Cotización Instantánea →</a>
+        <a href="#drivers" class="btn-secondary">Maneja Con Nosotros</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-visual">
+      <div class="route-diagram">
+        <svg viewBox="0 0 340 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid lines -->
+          <line x1="0" y1="170" x2="340" y2="170" stroke="#2a2a2a" stroke-width="1"/>
+          <line x1="170" y1="0" x2="170" y2="340" stroke="#2a2a2a" stroke-width="1"/>
+          <!-- Diagonal lines -->
+          <line x1="0" y1="0" x2="340" y2="340" stroke="#1e1e1e" stroke-width="1"/>
+          <line x1="340" y1="0" x2="0" y2="340" stroke="#1e1e1e" stroke-width="1"/>
+
+          <!-- Route path -->
+          <path class="route-line"
+            d="M 60 270 L 60 200 L 170 170 L 280 120 L 280 70"
+            stroke="#e8b84b" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+
+          <!-- Store node -->
+          <rect x="35" y="245" width="50" height="50" fill="#1e1e1e" stroke="#e8b84b" stroke-width="1.5"/>
+          <text x="60" y="267" text-anchor="middle" fill="#e8b84b" font-family="Bebas Neue" font-size="9" letter-spacing="1">HOME</text>
+          <text x="60" y="280" text-anchor="middle" fill="#e8b84b" font-family="Bebas Neue" font-size="9" letter-spacing="1">DEPOT</text>
+          <circle cx="60" cy="295" r="3" fill="#e8b84b"/>
+
+          <!-- Hub node -->
+          <circle cx="170" cy="170" r="18" fill="#141414" stroke="#e8b84b" stroke-width="1.5"/>
+          <text x="170" y="165" text-anchor="middle" fill="#e8b84b" font-family="Bebas Neue" font-size="8" letter-spacing="1">BRIDG</text>
+          <text x="170" y="177" text-anchor="middle" fill="#a8a8a8" font-family="Bebas Neue" font-size="7">HUB</text>
+
+          <!-- Job site node -->
+          <polygon points="280,45 305,90 255,90" fill="#1e1e1e" stroke="#e05c2a" stroke-width="1.5"/>
+          <text x="280" y="75" text-anchor="middle" fill="#e05c2a" font-family="Bebas Neue" font-size="9" letter-spacing="1">JOB</text>
+          <text x="280" y="85" text-anchor="middle" fill="#e05c2a" font-family="Bebas Neue" font-size="7">SITE</text>
+
+          <!-- Moving truck -->
+          <g transform="translate(155, 155)">
+            <rect x="-8" y="-5" width="16" height="10" rx="1" fill="#e8b84b"/>
+            <rect x="5" y="-3" width="6" height="6" rx="1" fill="#141414"/>
+            <circle cx="-4" cy="5" r="2.5" fill="#141414"/>
+            <circle cx="6" cy="5" r="2.5" fill="#141414"/>
+          </g>
+
+          <!-- Distance labels -->
+          <text x="100" y="225" fill="#6b6b6b" font-family="Space Mono" font-size="7">4.2 mi</text>
+          <text x="230" y="140" fill="#6b6b6b" font-family="Space Mono" font-size="7">6.8 mi</text>
+
+          <!-- Ping circles -->
+          <circle cx="60" cy="270" r="25" fill="none" stroke="#e8b84b" stroke-width="0.5" opacity="0.3">
+            <animate attributeName="r" values="15;35" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="280" cy="70" r="20" fill="none" stroke="#e05c2a" stroke-width="0.5" opacity="0.3">
+            <animate attributeName="r" values="10;30" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- Corner accents -->
+          <path d="M0 20 L0 0 L20 0" stroke="#e8b84b" stroke-width="1.5" fill="none" opacity="0.4"/>
+          <path d="M320 0 L340 0 L340 20" stroke="#e8b84b" stroke-width="1.5" fill="none" opacity="0.4"/>
+          <path d="M0 320 L0 340 L20 340" stroke="#e8b84b" stroke-width="1.5" fill="none" opacity="0.4"/>
+          <path d="M320 340 L340 340 L340 320" stroke="#e8b84b" stroke-width="1.5" fill="none" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">2HR</div>
+    <div class="stat-label" data-lang="en">Avg Delivery Window</div>
+    <div class="stat-label" data-lang="es">Ventana de Entrega</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">SoCal</div>
+    <div class="stat-label" data-lang="en">Coverage Area</div>
+    <div class="stat-label" data-lang="es">Área de Cobertura</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">EN/ES</div>
+    <div class="stat-label" data-lang="en">Bilingual Support</div>
+    <div class="stat-label" data-lang="es">Soporte Bilingüe</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">24/7</div>
+    <div class="stat-label" data-lang="en">On-Demand Dispatch</div>
+    <div class="stat-label" data-lang="es">Despacho en Demanda</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════ -->
+<section id="how">
+  <p class="section-tag" data-lang="en">The Process</p>
+  <p class="section-tag" data-lang="es">El Proceso</p>
+
+  <h2 class="section-title" data-lang="en">HOW BRIDG <em>WORKS</em></h2>
+  <h2 class="section-title" data-lang="es">CÓMO <em>FUNCIONA</em> BRIDG</h2>
+
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">📋</div>
+      <div class="step-title" data-lang="en">PLACE ORDER</div>
+      <div class="step-title" data-lang="es">HAGA SU PEDIDO</div>
+      <p class="step-desc" data-lang="en">Submit your delivery request online or call us. Tell us what materials you need, from where, and when.</p>
+      <p class="step-desc" data-lang="es">Envíe su pedido en línea o llámenos. Díganos qué materiales necesita, de dónde y cuándo.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">💰</div>
+      <div class="step-title" data-lang="en">GET QUOTE</div>
+      <div class="step-title" data-lang="es">RECIBA COTIZACIÓN</div>
+      <p class="step-desc" data-lang="en">Receive an instant price estimate based on distance, load size, and delivery window.</p>
+      <p class="step-desc" data-lang="es">Reciba un estimado de precio instantáneo basado en distancia, tamaño de carga y ventana de entrega.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">🚛</div>
+      <div class="step-title" data-lang="en">WE DISPATCH</div>
+      <div class="step-title" data-lang="es">DESPACHAMOS</div>
+      <p class="step-desc" data-lang="en">A vetted Bridg driver is assigned immediately. Track delivery in real time.</p>
+      <p class="step-desc" data-lang="es">Se asigna un conductor verificado de Bridg de inmediato. Rastrée la entrega en tiempo real.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">✅</div>
+      <div class="step-title" data-lang="en">JOB DONE</div>
+      <div class="step-title" data-lang="es">TRABAJO HECHO</div>
+      <p class="step-desc" data-lang="en">Materials arrive at your job site. Invoice is sent digitally. Your crew keeps working.</p>
+      <p class="step-desc" data-lang="es">Los materiales llegan a su obra. La factura se envía digitalmente. Su equipo sigue trabajando.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     WHO WE SERVE
+══════════════════════════════════════ -->
+<section id="serve" class="serve-section">
+  <p class="section-tag" data-lang="en">Our Clients</p>
+  <p class="section-tag" data-lang="es">Nuestros Clientes</p>
+
+  <h2 class="section-title" data-lang="en">WHO WE <em>SERVE</em></h2>
+  <h2 class="section-title" data-lang="es">A QUIÉN <em>SERVIMOS</em></h2>
+
+  <div class="serve-grid">
+    <div class="serve-card">
+      <span class="serve-badge" data-lang="en">Contractors & Builders</span>
+      <span class="serve-badge" data-lang="es">Contratistas y Constructores</span>
+      <h3 class="serve-title" data-lang="en">CONSTRUCTION CREWS</h3>
+      <h3 class="serve-title" data-lang="es">EQUIPOS DE CONSTRUCCIÓN</h3>
+      <p class="serve-desc" data-lang="en">Your job site can't stop for a hardware run. We deliver lumber, tools, concrete, and supplies directly to your location — same day.</p>
+      <p class="serve-desc" data-lang="es">Su obra no puede parar por una vuelta a la ferretería. Entregamos madera, herramientas, concreto y suministros directo a su ubicación — el mismo día.</p>
+      <ul class="serve-list">
+        <li data-lang="en">Home Depot / Lowe's pickups</li>
+        <li data-lang="es">Recogidas de Home Depot / Lowe's</li>
+        <li data-lang="en">Lumber & heavy material runs</li>
+        <li data-lang="es">Corridas de madera y materiales pesados</li>
+        <li data-lang="en">Tool & equipment delivery</li>
+        <li data-lang="es">Entrega de herramientas y equipo</li>
+        <li data-lang="en">Emergency supply runs</li>
+        <li data-lang="es">Corridas de emergencia de suministros</li>
+      </ul>
+    </div>
+    <div class="serve-card">
+      <span class="serve-badge" data-lang="en">Landscaping & Nurseries</span>
+      <span class="serve-badge" data-lang="es">Jardinería y Viveros</span>
+      <h3 class="serve-title" data-lang="en">LANDSCAPING TEAMS</h3>
+      <h3 class="serve-title" data-lang="es">EQUIPOS DE JARDINERÍA</h3>
+      <p class="serve-desc" data-lang="en">Plants, soil, mulch, pavers — we handle the heavy haul so your crew focuses on the install, not the pickup.</p>
+      <p class="serve-desc" data-lang="es">Plantas, tierra, mantillo, adoquines — nos encargamos del transporte pesado para que su equipo se enfoque en la instalación, no en el recojo.</p>
+      <ul class="serve-list">
+        <li data-lang="en">Nursery & plant delivery</li>
+        <li data-lang="es">Entrega de vivero y plantas</li>
+        <li data-lang="en">Mulch, soil & aggregate loads</li>
+        <li data-lang="es">Cargas de mantillo, tierra y agregados</li>
+        <li data-lang="en">Paver & stone material runs</li>
+        <li data-lang="es">Corridas de adoquines y piedra</li>
+        <li data-lang="en">Multi-stop job routes</li>
+        <li data-lang="es">Rutas de trabajo con múltiples paradas</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     COVERAGE
+══════════════════════════════════════ -->
+<section class="coverage-section">
+  <div class="coverage-inner">
+    <div>
+      <p class="section-tag" data-lang="en">Service Area</p>
+      <p class="section-tag" data-lang="es">Área de Servicio</p>
+      <h2 class="section-title" data-lang="en">WE COVER <em>ALL OF SOCAL</em></h2>
+      <h2 class="section-title" data-lang="es">CUBRIMOS <em>TODO SOCAL</em></h2>
+      <p style="font-size:0.9rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem;" data-lang="en">
+        From the Antelope Valley to Long Beach, from the Inland Empire to the Westside — Bridg operates across Los Angeles, San Bernardino, Riverside, and Ventura counties.
+      </p>
+      <p style="font-size:0.9rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem;" data-lang="es">
+        Desde el Valle de Antelope hasta Long Beach, desde el Inland Empire hasta el Westside — Bridg opera en Los Ángeles, San Bernardino, Riverside y el condado de Ventura.
+      </p>
+      <div class="coverage-cities">
+        <div class="city-chip"><span class="dot"></span>Los Angeles</div>
+        <div class="city-chip"><span class="dot"></span>Alhambra</div>
+        <div class="city-chip"><span class="dot"></span>Pasadena</div>
+        <div class="city-chip"><span class="dot"></span>Palmdale</div>
+        <div class="city-chip"><span class="dot"></span>Lancaster</div>
+        <div class="city-chip"><span class="dot"></span>San Bernardino</div>
+        <div class="city-chip"><span class="dot"></span>Riverside</div>
+        <div class="city-chip"><span class="dot"></span>Long Beach</div>
+        <div class="city-chip"><span class="dot"></span>Pomona</div>
+        <div class="city-chip"><span class="dot"></span>Ontario</div>
+        <div class="city-chip"><span class="dot"></span>Ventura</div>
+        <div class="city-chip"><span class="dot"></span>+ more</div>
+      </div>
+    </div>
+    <div class="map-visual">
+      <div class="map-frame">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%">
+          <!-- simplified SoCal shape -->
+          <path d="M50 80 L150 60 L250 55 L350 80 L370 150 L360 220 L330 280 L290 320 L240 350 L180 360 L120 340 L80 290 L55 220 L40 150 Z"
+            fill="#1e1e1e" stroke="#3d3d3d" stroke-width="1.5"/>
+          <!-- county dividers -->
+          <path d="M150 60 L180 360" stroke="#2a2a2a" stroke-width="0.8" stroke-dasharray="4 4"/>
+          <path d="M50 200 L370 200" stroke="#2a2a2a" stroke-width="0.8" stroke-dasharray="4 4"/>
+
+          <!-- City dots -->
+          <circle cx="145" cy="195" r="5" fill="#e8b84b"/>
+          <text x="155" y="199" fill="#a8a8a8" font-family="Space Mono" font-size="8">LA</text>
+
+          <circle cx="175" cy="185" r="3.5" fill="#e8b84b" opacity="0.8"/>
+          <text x="182" y="189" fill="#6b6b6b" font-family="Space Mono" font-size="7">Alhambra</text>
+
+          <circle cx="200" cy="175" r="3" fill="#e8b84b" opacity="0.7"/>
+          <circle cx="130" cy="110" r="3" fill="#e8b84b" opacity="0.6"/>
+          <text x="137" y="114" fill="#6b6b6b" font-family="Space Mono" font-size="7">Palmdale</text>
+
+          <circle cx="255" cy="205" r="3" fill="#e8b84b" opacity="0.6"/>
+          <text x="262" y="209" fill="#6b6b6b" font-family="Space Mono" font-size="7">SB</text>
+
+          <circle cx="280" cy="230" r="3" fill="#e8b84b" opacity="0.6"/>
+          <text x="287" y="234" fill="#6b6b6b" font-family="Space Mono" font-size="7">Riverside</text>
+
+          <circle cx="155" cy="265" r="3" fill="#e8b84b" opacity="0.6"/>
+          <text x="162" y="269" fill="#6b6b6b" font-family="Space Mono" font-size="7">Long Beach</text>
+
+          <!-- Pulse on LA -->
+          <circle cx="145" cy="195" r="15" fill="none" stroke="#e8b84b" stroke-width="0.8" opacity="0.3">
+            <animate attributeName="r" values="8;25" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0" dur="2s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- Label -->
+          <text x="200" y="390" text-anchor="middle" fill="#3d3d3d" font-family="Bebas Neue" font-size="11" letter-spacing="3">SOUTHERN CALIFORNIA</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PRICING
+══════════════════════════════════════ -->
+<section id="pricing" class="pricing-section">
+  <p class="section-tag" data-lang="en">Transparent Pricing</p>
+  <p class="section-tag" data-lang="es">Precios Transparentes</p>
+
+  <h2 class="section-title" data-lang="en">SIMPLE <em>RATES</em></h2>
+  <h2 class="section-title" data-lang="es"><em>TARIFAS</em> SIMPLES</h2>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier" data-lang="en">Local Run</div>
+      <div class="price-tier" data-lang="es">Corrida Local</div>
+      <div class="price-amount">$35</div>
+      <div class="price-unit" data-lang="en">starting / por entrega</div>
+      <div class="price-unit" data-lang="es">desde / por entrega</div>
+      <ul class="price-features">
+        <li data-lang="en">Up to 10 miles</li>
+        <li data-lang="es">Hasta 10 millas</li>
+        <li data-lang="en">Standard load (under 200 lbs)</li>
+        <li data-lang="es">Carga estándar (menos de 200 lbs)</li>
+        <li data-lang="en">2–4 hr window</li>
+        <li data-lang="es">Ventana de 2–4 hrs</li>
+        <li data-lang="en">Digital invoice</li>
+        <li data-lang="es">Factura digital</li>
+      </ul>
+      <a href="#quote" class="btn-secondary" data-lang="en">Get Quote</a>
+      <a href="#quote" class="btn-secondary" data-lang="es">Cotizar</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tier" data-lang="en">Priority Delivery</div>
+      <div class="price-tier" data-lang="es">Entrega Prioritaria</div>
+      <div class="price-amount">$75</div>
+      <div class="price-unit" data-lang="en">starting / por entrega</div>
+      <div class="price-unit" data-lang="es">desde / por entrega</div>
+      <ul class="price-features">
+        <li data-lang="en">Up to 30 miles</li>
+        <li data-lang="es">Hasta 30 millas</li>
+        <li data-lang="en">Heavy load (up to 500 lbs)</li>
+        <li data-lang="es">Carga pesada (hasta 500 lbs)</li>
+        <li data-lang="en">1–2 hr window</li>
+        <li data-lang="es">Ventana de 1–2 hrs</li>
+        <li data-lang="en">Real-time tracking</li>
+        <li data-lang="es">Seguimiento en tiempo real</li>
+        <li data-lang="en">Digital invoice + receipt</li>
+        <li data-lang="es">Factura + recibo digital</li>
+      </ul>
+      <a href="#quote" class="btn-primary" data-lang="en">Get Quote →</a>
+      <a href="#quote" class="btn-primary" data-lang="es">Cotizar →</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier" data-lang="en">Business Account</div>
+      <div class="price-tier" data-lang="es">Cuenta Empresarial</div>
+      <div class="price-amount">CUSTOM</div>
+      <div class="price-unit" data-lang="en">monthly billing</div>
+      <div class="price-unit" data-lang="es">facturación mensual</div>
+      <ul class="price-features">
+        <li data-lang="en">Unlimited mileage</li>
+        <li data-lang="es">Millaje ilimitado</li>
+        <li data-lang="en">Dedicated driver pool</li>
+        <li data-lang="es">Pool dedicado de conductores</li>
+        <li data-lang="en">Multi-stop routes</li>
+        <li data-lang="es">Rutas de múltiples paradas</li>
+        <li data-lang="en">Monthly consolidated invoice</li>
+        <li data-lang="es">Factura consolidada mensual</li>
+        <li data-lang="en">Account manager</li>
+        <li data-lang="es">Gerente de cuenta</li>
+      </ul>
+      <a href="#quote" class="btn-secondary" data-lang="en">Contact Us</a>
+      <a href="#quote" class="btn-secondary" data-lang="es">Contáctenos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     QUOTE FORM
+══════════════════════════════════════ -->
+<section id="quote" class="quote-section">
+  <div class="quote-inner">
+    <div>
+      <p class="section-tag" data-lang="en">Instant Estimate</p>
+      <p class="section-tag" data-lang="es">Estimado Instantáneo</p>
+      <h2 class="section-title" data-lang="en">GET YOUR <em>QUOTE</em></h2>
+      <h2 class="section-title" data-lang="es">OBTÉN TU <em>COTIZACIÓN</em></h2>
+      <p style="font-size:0.9rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem;" data-lang="en">
+        Fill out the form and we'll calculate your delivery cost instantly. No hidden fees. No surprises.
+      </p>
+      <p style="font-size:0.9rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem;" data-lang="es">
+        Complete el formulario y calcularemos el costo de su entrega de inmediato. Sin cargos ocultos. Sin sorpresas.
+      </p>
+
+      <div style="margin-top:2.5rem;padding:2rem;border:1px solid var(--wire);background:var(--charcoal);">
+        <p style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-bottom:1rem;" data-lang="en">Why choose Bridg?</p>
+        <p style="font-family:var(--font-mono);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ash);margin-bottom:1rem;" data-lang="es">¿Por qué elegir Bridg?</p>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <span style="color:var(--accent);font-size:1.2rem;">⚡</span>
+            <div>
+              <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:0.05em;" data-lang="en">FASTER THAN FRAYT</div>
+              <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:0.05em;" data-lang="es">MÁS RÁPIDO QUE FRAYT</div>
+              <div style="font-size:0.78rem;font-weight:300;color:var(--ash);" data-lang="en">Built specifically for SoCal job sites</div>
+              <div style="font-size:0.78rem;font-weight:300;color:var(--ash);" data-lang="es">Construido específicamente para obras de SoCal</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <span style="color:var(--accent);font-size:1.2rem;">🌎</span>
+            <div>
+              <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:0.05em;" data-lang="en">BILINGUAL TEAM</div>
+              <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:0.05em;" data-lang="es">EQUIPO BILINGÜE</div>
+              <div style="font-size:0.78rem;font-weight:300;color:var(--ash);" data-lang="en">English & Spanish support always</div>
+              <div style="font-size:0.78rem;font-weight:300;color:var(--ash);" data-lang="es">Soporte en inglés y español siempre</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <span style="color:var(--accent);font-size:1.2rem;">🔒</span>
+            <div>
+              <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:0.05em;" data-lang="en">VETTED DRIVERS ONLY</div>
+              <div style="font-family:var(--font-display);font-size:1rem;letter-spacing:0.05em;" data-lang="es">SOLO CONDUCTORES VERIFICADOS</div>
+              <div style="font-size:0.78rem;font-weight:300;color:var(--ash);" data-lang="en">Background checked, insured, professional</div>
+              <div style="font-size:0.78rem;font-weight:300;color:var(--ash);" data-lang="es">Con verificación de antecedentes, asegurados, profesionales</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="quote-form">
+        <div class="form-title" data-lang="en">REQUEST A DELIVERY</div>
+        <div class="form-title" data-lang="es">SOLICITAR ENTREGA</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label data-lang="en">Your Name / Su Nombre</label>
+            <label data-lang="es">Su Nombre</label>
+            <input type="text" id="name" placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label data-lang="en">Phone / Teléfono</label>
+            <label data-lang="es">Teléfono</label>
+            <input type="tel" id="phone" placeholder="(818) 555-0100" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-lang="en">Pickup Location (store / address)</label>
+          <label data-lang="es">Lugar de Recogida (tienda / dirección)</label>
+          <input type="text" id="pickup" placeholder="Home Depot, 123 Main St, Los Angeles" />
+        </div>
+
+        <div class="form-group">
+          <label data-lang="en">Delivery Address (job site)</label>
+          <label data-lang="es">Dirección de Entrega (obra)</label>
+          <input type="text" id="dropoff" placeholder="456 Job Site Ave, Alhambra, CA" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label data-lang="en">Load Type</label>
+            <label data-lang="es">Tipo de Carga</label>
+            <select id="loadType">
+              <option value="" data-en="Select load type" data-es="Seleccione tipo">Select load type</option>
+              <option value="light" data-en="Light (under 100 lbs)" data-es="Ligera (menos de 100 lbs)">Light (under 100 lbs)</option>
+              <option value="medium" data-en="Medium (100–300 lbs)" data-es="Mediana (100–300 lbs)">Medium (100–300 lbs)</option>
+              <option value="heavy" data-en="Heavy (300–800 lbs)" data-es="Pesada (300–800 lbs)">Heavy (300–800 lbs)</option>
+              <option value="xl" data-en="XL / Pallet" data-es="XL / Tarima">XL / Pallet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-lang="en">Delivery Window</label>
+            <label data-lang="es">Ventana de Entrega</label>
+            <select id="window">
+              <option value="asap" data-en="ASAP (1–2 hrs)" data-es="Lo antes posible (1–2 hrs)">ASAP (1–2 hrs)</option>
+              <option value="today" data-en="Today (2–4 hrs)" data-es="Hoy (2–4 hrs)">Today (2–4 hrs)</option>
+              <option value="scheduled" data-en="Scheduled (tomorrow+)" data-es="Programado (mañana+)">Scheduled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-lang="en">Materials / Notes</label>
+          <label data-lang="es">Materiales / Notas</label>
+          <textarea id="notes" placeholder="e.g. 10 bags of concrete, 4 sheets of plywood, tools..."></textarea>
+        </div>
+
+        <button class="btn-primary form-submit" onclick="calculateEstimate()">
+          <span data-lang="en">Calculate Estimate →</span>
+          <span data-lang="es">Calcular Estimado →</span>
+        </button>
+
+        <div class="estimate-preview" id="estimateResult">
+          <div class="estimate-line">
+            <span data-lang="en">Base Rate</span><span data-lang="es">Tarifa Base</span>
+            <span class="val" id="baseRate">$35</span>
+          </div>
+          <div class="estimate-line">
+            <span data-lang="en">Distance Charge</span><span data-lang="es">Cargo por Distancia</span>
+            <span class="val" id="distCharge">$0</span>
+          </div>
+          <div class="estimate-line">
+            <span data-lang="en">Load Surcharge</span><span data-lang="es">Recargo de Carga</span>
+            <span class="val" id="loadCharge">$0</span>
+          </div>
+          <div class="estimate-line">
+            <span data-lang="en">Priority Fee</span><span data-lang="es">Cargo de Prioridad</span>
+            <span class="val" id="priorityCharge">$0</span>
+          </div>
+          <div class="estimate-total" id="totalEstimate">EST. $35</div>
+          <button class="btn-primary" style="width:100%;margin-top:1rem;" onclick="confirmOrder()">
+            <span data-lang="en">Confirm & Book →</span>
+            <span data-lang="es">Confirmar y Reservar →</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     DRIVER CTA
+══════════════════════════════════════ -->
+<section id="drivers" class="driver-section">
+  <div class="driver-inner">
+    <div>
+      <p class="section-tag" data-lang="en">Join the Fleet</p>
+      <p class="section-tag" data-lang="es">Únete a la Flota</p>
+      <h2 class="section-title" data-lang="en">DRIVE WITH <em>BRIDG.</em><br>EARN MORE.</h2>
+      <h2 class="section-title" data-lang="es">MANEJA CON <em>BRIDG.</em><br>GANA MÁS.</h2>
+      <p class="driver-desc" data-lang="en">Join our network of professional drivers. Higher pay, better loads, fewer dead miles. We serve construction — not food delivery.</p>
+      <p class="driver-desc" data-lang="es">Únete a nuestra red de conductores profesionales. Mayor paga, mejores cargas, menos millas en vacío. Servimos construcción — no entrega de comida.</p>
+      <a href="mailto:drivers@bridgconnects.com" class="btn-dark" data-lang="en">Apply to Drive →</a>
+      <a href="mailto:conductores@bridgconnects.com" class="btn-dark" data-lang="es">Aplicar para Manejar →</a>
+    </div>
+    <div>
+      <ul class="driver-perks">
+        <div class="driver-perk">
+          <div class="perk-icon">💵</div>
+          <div>
+            <div class="perk-label" data-lang="en">HIGHER EARNINGS</div>
+            <div class="perk-label" data-lang="es">MAYORES GANANCIAS</div>
+            <div class="perk-sub" data-lang="en">Industrial loads pay significantly more than food delivery</div>
+            <div class="perk-sub" data-lang="es">Las cargas industriales pagan significativamente más que la entrega de comida</div>
+          </div>
+        </div>
+        <div class="driver-perk">
+          <div class="perk-icon">📅</div>
+          <div>
+            <div class="perk-label" data-lang="en">FLEXIBLE SCHEDULE</div>
+            <div class="perk-label" data-lang="es">HORARIO FLEXIBLE</div>
+            <div class="perk-sub" data-lang="en">Work when you want. Day, evening, weekends.</div>
+            <div class="perk-sub" data-lang="es">Trabaja cuando quieras. Días, noches, fines de semana.</div>
+          </div>
+        </div>
+        <div class="driver-perk">
+          <div class="perk-icon">🔧</div>
+          <div>
+            <div class="perk-label" data-lang="en">NO SPECIAL EQUIPMENT</div>
+            <div class="perk-label" data-lang="es">SIN EQUIPO ESPECIAL</div>
+            <div class="perk-sub" data-lang="en">Pickup truck, SUV, or cargo van qualifies</div>
+            <div class="perk-sub" data-lang="es">Camioneta, SUV o furgoneta califica</div>
+          </div>
+        </div>
+        <div class="driver-perk">
+          <div class="perk-icon">🌎</div>
+          <div>
+            <div class="perk-label" data-lang="en">BILINGUAL TEAM</div>
+            <div class="perk-label" data-lang="es">EQUIPO BILINGÜE</div>
+            <div class="perk-sub" data-lang="en">Full support in English and Spanish</div>
+            <div class="perk-sub" data-lang="es">Soporte completo en inglés y español</div>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">BRIDG<span> CONNECTS</span></div>
+  <ul class="footer-links">
+    <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
+    <li><a href="#serve" data-lang="en">Services</a><a href="#serve" data-lang="es">Servicios</a></li>
+    <li><a href="#quote" data-lang="en">Get a Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
+    <li><a href="#drivers" data-lang="en">Drive With Us</a><a href="#drivers" data-lang="es">Manejar</a></li>
+    <li><a href="mailto:hello@bridgconnects.com">hello@bridgconnects.com</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Bridg Connects LLC · Southern California</div>
+</footer>
+
+<script>
+  // ── LANGUAGE TOGGLE ──
+  function setLang(lang) {
+    document.body.classList.toggle('es', lang === 'es');
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
+    });
+    // Update select options
+    document.querySelectorAll('select option').forEach(opt => {
+      const key = lang === 'es' ? 'es' : 'en';
+      if (opt.dataset[key]) opt.textContent = opt.dataset[key];
+    });
+  }
+
+  // ── ESTIMATE CALCULATOR ──
+  function calculateEstimate() {
+    const load = document.getElementById('loadType').value || 'light';
+    const win  = document.getElementById('window').value || 'today';
+    const pickup  = document.getElementById('pickup').value.trim();
+    const dropoff = document.getElementById('dropoff').value.trim();
+
+    if (!pickup || !dropoff) {
+      alert(document.body.classList.contains('es')
+        ? 'Por favor complete la dirección de recogida y entrega.'
+        : 'Please fill in pickup and delivery addresses.');
+      return;
+    }
+
+    const base = 35;
+    const distCharge = Math.floor(Math.random() * 30) + 10; // simulated
+    const loadMap = { light: 0, medium: 15, heavy: 35, xl: 60 };
+    const winMap  = { asap: 20, today: 0, scheduled: -5 };
+    const loadFee = loadMap[load] || 0;
+    const priFee  = winMap[win] || 0;
+    const total   = base + distCharge + loadFee + Math.max(0, priFee);
+
+    document.getElementById('baseRate').textContent     = `$${base}`;
+    document.getElementById('distCharge').textContent   = `$${distCharge}`;
+    document.getElementById('loadCharge').textContent   = `$${loadFee}`;
+    document.getElementById('priorityCharge').textContent = `$${Math.max(0, priFee)}`;
+    document.getElementById('totalEstimate').textContent  = `EST. $${total}`;
+
+    document.getElementById('estimateResult').classList.add('show');
+    document.getElementById('estimateResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function confirmOrder() {
+    const isEs = document.body.classList.contains('es');
+    alert(isEs
+      ? '✅ ¡Solicitud enviada! Un representante de Bridg Connects se comunicará contigo en menos de 15 minutos para confirmar tu entrega.'
+      : '✅ Request submitted! A Bridg Connects representative will contact you within 15 minutes to confirm your delivery.');
+  }
+
+  // ── SCROLL ANIMATIONS ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.step, .serve-card, .price-card, .city-chip').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
