@@ -207,6 +207,7 @@ body.es [data-lang="en"]{display:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init("y_YEy-1NESu9cr3wt");</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjb3MJYYBR8rxnR-wFdB_93O25T57cmVs&libraries=places"></script>
 </head>
 <body>
 
@@ -549,37 +550,83 @@ function calcEst(){
   const dropoff= document.getElementById('dropoff').value.trim();
   const load   = document.getElementById('loadType').value;
   const win    = document.getElementById('window').value;
-  const notes  = document.getElementById('notes').value.trim();
 
-  // Validate ALL fields required
   if(!name||!phone||!pickup||!dropoff){
     alert(es
-      ? '⚠️ Por favor completa todos los campos: nombre, teléfono, dirección de recogida y entrega.'
-      : '⚠️ Please fill in all fields: name, phone, pickup and delivery address.');
+      ? 'Por favor completa todos los campos antes de calcular.'
+      : 'Please fill in all fields before calculating.');
     return;
   }
 
-  // Calculate estimate using straight-line approximation
-  // We show a range since we don't have exact routing
-  const lm={light:0,medium:15,heavy:35,xl:60};
-  const wm={asap:20,today:0,scheduled:-5};
-  const base=35;
-  const lf=lm[load]||0;
-  const pf=Math.max(0,wm[win]||0);
-  // Distance range estimate (we'll show min/max)
-  const distMin=10, distMax=40;
-  const totMin=base+distMin+lf+pf;
-  const totMax=base+distMax+lf+pf;
+  // SoCal zip code / city validation
+  const socalPattern = /(CA|California|Los Angeles|LA|Alhambra|Pasadena|Palmdale|Lancaster|San Bernardino|Riverside|Long Beach|Pomona|Ontario|Ventura|Oxnard|Burbank|Glendale|Santa Ana|Anaheim|Irvine|San Diego|Thousand Oaks|Simi Valley|Santa Clarita|Torrance|Compton|Inglewood|El Monte|Downey|West Covina|Norwalk|Fullerton|Orange|Corona|Moreno Valley|Fontana|Rancho|Chino|Murrieta|Temecula|Victorville|Hesperia|9[0-9]{4})/i;
+  if(!socalPattern.test(pickup) || !socalPattern.test(dropoff)){
+    alert(es
+      ? 'Bridg Connects opera solo en el Sur de California (SoCal). Por favor verifica las direcciones.'
+      : 'Bridg Connects only operates in Southern California (SoCal). Please verify your addresses.');
+    return;
+  }
 
-  document.getElementById('br').textContent='$'+base;
-  document.getElementById('dc').textContent='$'+distMin+'–$'+distMax;
-  document.getElementById('lc').textContent='$'+lf;
-  document.getElementById('pc').textContent='$'+pf;
-  document.getElementById('tot').textContent='EST. $'+totMin+' – $'+totMax;
+  const btn = document.querySelector('[onclick="calcEst()"]');
+  const origText = btn.innerHTML;
+  btn.innerHTML = es ? '<span>Calculando...</span>' : '<span>Calculating...</span>';
+  btn.disabled = true;
 
-  const ep=document.getElementById('ep');
-  ep.classList.add('show');
-  ep.scrollIntoView({behavior:'smooth',block:'nearest'});
+  // Use Google Distance Matrix
+  const service = new google.maps.DistanceMatrixService();
+  service.getDistanceMatrix({
+    origins: [pickup],
+    destinations: [dropoff],
+    travelMode: google.maps.TravelMode.DRIVING,
+    unitSystem: google.maps.UnitSystem.IMPERIAL
+  }, (response, status) => {
+    btn.innerHTML = origText;
+    btn.disabled = false;
+
+    if(status !== 'OK' || response.rows[0].elements[0].status !== 'OK'){
+      alert(es
+        ? 'No pudimos calcular la distancia. Verifica las direcciones.'
+        : 'Could not calculate distance. Please verify your addresses.');
+      return;
+    }
+
+    const element = response.rows[0].elements[0];
+    const distMiles = element.distance.value * 0.000621371; // meters to miles
+    const durationMin = element.duration.value / 60; // seconds to minutes
+
+    // Pricing model
+    const base = 45;
+    const perMile = 2.50;
+    const loadMap = {light: 0, medium: 25, heavy: 60, xl: 90};
+    const winMap  = {asap: 35, today: 0, scheduled: -10};
+    const fuelSurcharge = distMiles > 50 ? 25 : 0;
+    const tollEstimate = distMiles > 30 ? 15 : 0;
+
+    const distCharge = Math.round(distMiles * perMile);
+    const loadFee = loadMap[load] || 0;
+    const priFee  = Math.max(0, winMap[win] || 0);
+    const total   = base + distCharge + loadFee + priFee + fuelSurcharge + tollEstimate;
+
+    document.getElementById('br').textContent = '$' + base;
+    document.getElementById('dc').textContent = Math.round(distMiles) + ' mi × $2.50 = $' + distCharge;
+    document.getElementById('lc').textContent = '$' + loadFee;
+    document.getElementById('pc').textContent = '$' + (priFee + fuelSurcharge + tollEstimate);
+    document.getElementById('tot').textContent = 'EST. $' + total;
+
+    // Show duration info
+    const hrs = Math.floor(durationMin/60);
+    const mins = Math.round(durationMin % 60);
+    const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+'min';
+
+    const distInfo = document.getElementById('distInfo');
+    if(distInfo){
+      distInfo.textContent = Math.round(distMiles) + ' miles · ' + timeStr + ' drive time';
+      distInfo.style.display = 'block';
+    }
+
+    document.getElementById('ep').classList.add('show');
+    document.getElementById('ep').scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
 }
 
 function confirmOrd(){
