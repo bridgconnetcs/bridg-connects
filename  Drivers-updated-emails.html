@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drive With Bridg Connects — Apply Now</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0f0f0f;color:#fff;font-family:"DM Sans",sans-serif;overflow-x:hidden}
+:root{
+  --orange:#FF640D;--orange2:#e0520a;--oglow:rgba(255,100,13,0.15);
+  --black:#0f0f0f;--dark:#1a1a1a;--iron:#222;--steel:#2a2a2a;--wire:#3a3a3a;
+  --ash:#686868;--silver:#a5a5a5;
+}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;height:54px;background:#0f0f0f;border-bottom:1px solid var(--wire)}
+.nav-logo img{height:34px;width:auto;display:block;object-fit:contain}
+.lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
+.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"Space Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
+.lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
+.lang-btn:hover:not(.active){background:var(--iron);color:#fff}
+.back-link{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;display:flex;align-items:center;gap:.4rem;transition:color .2s}
+.back-link:hover{color:var(--orange)}
+.hero{padding:7rem 4rem 4rem;background:#0f0f0f;border-bottom:1px solid var(--wire);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(255,100,13,.07) 0%,transparent 65%);pointer-events:none}
+.stag{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:.7rem;display:flex;align-items:center;gap:.7rem}
+.stag::before{content:"";width:18px;height:1px;background:var(--orange)}
+h1{font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,8vw,6rem);line-height:.92;letter-spacing:.02em;color:#fff;margin-bottom:1rem}
+h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1rem;font-weight:300;color:var(--silver);line-height:1.65;max-width:560px;margin-bottom:2rem}
+.perks-row{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:1.5rem}
+.perk-chip{display:flex;align-items:center;gap:.6rem;font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);border:1px solid var(--wire);padding:.5rem 1rem;background:var(--dark)}
+.req-section{padding:4rem;background:var(--dark);border-bottom:1px solid var(--wire)}
+.req-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--wire);margin-top:2.5rem}
+.req-card{background:var(--dark);padding:2rem 1.8rem;transition:background .3s}
+.req-card:hover{background:var(--iron)}
+.req-icon{font-size:1.8rem;margin-bottom:.8rem}
+.req-title{font-family:"Bebas Neue",sans-serif;font-size:1.3rem;color:#fff;letter-spacing:.04em;margin-bottom:.5rem}
+.req-title.pass{color:var(--orange)}
+.req-desc{font-size:.82rem;font-weight:300;color:var(--silver);line-height:1.6}
+.req-badge{display:inline-block;font-family:"Space Mono",monospace;font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;padding:.2rem .6rem;margin-top:.6rem}
+.req-badge.required{background:var(--oglow);border:1px solid rgba(255,100,13,.3);color:var(--orange)}
+.req-badge.preferred{background:rgba(255,255,255,.05);border:1px solid var(--wire);color:var(--ash)}
+.form-section{padding:4rem;background:#0f0f0f}
+.form-wrap{max-width:720px;margin:0 auto}
+.form-block{background:var(--dark);border:1px solid var(--wire);padding:2.5rem;margin-bottom:1px}
+.block-title{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;color:#fff;letter-spacing:.05em;margin-bottom:1.8rem;display:flex;align-items:center;gap:1rem;padding-bottom:1rem;border-bottom:1px solid var(--wire)}
+.block-num{font-family:"Space Mono",monospace;font-size:.65rem;color:var(--orange);border:1px solid var(--orange);padding:.2rem .5rem}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.fg{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem}
+label{font-family:"Space Mono",monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash)}
+label .req{color:var(--orange)}
+input,select,textarea{background:var(--iron);border:1px solid var(--wire);color:#fff;font-family:"DM Sans",sans-serif;font-size:.86rem;padding:.65rem .9rem;width:100%;outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);background:var(--steel)}
+input::placeholder,textarea::placeholder{color:var(--wire)}
+select option{background:var(--iron);color:#fff}
+.radio-group,.check-group{display:flex;flex-direction:column;gap:.5rem;margin-top:.3rem}
+.radio-group.horizontal,.check-group.horizontal{flex-direction:row;flex-wrap:wrap;gap:.8rem}
+.radio-opt,.check-opt{display:flex;align-items:center;gap:.6rem;cursor:pointer}
+.radio-opt input,.check-opt input{width:auto;min-width:16px;height:16px;accent-color:var(--orange);cursor:pointer;padding:0}
+.radio-opt span,.check-opt span{font-size:.84rem;font-weight:300;color:var(--silver)}
+.disq-warn{background:rgba(255,100,13,.08);border:1px solid rgba(255,100,13,.3);padding:1rem 1.2rem;margin-top:.6rem;display:none}
+.disq-warn p{font-size:.8rem;color:var(--orange)}
+.progress-bar{height:3px;background:var(--wire);margin-bottom:2rem}
+.progress-fill{height:100%;background:var(--orange);transition:width .4s ease;width:0%}
+.btn{background:var(--orange);color:#fff;font-family:"Space Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.9rem 2rem;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .25s;width:100%;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn:hover{background:var(--orange2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,100,13,.35)}
+.btn:disabled{background:var(--wire);cursor:not-allowed;transform:none;box-shadow:none}
+.success-screen{display:none;text-align:center;padding:4rem 2rem;background:var(--dark);border:1px solid var(--wire);margin-top:1px}
+.success-screen.show{display:block}
+.success-icon{font-size:3rem;margin-bottom:1rem}
+.success-title{font-family:"Bebas Neue",sans-serif;font-size:3rem;color:var(--orange);letter-spacing:.05em;margin-bottom:.5rem}
+.success-sub{font-size:.9rem;font-weight:300;color:var(--silver);line-height:1.8}
+footer{background:var(--dark);border-top:1px solid var(--wire);padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center}
+.fcopy{font-family:"Space Mono",monospace;font-size:.55rem;letter-spacing:.12em;color:var(--ash)}
+.h2sec{font-family:"Bebas Neue",sans-serif;font-size:2.5rem;color:#fff;letter-spacing:.02em;margin-bottom:2rem}
+.h2sec em{font-style:normal;color:var(--orange)}
+@media(max-width:700px){
+  .hero{padding:5rem 1.5rem 3rem}
+  .req-grid{grid-template-columns:1fr}
+  .req-section,.form-section{padding:3rem 1.5rem}
+  .frow{grid-template-columns:1fr}
+  .form-block{padding:1.8rem 1.2rem}
+  footer{flex-direction:column;gap:1rem;padding:1.5rem;text-align:center}
+}
+[data-lang="es"]{display:none}
+body.es [data-lang="es"]{display:block}
+body.es [data-lang="en"]{display:none}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init("y_YEy-1NESu9cr3wt");</script>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="back-link">
+    <span data-lang="en">← Back</span><span data-lang="es">← Volver</span>
+  </a>
+  <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="stag" data-lang="en">Driver Application</p>
+  <p class="stag" data-lang="es">Aplicacion de Conductor</p>
+  <h1 data-lang="en">DRIVE WITH<br><em>BRIDG.</em><br>EARN MORE.</h1>
+  <h1 data-lang="es">MANEJA CON<br><em>BRIDG.</em><br>GANA MAS.</h1>
+  <p class="hero-sub" data-lang="en">Join Southern California's fastest-growing industrial delivery network. Better pay, better loads, flexible schedule.</p>
+  <p class="hero-sub" data-lang="es">Unete a la red de entrega industrial de mas rapido crecimiento en el Sur de California. Mejor paga, mejores cargas, horario flexible.</p>
+  <div class="perks-row">
+    <div class="perk-chip">&#128181; <span data-lang="en">$25-$45/hr avg</span><span data-lang="es">$25-$45/hr prom</span></div>
+    <div class="perk-chip">&#128197; <span data-lang="en">Flexible hours</span><span data-lang="es">Horario flexible</span></div>
+    <div class="perk-chip">&#128666; <span data-lang="en">No food delivery</span><span data-lang="es">Sin entrega de comida</span></div>
+    <div class="perk-chip">&#127758; EN/ES</div>
+  </div>
+</div>
+
+<div class="req-section">
+  <p class="stag" data-lang="en">Basic Requirements</p>
+  <p class="stag" data-lang="es">Requisitos Basicos</p>
+  <h2 class="h2sec" data-lang="en">DO YOU <em>QUALIFY?</em></h2>
+  <h2 class="h2sec" data-lang="es">&#191;CALIFICAS <em>TU?</em></h2>
+  <div class="req-grid">
+    <div class="req-card">
+      <div class="req-icon">&#128282;</div>
+      <div class="req-title pass" data-lang="en">Valid Driver's License</div>
+      <div class="req-title pass" data-lang="es">Licencia de Conducir Valida</div>
+      <p class="req-desc" data-lang="en">Valid California driver's license required. Clean driving record preferred.</p>
+      <p class="req-desc" data-lang="es">Se requiere licencia de conducir de California valida. Se prefiere historial limpio.</p>
+      <span class="req-badge required" data-lang="en">Required</span>
+      <span class="req-badge required" data-lang="es">Requerido</span>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">&#128664;</div>
+      <div class="req-title pass" data-lang="en">Qualifying Vehicle</div>
+      <div class="req-title pass" data-lang="es">Vehiculo Calificado</div>
+      <p class="req-desc" data-lang="en">Pickup truck, cargo van, box truck, or large SUV. Year 2010 or newer preferred.</p>
+      <p class="req-desc" data-lang="es">Camioneta, furgoneta, camion de caja o SUV grande. Ano 2010 o mas reciente preferido.</p>
+      <span class="req-badge required" data-lang="en">Required</span>
+      <span class="req-badge required" data-lang="es">Requerido</span>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">&#128737;</div>
+      <div class="req-title pass" data-lang="en">Auto Insurance</div>
+      <div class="req-title pass" data-lang="es">Seguro de Auto</div>
+      <p class="req-desc" data-lang="en">Active auto insurance required. Commercial insurance preferred but not required to start.</p>
+      <p class="req-desc" data-lang="es">Se requiere seguro activo. Seguro comercial preferido pero no requerido para comenzar.</p>
+      <span class="req-badge required" data-lang="en">Required</span>
+      <span class="req-badge required" data-lang="es">Requerido</span>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">&#128241;</div>
+      <div class="req-title pass" data-lang="en">Smartphone</div>
+      <div class="req-title pass" data-lang="es">Smartphone</div>
+      <p class="req-desc" data-lang="en">iPhone or Android required to receive dispatch and track deliveries.</p>
+      <p class="req-desc" data-lang="es">Se requiere iPhone o Android para recibir despacho y rastrear entregas.</p>
+      <span class="req-badge required" data-lang="en">Required</span>
+      <span class="req-badge required" data-lang="es">Requerido</span>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">&#128269;</div>
+      <div class="req-title pass" data-lang="en">Background Check</div>
+      <div class="req-title pass" data-lang="es">Verificacion de Antecedentes</div>
+      <p class="req-desc" data-lang="en">Must consent to and pass a standard background check before first delivery.</p>
+      <p class="req-desc" data-lang="es">Debe consentir y pasar una verificacion de antecedentes antes de la primera entrega.</p>
+      <span class="req-badge required" data-lang="en">Required</span>
+      <span class="req-badge required" data-lang="es">Requerido</span>
+    </div>
+    <div class="req-card">
+      <div class="req-icon">&#128170;</div>
+      <div class="req-title" data-lang="en">Physical Ability</div>
+      <div class="req-title" data-lang="es">Capacidad Fisica</div>
+      <p class="req-desc" data-lang="en">Must be able to load/unload up to 50 lbs. Heavier loads are assisted.</p>
+      <p class="req-desc" data-lang="es">Debe poder cargar hasta 50 lbs. Las cargas mas pesadas son asistidas.</p>
+      <span class="req-badge preferred" data-lang="en">Preferred</span>
+      <span class="req-badge preferred" data-lang="es">Preferido</span>
+    </div>
+  </div>
+</div>
+
+<div class="form-section">
+  <div class="form-wrap">
+    <p class="stag" data-lang="en">Apply Now</p>
+    <p class="stag" data-lang="es">Aplica Ahora</p>
+    <h2 class="h2sec" data-lang="en">DRIVER <em>APPLICATION</em></h2>
+    <h2 class="h2sec" data-lang="es">APLICACION DE <em>CONDUCTOR</em></h2>
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="form-block">
+      <div class="block-title"><span class="block-num">01</span><span data-lang="en">Personal Information</span><span data-lang="es">Informacion Personal</span></div>
+      <div class="frow">
+        <div class="fg"><label data-lang="en">First Name <span class="req">*</span></label><label data-lang="es">Nombre <span class="req">*</span></label><input type="text" id="firstName" placeholder="John"/></div>
+        <div class="fg"><label data-lang="en">Last Name <span class="req">*</span></label><label data-lang="es">Apellido <span class="req">*</span></label><input type="text" id="lastName" placeholder="Doe"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label data-lang="en">Phone <span class="req">*</span></label><label data-lang="es">Telefono <span class="req">*</span></label><input type="tel" id="driverPhone" placeholder="(661) 555-0100"/></div>
+        <div class="fg"><label data-lang="en">Email <span class="req">*</span></label><label data-lang="es">Correo <span class="req">*</span></label><input type="email" id="driverEmail" placeholder="john@email.com"/></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label data-lang="en">City <span class="req">*</span></label><label data-lang="es">Ciudad <span class="req">*</span></label><input type="text" id="driverCity" placeholder="Palmdale, LA, Lancaster..."/></div>
+        <div class="fg">
+          <label data-lang="en">Preferred Language</label><label data-lang="es">Idioma Preferido</label>
+          <select id="driverLang"><option value="en">English</option><option value="es">Espanol</option><option value="both">Both / Ambos</option></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <div class="block-title"><span class="block-num">02</span><span data-lang="en">Your Vehicle</span><span data-lang="es">Tu Vehiculo</span></div>
+      <div class="frow">
+        <div class="fg">
+          <label data-lang="en">Vehicle Type <span class="req">*</span></label><label data-lang="es">Tipo de Vehiculo <span class="req">*</span></label>
+          <select id="vehicleType" onchange="checkVehicle()">
+            <option value="">-- Select --</option>
+            <option value="pickup">Pickup Truck / Camioneta</option>
+            <option value="cargo_van">Cargo Van / Furgoneta</option>
+            <option value="box_truck">Box Truck / Camion de Caja</option>
+            <option value="suv">Large SUV / SUV Grande</option>
+            <option value="sedan">Sedan / Car</option>
+            <option value="other">Other / Otro</option>
+          </select>
+          <div class="disq-warn" id="vehicleWarn"><p data-lang="en">A sedan may not qualify for most loads. We will review your application.</p><p data-lang="es">Un sedan puede no calificar para la mayoria de cargas. Revisaremos tu aplicacion.</p></div>
+        </div>
+        <div class="fg">
+          <label data-lang="en">Vehicle Year <span class="req">*</span></label><label data-lang="es">Ano del Vehiculo <span class="req">*</span></label>
+          <select id="vehicleYear" onchange="checkYear()">
+            <option value="">-- Select --</option>
+            <option value="2023+">2023 or newer</option>
+            <option value="2020-2022">2020 - 2022</option>
+            <option value="2015-2019">2015 - 2019</option>
+            <option value="2010-2014">2010 - 2014</option>
+            <option value="2005-2009">2005 - 2009</option>
+            <option value="before2005">Before 2005</option>
+          </select>
+          <div class="disq-warn" id="yearWarn"><p data-lang="en">Vehicles before 2005 may not qualify. We will review individually.</p><p data-lang="es">Vehiculos anteriores a 2005 pueden no calificar. Revisaremos individualmente.</p></div>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label data-lang="en">Make &amp; Model</label><label data-lang="es">Marca y Modelo</label><input type="text" id="vehicleModel" placeholder="Ford F-150, Ram 1500..."/></div>
+        <div class="fg">
+          <label data-lang="en">Payload Capacity</label><label data-lang="es">Capacidad de Carga</label>
+          <select id="payload">
+            <option value="under200">Under 200 lbs</option>
+            <option value="200-500">200 - 500 lbs</option>
+            <option value="500-1000">500 - 1,000 lbs</option>
+            <option value="1000+">1,000+ lbs</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <div class="block-title"><span class="block-num">03</span><span data-lang="en">License &amp; Insurance</span><span data-lang="es">Licencia y Seguro</span></div>
+      <div class="frow">
+        <div class="fg">
+          <label data-lang="en">License State <span class="req">*</span></label><label data-lang="es">Estado Licencia <span class="req">*</span></label>
+          <select id="licenseState">
+            <option value="CA">California (CA)</option>
+            <option value="other">Other State</option>
+            <option value="none">No license</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label data-lang="en">Active Insurance? <span class="req">*</span></label><label data-lang="es">Seguro Activo? <span class="req">*</span></label>
+          <select id="insurance" onchange="checkInsurance()">
+            <option value="yes">Yes / Si</option>
+            <option value="no">No</option>
+          </select>
+          <div class="disq-warn" id="insWarn"><p data-lang="en">Insurance is required before your first delivery. You can still apply and get insured before starting.</p><p data-lang="es">El seguro es requerido antes de tu primera entrega. Puedes aplicar y asegurarte antes de comenzar.</p></div>
+        </div>
+      </div>
+      <div class="fg">
+        <label data-lang="en">DUI, suspensions, or major violations in last 3 years? <span class="req">*</span></label>
+        <label data-lang="es">DUI, suspensiones o infracciones mayores en los ultimos 3 anos? <span class="req">*</span></label>
+        <div class="radio-group horizontal">
+          <label class="radio-opt"><input type="radio" name="violations" value="no" checked/><span data-lang="en">No - Clean record</span><span data-lang="es">No - Historial limpio</span></label>
+          <label class="radio-opt"><input type="radio" name="violations" value="minor"/><span data-lang="en">Minor only</span><span data-lang="es">Solo menor</span></label>
+          <label class="radio-opt"><input type="radio" name="violations" value="yes" onchange="checkViolations(this)"/><span data-lang="en">Yes, major / DUI</span><span data-lang="es">Si, mayor / DUI</span></label>
+        </div>
+        <div class="disq-warn" id="violWarn"><p data-lang="en">A major violation or DUI in the past 3 years may disqualify your application. We review case by case.</p><p data-lang="es">Una infraccion mayor o DUI en los ultimos 3 anos puede descalificar tu aplicacion. Revisamos caso por caso.</p></div>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <div class="block-title"><span class="block-num">04</span><span data-lang="en">Availability &amp; Experience</span><span data-lang="es">Disponibilidad y Experiencia</span></div>
+      <div class="fg">
+        <label data-lang="en">When can you work? <span class="req">*</span></label><label data-lang="es">Cuando puedes trabajar? <span class="req">*</span></label>
+        <div class="check-group horizontal">
+          <label class="check-opt"><input type="checkbox" name="avail" value="weekday_am"/><span data-lang="en">Weekdays AM</span><span data-lang="es">L-V AM</span></label>
+          <label class="check-opt"><input type="checkbox" name="avail" value="weekday_pm"/><span data-lang="en">Weekdays PM</span><span data-lang="es">L-V PM</span></label>
+          <label class="check-opt"><input type="checkbox" name="avail" value="weekends"/><span data-lang="en">Weekends</span><span data-lang="es">Fines de semana</span></label>
+          <label class="check-opt"><input type="checkbox" name="avail" value="flexible"/><span data-lang="en">Flexible</span><span data-lang="es">Flexible</span></label>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label data-lang="en">Hours per week</label><label data-lang="es">Horas por semana</label>
+          <select id="hoursWeek">
+            <option value="1-10">1-10 hrs (part-time)</option>
+            <option value="10-20">10-20 hrs</option>
+            <option value="20-30">20-30 hrs</option>
+            <option value="30+">30+ hrs (full-time)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label data-lang="en">Delivery experience?</label><label data-lang="es">Experiencia en delivery?</label>
+          <select id="experience">
+            <option value="none">No experience</option>
+            <option value="gig">Gig apps (DoorDash, Uber...)</option>
+            <option value="courier">Courier / Mensajeria</option>
+            <option value="freight">Freight / Carga</option>
+            <option value="construction">Construction delivery</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label data-lang="en">Worked with FRAYT, Curri, or similar?</label><label data-lang="es">Trabajaste con FRAYT, Curri o similares?</label>
+        <div class="radio-group horizontal">
+          <label class="radio-opt"><input type="radio" name="frayt" value="yes"/><span>Yes / Si</span></label>
+          <label class="radio-opt"><input type="radio" name="frayt" value="no" checked/><span>No</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-block">
+      <div class="block-title"><span class="block-num">05</span><span data-lang="en">Final Questions</span><span data-lang="es">Preguntas Finales</span></div>
+      <div class="fg">
+        <label data-lang="en">Do you consent to a background check? <span class="req">*</span></label>
+        <label data-lang="es">Consientes a una verificacion de antecedentes? <span class="req">*</span></label>
+        <div class="radio-group horizontal">
+          <label class="radio-opt"><input type="radio" name="bgcheck" value="yes"/><span data-lang="en">Yes, I consent</span><span data-lang="es">Si, consiento</span></label>
+          <label class="radio-opt"><input type="radio" name="bgcheck" value="no" onchange="checkBG(this)"/><span>No</span></label>
+        </div>
+        <div class="disq-warn" id="bgWarn"><p data-lang="en">Background check consent is required to drive with Bridg Connects.</p><p data-lang="es">El consentimiento para la verificacion de antecedentes es requerido.</p></div>
+      </div>
+      <div class="fg">
+        <label data-lang="en">How did you hear about us?</label><label data-lang="es">Como supiste de nosotros?</label>
+        <select id="hearAbout">
+          <option value="instagram">Instagram</option>
+          <option value="friend">Friend / Amigo</option>
+          <option value="google">Google Search</option>
+          <option value="flyer">Flyer / Volante</option>
+          <option value="other">Other / Otro</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label data-lang="en">Anything else you want us to know?</label><label data-lang="es">Algo mas que quieras que sepamos?</label>
+        <textarea id="extraNotes" placeholder="Optional / Opcional..." style="min-height:80px"></textarea>
+      </div>
+    </div>
+
+    <button class="btn" onclick="submitApp()" id="submitBtn">
+      <span data-lang="en">Submit Application</span>
+      <span data-lang="es">Enviar Aplicacion</span>
+    </button>
+
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">&#128666;</div>
+      <div class="success-title" data-lang="en">APPLICATION RECEIVED!</div>
+      <div class="success-title" data-lang="es">APLICACION RECIBIDA!</div>
+      <p class="success-sub" data-lang="en">Thanks for applying to drive with Bridg Connects.<br>Our team will review your application and contact you within <strong>24-48 hours</strong>.<br><br>Questions? WhatsApp: <strong>(661) 507-3816</strong></p>
+      <p class="success-sub" data-lang="es">Gracias por aplicar para manejar con Bridg Connects.<br>Nuestro equipo revisara tu aplicacion y te contactara en <strong>24-48 horas</strong>.<br><br>Preguntas? WhatsApp: <strong>(661) 507-3816</strong></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.1em;color:#fff">BRIDG<span style="color:#FF640D">.</span> <span style="font-size:.8rem;color:#686868">CONNECTS</span></div>
+  <div class="fcopy">2025 Bridg Connects - A Novar Holding Corp Company</div>
+</footer>
+
+<script>
+function setLang(l){
+  document.body.classList.toggle("es",l==="es");
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.textContent.trim()===l.toUpperCase()));
+}
+function checkVehicle(){
+  const v=document.getElementById("vehicleType").value;
+  document.getElementById("vehicleWarn").style.display=(v==="sedan"||v==="other")?"block":"none";
+  updateProgress();
+}
+function checkYear(){
+  const v=document.getElementById("vehicleYear").value;
+  document.getElementById("yearWarn").style.display=(v==="before2005")?"block":"none";
+  updateProgress();
+}
+function checkInsurance(){
+  document.getElementById("insWarn").style.display=(document.getElementById("insurance").value==="no")?"block":"none";
+}
+function checkViolations(el){
+  document.getElementById("violWarn").style.display=(el.value==="yes")?"block":"none";
+}
+function checkBG(el){
+  document.getElementById("bgWarn").style.display=(el.value==="no")?"block":"none";
+}
+function updateProgress(){
+  const fields=["firstName","lastName","driverPhone","driverEmail","driverCity","vehicleType","vehicleYear"];
+  const filled=fields.filter(id=>document.getElementById(id)&&document.getElementById(id).value.trim()!=="").length;
+  document.getElementById("progress").style.width=Math.round((filled/fields.length)*100)+"%";
+}
+document.querySelectorAll("input,select,textarea").forEach(el=>{
+  el.addEventListener("change",updateProgress);
+  el.addEventListener("input",updateProgress);
+});
+function submitApp(){
+  const es=document.body.classList.contains("es");
+  const req={firstName:es?"Nombre":"First name",lastName:es?"Apellido":"Last name",driverPhone:es?"Telefono":"Phone",driverEmail:"Email",driverCity:es?"Ciudad":"City",vehicleType:es?"Tipo de vehiculo":"Vehicle type",vehicleYear:es?"Ano del vehiculo":"Vehicle year"};
+  for(const [id,label] of Object.entries(req)){
+    const el=document.getElementById(id);
+    if(!el||!el.value.trim()){alert((es?"Campo requerido: ":"Required field: ")+label);el&&el.focus();return;}
+  }
+  const bg=document.querySelector("input[name=bgcheck]:checked");
+  if(!bg||bg.value==="no"){alert(es?"Debes consentir a la verificacion de antecedentes.":"You must consent to the background check.");return;}
+  const btn=document.getElementById("submitBtn");
+  btn.textContent=es?"Enviando...":"Sending...";
+  btn.disabled=true;
+  const avail=[...document.querySelectorAll("input[name=avail]:checked")].map(i=>i.value).join(", ")||"N/A";
+  const violations=document.querySelector("input[name=violations]:checked")?.value||"N/A";
+  const frayt=document.querySelector("input[name=frayt]:checked")?.value||"no";
+  const name=document.getElementById("firstName").value+" "+document.getElementById("lastName").value;
+  const phone=document.getElementById("driverPhone").value;
+  const email=document.getElementById("driverEmail").value;
+  const city=document.getElementById("driverCity").value;
+  const vtype=document.getElementById("vehicleType").value;
+  const vyear=document.getElementById("vehicleYear").value;
+  const vmodel=document.getElementById("vehicleModel").value||"N/A";
+  const payload=document.getElementById("payload").value;
+  const licState=document.getElementById("licenseState").value;
+  const ins=document.getElementById("insurance").value;
+  const hrs=document.getElementById("hoursWeek").value;
+  const exp=document.getElementById("experience").value;
+  const hear=document.getElementById("hearAbout").value;
+  const notes=document.getElementById("extraNotes").value||"N/A";
+  const msg="NEW DRIVER APPLICATION - BRIDG CONNECTS%0A%0A"
+    +"Name: "+encodeURIComponent(name)+"%0A"
+    +"Phone: "+encodeURIComponent(phone)+"%0A"
+    +"Email: "+encodeURIComponent(email)+"%0A"
+    +"City: "+encodeURIComponent(city)+"%0A%0A"
+    +"Vehicle: "+encodeURIComponent(vtype+" - "+vmodel)+"%0A"
+    +"Year: "+encodeURIComponent(vyear)+"%0A"
+    +"Payload: "+encodeURIComponent(payload)+"%0A%0A"
+    +"License: "+encodeURIComponent(licState)+"%0A"
+    +"Insurance: "+encodeURIComponent(ins)+"%0A"
+    +"Violations: "+encodeURIComponent(violations)+"%0A%0A"
+    +"Availability: "+encodeURIComponent(avail)+"%0A"
+    +"Hrs/week: "+encodeURIComponent(hrs)+"%0A"
+    +"Experience: "+encodeURIComponent(exp)+"%0A"
+    +"FRAYT exp: "+encodeURIComponent(frayt)+"%0A%0A"
+    +"Heard via: "+encodeURIComponent(hear)+"%0A"
+    +"Notes: "+encodeURIComponent(notes);
+  // Send email via EmailJS
+  emailjs.send("service_24ys0gu", "template_7yer4c7", {
+    from_name: name,
+    phone: phone,
+    email: email,
+    pickup: "Driver Application",
+    dropoff: city,
+    load_type: vtype + " " + vyear + " " + vmodel,
+    window: hrs + " hrs/week - " + avail,
+    notes: "License: " + licState + " | Insurance: " + ins + " | Violations: " + violations + " | Exp: " + exp + " | Notes: " + notes,
+    estimate: "Driver Application - Heard via: " + hear,
+    reply_to: email
+  }).catch(err => console.log("Email error:", err));
+
+  // Also send via WhatsApp
+  window.open("https://wa.me/16615073816?text="+msg,"_blank");
+  document.getElementById("successScreen").classList.add("show");
+  document.getElementById("successScreen").scrollIntoView({behavior:"smooth"});
+  document.getElementById("progress").style.width="100%";
+  btn.innerHTML=es?"<span>Enviado!</span>":"<span>Submitted!</span>";
+}
+</script>
+</body>
+</html>
