@@ -632,23 +632,106 @@ function calcEst(){
 
   function getCoords(addr){
     const a = addr.toLowerCase();
-    // Check zip code first
+    // Granular zip code coordinate map
     const zipMatch = addr.match(/\d{5}/);
     if(zipMatch){
       const zip = parseInt(zipMatch[0]);
-      // LA metro zips
-      if(zip >= 90001 && zip <= 90899) return [34.05, -118.24];
-      if(zip >= 91000 && zip <= 91599) return [34.15, -118.14]; // SG Valley
-      if(zip >= 91700 && zip <= 91799) return [34.06, -117.75]; // Pomona area
-      if(zip >= 91900 && zip <= 92099) return [32.72, -117.15]; // SD
-      if(zip >= 92100 && zip <= 92199) return [32.72, -117.15]; // SD
-      if(zip >= 92200 && zip <= 92399) return [33.98, -117.37]; // Riverside
-      if(zip >= 92400 && zip <= 92499) return [34.10, -117.28]; // SB
-      if(zip >= 92500 && zip <= 92599) return [33.87, -117.56]; // Corona
-      if(zip >= 92600 && zip <= 92899) return [33.68, -117.82]; // OC
-      if(zip >= 92900 && zip <= 92999) return [33.43, -117.61]; // SC/Temecula
-      if(zip >= 93000 && zip <= 93099) return [34.27, -119.22]; // Ventura
-      if(zip >= 93500 && zip <= 93599) return [34.58, -118.11]; // Palmdale/AV
+      // LA Westside
+      if(zip>=90049&&zip<=90049) return [34.06,-118.47]; // Brentwood
+      if(zip>=90272&&zip<=90272) return [34.04,-118.53]; // Pacific Palisades
+      if(zip>=90401&&zip<=90405) return [34.01,-118.49]; // Santa Monica
+      if(zip>=90210&&zip<=90213) return [34.09,-118.40]; // Beverly Hills
+      if(zip>=90024&&zip<=90025) return [34.06,-118.44]; // Westwood
+      if(zip>=90291&&zip<=90292) return [33.99,-118.46]; // Venice/MDR
+      if(zip>=90731&&zip<=90732) return [33.74,-118.29]; // San Pedro
+      if(zip>=90745&&zip<=90746) return [33.83,-118.26]; // Carson
+      // LA Central/East
+      if(zip>=90001&&zip<=90023) return [34.00,-118.22]; // South/East LA
+      if(zip>=90031&&zip<=90042) return [34.08,-118.18]; // NE LA/Eagle Rock
+      if(zip>=90026&&zip<=90029) return [34.09,-118.27]; // Silver Lake/Los Feliz
+      if(zip>=90046&&zip<=90048) return [34.09,-118.36]; // West Hollywood/Fairfax
+      if(zip>=90056&&zip<=90066) return [34.01,-118.38]; // Culver City/Mar Vista
+      if(zip>=90068&&zip<=90068) return [34.12,-118.34]; // Hollywood Hills
+      if(zip>=90071&&zip<=90089) return [34.05,-118.24]; // Downtown LA
+      // San Fernando Valley
+      if(zip>=91040&&zip<=91043) return [34.27,-118.36]; // Sunland/Tujunga
+      if(zip>=91201&&zip<=91210) return [34.14,-118.25]; // Glendale
+      if(zip>=91301&&zip<=91310) return [34.17,-118.88]; // Agoura/Westlake
+      if(zip>=91316&&zip<=91316) return [34.17,-118.53]; // Encino
+      if(zip>=91320&&zip<=91321) return [34.17,-118.84]; // Thousand Oaks/Newbury
+      if(zip>=91324&&zip<=91335) return [34.22,-118.57]; // Northridge
+      if(zip>=91340&&zip<=91345) return [34.24,-118.45]; // Pacoima/Mission Hills
+      if(zip>=91350&&zip<=91355) return [34.38,-118.54]; // Santa Clarita
+      if(zip>=91360&&zip<=91362) return [34.22,-118.86]; // Westlake/TO
+      if(zip>=91364&&zip<=91367) return [34.18,-118.60]; // Woodland Hills
+      if(zip>=91401&&zip<=91423) return [34.17,-118.45]; // Van Nuys/Sherman Oaks
+      if(zip>=91501&&zip<=91510) return [34.18,-118.31]; // Burbank
+      if(zip>=91601&&zip<=91609) return [34.17,-118.38]; // North Hollywood
+      // San Gabriel Valley
+      if(zip>=91001&&zip<=91010) return [34.15,-118.14]; // Pasadena/Altadena
+      if(zip>=91016&&zip<=91016) return [34.13,-117.97]; // Monrovia area
+      if(zip>=91020&&zip<=91020) return [34.16,-118.01]; // Monrovia
+      if(zip>=91030&&zip<=91031) return [34.10,-118.08]; // South Pasadena
+      if(zip>=91101&&zip<=91110) return [34.15,-118.14]; // Pasadena
+      if(zip>=91730&&zip<=91739) return [34.10,-117.59]; // Rancho Cucamonga
+      if(zip>=91750&&zip<=91759) return [34.07,-117.81]; // La Verne/San Dimas
+      if(zip>=91761&&zip<=91764) return [34.05,-117.65]; // Ontario
+      if(zip>=91766&&zip<=91768) return [34.05,-117.75]; // Pomona
+      if(zip>=91780&&zip<=91780) return [34.10,-118.00]; // Temple City
+      if(zip>=91801&&zip<=91803) return [34.09,-118.13]; // Alhambra
+      // Antelope Valley
+      if(zip>=93534&&zip<=93536) return [34.70,-118.15]; // Lancaster
+      if(zip>=93550&&zip<=93552) return [34.58,-118.11]; // Palmdale
+      if(zip>=93543&&zip<=93544) return [34.52,-117.99]; // Littlerock/Pearblossom
+      // IE - San Bernardino/Riverside
+      if(zip>=92316&&zip<=92316) return [34.07,-117.38]; // Bloomington
+      if(zip>=92324&&zip<=92324) return [34.07,-117.32]; // Colton
+      if(zip>=92335&&zip<=92336) return [34.09,-117.43]; // Fontana
+      if(zip>=92345&&zip<=92346) return [34.42,-117.30]; // Hesperia
+      if(zip>=92350&&zip<=92359) return [34.05,-117.25]; // Loma Linda/Redlands
+      if(zip>=92374&&zip<=92376) return [34.10,-117.28]; // San Bernardino
+      if(zip>=92401&&zip<=92415) return [34.10,-117.28]; // San Bernardino
+      if(zip>=92501&&zip<=92509) return [33.98,-117.37]; // Riverside
+      if(zip>=92530&&zip<=92532) return [33.68,-117.34]; // Lake Elsinore
+      if(zip>=92562&&zip<=92563) return [33.55,-117.21]; // Murrieta
+      if(zip>=92590&&zip<=92592) return [33.49,-117.14]; // Temecula
+      // Orange County
+      if(zip>=92602&&zip<=92620) return [33.68,-117.82]; // Irvine
+      if(zip>=92630&&zip<=92630) return [33.65,-117.69]; // Lake Forest
+      if(zip>=92651&&zip<=92657) return [33.54,-117.78]; // Laguna
+      if(zip>=92660&&zip<=92663) return [33.62,-117.93]; // Newport Beach
+      if(zip>=92672&&zip<=92674) return [33.43,-117.61]; // San Clemente
+      if(zip>=92683&&zip<=92683) return [33.74,-117.99]; // Westminster
+      if(zip>=92701&&zip<=92710) return [33.74,-117.87]; // Santa Ana
+      if(zip>=92780&&zip<=92782) return [33.76,-117.82]; // Tustin
+      if(zip>=92801&&zip<=92808) return [33.83,-117.91]; // Anaheim
+      if(zip>=92831&&zip<=92835) return [33.87,-117.92]; // Fullerton
+      if(zip>=92840&&zip<=92843) return [33.77,-117.94]; // Garden Grove
+      if(zip>=92844&&zip<=92845) return [33.66,-118.00]; // Huntington Beach
+      if(zip>=92868&&zip<=92869) return [33.79,-117.85]; // Orange
+      // San Diego County
+      if(zip>=91901&&zip<=91916) return [32.79,-116.96]; // El Cajon area
+      if(zip>=91950&&zip<=91951) return [32.67,-117.09]; // National City
+      if(zip>=92019&&zip<=92022) return [32.77,-117.02]; // La Mesa/Spring Valley
+      if(zip>=92037&&zip<=92038) return [32.84,-117.27]; // La Jolla
+      if(zip>=92101&&zip<=92115) return [32.72,-117.15]; // San Diego central
+      if(zip>=92116&&zip<=92120) return [32.76,-117.10]; // San Diego east
+      if(zip>=92121&&zip<=92131) return [32.88,-117.21]; // Sorrento/Miramar
+      if(zip>=92054&&zip<=92058) return [33.19,-117.37]; // Oceanside
+      if(zip>=92008&&zip<=92011) return [33.16,-117.35]; // Carlsbad
+      if(zip>=92024&&zip<=92024) return [33.03,-117.29]; // Encinitas
+      if(zip>=92025&&zip<=92029) return [33.12,-117.08]; // Escondido
+      // Ventura County
+      if(zip>=93001&&zip<=93010) return [34.27,-119.22]; // Ventura
+      if(zip>=93012&&zip<=93012) return [34.22,-119.04]; // Camarillo
+      if(zip>=93021&&zip<=93022) return [34.28,-118.85]; // Moorpark
+      if(zip>=93030&&zip<=93036) return [34.19,-119.17]; // Oxnard
+      if(zip>=93063&&zip<=93065) return [34.27,-118.78]; // Simi Valley
+      // Fallback ranges
+      if(zip>=90001&&zip<=90899) return [34.05,-118.24]; // General LA
+      if(zip>=91000&&zip<=91999) return [34.10,-118.00]; // General SGV/SFV
+      if(zip>=92000&&zip<=92999) return [33.70,-117.50]; // General OC/IE/SD
+      if(zip>=93000&&zip<=93999) return [34.40,-119.00]; // General Ventura/AV
     }
     // City name lookup
     for(const [city, coords] of Object.entries(cityCoords)){
