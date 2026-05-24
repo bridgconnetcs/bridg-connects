@@ -477,7 +477,7 @@ body.es [data-lang="en"]{display:none}
           </div>
         </div>
         <div class="fg"><label data-lang="en">Materials / Notes</label><label data-lang="es">Materiales / Notas</label><textarea id="notes" placeholder="e.g. 10 bags of concrete, 4 sheets of plywood..."></textarea></div>
-        <button class="btn" style="width:100%;margin-top:.4rem;justify-content:center" onclick="calcEst()">
+        <button class="btn" id="calcBtn" style="width:100%;margin-top:.4rem;justify-content:center;opacity:.4;cursor:not-allowed" onclick="calcEst()" disabled>
           <span data-lang="en">Calculate Estimate →</span><span data-lang="es">Calcular Estimado →</span>
         </button>
         <div class="ep" id="ep">
@@ -699,7 +699,10 @@ function calcEst(){
   document.getElementById('dc').textContent  = '~'+distMiles+' mi x $2.50 = $'+distCharge;
   document.getElementById('lc').textContent  = '$'+loadFee;
   document.getElementById('pc').textContent  = '$'+(priFee+extras);
-  document.getElementById('tot').textContent = 'EST. $'+total;
+  // Add ~15% variance for range
+  const low  = Math.round(total * 0.88);
+  const high = Math.round(total * 1.18);
+  document.getElementById('tot').textContent = 'EST. $'+low+' – $'+high;
 
   const distInfo = document.getElementById('distInfo');
   if(distInfo){
@@ -758,6 +761,25 @@ function confirmOrd(){
     btn.disabled = false;
   });
 }
+
+// Unlock calculate button when all fields filled
+  function checkFormReady(){
+    const name   = document.getElementById('name').value.trim();
+    const phone  = document.getElementById('phone').value.trim();
+    const pickup = document.getElementById('pickup').value.trim();
+    const dropoff= document.getElementById('dropoff').value.trim();
+    const btn = document.getElementById('calcBtn');
+    if(btn){
+      const ready = name && phone && pickup && dropoff;
+      btn.disabled = !ready;
+      btn.style.opacity = ready ? '1' : '0.4';
+      btn.style.cursor  = ready ? 'pointer' : 'not-allowed';
+    }
+  }
+  ['name','phone','pickup','dropoff'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('input', checkFormReady);
+  });
 
 // Scroll animations
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}}),{threshold:0.1});
