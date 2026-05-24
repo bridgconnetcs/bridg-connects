@@ -183,6 +183,7 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
 
 /* RESPONSIVE */
 @media(max-width:900px){
+  .port-grid{grid-template-columns:1fr !important}
   .hero{grid-template-columns:1fr}
   .hero-right{display:none}
   .steps{grid-template-columns:1fr 1fr}
@@ -214,6 +215,7 @@ body.es [data-lang="en"]{display:none}
 <nav class="nav">
   <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
   <ul class="nav-links">
+    <li><a href="portfolio.html" data-lang="en">Our Work</a><a href="portfolio.html" data-lang="es">Nuestro Trabajo</a></li>
     <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
     <li><a href="#serve" data-lang="en">Who We Serve</a><a href="#serve" data-lang="es">Clientes</a></li>
     <li><a href="#quote" data-lang="en">Get a Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
@@ -506,6 +508,45 @@ body.es [data-lang="en"]{display:none}
 </section>
 
 <!-- DRIVERS -->
+
+<!-- OUR WORK SECTION -->
+<section style="background:var(--dark);padding:5rem 4rem;border-top:1px solid var(--wire)">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div>
+      <p class="stag" data-lang="en">Proven Track Record</p>
+      <p class="stag" data-lang="es">Historial Comprobado</p>
+      <h2 data-lang="en">REAL WORK.<br><em>REAL RESULTS.</em></h2>
+      <h2 data-lang="es">TRABAJO REAL.<br><em>RESULTADOS REALES.</em></h2>
+      <p style="font-size:.9rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem" data-lang="en">Every delivery we show is real. Real clients, real loads, real job sites across SoCal. No stock photos. No fake reviews. Just results.</p>
+      <p style="font-size:.9rem;font-weight:300;color:var(--silver);line-height:1.7;margin-top:1rem" data-lang="es">Cada entrega que mostramos es real. Clientes reales, cargas reales, obras reales en SoCal. Sin fotos de archivo. Sin reseñas falsas.</p>
+      <a href="portfolio.html" class="btn" style="margin-top:2rem;display:inline-flex" data-lang="en">See Our Work →</a>
+      <a href="portfolio.html" class="btn" style="margin-top:2rem;display:inline-flex" data-lang="es">Ver Nuestro Trabajo →</a>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--wire)">
+      <div style="background:var(--iron);padding:1.8rem;text-align:center">
+        <div style="font-family:Bebas Neue,sans-serif;font-size:3rem;color:var(--orange);line-height:1">100%</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="en">5-Star Reviews</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="es">Reseñas 5 Estrellas</div>
+      </div>
+      <div style="background:var(--iron);padding:1.8rem;text-align:center">
+        <div style="font-family:Bebas Neue,sans-serif;font-size:3rem;color:var(--orange);line-height:1">98%</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="en">On-Time Delivery</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="es">Entregas a Tiempo</div>
+      </div>
+      <div style="background:var(--iron);padding:1.8rem;text-align:center">
+        <div style="font-family:Bebas Neue,sans-serif;font-size:3rem;color:var(--orange);line-height:1">SoCal</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="en">Coverage Area</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="es">Área de Cobertura</div>
+      </div>
+      <div style="background:var(--iron);padding:1.8rem;text-align:center">
+        <div style="font-family:Bebas Neue,sans-serif;font-size:3rem;color:var(--orange);line-height:1">Same<br>Day</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="en">Every Delivery</div>
+        <div style="font-family:Space Mono,monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-top:.3rem" data-lang="es">Cada Entrega</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="drivers" class="drv">
   <div class="drv-in">
     <div>
@@ -530,6 +571,7 @@ body.es [data-lang="en"]{display:none}
 <footer>
   <div class="flogo" style="font-family:Bebas Neue,sans-serif;font-size:1.3rem;letter-spacing:.1em;color:#fff">BRIDG<span style="color:#FF640D">.</span> <span style="font-size:.85rem;color:#686868">CONNECTS</span></div>
   <ul class="flinks">
+    <li><a href="portfolio.html" data-lang="en">Our Work</a><a href="portfolio.html" data-lang="es">Nuestro Trabajo</a></li>
     <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
     <li><a href="#serve" data-lang="en">Services</a><a href="#serve" data-lang="es">Servicios</a></li>
     <li><a href="#quote" data-lang="en">Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
