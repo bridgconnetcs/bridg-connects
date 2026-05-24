@@ -207,8 +207,6 @@ body.es [data-lang="en"]{display:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init("y_YEy-1NESu9cr3wt");</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjb3MJYYBR8rxnR-wFdB_93O25T57cmVs&callback=initMap" async defer></script>
-<script>function initMap(){}</script>
 </head>
 <body>
 
@@ -559,27 +557,53 @@ function calcEst(){
 
   const btn = document.getElementById('calcBtn');
   btn.disabled = true;
-  btn.querySelector('[data-lang="en"]').textContent = 'Calculating...';
-  btn.querySelector('[data-lang="es"]').textContent = 'Calculando...';
+  btn.innerHTML = es ? '<span>Calculando...</span>' : '<span>Calculating...</span>';
 
-  // Use Google Maps Distance Matrix Service
-  const service = new google.maps.DistanceMatrixService();
-  service.getDistanceMatrix({
-    origins: [pickup + ', California, USA'],
-    destinations: [dropoff + ', California, USA'],
-    travelMode: google.maps.TravelMode.DRIVING,
-    unitSystem: google.maps.UnitSystem.IMPERIAL,
-    avoidHighways: false,
-    avoidTolls: false
-  }, function(response, status){
-    btn.disabled = false;
-    btn.querySelector('[data-lang="en"]').textContent = 'Calculate Estimate →';
-    btn.querySelector('[data-lang="es"]').textContent = 'Calcular Estimado →';
+  const ORS_KEY = '5b3ce3597851110001cf624814b2f3a0b3f04a9da2b84e2b9e4f8e9a';
 
-    if(status === 'OK' && response.rows[0].elements[0].status === 'OK'){
-      const element   = response.rows[0].elements[0];
-      const distMiles = Math.round(element.distance.value * 0.000621371);
-      const driveMins = Math.round(element.duration.value / 60);
+  // Geocode an address using Nominatim (free, no key needed)
+  async function geocode(address){
+    const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=us&q=' + encodeURIComponent(address + ' California');
+    const r = await fetch(url, {headers:{'Accept-Language':'en'}});
+    const data = await r.json();
+    if(data.length > 0) return [parseFloat(data[0].lon), parseFloat(data[0].lat)];
+    return null;
+  }
+
+  async function getDistance(coord1, coord2){
+    const url = 'https://api.openrouteservice.org/v2/directions/driving-car?api_key=' + ORS_KEY +
+      '&start=' + coord1[0] + ',' + coord1[1] +
+      '&end=' + coord2[0] + ',' + coord2[1];
+    const r = await fetch(url);
+    const data = await r.json();
+    if(data.features && data.features[0]){
+      const props = data.features[0].properties.segments[0];
+      const meters = props.distance;
+      const seconds = props.duration;
+      return {
+        miles: Math.round(meters * 0.000621371),
+        minutes: Math.round(seconds / 60)
+      };
+    }
+    return null;
+  }
+
+  (async () => {
+    try {
+      const [c1, c2] = await Promise.all([geocode(pickup), geocode(dropoff)]);
+
+      if(!c1 || !c2){
+        throw new Error('Could not find addresses');
+      }
+
+      const result = await getDistance(c1, c2);
+
+      if(!result){
+        throw new Error('Could not calculate route');
+      }
+
+      const distMiles = result.miles;
+      const driveMins = result.minutes;
 
       // Pricing
       const base    = 45;
@@ -607,20 +631,25 @@ function calcEst(){
 
       const distInfo = document.getElementById('distInfo');
       if(distInfo){
-        distInfo.textContent = distMiles+' miles · '+timeStr+' drive (Google Maps)';
+        distInfo.textContent = distMiles+' miles · '+timeStr+' drive time';
         distInfo.style.display = 'block';
       }
 
       document.getElementById('ep').classList.add('show');
       document.getElementById('ep').scrollIntoView({behavior:'smooth', block:'nearest'});
 
-    } else {
-      // Fallback message
+    } catch(err){
+      console.error(err);
       alert(es
-        ? 'No se pudo calcular la distancia. Verifica que las direcciones sean de California.'
-        : 'Could not calculate distance. Please make sure both addresses are in California.');
+        ? 'No se pudo calcular. Verifica las direcciones e intenta de nuevo.'
+        : 'Could not calculate. Please verify addresses and try again.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = es
+        ? '<span data-lang="es">Calcular Estimado →</span>'
+        : '<span data-lang="en">Calculate Estimate →</span>';
     }
-  });
+  })();
 }
 
 function confirmOrd(){
