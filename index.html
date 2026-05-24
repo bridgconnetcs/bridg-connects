@@ -557,72 +557,26 @@ function calcEst(){
     return;
   }
 
-  // Extract zip codes from addresses
+  // Extract zip code
   function getZip(addr){
-    const m = addr.match(/(9[0-9]{4})/);
-    return m ? parseInt(m[1]) : null;
+    const m = addr.match(/\d{5}/);
+    return m ? parseInt(m[0]) : null;
   }
 
-  // SoCal zip ranges: 900xx-935xx
-  function isSoCal(addr){
-    const zip = getZip(addr);
-    if(zip && zip >= 90001 && zip <= 93599) return true;
-    const cities = /(los angeles|LA|alhambra|pasadena|palmdale|lancaster|san bernardino|riverside|long beach|pomona|ontario|ventura|oxnard|burbank|glendale|santa ana|anaheim|irvine|san diego|thousand oaks|simi valley|santa clarita|torrance|compton|inglewood|el monte|downey|west covina|fullerton|orange|corona|moreno valley|fontana|rancho|chino|murrieta|temecula|victorville|hesperia|bakersfield|fresno|stockton|san jose|sacramento|escondido|oceanside|chula vista|el cajon|santee|la mesa|national city|poway|vista|carlsbad|encinitas|san marcos|san clemente|laguna|mission viejo|lake forest|tustin|garden grove|huntington beach|costa mesa|newport|santa barbara|oxnard|camarillo|moorpark|fillmore|santa paula|ojai|lompoc|santa maria)/i;
-    return cities.test(addr);
-  }
-
-  if(!isSoCal(pickup) || !isSoCal(dropoff)){
-    alert(es
-      ? 'Bridg Connects opera solo en el Sur de California. Por favor verifica las direcciones.'
-      : 'Bridg Connects only operates in Southern California. Please verify your addresses.');
-    return;
-  }
-
-  // Smart distance estimation using zip codes
+  // Estimate distance from zip codes
   function estimateMiles(addr1, addr2){
     const zip1 = getZip(addr1);
     const zip2 = getZip(addr2);
-
     if(zip1 && zip2){
-      // Rough SoCal zip-based distance (each 100 zips ~ 15 miles)
       const diff = Math.abs(zip1 - zip2);
-      if(diff < 50)   return Math.max(5,  diff * 0.4);
-      if(diff < 200)  return Math.max(15, diff * 0.35);
-      if(diff < 500)  return Math.max(30, diff * 0.28);
-      if(diff < 1000) return Math.max(50, diff * 0.22);
-      return Math.min(200, diff * 0.18);
+      if(diff === 0)   return 5;
+      if(diff < 30)    return Math.max(3,  diff * 0.5);
+      if(diff < 100)   return Math.max(10, diff * 0.45);
+      if(diff < 300)   return Math.max(20, diff * 0.38);
+      if(diff < 600)   return Math.max(35, diff * 0.30);
+      return Math.min(250, diff * 0.22);
     }
-
-    // Keyword-based estimation
-    const regions = {
-      'san diego':0, 'chula vista':5, 'el cajon':15, 'santee':20, 'escondido':30,
-      'carlsbad':40, 'oceanside':50, 'san clemente':65, 'mission viejo':75,
-      'irvine':85, 'santa ana':90, 'anaheim':95, 'orange':92, 'fullerton':98,
-      'long beach':100, 'torrance':105, 'los angeles':115, 'la ':115,
-      'burbank':120, 'glendale':118, 'pasadena':122, 'el monte':118,
-      'west covina':125, 'pomona':130, 'ontario':135, 'rancho':138,
-      'fontana':140, 'san bernardino':145, 'riverside':148, 'corona':143,
-      'moreno valley':152, 'murrieta':90, 'temecula':85,
-      'thousand oaks':130, 'simi valley':125, 'ventura':140, 'oxnard':138,
-      'camarillo':135, 'santa barbara':170, 'palmdale':150, 'lancaster':158,
-      'victorville':170, 'hesperia':165, 'alhambra':117, 'inglewood':108,
-      'compton':105, 'downey':108, 'norwalk':110, 'santa clarita':135,
-      'chino':132, 'garden grove':92, 'huntington beach':95, 'newport':98,
-      'costa mesa':93, 'laguna':80, 'san clemente':67, 'san marcos':55,
-      'vista':48, 'poway':25, 'national city':8, 'la mesa':12
-    };
-
-    function getRegionVal(addr){
-      const a = addr.toLowerCase();
-      for(const [city, val] of Object.entries(regions)){
-        if(a.includes(city)) return val;
-      }
-      return 100; // default LA area
-    }
-
-    const v1 = getRegionVal(addr1);
-    const v2 = getRegionVal(addr2);
-    return Math.max(5, Math.abs(v1 - v2) * 1.3 + 5);
+    return 40; // default estimate
   }
 
   const distMiles = Math.round(estimateMiles(pickup, dropoff));
@@ -630,18 +584,17 @@ function calcEst(){
   // Pricing
   const base = 45;
   const perMile = 2.50;
-  const loadMap = {light: 0, medium: 25, heavy: 60, xl: 90};
-  const winMap  = {asap: 35, today: 0, scheduled: -10};
-  const fuelSurcharge = distMiles > 50 ? 25 : 0;
-  const tollEstimate  = distMiles > 40 ? 15 : 0;
+  const loadMap = {light:0, medium:25, heavy:60, xl:90};
+  const winMap  = {asap:35, today:0, scheduled:-10};
+  const fuel    = distMiles > 50 ? 25 : 0;
+  const tolls   = distMiles > 40 ? 15 : 0;
 
   const distCharge = Math.round(distMiles * perMile);
   const loadFee    = loadMap[load] || 0;
   const priFee     = Math.max(0, winMap[win] || 0);
-  const extras     = fuelSurcharge + tollEstimate;
+  const extras     = fuel + tolls;
   const total      = base + distCharge + loadFee + priFee + extras;
 
-  // Drive time estimate (avg 40mph SoCal traffic)
   const driveMin = Math.round((distMiles / 40) * 60);
   const hrs  = Math.floor(driveMin / 60);
   const mins = driveMin % 60;
@@ -655,7 +608,7 @@ function calcEst(){
 
   const distInfo = document.getElementById('distInfo');
   if(distInfo){
-    distInfo.textContent = '~'+distMiles+' miles · ~'+timeStr+' drive (SoCal traffic)';
+    distInfo.textContent = '~'+distMiles+' miles · ~'+timeStr+' (SoCal traffic)';
     distInfo.style.display = 'block';
   }
 
