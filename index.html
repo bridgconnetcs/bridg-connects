@@ -557,29 +557,124 @@ function calcEst(){
     return;
   }
 
-  // Extract zip code
-  function getZip(addr){
-    const m = addr.match(/\d{5}/);
-    return m ? parseInt(m[0]) : null;
-  }
+  // SoCal city coordinates (approximate lat/lng)
+  const cityCoords = {
+    'san diego':     [32.72, -117.15],
+    'chula vista':   [32.64, -117.08],
+    'el cajon':      [32.79, -116.96],
+    'santee':        [32.83, -116.97],
+    'poway':         [32.96, -117.03],
+    'escondido':     [33.12, -117.08],
+    'oceanside':     [33.19, -117.37],
+    'carlsbad':      [33.16, -117.35],
+    'vista':         [33.20, -117.24],
+    'san marcos':    [33.14, -117.16],
+    'encinitas':     [33.03, -117.29],
+    'national city': [32.67, -117.09],
+    'la mesa':       [32.77, -117.02],
+    'temecula':      [33.49, -117.14],
+    'murrieta':      [33.55, -117.21],
+    'san clemente':  [33.43, -117.61],
+    'mission viejo': [33.60, -117.67],
+    'laguna':        [33.54, -117.78],
+    'irvine':        [33.68, -117.82],
+    'santa ana':     [33.74, -117.87],
+    'anaheim':       [33.83, -117.91],
+    'orange':        [33.79, -117.85],
+    'fullerton':     [33.87, -117.92],
+    'garden grove':  [33.77, -117.94],
+    'huntington beach': [33.66, -118.00],
+    'costa mesa':    [33.64, -117.92],
+    'newport':       [33.62, -117.93],
+    'long beach':    [33.77, -118.19],
+    'torrance':      [33.83, -118.34],
+    'compton':       [33.89, -118.22],
+    'inglewood':     [33.96, -118.35],
+    'downey':        [33.94, -118.13],
+    'norwalk':       [33.90, -118.08],
+    'el monte':      [34.07, -118.03],
+    'west covina':   [34.06, -117.93],
+    'pomona':        [34.05, -117.75],
+    'ontario':       [34.06, -117.65],
+    'rancho cucamonga': [34.10, -117.59],
+    'fontana':       [34.09, -117.43],
+    'san bernardino':[34.10, -117.28],
+    'riverside':     [33.98, -117.37],
+    'corona':        [33.87, -117.56],
+    'moreno valley': [33.94, -117.23],
+    'chino':         [34.01, -117.68],
+    'los angeles':   [34.05, -118.24],
+    'la ':           [34.05, -118.24],
+    ',la,':          [34.05, -118.24],
+    'alhambra':      [34.09, -118.13],
+    'glendale':      [34.14, -118.25],
+    'burbank':       [34.18, -118.31],
+    'pasadena':      [34.15, -118.14],
+    'monrovia':      [34.14, -117.99],
+    'arcadia':       [34.13, -118.03],
+    'santa clarita': [34.39, -118.54],
+    'thousand oaks': [34.17, -118.84],
+    'simi valley':   [34.27, -118.78],
+    'ventura':       [34.27, -119.22],
+    'oxnard':        [34.19, -119.17],
+    'camarillo':     [34.22, -119.04],
+    'santa barbara': [34.42, -119.70],
+    'palmdale':      [34.58, -118.11],
+    'lancaster':     [34.70, -118.15],
+    'littlerock':    [34.52, -117.99],
+    'little rock':   [34.52, -117.99],
+    'acton':         [34.47, -118.19],
+    'victorville':   [34.53, -117.29],
+    'hesperia':      [34.42, -117.30],
+    'apple valley':  [34.50, -117.24],
+    'bakersfield':   [35.37, -119.02]
+  };
 
-  // Estimate distance from zip codes
-  function estimateMiles(addr1, addr2){
-    const zip1 = getZip(addr1);
-    const zip2 = getZip(addr2);
-    if(zip1 && zip2){
-      const diff = Math.abs(zip1 - zip2);
-      if(diff === 0)   return 5;
-      if(diff < 30)    return Math.max(3,  diff * 0.5);
-      if(diff < 100)   return Math.max(10, diff * 0.45);
-      if(diff < 300)   return Math.max(20, diff * 0.38);
-      if(diff < 600)   return Math.max(35, diff * 0.30);
-      return Math.min(250, diff * 0.22);
+  function getCoords(addr){
+    const a = addr.toLowerCase();
+    // Check zip code first
+    const zipMatch = addr.match(/\d{5}/);
+    if(zipMatch){
+      const zip = parseInt(zipMatch[0]);
+      // LA metro zips
+      if(zip >= 90001 && zip <= 90899) return [34.05, -118.24];
+      if(zip >= 91000 && zip <= 91599) return [34.15, -118.14]; // SG Valley
+      if(zip >= 91700 && zip <= 91799) return [34.06, -117.75]; // Pomona area
+      if(zip >= 91900 && zip <= 92099) return [32.72, -117.15]; // SD
+      if(zip >= 92100 && zip <= 92199) return [32.72, -117.15]; // SD
+      if(zip >= 92200 && zip <= 92399) return [33.98, -117.37]; // Riverside
+      if(zip >= 92400 && zip <= 92499) return [34.10, -117.28]; // SB
+      if(zip >= 92500 && zip <= 92599) return [33.87, -117.56]; // Corona
+      if(zip >= 92600 && zip <= 92899) return [33.68, -117.82]; // OC
+      if(zip >= 92900 && zip <= 92999) return [33.43, -117.61]; // SC/Temecula
+      if(zip >= 93000 && zip <= 93099) return [34.27, -119.22]; // Ventura
+      if(zip >= 93500 && zip <= 93599) return [34.58, -118.11]; // Palmdale/AV
     }
-    return 40; // default estimate
+    // City name lookup
+    for(const [city, coords] of Object.entries(cityCoords)){
+      if(a.includes(city)) return coords;
+    }
+    return null;
   }
 
-  const distMiles = Math.round(estimateMiles(pickup, dropoff));
+  function haversine(c1, c2){
+    const R = 3959; // miles
+    const dLat = (c2[0]-c1[0]) * Math.PI/180;
+    const dLon = (c2[1]-c1[1]) * Math.PI/180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(c1[0]*Math.PI/180) * Math.cos(c2[0]*Math.PI/180) * Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  const c1 = getCoords(pickup);
+  const c2 = getCoords(dropoff);
+  let distMiles;
+
+  if(c1 && c2){
+    distMiles = Math.round(haversine(c1, c2) * 1.3); // 1.3x for road vs straight line
+    distMiles = Math.max(5, distMiles);
+  } else {
+    distMiles = 25; // fallback
+  }
 
   // Pricing
   const base = 45;
@@ -595,7 +690,7 @@ function calcEst(){
   const extras     = fuel + tolls;
   const total      = base + distCharge + loadFee + priFee + extras;
 
-  const driveMin = Math.round((distMiles / 40) * 60);
+  const driveMin = Math.round((distMiles / 35) * 60);
   const hrs  = Math.floor(driveMin / 60);
   const mins = driveMin % 60;
   const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+' min';
