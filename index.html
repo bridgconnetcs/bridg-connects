@@ -207,6 +207,8 @@ body.es [data-lang="en"]{display:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init("y_YEy-1NESu9cr3wt");</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjb3MJYYBR8rxnR-wFdB_93O25T57cmVs&callback=initMap" async defer></script>
+<script>function initMap(){}</script>
 </head>
 <body>
 
@@ -542,7 +544,7 @@ function setLang(l){
 }
 
 function calcEst(){
-  const es = document.body.classList.contains('es');
+  const es     = document.body.classList.contains('es');
   const name   = document.getElementById('name').value.trim();
   const phone  = document.getElementById('phone').value.trim();
   const pickup = document.getElementById('pickup').value.trim();
@@ -551,250 +553,74 @@ function calcEst(){
   const win    = document.getElementById('window').value;
 
   if(!name||!phone||!pickup||!dropoff){
-    alert(es
-      ? 'Por favor completa todos los campos antes de calcular.'
-      : 'Please fill in all fields before calculating.');
+    alert(es ? 'Por favor completa todos los campos.' : 'Please fill in all fields.');
     return;
   }
 
-  // SoCal city coordinates (approximate lat/lng)
-  const cityCoords = {
-    'san diego':     [32.72, -117.15],
-    'chula vista':   [32.64, -117.08],
-    'el cajon':      [32.79, -116.96],
-    'santee':        [32.83, -116.97],
-    'poway':         [32.96, -117.03],
-    'escondido':     [33.12, -117.08],
-    'oceanside':     [33.19, -117.37],
-    'carlsbad':      [33.16, -117.35],
-    'vista':         [33.20, -117.24],
-    'san marcos':    [33.14, -117.16],
-    'encinitas':     [33.03, -117.29],
-    'national city': [32.67, -117.09],
-    'la mesa':       [32.77, -117.02],
-    'temecula':      [33.49, -117.14],
-    'murrieta':      [33.55, -117.21],
-    'san clemente':  [33.43, -117.61],
-    'mission viejo': [33.60, -117.67],
-    'laguna':        [33.54, -117.78],
-    'irvine':        [33.68, -117.82],
-    'santa ana':     [33.74, -117.87],
-    'anaheim':       [33.83, -117.91],
-    'orange':        [33.79, -117.85],
-    'fullerton':     [33.87, -117.92],
-    'garden grove':  [33.77, -117.94],
-    'huntington beach': [33.66, -118.00],
-    'costa mesa':    [33.64, -117.92],
-    'newport':       [33.62, -117.93],
-    'long beach':    [33.77, -118.19],
-    'torrance':      [33.83, -118.34],
-    'compton':       [33.89, -118.22],
-    'inglewood':     [33.96, -118.35],
-    'downey':        [33.94, -118.13],
-    'norwalk':       [33.90, -118.08],
-    'el monte':      [34.07, -118.03],
-    'west covina':   [34.06, -117.93],
-    'pomona':        [34.05, -117.75],
-    'ontario':       [34.06, -117.65],
-    'rancho cucamonga': [34.10, -117.59],
-    'fontana':       [34.09, -117.43],
-    'san bernardino':[34.10, -117.28],
-    'riverside':     [33.98, -117.37],
-    'corona':        [33.87, -117.56],
-    'moreno valley': [33.94, -117.23],
-    'chino':         [34.01, -117.68],
-    'los angeles':   [34.05, -118.24],
-    'la ':           [34.05, -118.24],
-    ',la,':          [34.05, -118.24],
-    'alhambra':      [34.09, -118.13],
-    'glendale':      [34.14, -118.25],
-    'burbank':       [34.18, -118.31],
-    'pasadena':      [34.15, -118.14],
-    'monrovia':      [34.14, -117.99],
-    'arcadia':       [34.13, -118.03],
-    'santa clarita': [34.39, -118.54],
-    'thousand oaks': [34.17, -118.84],
-    'simi valley':   [34.27, -118.78],
-    'ventura':       [34.27, -119.22],
-    'oxnard':        [34.19, -119.17],
-    'camarillo':     [34.22, -119.04],
-    'santa barbara': [34.42, -119.70],
-    'palmdale':      [34.58, -118.11],
-    'lancaster':     [34.70, -118.15],
-    'littlerock':    [34.52, -117.99],
-    'little rock':   [34.52, -117.99],
-    'acton':         [34.47, -118.19],
-    'victorville':   [34.53, -117.29],
-    'hesperia':      [34.42, -117.30],
-    'apple valley':  [34.50, -117.24],
-    'bakersfield':   [35.37, -119.02]
-  };
+  const btn = document.getElementById('calcBtn');
+  btn.disabled = true;
+  btn.querySelector('[data-lang="en"]').textContent = 'Calculating...';
+  btn.querySelector('[data-lang="es"]').textContent = 'Calculando...';
 
-  function getCoords(addr){
-    const a = addr.toLowerCase();
-    // Granular zip code coordinate map
-    const zipMatch = addr.match(/\d{5}/);
-    if(zipMatch){
-      const zip = parseInt(zipMatch[0]);
-      // LA Westside
-      if(zip>=90049&&zip<=90049) return [34.06,-118.47]; // Brentwood
-      if(zip>=90272&&zip<=90272) return [34.04,-118.53]; // Pacific Palisades
-      if(zip>=90401&&zip<=90405) return [34.01,-118.49]; // Santa Monica
-      if(zip>=90210&&zip<=90213) return [34.09,-118.40]; // Beverly Hills
-      if(zip>=90024&&zip<=90025) return [34.06,-118.44]; // Westwood
-      if(zip>=90291&&zip<=90292) return [33.99,-118.46]; // Venice/MDR
-      if(zip>=90731&&zip<=90732) return [33.74,-118.29]; // San Pedro
-      if(zip>=90745&&zip<=90746) return [33.83,-118.26]; // Carson
-      // LA Central/East
-      if(zip>=90001&&zip<=90023) return [34.00,-118.22]; // South/East LA
-      if(zip>=90031&&zip<=90042) return [34.08,-118.18]; // NE LA/Eagle Rock
-      if(zip>=90026&&zip<=90029) return [34.09,-118.27]; // Silver Lake/Los Feliz
-      if(zip>=90046&&zip<=90048) return [34.09,-118.36]; // West Hollywood/Fairfax
-      if(zip>=90056&&zip<=90066) return [34.01,-118.38]; // Culver City/Mar Vista
-      if(zip>=90068&&zip<=90068) return [34.12,-118.34]; // Hollywood Hills
-      if(zip>=90071&&zip<=90089) return [34.05,-118.24]; // Downtown LA
-      // San Fernando Valley
-      if(zip>=91040&&zip<=91043) return [34.27,-118.36]; // Sunland/Tujunga
-      if(zip>=91201&&zip<=91210) return [34.14,-118.25]; // Glendale
-      if(zip>=91301&&zip<=91310) return [34.17,-118.88]; // Agoura/Westlake
-      if(zip>=91316&&zip<=91316) return [34.17,-118.53]; // Encino
-      if(zip>=91320&&zip<=91321) return [34.17,-118.84]; // Thousand Oaks/Newbury
-      if(zip>=91324&&zip<=91335) return [34.22,-118.57]; // Northridge
-      if(zip>=91340&&zip<=91345) return [34.24,-118.45]; // Pacoima/Mission Hills
-      if(zip>=91350&&zip<=91355) return [34.38,-118.54]; // Santa Clarita
-      if(zip>=91360&&zip<=91362) return [34.22,-118.86]; // Westlake/TO
-      if(zip>=91364&&zip<=91367) return [34.18,-118.60]; // Woodland Hills
-      if(zip>=91401&&zip<=91423) return [34.17,-118.45]; // Van Nuys/Sherman Oaks
-      if(zip>=91501&&zip<=91510) return [34.18,-118.31]; // Burbank
-      if(zip>=91601&&zip<=91609) return [34.17,-118.38]; // North Hollywood
-      // San Gabriel Valley
-      if(zip>=91001&&zip<=91010) return [34.15,-118.14]; // Pasadena/Altadena
-      if(zip>=91016&&zip<=91016) return [34.13,-117.97]; // Monrovia area
-      if(zip>=91020&&zip<=91020) return [34.16,-118.01]; // Monrovia
-      if(zip>=91030&&zip<=91031) return [34.10,-118.08]; // South Pasadena
-      if(zip>=91101&&zip<=91110) return [34.15,-118.14]; // Pasadena
-      if(zip>=91730&&zip<=91739) return [34.10,-117.59]; // Rancho Cucamonga
-      if(zip>=91750&&zip<=91759) return [34.07,-117.81]; // La Verne/San Dimas
-      if(zip>=91761&&zip<=91764) return [34.05,-117.65]; // Ontario
-      if(zip>=91766&&zip<=91768) return [34.05,-117.75]; // Pomona
-      if(zip>=91780&&zip<=91780) return [34.10,-118.00]; // Temple City
-      if(zip>=91801&&zip<=91803) return [34.09,-118.13]; // Alhambra
-      // Antelope Valley
-      if(zip>=93534&&zip<=93536) return [34.70,-118.15]; // Lancaster
-      if(zip>=93550&&zip<=93552) return [34.58,-118.11]; // Palmdale
-      if(zip>=93543&&zip<=93544) return [34.52,-117.99]; // Littlerock/Pearblossom
-      // IE - San Bernardino/Riverside
-      if(zip>=92316&&zip<=92316) return [34.07,-117.38]; // Bloomington
-      if(zip>=92324&&zip<=92324) return [34.07,-117.32]; // Colton
-      if(zip>=92335&&zip<=92336) return [34.09,-117.43]; // Fontana
-      if(zip>=92345&&zip<=92346) return [34.42,-117.30]; // Hesperia
-      if(zip>=92350&&zip<=92359) return [34.05,-117.25]; // Loma Linda/Redlands
-      if(zip>=92374&&zip<=92376) return [34.10,-117.28]; // San Bernardino
-      if(zip>=92401&&zip<=92415) return [34.10,-117.28]; // San Bernardino
-      if(zip>=92501&&zip<=92509) return [33.98,-117.37]; // Riverside
-      if(zip>=92530&&zip<=92532) return [33.68,-117.34]; // Lake Elsinore
-      if(zip>=92562&&zip<=92563) return [33.55,-117.21]; // Murrieta
-      if(zip>=92590&&zip<=92592) return [33.49,-117.14]; // Temecula
-      // Orange County
-      if(zip>=92602&&zip<=92620) return [33.68,-117.82]; // Irvine
-      if(zip>=92630&&zip<=92630) return [33.65,-117.69]; // Lake Forest
-      if(zip>=92651&&zip<=92657) return [33.54,-117.78]; // Laguna
-      if(zip>=92660&&zip<=92663) return [33.62,-117.93]; // Newport Beach
-      if(zip>=92672&&zip<=92674) return [33.43,-117.61]; // San Clemente
-      if(zip>=92683&&zip<=92683) return [33.74,-117.99]; // Westminster
-      if(zip>=92701&&zip<=92710) return [33.74,-117.87]; // Santa Ana
-      if(zip>=92780&&zip<=92782) return [33.76,-117.82]; // Tustin
-      if(zip>=92801&&zip<=92808) return [33.83,-117.91]; // Anaheim
-      if(zip>=92831&&zip<=92835) return [33.87,-117.92]; // Fullerton
-      if(zip>=92840&&zip<=92843) return [33.77,-117.94]; // Garden Grove
-      if(zip>=92844&&zip<=92845) return [33.66,-118.00]; // Huntington Beach
-      if(zip>=92868&&zip<=92869) return [33.79,-117.85]; // Orange
-      // San Diego County
-      if(zip>=91901&&zip<=91916) return [32.79,-116.96]; // El Cajon area
-      if(zip>=91950&&zip<=91951) return [32.67,-117.09]; // National City
-      if(zip>=92019&&zip<=92022) return [32.77,-117.02]; // La Mesa/Spring Valley
-      if(zip>=92037&&zip<=92038) return [32.84,-117.27]; // La Jolla
-      if(zip>=92101&&zip<=92115) return [32.72,-117.15]; // San Diego central
-      if(zip>=92116&&zip<=92120) return [32.76,-117.10]; // San Diego east
-      if(zip>=92121&&zip<=92131) return [32.88,-117.21]; // Sorrento/Miramar
-      if(zip>=92054&&zip<=92058) return [33.19,-117.37]; // Oceanside
-      if(zip>=92008&&zip<=92011) return [33.16,-117.35]; // Carlsbad
-      if(zip>=92024&&zip<=92024) return [33.03,-117.29]; // Encinitas
-      if(zip>=92025&&zip<=92029) return [33.12,-117.08]; // Escondido
-      // Ventura County
-      if(zip>=93001&&zip<=93010) return [34.27,-119.22]; // Ventura
-      if(zip>=93012&&zip<=93012) return [34.22,-119.04]; // Camarillo
-      if(zip>=93021&&zip<=93022) return [34.28,-118.85]; // Moorpark
-      if(zip>=93030&&zip<=93036) return [34.19,-119.17]; // Oxnard
-      if(zip>=93063&&zip<=93065) return [34.27,-118.78]; // Simi Valley
-      // Fallback ranges
-      if(zip>=90001&&zip<=90899) return [34.05,-118.24]; // General LA
-      if(zip>=91000&&zip<=91999) return [34.10,-118.00]; // General SGV/SFV
-      if(zip>=92000&&zip<=92999) return [33.70,-117.50]; // General OC/IE/SD
-      if(zip>=93000&&zip<=93999) return [34.40,-119.00]; // General Ventura/AV
+  // Use Google Maps Distance Matrix Service
+  const service = new google.maps.DistanceMatrixService();
+  service.getDistanceMatrix({
+    origins: [pickup + ', California, USA'],
+    destinations: [dropoff + ', California, USA'],
+    travelMode: google.maps.TravelMode.DRIVING,
+    unitSystem: google.maps.UnitSystem.IMPERIAL,
+    avoidHighways: false,
+    avoidTolls: false
+  }, function(response, status){
+    btn.disabled = false;
+    btn.querySelector('[data-lang="en"]').textContent = 'Calculate Estimate →';
+    btn.querySelector('[data-lang="es"]').textContent = 'Calcular Estimado →';
+
+    if(status === 'OK' && response.rows[0].elements[0].status === 'OK'){
+      const element   = response.rows[0].elements[0];
+      const distMiles = Math.round(element.distance.value * 0.000621371);
+      const driveMins = Math.round(element.duration.value / 60);
+
+      // Pricing
+      const base    = 45;
+      const loadMap = {light:0, medium:25, heavy:60, xl:90};
+      const winMap  = {asap:35, today:0, scheduled:-10};
+      const fuel    = distMiles > 50 ? 25 : 0;
+      const tolls   = distMiles > 40 ? 15 : 0;
+      const distCharge = Math.round(distMiles * 2.50);
+      const loadFee    = loadMap[load] || 0;
+      const priFee     = Math.max(0, winMap[win] || 0);
+      const extras     = fuel + tolls;
+      const total      = base + distCharge + loadFee + priFee + extras;
+      const low        = Math.round(total * 0.88);
+      const high       = Math.round(total * 1.18);
+
+      const hrs  = Math.floor(driveMins/60);
+      const mins = driveMins % 60;
+      const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+' min';
+
+      document.getElementById('br').textContent  = '$'+base;
+      document.getElementById('dc').textContent  = distMiles+' mi x $2.50 = $'+distCharge;
+      document.getElementById('lc').textContent  = '$'+loadFee;
+      document.getElementById('pc').textContent  = '$'+(priFee+extras);
+      document.getElementById('tot').textContent = 'EST. $'+low+' – $'+high;
+
+      const distInfo = document.getElementById('distInfo');
+      if(distInfo){
+        distInfo.textContent = distMiles+' miles · '+timeStr+' drive (Google Maps)';
+        distInfo.style.display = 'block';
+      }
+
+      document.getElementById('ep').classList.add('show');
+      document.getElementById('ep').scrollIntoView({behavior:'smooth', block:'nearest'});
+
+    } else {
+      // Fallback message
+      alert(es
+        ? 'No se pudo calcular la distancia. Verifica que las direcciones sean de California.'
+        : 'Could not calculate distance. Please make sure both addresses are in California.');
     }
-    // City name lookup
-    for(const [city, coords] of Object.entries(cityCoords)){
-      if(a.includes(city)) return coords;
-    }
-    return null;
-  }
-
-  function haversine(c1, c2){
-    const R = 3959; // miles
-    const dLat = (c2[0]-c1[0]) * Math.PI/180;
-    const dLon = (c2[1]-c1[1]) * Math.PI/180;
-    const a = Math.sin(dLat/2)**2 + Math.cos(c1[0]*Math.PI/180) * Math.cos(c2[0]*Math.PI/180) * Math.sin(dLon/2)**2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  }
-
-  const c1 = getCoords(pickup);
-  const c2 = getCoords(dropoff);
-  let distMiles;
-
-  if(c1 && c2){
-    distMiles = Math.round(haversine(c1, c2) * 1.3); // 1.3x for road vs straight line
-    distMiles = Math.max(5, distMiles);
-  } else {
-    distMiles = 25; // fallback
-  }
-
-  // Pricing
-  const base = 45;
-  const perMile = 2.50;
-  const loadMap = {light:0, medium:25, heavy:60, xl:90};
-  const winMap  = {asap:35, today:0, scheduled:-10};
-  const fuel    = distMiles > 50 ? 25 : 0;
-  const tolls   = distMiles > 40 ? 15 : 0;
-
-  const distCharge = Math.round(distMiles * perMile);
-  const loadFee    = loadMap[load] || 0;
-  const priFee     = Math.max(0, winMap[win] || 0);
-  const extras     = fuel + tolls;
-  const total      = base + distCharge + loadFee + priFee + extras;
-
-  const driveMin = Math.round((distMiles / 35) * 60);
-  const hrs  = Math.floor(driveMin / 60);
-  const mins = driveMin % 60;
-  const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+' min';
-
-  document.getElementById('br').textContent  = '$'+base;
-  document.getElementById('dc').textContent  = '~'+distMiles+' mi x $2.50 = $'+distCharge;
-  document.getElementById('lc').textContent  = '$'+loadFee;
-  document.getElementById('pc').textContent  = '$'+(priFee+extras);
-  // Add ~15% variance for range
-  const low  = Math.round(total * 0.88);
-  const high = Math.round(total * 1.18);
-  document.getElementById('tot').textContent = 'EST. $'+low+' – $'+high;
-
-  const distInfo = document.getElementById('distInfo');
-  if(distInfo){
-    distInfo.textContent = '~'+distMiles+' miles · ~'+timeStr+' (SoCal traffic)';
-    distInfo.style.display = 'block';
-  }
-
-  document.getElementById('ep').classList.add('show');
-  document.getElementById('ep').scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
 }
 
 function confirmOrd(){
