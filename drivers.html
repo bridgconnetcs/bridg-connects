@@ -302,26 +302,30 @@ body.es [data-lang="en"]{display:none}
       <div class="block-title"><span class="block-num">04</span><span data-lang="en">Availability &amp; Experience</span><span data-lang="es">Disponibilidad y Experiencia</span></div>
       <div class="fg">
         <label data-lang="en">When can you work? <span class="req">*</span></label><label data-lang="es">Cuando puedes trabajar? <span class="req">*</span></label>
-        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">
-          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
-            <input type="checkbox" name="avail" value="weekday_am" style="accent-color:#FF640D;width:18px;height:18px"/>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem" id="availGroup">
+          <label class="avail-chip" onclick="toggleChip(this,'weekday_am')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
             <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Weekdays AM</span>
             <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">L-V AM</span>
+            <input type="checkbox" name="avail" value="weekday_am" style="display:none"/>
           </label>
-          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
-            <input type="checkbox" name="avail" value="weekday_pm" style="accent-color:#FF640D;width:18px;height:18px"/>
+          <label class="avail-chip" onclick="toggleChip(this,'weekday_pm')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
             <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Weekdays PM</span>
             <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">L-V PM</span>
+            <input type="checkbox" name="avail" value="weekday_pm" style="display:none"/>
           </label>
-          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
-            <input type="checkbox" name="avail" value="weekends" style="accent-color:#FF640D;width:18px;height:18px"/>
+          <label class="avail-chip" onclick="toggleChip(this,'weekends')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
             <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Weekends</span>
             <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Fines de semana</span>
+            <input type="checkbox" name="avail" value="weekends" style="display:none"/>
           </label>
-          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
-            <input type="checkbox" name="avail" value="flexible" style="accent-color:#FF640D;width:18px;height:18px"/>
-            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Flexible</span>
-            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Flexible</span>
+          <label class="avail-chip" onclick="toggleChip(this,'flexible')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:3px;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Flexible / Any time</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Flexible / Cualquier hora</span>
+            <input type="checkbox" name="avail" value="flexible" style="display:none"/>
           </label>
         </div>
       </div>
@@ -406,8 +410,8 @@ body.es [data-lang="en"]{display:none}
       <div class="success-icon">&#128666;</div>
       <div class="success-title" data-lang="en">APPLICATION RECEIVED!</div>
       <div class="success-title" data-lang="es">APLICACION RECIBIDA!</div>
-      <p class="success-sub" data-lang="en">Thanks for applying to drive with Bridg Connects.<br>Our team will review your application and contact you within <strong>24-48 hours</strong>.<br><br>Questions? WhatsApp: <strong>(661) 507-3816</strong></p>
-      <p class="success-sub" data-lang="es">Gracias por aplicar para manejar con Bridg Connects.<br>Nuestro equipo revisara tu aplicacion y te contactara en <strong>24-48 horas</strong>.<br><br>Preguntas? WhatsApp: <strong>(661) 507-3816</strong></p>
+      <p class="success-sub" data-lang="en">Thanks for applying to drive with Bridg Connects.<br>Our team will review your application and contact you within <strong>24-48 hours</strong>.<br><br>Questions? Email: <strong>drivers@novarholding.com</strong></p>
+      <p class="success-sub" data-lang="es">Gracias por aplicar para manejar con Bridg Connects.<br>Nuestro equipo revisara tu aplicacion y te contactara en <strong>24-48 horas</strong>.<br><br>Preguntas? Email: <strong>drivers@novarholding.com</strong></p>
     </div>
   </div>
 </div>
@@ -450,6 +454,22 @@ document.querySelectorAll("input,select,textarea").forEach(el=>{
   el.addEventListener("change",updateProgress);
   el.addEventListener("input",updateProgress);
 });
+function toggleChip(label, val){
+  const cb = label.querySelector('input[type=checkbox]');
+  const dot = label.querySelector('.chip-dot');
+  cb.checked = !cb.checked;
+  if(cb.checked){
+    label.style.borderColor = '#FF640D';
+    label.style.background = 'rgba(255,100,13,0.1)';
+    dot.style.borderColor = '#FF640D';
+    dot.style.background = '#FF640D';
+  } else {
+    label.style.borderColor = '#3a3a3a';
+    label.style.background = 'transparent';
+    dot.style.borderColor = '#686868';
+    dot.style.background = 'transparent';
+  }
+}
 function selectRadio(name, val, el){
   document.querySelectorAll('[name="'+name+'"]').forEach(r=>{
     r.checked = false;
