@@ -277,10 +277,22 @@ body.es [data-lang="en"]{display:none}
       <div class="fg">
         <label data-lang="en">DUI, suspensions, or major violations in last 3 years? <span class="req">*</span></label>
         <label data-lang="es">DUI, suspensiones o infracciones mayores en los ultimos 3 anos? <span class="req">*</span></label>
-        <div class="radio-group horizontal">
-          <label class="radio-opt"><input type="radio" name="violations" value="no" checked/><span data-lang="en">No - Clean record</span><span data-lang="es">No - Historial limpio</span></label>
-          <label class="radio-opt"><input type="radio" name="violations" value="minor"/><span data-lang="en">Minor only</span><span data-lang="es">Solo menor</span></label>
-          <label class="radio-opt"><input type="radio" name="violations" value="yes" onchange="checkViolations(this)"/><span data-lang="en">Yes, major / DUI</span><span data-lang="es">Si, mayor / DUI</span></label>
+        <div style="display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem">
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadioViol('no',this)">
+            <input type="radio" name="violations" id="viol_no" value="no" checked style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">No — Clean record</span>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">No — Historial limpio</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadioViol('minor',this)">
+            <input type="radio" name="violations" id="viol_minor" value="minor" style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">Minor violation only</span>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">Solo infracción menor</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadioViol('yes',this)">
+            <input type="radio" name="violations" id="viol_yes" value="yes" style="accent-color:#FF640D;width:18px;height:18px" onchange="checkViolations(this)"/>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">Yes — Major violation / DUI</span>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">Sí — Infracción mayor / DUI</span>
+          </label>
         </div>
         <div class="disq-warn" id="violWarn"><p data-lang="en">A major violation or DUI in the past 3 years may disqualify your application. We review case by case.</p><p data-lang="es">Una infraccion mayor o DUI en los ultimos 3 anos puede descalificar tu aplicacion. Revisamos caso por caso.</p></div>
       </div>
@@ -290,11 +302,27 @@ body.es [data-lang="en"]{display:none}
       <div class="block-title"><span class="block-num">04</span><span data-lang="en">Availability &amp; Experience</span><span data-lang="es">Disponibilidad y Experiencia</span></div>
       <div class="fg">
         <label data-lang="en">When can you work? <span class="req">*</span></label><label data-lang="es">Cuando puedes trabajar? <span class="req">*</span></label>
-        <div class="check-group horizontal">
-          <label class="check-opt"><input type="checkbox" name="avail" value="weekday_am"/><span data-lang="en">Weekdays AM</span><span data-lang="es">L-V AM</span></label>
-          <label class="check-opt"><input type="checkbox" name="avail" value="weekday_pm"/><span data-lang="en">Weekdays PM</span><span data-lang="es">L-V PM</span></label>
-          <label class="check-opt"><input type="checkbox" name="avail" value="weekends"/><span data-lang="en">Weekends</span><span data-lang="es">Fines de semana</span></label>
-          <label class="check-opt"><input type="checkbox" name="avail" value="flexible"/><span data-lang="en">Flexible</span><span data-lang="es">Flexible</span></label>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem">
+          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
+            <input type="checkbox" name="avail" value="weekday_am" style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Weekdays AM</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">L-V AM</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
+            <input type="checkbox" name="avail" value="weekday_pm" style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Weekdays PM</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">L-V PM</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
+            <input type="checkbox" name="avail" value="weekends" style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Weekends</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Fines de semana</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s">
+            <input type="checkbox" name="avail" value="flexible" style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Flexible</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Flexible</span>
+          </label>
         </div>
       </div>
       <div class="frow">
@@ -321,8 +349,16 @@ body.es [data-lang="en"]{display:none}
       <div class="fg">
         <label data-lang="en">Worked with FRAYT, Curri, or similar?</label><label data-lang="es">Trabajaste con FRAYT, Curri o similares?</label>
         <div class="radio-group horizontal">
-          <label class="radio-opt"><input type="radio" name="frayt" value="yes"/><span>Yes / Si</span></label>
-          <label class="radio-opt"><input type="radio" name="frayt" value="no" checked/><span>No</span></label>
+          <label class="radio-opt" style="cursor:pointer;padding:.5rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadio('frayt','yes',this)">
+            <input type="radio" name="frayt" id="frayt_yes" value="yes" style="display:none"/>
+            <span id="frayt_yes_dot" style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid #686868;margin-right:.5rem;vertical-align:middle"></span>
+            <span>Yes / Sí</span>
+          </label>
+          <label class="radio-opt" style="cursor:pointer;padding:.5rem 1rem;border:1px solid #FF640D;background:rgba(255,100,13,.1);transition:all .2s" onclick="selectRadio('frayt','no',this)">
+            <input type="radio" name="frayt" id="frayt_no" value="no" checked style="display:none"/>
+            <span id="frayt_no_dot" style="display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid #FF640D;background:#FF640D;margin-right:.5rem;vertical-align:middle"></span>
+            <span>No</span>
+          </label>
         </div>
       </div>
     </div>
@@ -332,9 +368,16 @@ body.es [data-lang="en"]{display:none}
       <div class="fg">
         <label data-lang="en">Do you consent to a background check? <span class="req">*</span></label>
         <label data-lang="es">Consientes a una verificacion de antecedentes? <span class="req">*</span></label>
-        <div class="radio-group horizontal">
-          <label class="radio-opt"><input type="radio" name="bgcheck" value="yes"/><span data-lang="en">Yes, I consent</span><span data-lang="es">Si, consiento</span></label>
-          <label class="radio-opt"><input type="radio" name="bgcheck" value="no" onchange="checkBG(this)"/><span>No</span></label>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.5rem">
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.7rem 1.2rem;border:1px solid #3a3a3a;transition:all .2s;flex:1" onclick="selectRadioBG('yes',this)">
+            <input type="radio" name="bgcheck" id="bg_yes" value="yes" style="accent-color:#FF640D;width:18px;height:18px"/>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">Yes, I consent</span>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">Sí, consiento</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.7rem 1.2rem;border:1px solid #3a3a3a;transition:all .2s;flex:1" onclick="selectRadioBG('no',this)">
+            <input type="radio" name="bgcheck" id="bg_no" value="no" style="accent-color:#FF640D;width:18px;height:18px" onchange="checkBG(this)"/>
+            <span style="font-size:.84rem;color:#a5a5a5">No</span>
+          </label>
         </div>
         <div class="disq-warn" id="bgWarn"><p data-lang="en">Background check consent is required to drive with Bridg Connects.</p><p data-lang="es">El consentimiento para la verificacion de antecedentes es requerido.</p></div>
       </div>
@@ -407,6 +450,36 @@ document.querySelectorAll("input,select,textarea").forEach(el=>{
   el.addEventListener("change",updateProgress);
   el.addEventListener("input",updateProgress);
 });
+function selectRadio(name, val, el){
+  document.querySelectorAll('[name="'+name+'"]').forEach(r=>{
+    r.checked = false;
+    r.closest('label').style.borderColor='#3a3a3a';
+    r.closest('label').style.background='transparent';
+  });
+  document.getElementById(name+'_'+val).checked = true;
+  el.style.borderColor='#FF640D';
+  el.style.background='rgba(255,100,13,.1)';
+}
+function selectRadioViol(val, el){
+  document.querySelectorAll('[name="violations"]').forEach(r=>{
+    r.checked=false;
+    r.closest('label').style.borderColor='#3a3a3a';
+  });
+  document.getElementById('viol_'+val).checked=true;
+  el.style.borderColor='#FF640D';
+  if(val==='yes') checkViolations({value:'yes'});
+  else document.getElementById('violWarn').style.display='none';
+}
+function selectRadioBG(val, el){
+  document.querySelectorAll('[name="bgcheck"]').forEach(r=>{
+    r.checked=false;
+    r.closest('label').style.borderColor='#3a3a3a';
+  });
+  document.getElementById('bg_'+val).checked=true;
+  el.style.borderColor='#FF640D';
+  if(val==='no') checkBG({value:'no'});
+  else document.getElementById('bgWarn').style.display='none';
+}
 function submitApp(){
   const es=document.body.classList.contains("es");
   const req={firstName:es?"Nombre":"First name",lastName:es?"Apellido":"Last name",driverPhone:es?"Telefono":"Phone",driverEmail:"Email",driverCity:es?"Ciudad":"City",vehicleType:es?"Tipo de vehiculo":"Vehicle type",vehicleYear:es?"Ano del vehiculo":"Vehicle year"};
