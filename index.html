@@ -297,6 +297,22 @@ body.es [data-lang="en"]{display:none}
   <div class="stat"><div class="stat-n">24/7</div><div class="stat-l" data-lang="en">On-Demand</div><div class="stat-l" data-lang="es">Bajo Demanda</div></div>
 </div>
 
+
+<!-- COUNTER SECTION -->
+<section style="background:#0f0f0f;padding:4rem;text-align:center;border-bottom:1px solid var(--wire);position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(255,100,13,.06) 0%,transparent 70%);pointer-events:none"></div>
+  <p class="stag" style="justify-content:center" data-lang="en">Growing Every Day</p>
+  <p class="stag" style="justify-content:center" data-lang="es">Creciendo Cada Día</p>
+  <div style="display:flex;align-items:baseline;justify-content:center;gap:.5rem;margin:.8rem 0">
+    <span style="font-family:Bebas Neue,sans-serif;font-size:clamp(1.5rem,4vw,2.5rem);color:var(--orange);letter-spacing:.05em">+</span>
+    <span id="counter" style="font-family:Bebas Neue,sans-serif;font-size:clamp(4rem,12vw,9rem);color:#fff;letter-spacing:.02em;line-height:1">0</span>
+  </div>
+  <p style="font-family:Space Mono,monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem" data-lang="en">LIFETIME DELIVERIES COMPLETED</p>
+  <p style="font-family:Space Mono,monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:.5rem" data-lang="es">ENTREGAS COMPLETADAS EN TOTAL</p>
+  <p style="font-size:.9rem;font-weight:300;color:var(--silver);margin-top:.5rem" data-lang="en">And counting. Every delivery, every job site, every satisfied client.</p>
+  <p style="font-size:.9rem;font-weight:300;color:var(--silver);margin-top:.5rem" data-lang="es">Y contando. Cada entrega, cada obra, cada cliente satisfecho.</p>
+</section>
+
 <!-- HOW IT WORKS -->
 <section id="how">
   <p class="stag" data-lang="en">The Process</p><p class="stag" data-lang="es">El Proceso</p>
@@ -976,6 +992,41 @@ function confirmOrd(){
     const el=document.getElementById(id);
     if(el) el.addEventListener('input', checkFormReady);
   });
+
+
+// Counter animation
+function animateCounter(){
+  const el = document.getElementById('counter');
+  if(!el) return;
+  const target = 70000;
+  const duration = 2500;
+  const start = performance.now();
+  
+  function update(now){
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(ease * target);
+    el.textContent = current.toLocaleString();
+    if(progress < 1) requestAnimationFrame(update);
+    else el.textContent = '70,000';
+  }
+  requestAnimationFrame(update);
+}
+
+// Trigger when visible
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      animateCounter();
+      counterObs.disconnect();
+    }
+  });
+}, {threshold: 0.5});
+
+const counterEl = document.getElementById('counter');
+if(counterEl) counterObs.observe(counterEl);
 
 // Scroll animations
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}}),{threshold:0.1});
