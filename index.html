@@ -248,12 +248,12 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
 }
 
 /* LANG */
-/* 3D TRACK BUTTON */
+/* TRACK BUTTON */
 .track-3d {
   display: inline-flex;
   align-items: center;
   gap: .4rem;
-  background: linear-gradient(145deg, #FF7A2F, #CC4D00);
+  background: var(--orange);
   color: #fff;
   font-family: "Space Mono", monospace;
   font-size: .62rem;
@@ -262,30 +262,13 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
   text-transform: uppercase;
   padding: .4rem 1rem;
   text-decoration: none;
-  border-radius: 4px;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.15);
   cursor: pointer;
-  position: relative;
-  box-shadow:
-    0 4px 0 #8B2E00,
-    0 6px 8px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-  transition: all .15s ease;
-  transform: translateY(0);
+  transition: all .2s ease;
 }
 .track-3d:hover {
-  transform: translateY(2px);
-  box-shadow:
-    0 2px 0 #8B2E00,
-    0 3px 5px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-}
-.track-3d:active {
-  transform: translateY(4px);
-  box-shadow:
-    0 0px 0 #8B2E00,
-    0 1px 3px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  background: #e0520a;
+  transform: translateY(-1px);
 }
 .track-3d .pulse {
   width: 7px; height: 7px;
@@ -293,6 +276,7 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
   background: #fff;
   display: inline-block;
   animation: blink3d 1.2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 @keyframes blink3d {
   0%,100%{opacity:1;transform:scale(1)}
@@ -303,12 +287,12 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
 body.es [data-lang="es"]{display:block}
 body.es [data-lang="en"]{display:none}
 li[data-lang="en"],li[data-lang="es"]{display:list-item}
-li/* 3D TRACK BUTTON */
+li/* TRACK BUTTON */
 .track-3d {
   display: inline-flex;
   align-items: center;
   gap: .4rem;
-  background: linear-gradient(145deg, #FF7A2F, #CC4D00);
+  background: var(--orange);
   color: #fff;
   font-family: "Space Mono", monospace;
   font-size: .62rem;
@@ -317,30 +301,13 @@ li/* 3D TRACK BUTTON */
   text-transform: uppercase;
   padding: .4rem 1rem;
   text-decoration: none;
-  border-radius: 4px;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.15);
   cursor: pointer;
-  position: relative;
-  box-shadow:
-    0 4px 0 #8B2E00,
-    0 6px 8px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-  transition: all .15s ease;
-  transform: translateY(0);
+  transition: all .2s ease;
 }
 .track-3d:hover {
-  transform: translateY(2px);
-  box-shadow:
-    0 2px 0 #8B2E00,
-    0 3px 5px rgba(0,0,0,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-}
-.track-3d:active {
-  transform: translateY(4px);
-  box-shadow:
-    0 0px 0 #8B2E00,
-    0 1px 3px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  background: #e0520a;
+  transform: translateY(-1px);
 }
 .track-3d .pulse {
   width: 7px; height: 7px;
@@ -348,6 +315,7 @@ li/* 3D TRACK BUTTON */
   background: #fff;
   display: inline-block;
   animation: blink3d 1.2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 @keyframes blink3d {
   0%,100%{opacity:1;transform:scale(1)}
