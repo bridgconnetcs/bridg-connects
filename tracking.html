@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Track Your Delivery — Bridg Connects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* CARBON FIBER BACKGROUND */
+body{
+  min-height:100vh;
+  font-family:"DM Sans",sans-serif;
+  overflow-x:hidden;
+  background-color:#1a1a1a;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(255,100,13,0.03) 2px,
+      rgba(255,100,13,0.03) 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 2px,
+      rgba(80,80,80,0.15) 2px,
+      rgba(80,80,80,0.15) 4px
+    ),
+    linear-gradient(
+      135deg,
+      #1c1c1c 0%,
+      #242424 25%,
+      #1a1a1a 50%,
+      #222222 75%,
+      #1c1c1c 100%
+    );
+  background-size: 8px 8px, 8px 8px, 100% 100%;
+  color:#fff;
+}
+
+/* Carbon fiber cell highlight */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 7px,
+      rgba(255,255,255,0.02) 7px,
+      rgba(255,255,255,0.02) 8px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 7px,
+      rgba(255,255,255,0.02) 7px,
+      rgba(255,255,255,0.02) 8px
+    );
+  pointer-events:none;
+  z-index:0;
+}
+
+/* Orange glow center */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(ellipse at 50% 45%, rgba(255,100,13,0.09) 0%, transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+
+:root{
+  --orange:#FF640D;
+  --orange-dark:#cc4d00;
+  --wire:#3a3a3a;
+  --ash:#888;
+  --silver:#ccc;
+  --card-bg:rgba(20,20,20,0.92);
+  --card-border:rgba(255,100,13,0.25);
+}
+
+/* NAV */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 2rem;height:54px;
+  background:rgba(15,15,15,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,100,13,0.2);
+}
+.nav-logo img{height:34px;width:auto;display:block;object-fit:contain}
+.lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
+.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"Space Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
+.lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
+.lang-btn:hover:not(.active){background:#2a2a2a;color:#fff}
+.back-link{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--orange)}
+
+/* MAIN */
+.main{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:6rem 2rem 4rem;
+  position:relative;z-index:1;
+}
+
+/* TRACKING CARD */
+.track-box{
+  width:100%;max-width:500px;
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
+  backdrop-filter:blur(20px);
+  box-shadow:0 0 40px rgba(255,100,13,0.08), 0 20px 60px rgba(0,0,0,0.5);
+  padding:2.5rem;
+  position:relative;
+}
+
+/* Corner accents */
+.track-box::before{
+  content:"";position:absolute;top:-1px;left:-1px;
+  width:30px;height:30px;
+  border-top:2px solid var(--orange);
+  border-left:2px solid var(--orange);
+}
+.track-box::after{
+  content:"";position:absolute;bottom:-1px;right:-1px;
+  width:30px;height:30px;
+  border-bottom:2px solid var(--orange);
+  border-right:2px solid var(--orange);
+}
+
+.track-icon{font-size:2.5rem;text-align:center;margin-bottom:1.2rem}
+.track-icon span{display:inline-block;animation:truck 2s ease-in-out infinite}
+@keyframes truck{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+h1{
+  font-family:"Bebas Neue",sans-serif;
+  font-size:clamp(2.8rem,7vw,4.5rem);
+  line-height:.92;letter-spacing:.03em;
+  text-align:center;margin-bottom:.5rem;
+  color:var(--orange);
+  text-shadow:0 0 30px rgba(255,100,13,0.3);
+}
+h1 em{font-style:normal;color:#ffffff}
+
+.subtitle{
+  font-size:.85rem;font-weight:300;color:var(--silver);
+  text-align:center;line-height:1.6;margin-bottom:2rem;
+  opacity:.85;
+}
+
+/* INPUT */
+.input-wrap{position:relative;margin-bottom:.8rem}
+.track-input{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,100,13,0.3);
+  color:#fff;
+  font-family:"Space Mono",monospace;
+  font-size:1.3rem;letter-spacing:.3em;text-transform:uppercase;
+  padding:1rem 1.2rem;width:100%;outline:none;
+  transition:all .2s;border-radius:0;text-align:center;
+  backdrop-filter:blur(10px);
+}
+.track-input:focus{
+  border-color:var(--orange);
+  background:rgba(255,100,13,0.05);
+  box-shadow:0 0 20px rgba(255,100,13,0.1);
+}
+.track-input::placeholder{color:rgba(255,255,255,0.2);font-size:.75rem;letter-spacing:.15em}
+
+.btn{
+  background:var(--orange);color:#fff;
+  font-family:"Space Mono",monospace;font-size:.72rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.9rem 2rem;border:none;cursor:pointer;width:100%;
+  transition:all .25s;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  text-shadow:none;
+}
+.btn:hover{background:var(--orange-dark);box-shadow:0 0 25px rgba(255,100,13,0.4);transform:translateY(-1px)}
+.btn:disabled{background:#444;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ERROR */
+.error-msg{
+  background:rgba(255,50,50,0.08);
+  border:1px solid rgba(255,80,80,0.3);
+  padding:.8rem 1rem;text-align:center;margin-top:.8rem;display:none;
+}
+.error-msg p{font-family:"Space Mono",monospace;font-size:.62rem;letter-spacing:.1em;color:#ff8080}
+
+/* SUCCESS */
+.success-panel{
+  display:none;margin-top:1.2rem;
+  border:1px solid var(--orange);
+  background:rgba(255,100,13,0.04);
+  backdrop-filter:blur(10px);
+}
+.success-header{
+  background:var(--orange);padding:1rem 1.5rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#fff;animation:blink 1s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.live-label{font-family:"Space Mono",monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#fff;font-weight:700}
+
+.success-body{padding:1.5rem}
+.delivery-num{font-family:"Bebas Neue",sans-serif;font-size:2rem;color:var(--orange);letter-spacing:.1em;margin-bottom:.2rem;text-shadow:0 0 15px rgba(255,100,13,0.3)}
+.delivery-status{font-family:"Space Mono",monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--silver);margin-bottom:1.2rem}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,100,13,0.15);margin-bottom:1.2rem}
+.info-cell{background:rgba(0,0,0,0.4);padding:.8rem 1rem}
+.info-label{font-family:"Space Mono",monospace;font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);margin-bottom:.3rem}
+.info-value{font-size:.88rem;font-weight:500;color:#fff}
+
+.track-btn-live{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--orange);color:#fff;
+  font-family:"Space Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  padding:.9rem 1.5rem;text-decoration:none;transition:all .25s;width:100%;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+}
+.track-btn-live:hover{background:var(--orange-dark);box-shadow:0 0 20px rgba(255,100,13,0.4)}
+
+.divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.divider span{font-family:"Space Mono",monospace;font-size:.52rem;letter-spacing:.15em;color:var(--ash)}
+
+.help-box{text-align:center}
+.help-box p{font-size:.8rem;font-weight:300;color:var(--ash);margin-bottom:.4rem}
+.help-box a{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.1em;color:var(--orange);text-decoration:none}
+.help-box a:hover{text-decoration:underline}
+
+/* SCAN LINE ANIMATION */
+@keyframes scanline{
+  0%{transform:translateY(-100%)}
+  100%{transform:translateY(100vh)}
+}
+.scanline{
+  position:fixed;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(transparent, rgba(255,100,13,0.15), transparent);
+  animation:scanline 4s linear infinite;
+  pointer-events:none;z-index:0;
+}
+
+footer{
+  position:relative;z-index:1;
+  background:rgba(10,10,10,0.8);
+  border-top:1px solid rgba(255,100,13,0.15);
+  padding:1.2rem 2rem;text-align:center;
+  backdrop-filter:blur(10px);
+}
+.fcopy{font-family:"Space Mono",monospace;font-size:.52rem;letter-spacing:.12em;color:var(--ash)}
+
+@media(max-width:600px){
+  .info-grid{grid-template-columns:1fr}
+  .track-box{padding:1.8rem 1.2rem}
+}
+[data-lang="es"]{display:none}
+body.es [data-lang="es"]{display:block}
+body.es [data-lang="en"]{display:none}
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<nav class="nav">
+  <a href="index.html" class="back-link">← <span data-lang="en">Back</span><span data-lang="es">Volver</span></a>
+  <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="track-box">
+    <div class="track-icon"><span>🚛</span></div>
+
+    <h1 data-lang="en">TRACK YOUR<br><em>DELIVERY</em></h1>
+    <h1 data-lang="es">RASTREA TU<br><em>ENTREGA</em></h1>
+
+    <p class="subtitle" data-lang="en">Enter your tracking code to see your driver's real-time location and estimated arrival time.</p>
+    <p class="subtitle" data-lang="es">Ingresa tu código de rastreo para ver la ubicación en tiempo real de tu conductor y el tiempo estimado de llegada.</p>
+
+    <div class="input-wrap">
+      <input class="track-input" type="text" id="codeInput" placeholder="BC-0000" maxlength="10"
+        oninput="this.value=this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter') trackDelivery()"/>
+    </div>
+
+    <button class="btn" onclick="trackDelivery()" id="trackBtn">
+      <span data-lang="en">Track Delivery →</span>
+      <span data-lang="es">Rastrear Entrega →</span>
+    </button>
+
+    <div class="error-msg" id="errorMsg">
+      <p data-lang="en">⚠ Tracking code not found. Please check your code and try again.</p>
+      <p data-lang="es">⚠ Código no encontrado. Por favor verifica tu código e intenta de nuevo.</p>
+    </div>
+
+    <div class="success-panel" id="successPanel">
+      <div class="success-header">
+        <div class="live-dot"></div>
+        <span class="live-label" data-lang="en">Live Tracking Active</span>
+        <span class="live-label" data-lang="es">Rastreo en Vivo Activo</span>
+      </div>
+      <div class="success-body">
+        <div class="delivery-num" id="deliveryNum">BC-0000</div>
+        <div class="delivery-status" id="deliveryStatus">On the way</div>
+        <div class="info-grid">
+          <div class="info-cell">
+            <div class="info-label" data-lang="en">Driver</div>
+            <div class="info-label" data-lang="es">Conductor</div>
+            <div class="info-value">Kerry Vargas</div>
+          </div>
+          <div class="info-cell">
+            <div class="info-label">ETA</div>
+            <div class="info-value" id="etaValue">—</div>
+          </div>
+          <div class="info-cell">
+            <div class="info-label" data-lang="en">Status</div>
+            <div class="info-label" data-lang="es">Estado</div>
+            <div class="info-value" id="statusValue" style="color:var(--orange)">In Transit</div>
+          </div>
+          <div class="info-cell">
+            <div class="info-label" data-lang="en">Company</div>
+            <div class="info-label" data-lang="es">Compañía</div>
+            <div class="info-value">Bridg Connects</div>
+          </div>
+        </div>
+        <a id="liveTrackLink" href="#" target="_blank" class="track-btn-live">
+          <span>📍</span>
+          <span data-lang="en">Open Live Map →</span>
+          <span data-lang="es">Abrir Mapa en Vivo →</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="divider">
+      <span data-lang="en">NEED HELP?</span>
+      <span data-lang="es">¿NECESITAS AYUDA?</span>
+    </div>
+    <div class="help-box">
+      <p data-lang="en">Can't find your code? Check your confirmation email.</p>
+      <p data-lang="es">¿No encuentras tu código? Revisa tu email de confirmación.</p>
+      <a href="mailto:support@novarholding.com">support@novarholding.com</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fcopy">© 2025 Bridg Connects · A Novar Holding Corp Company</div>
+</footer>
+
+<script src="tracking.js"></script>
+<script>
+function setLang(l){
+  document.body.classList.toggle("es",l==="es");
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.textContent.trim()===l.toUpperCase()));
+}
+function trackDelivery(){
+  const es=document.body.classList.contains("es");
+  const code=document.getElementById("codeInput").value.trim().toUpperCase();
+  const errorMsg=document.getElementById("errorMsg");
+  const successPanel=document.getElementById("successPanel");
+  const btn=document.getElementById("trackBtn");
+  if(!code){errorMsg.style.display="block";successPanel.style.display="none";return;}
+  btn.disabled=true;
+  btn.innerHTML=es?"<span>Buscando...</span>":"<span>Searching...</span>";
+  setTimeout(()=>{
+    if(typeof DELIVERIES!=="undefined"&&DELIVERIES[code]){
+      const d=DELIVERIES[code];
+      if(d.active){
+        errorMsg.style.display="none";
+        successPanel.style.display="block";
+        document.getElementById("deliveryNum").textContent=code;
+        document.getElementById("etaValue").textContent=es?(d.eta_es||d.eta||"—"):(d.eta||"—");
+        document.getElementById("statusValue").textContent=es?(d.status_es||"En Tránsito"):(d.status||"In Transit");
+        document.getElementById("deliveryStatus").textContent=es?"Tu entrega está en camino":"Your delivery is on the way";
+        document.getElementById("liveTrackLink").href=d.url;
+        successPanel.scrollIntoView({behavior:"smooth",block:"nearest"});
+      } else {
+        errorMsg.style.display="block";
+        successPanel.style.display="none";
+      }
+    } else {
+      errorMsg.style.display="block";
+      successPanel.style.display="none";
+    }
+    btn.disabled=false;
+    btn.innerHTML=es?"<span>Rastrear Entrega →</span>":"<span>Track Delivery →</span>";
+  },800);
+}
+</script>
+</body>
+</html>
