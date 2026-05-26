@@ -1,24 +1,24 @@
 // ══════════════════════════════════════
 // BRIDG CONNECTS — TRACKING CONTROL
-// Kerry: Edit this file to manage active deliveries
+// Kerry: Replace this entire file each time
 // ══════════════════════════════════════
 
 const DELIVERIES = {
 
   "BC-0001": {
-    active: false,
-    url: "https://onf.lt/your-link-here",
-    eta: "—",
-    eta_es: "—",
+    active: true,
+    url: "https://maps.apple/p/4R6ynCgXru2S2m",
+    eta: "55 min · 66 mi",
+    eta_es: "55 min · 66 mi",
     status: "In Transit",
     status_es: "En Tránsito"
   },
 
   "BC-0042": {
-    active: true,
-    url: "https://onf.lt/tu-link",
-    eta: "2:30 PM",
-    eta_es: "2:30 PM",
+    active: false,
+    url: "",
+    eta: "—",
+    eta_es: "—",
     status: "In Transit",
     status_es: "En Tránsito"
   }
