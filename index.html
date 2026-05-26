@@ -42,6 +42,51 @@ html,body{background-color:#0f0f0f !important}
 .lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
 .lang-btn:hover:not(.active){background:var(--iron);color:#fff}
 
+/* 3D TRACK BUTTON */
+.track-3d-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:"Space Mono",monospace;font-size:.6rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;text-decoration:none;
+  background:linear-gradient(145deg, #ff7a2b, #e05000);
+  padding:.35rem .9rem;
+  border:none;cursor:pointer;
+  border-radius:4px;
+  box-shadow:
+    0 4px 0 #a33500,
+    0 5px 8px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  transition:all .15s ease;
+  position:relative;
+  top:0;
+  white-space:nowrap;
+}
+.track-3d-btn:hover{
+  background:linear-gradient(145deg, #ff8c3f, #e85c0a);
+  box-shadow:
+    0 6px 0 #a33500,
+    0 8px 15px rgba(255,100,13,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  top:-1px;
+}
+.track-3d-btn:active{
+  box-shadow:
+    0 1px 0 #a33500,
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(0,0,0,0.1);
+  top:3px;
+}
+.track-3d-btn .pulse{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:#fff;
+  animation:pulse3d 1.2s ease-in-out infinite;
+  flex-shrink:0;
+}
+@keyframes pulse3d{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.4;transform:scale(.7)}
+}
+
 /* HERO */
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:54px;background:#0f0f0f;position:relative;overflow:hidden}
 .hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 3rem 5rem 4rem;position:relative;z-index:2}
@@ -203,11 +248,113 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
 }
 
 /* LANG */
+/* 3D TRACK BUTTON */
+.track-3d {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: linear-gradient(145deg, #FF7A2F, #CC4D00);
+  color: #fff;
+  font-family: "Space Mono", monospace;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .4rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow:
+    0 4px 0 #8B2E00,
+    0 6px 8px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all .15s ease;
+  transform: translateY(0);
+}
+.track-3d:hover {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 #8B2E00,
+    0 3px 5px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.track-3d:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0px 0 #8B2E00,
+    0 1px 3px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.track-3d .pulse {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  display: inline-block;
+  animation: blink3d 1.2s ease-in-out infinite;
+}
+@keyframes blink3d {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.3;transform:scale(.7)}
+}
+
 [data-lang="es"]{display:none}
 body.es [data-lang="es"]{display:block}
 body.es [data-lang="en"]{display:none}
 li[data-lang="en"],li[data-lang="es"]{display:list-item}
-li[data-lang="es"]{display:none}
+li/* 3D TRACK BUTTON */
+.track-3d {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: linear-gradient(145deg, #FF7A2F, #CC4D00);
+  color: #fff;
+  font-family: "Space Mono", monospace;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .4rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow:
+    0 4px 0 #8B2E00,
+    0 6px 8px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all .15s ease;
+  transform: translateY(0);
+}
+.track-3d:hover {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 #8B2E00,
+    0 3px 5px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+.track-3d:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0px 0 #8B2E00,
+    0 1px 3px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.track-3d .pulse {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  display: inline-block;
+  animation: blink3d 1.2s ease-in-out infinite;
+}
+@keyframes blink3d {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.3;transform:scale(.7)}
+}
+
+[data-lang="es"]{display:none}
 body.es li[data-lang="es"]{display:list-item}
 body.es li[data-lang="en"]{display:none}
 </style>
@@ -222,12 +369,16 @@ body.es li[data-lang="en"]{display:none}
   <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
   <ul class="nav-links">
     <li><a href="portfolio.html" data-lang="en">Our Work</a><a href="portfolio.html" data-lang="es">Nuestro Trabajo</a></li>
-    <li><a href="tracking.html" style="color:var(--orange)" data-lang="en">📍 Track</a><a href="tracking.html" style="color:var(--orange)" data-lang="es">📍 Rastrear</a></li>
     <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
     <li><a href="#serve" data-lang="en">Who We Serve</a><a href="#serve" data-lang="es">Clientes</a></li>
     <li><a href="#quote" data-lang="en">Get a Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
     <li><a href="#drivers" data-lang="en">Drive With Us</a><a href="#drivers" data-lang="es">Manejar</a></li>
   </ul>
+  
+  <a href="tracking.html" class="track-3d">
+    <span class="pulse"></span>
+    <span id="trackBtnText">📍 Track</span>
+  </a>
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('en')">EN</button>
     <button class="lang-btn" onclick="setLang('es')">ES</button>
@@ -595,7 +746,6 @@ body.es li[data-lang="en"]{display:none}
   <div class="flogo" style="font-family:Bebas Neue,sans-serif;font-size:1.3rem;letter-spacing:.1em;color:#fff">BRIDG<span style="color:#FF640D">.</span> <span style="font-size:.85rem;color:#686868">CONNECTS</span></div>
   <ul class="flinks">
     <li><a href="portfolio.html" data-lang="en">Our Work</a><a href="portfolio.html" data-lang="es">Nuestro Trabajo</a></li>
-    <li><a href="tracking.html" style="color:var(--orange)" data-lang="en">📍 Track</a><a href="tracking.html" style="color:var(--orange)" data-lang="es">📍 Rastrear</a></li>
     <li><a href="#how" data-lang="en">How It Works</a><a href="#how" data-lang="es">Cómo Funciona</a></li>
     <li><a href="#serve" data-lang="en">Services</a><a href="#serve" data-lang="es">Servicios</a></li>
     <li><a href="#quote" data-lang="en">Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
@@ -613,6 +763,8 @@ const EJS_TEMPLATE = "template_7yer4c7";
 // Public key already initialized above
 
 function setLang(l){
+  const tb = document.getElementById("trackBtnText");
+  if(tb) tb.textContent = l==="es" ? "📍 Rastrear" : "📍 Track";
   document.body.classList.toggle('es',l==='es');
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===l.toUpperCase()));
 }
