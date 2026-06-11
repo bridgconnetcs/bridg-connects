@@ -357,10 +357,10 @@ html,body{height:100%;background:#0f0f0f;color:#fff;font-family:'DM Sans',sans-s
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
           <span data-en="Call" data-es="Llamar">Call</span>
         </a>
-        <button class="driver-btn" onclick="openMsgModal()">
+        <a href="sms:+13233930641" class="driver-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           <span data-en="Message" data-es="Mensaje">Message</span>
-        </button>
+        </a>
       </div>
     </div>
 
@@ -594,14 +594,21 @@ function startAnimation() {
     if (!routeCoords.length) return;
     animStep = (animStep + 1) % routeCoords.length;
     const pos = routeCoords[animStep];
-    carMarker.setLngLat(pos);
 
-    // Rotate car toward next point
+    // Calculate bearing to next point
+    let bearing = 0;
     if (animStep < routeCoords.length - 1) {
       const next = routeCoords[animStep + 1];
-      const angle = Math.atan2(next[0] - pos[0], next[1] - pos[1]) * 180 / Math.PI;
-      const el = document.getElementById('car-marker');
-      if (el) el.style.transform = `rotate(${angle}deg)`;
+      bearing = Math.atan2(next[0] - pos[0], next[1] - pos[1]) * 180 / Math.PI;
+    }
+
+    // Update Mapbox symbol source
+    if (map.getSource('car-pos')) {
+      map.getSource('car-pos').setData({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: pos },
+        properties: { bearing }
+      });
     }
 
     // Progress
