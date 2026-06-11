@@ -380,14 +380,8 @@ function trackDelivery(){
     if(typeof DELIVERIES!=="undefined"&&DELIVERIES[code]){
       const d=DELIVERIES[code];
       if(d.active){
-        errorMsg.style.display="none";
-        successPanel.style.display="block";
-        document.getElementById("deliveryNum").textContent=code;
-        document.getElementById("etaValue").textContent=es?(d.eta_es||d.eta||"—"):(d.eta||"—");
-        document.getElementById("statusValue").textContent=es?(d.status_es||"En Tránsito"):(d.status||"In Transit");
-        document.getElementById("deliveryStatus").textContent=es?"Tu entrega está en camino":"Your delivery is on the way";
-        document.getElementById("liveTrackLink").href=d.url;
-        successPanel.scrollIntoView({behavior:"smooth",block:"nearest"});
+        // Redirect to full client map interface
+        window.location.href="client.html?code="+encodeURIComponent(code)+(es?"&lang=es":"");
       } else {
         errorMsg.style.display="block";
         successPanel.style.display="none";
