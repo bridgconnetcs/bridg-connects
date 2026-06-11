@@ -907,7 +907,7 @@ body.es li[data-lang="en"]{display:none}
           <div class="fg">
             <label data-lang="en">Delivery Window</label><label data-lang="es">Ventana</label>
             <select id="window">
-              <option value="asap">ASAP (1–2 hrs)</option>
+              <option value="rush">🚨 Rush (1–2 hrs) +$35</option>
               <option value="today">Today / Hoy (2–4 hrs)</option>
               <option value="scheduled">Scheduled / Programado</option>
             </select>
@@ -1304,28 +1304,39 @@ function calcEst(){
   }
 
   function calcQuote(distMiles, driveSeconds){
-    const base    = 45;
-    const loadMap = {light:0, medium:25, heavy:60, xl:90};
-    const winMap  = {asap:35, today:0, scheduled:-10};
-    const fuel    = distMiles > 50 ? 25 : 0;
-    const tolls   = distMiles > 40 ? 15 : 0;
-    const distCharge = Math.round(distMiles * 2.50);
-    const loadFee    = loadMap[load] || 0;
-    const priFee     = Math.max(0, winMap[win] || 0);
-    const extras     = fuel + tolls;
-    const total      = base + distCharge + loadFee + priFee + extras;
-    const low        = Math.round(total * 0.88);
-    const high       = Math.round(total * 1.18);
-
+    // Base: $80/hr from Mapbox drive time, minimum $40
     const driveMin = driveSeconds ? Math.round(driveSeconds/60) : Math.round((distMiles/35)*60);
+    const base = Math.max(40, Math.round((driveMin/60) * 80));
+
+    // Per mile
+    const distCharge = Math.round(distMiles * 2.50);
+
+    // Load fee: $5 per each 25 lbs over 150 lbs
+    const lbsMap = {light:0, medium:175, heavy:250, xl:350};
+    const lbs = lbsMap[load] || 0;
+    const loadFee = lbs > 150 ? Math.floor((lbs - 150) / 25) * 5 : 0;
+
+    // Environmental Compliance Fee
+    let ecoFee = 0;
+    if(distMiles <= 15) ecoFee = 7;
+    else if(distMiles <= 25) ecoFee = 13;
+    else ecoFee = 15;
+
+    // Rush fee — only if Rush selected
+    const rushFee = win === 'rush' ? 35 : 0;
+
+    const total = base + distCharge + loadFee + ecoFee + rushFee;
+    const low   = Math.round(total * 0.88);
+    const high  = Math.round(total * 1.18);
+
     const hrs  = Math.floor(driveMin/60);
     const mins = driveMin % 60;
     const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+' min';
 
-    document.getElementById('br').textContent  = '$'+base;
-    document.getElementById('dc').textContent  = distMiles+' mi x $2.50 = $'+distCharge;
+    document.getElementById('br').textContent  = '$'+base+' ('+driveMin+' min)';
+    document.getElementById('dc').textContent  = distMiles+' mi × $2.50 = $'+distCharge;
     document.getElementById('lc').textContent  = '$'+loadFee;
-    document.getElementById('pc').textContent  = '$'+(priFee+extras);
+    document.getElementById('pc').textContent  = 'ECF $'+ecoFee + (rushFee ? ' + Rush $'+rushFee : '');
     document.getElementById('tot').textContent = 'EST. $'+low+' – $'+high;
 
     const distInfo = document.getElementById('distInfo');
