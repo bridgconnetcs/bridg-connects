@@ -1303,50 +1303,74 @@ function calcEst(){
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   }
 
+  function calcQuote(distMiles, driveSeconds){
+    const base    = 45;
+    const loadMap = {light:0, medium:25, heavy:60, xl:90};
+    const winMap  = {asap:35, today:0, scheduled:-10};
+    const fuel    = distMiles > 50 ? 25 : 0;
+    const tolls   = distMiles > 40 ? 15 : 0;
+    const distCharge = Math.round(distMiles * 2.50);
+    const loadFee    = loadMap[load] || 0;
+    const priFee     = Math.max(0, winMap[win] || 0);
+    const extras     = fuel + tolls;
+    const total      = base + distCharge + loadFee + priFee + extras;
+    const low        = Math.round(total * 0.88);
+    const high       = Math.round(total * 1.18);
+
+    const driveMin = driveSeconds ? Math.round(driveSeconds/60) : Math.round((distMiles/35)*60);
+    const hrs  = Math.floor(driveMin/60);
+    const mins = driveMin % 60;
+    const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+' min';
+
+    document.getElementById('br').textContent  = '$'+base;
+    document.getElementById('dc').textContent  = distMiles+' mi x $2.50 = $'+distCharge;
+    document.getElementById('lc').textContent  = '$'+loadFee;
+    document.getElementById('pc').textContent  = '$'+(priFee+extras);
+    document.getElementById('tot').textContent = 'EST. $'+low+' – $'+high;
+
+    const distInfo = document.getElementById('distInfo');
+    if(distInfo){
+      distInfo.textContent = distMiles+' miles · ~'+timeStr+' drive time';
+      distInfo.style.display = 'block';
+    }
+
+    document.getElementById('ep').classList.add('show');
+    document.getElementById('ep').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
   const c1 = getCoords(pickup);
   const c2 = getCoords(dropoff);
-  let distMiles;
 
   if(c1 && c2){
-    distMiles = Math.round(haversine(c1,c2) * 1.25);
-    distMiles = Math.max(5, distMiles);
+    // Try Mapbox Directions for real driving distance
+    const MBTOKEN = 'pk.eyJ1Ijoibm92YXJob2xkaW5nIiwiYSI6ImNtcTh6bDhpejA4dXkycW9kemZsZjkxOWEifQ.v1D1aYv4C72Stsxfr7Nttw';
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${c1[1]},${c1[0]};${c2[1]},${c2[0]}?overview=false&access_token=${MBTOKEN}`;
+
+    // Show loading state
+    document.getElementById('tot').textContent = 'Calculating…';
+    document.getElementById('ep').classList.add('show');
+
+    fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        if(data.routes && data.routes[0]){
+          const route = data.routes[0];
+          const distMiles = Math.max(5, Math.round(route.distance * 0.000621371));
+          const driveSeconds = route.duration;
+          calcQuote(distMiles, driveSeconds);
+        } else {
+          // Fallback to haversine if Mapbox fails
+          const distMiles = Math.max(5, Math.round(haversine(c1,c2) * 1.25));
+          calcQuote(distMiles, null);
+        }
+      })
+      .catch(() => {
+        const distMiles = Math.max(5, Math.round(haversine(c1,c2) * 1.25));
+        calcQuote(distMiles, null);
+      });
   } else {
-    distMiles = 20;
+    calcQuote(20, null);
   }
-
-  // Pricing
-  const base    = 45;
-  const loadMap = {light:0, medium:25, heavy:60, xl:90};
-  const winMap  = {asap:35, today:0, scheduled:-10};
-  const fuel    = distMiles > 50 ? 25 : 0;
-  const tolls   = distMiles > 40 ? 15 : 0;
-  const distCharge = Math.round(distMiles * 2.50);
-  const loadFee    = loadMap[load] || 0;
-  const priFee     = Math.max(0, winMap[win] || 0);
-  const extras     = fuel + tolls;
-  const total      = base + distCharge + loadFee + priFee + extras;
-  const low        = Math.round(total * 0.88);
-  const high       = Math.round(total * 1.18);
-
-  const driveMin = Math.round((distMiles / 35) * 60);
-  const hrs  = Math.floor(driveMin/60);
-  const mins = driveMin % 60;
-  const timeStr = hrs > 0 ? hrs+'h '+mins+'min' : mins+' min';
-
-  document.getElementById('br').textContent  = '$'+base;
-  document.getElementById('dc').textContent  = '~'+distMiles+' mi x $2.50 = $'+distCharge;
-  document.getElementById('lc').textContent  = '$'+loadFee;
-  document.getElementById('pc').textContent  = '$'+(priFee+extras);
-  document.getElementById('tot').textContent = 'EST. $'+low+' – $'+high;
-
-  const distInfo = document.getElementById('distInfo');
-  if(distInfo){
-    distInfo.textContent = '~'+distMiles+' miles · ~'+timeStr+' drive time';
-    distInfo.style.display = 'block';
-  }
-
-  document.getElementById('ep').classList.add('show');
-  document.getElementById('ep').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function confirmOrd(){
