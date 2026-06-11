@@ -527,14 +527,54 @@ async function fetchRoute(origin, dest) {
     elB.textContent = 'B';
     new mapboxgl.Marker({ element: elB }).setLngLat(dest).addTo(map);
 
-    // Car marker
-    const elCar = document.createElement('div');
-    elCar.id = 'car-marker';
-    elCar.style.cssText = 'font-size:22px;line-height:1;filter:drop-shadow(0 0 6px rgba(255,100,13,.9));transition:transform .3s ease';
-    elCar.textContent = '🚗';
-    carMarker = new mapboxgl.Marker({ element: elCar, anchor: 'center' })
-      .setLngLat(coords[0])
-      .addTo(map);
+
+    // Car marker — SVG car icon, orange, rotates with route
+    const carSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <g filter="url(#glow)">
+        <!-- car body -->
+        <rect x="8" y="16" width="24" height="12" rx="3" fill="#FF640D"/>
+        <!-- roof -->
+        <rect x="12" y="9" width="16" height="9" rx="3" fill="#FF640D"/>
+        <!-- windshield -->
+        <rect x="13" y="10" width="14" height="7" rx="2" fill="rgba(0,0,0,0.4)"/>
+        <!-- wheels -->
+        <circle cx="13" cy="29" r="3.5" fill="#1a1a1a" stroke="#FF640D" stroke-width="1.5"/>
+        <circle cx="27" cy="29" r="3.5" fill="#1a1a1a" stroke="#FF640D" stroke-width="1.5"/>
+        <!-- headlights -->
+        <rect x="8" y="19" width="3" height="2" rx="1" fill="#fff" opacity="0.9"/>
+        <!-- taillights -->
+        <rect x="29" y="19" width="3" height="2" rx="1" fill="#ff2200" opacity="0.9"/>
+      </g>
+    </svg>`;
+
+    const carBlob = new Blob([carSvg], {type: 'image/svg+xml'});
+    const carUrl = URL.createObjectURL(carBlob);
+    const carImg = new Image(40, 40);
+    carImg.onload = () => {
+      map.addImage('car-icon', carImg);
+      map.addSource('car-pos', {
+        type: 'geojson',
+        data: { type: 'Feature', geometry: { type: 'Point', coordinates: coords[0] }, properties: { bearing: 0 } }
+      });
+      map.addLayer({
+        id: 'car-layer',
+        type: 'symbol',
+        source: 'car-pos',
+        layout: {
+          'icon-image': 'car-icon',
+          'icon-size': 1,
+          'icon-rotate': ['get', 'bearing'],
+          'icon-rotation-alignment': 'map',
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true
+        }
+      });
+    };
+    carImg.src = carUrl;
 
     // Fit map to route
     const bounds = coords.reduce((b, c) => b.extend(c), new mapboxgl.LngLatBounds(coords[0], coords[0]));
@@ -618,7 +658,7 @@ async function loadDelivery() {
 loadDelivery();
 
 // ── EmailJS ──
-emailjs.init('YOUR_EMAILJS_PUBLIC_KEY'); // ← Kerry: replace with your EmailJS public key
+emailjs.init('y_YEy-1NESu9cr3wt');
 
 function openMsgModal() {
   document.getElementById('msgModal').classList.add('open');
@@ -649,11 +689,18 @@ async function sendMessage() {
   btn.textContent = lang === 'en' ? 'Sending…' : 'Enviando…';
 
   try {
-    await emailjs.send('YOUR_SERVICE_ID', 'template_9gs1qkm', {
+    await emailjs.send('service_24ys0gu', 'template_9gs1qkm', {
       from_name: name,
       message: body,
       order_code: code,
-      to_email: 'support@novarholding.com'
+      email: '',
+      phone: '',
+      pickup: '',
+      dropoff: '',
+      load_type: '',
+      window: '',
+      notes: '',
+      estimate: ''
     });
     document.getElementById('modal-form-body').style.display = 'none';
     document.getElementById('modal-success').style.display = 'block';
