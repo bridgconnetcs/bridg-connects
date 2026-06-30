@@ -285,7 +285,7 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2.2rem 4r
 [data-lang="es"]{display:none}
 body.es [data-lang="es"]{display:block}
 body.es [data-lang="en"]{display:none}
-li[data-lang="en"],li[data-lang="es"]{display:list-item}
+li[data-lang="en"]{display:flex}
 li/* TRACK BUTTON */
 .track-3d {
   display: inline-flex;
@@ -322,7 +322,8 @@ li/* TRACK BUTTON */
 }
 
 [data-lang="es"]{display:none}
-body.es li[data-lang="es"]{display:list-item}
+body:not(.es) li[data-lang="es"]{display:none}
+body.es li[data-lang="es"]{display:flex}
 body.es li[data-lang="en"]{display:none}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -864,7 +865,7 @@ body.es li[data-lang="en"]{display:none}
         <li data-lang="en">Monthly consolidated invoice</li><li data-lang="es">Factura mensual consolidada</li>
         <li data-lang="en">Account manager</li><li data-lang="es">Gerente de cuenta</li>
       </ul>
-      <a href="#quote" class="btn-o" data-lang="en">Contact Us</a><a href="#quote" class="btn-o" data-lang="es">Contáctenos</a>
+      <a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener" class="btn-o" data-lang="en">Schedule a Call →</a><a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener" class="btn-o" data-lang="es">Agendar Llamada →</a>
     </div>
   </div>
 </section>
@@ -989,7 +990,7 @@ body.es li[data-lang="en"]{display:none}
     <li><a href="#serve" data-lang="en">Services</a><a href="#serve" data-lang="es">Servicios</a></li>
     <li><a href="#quote" data-lang="en">Quote</a><a href="#quote" data-lang="es">Cotizar</a></li>
     <li><a href="#drivers" data-lang="en">Drive</a><a href="#drivers" data-lang="es">Manejar</a></li>
-    <li><a href="mailto:hello@novarholding.com">hello@novarholding.com</a></li>
+    <li><a href="mailto:hello@bridgconnects.com">hello@bridgconnects.com</a></li>
   </ul>
   <div class="fcopy">© 2025 Bridg Connects · A <a href="https://novarholding.com" target="_blank" style="color:var(--orange);text-decoration:none">Novar Holding Corp</a> Company</div>
 </footer>
