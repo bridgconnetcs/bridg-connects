@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block AI training crawlers (optional — remove if you want AI visibility)
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://www.bridgconnects.com/sitemap.xml
