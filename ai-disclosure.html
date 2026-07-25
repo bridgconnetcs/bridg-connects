@@ -2,145 +2,169 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<meta name="color-scheme" content="light only"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AI <em>DISCLOSURE</em> — Bridg Connects</title>
+<title>AI DISCLOSURE — Bridg Connects</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;font-family:"DM Sans",sans-serif;overflow-x:hidden;color:#fff;
-  background-color:#1a1a1a;
-  background-image:
-    repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(255,100,13,0.03) 2px,rgba(255,100,13,0.03) 4px),
-    repeating-linear-gradient(-45deg,transparent,transparent 2px,rgba(80,80,80,0.12) 2px,rgba(80,80,80,0.12) 4px),
-    linear-gradient(135deg,#1c1c1c 0%,#242424 25%,#1a1a1a 50%,#222222 75%,#1c1c1c 100%);
-  background-size:8px 8px,8px 8px,100% 100%;
-}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 0%, rgba(255,100,13,0.08) 0%, transparent 55%)}
-:root{--orange:#FF640D;--orange-dark:#cc4d00;--wire:#3a3a3a;--ash:#8a8a8a;--silver:#cfcfcf;--card-bg:rgba(18,18,18,0.92);--card-border:rgba(255,100,13,0.22)}
-
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 1.4rem;height:54px;background:rgba(15,15,15,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,100,13,0.2)}
-.nav-logo img{height:32px;width:auto;display:block;object-fit:contain}
-.lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
-.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"Space Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
-.lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
-.lang-btn:hover:not(.active){background:#2a2a2a;color:#fff}
-.back-link{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>:root{color-scheme:light only;
+  --white:#FFFFFF;--ink:#0B0B0C;--steel:#4A4A50;--hairline:#E8E8EA;--band:#F6F6F7;
+  --orange:#FF640D;--orange-soft:rgba(255,100,13,.08);
+  --FD:'Space Grotesk',sans-serif;--FB:'Inter',sans-serif;--FM:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:#FFFFFF}
+body{background:#FFFFFF !important;color:#0B0B0C !important;font-family:var(--FB);line-height:1.68;-webkit-font-smoothing:antialiased}
+body.es [data-lang="en"]{display:none!important}
+body:not(.es) [data-lang="es"]{display:none!important}
+.nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)}
+.nav-in{max-width:860px;margin:0 auto;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.back-link{font-family:var(--FM);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);text-decoration:none}
 .back-link:hover{color:var(--orange)}
-
-.shell{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:6.5rem 1.5rem 3rem}
-.doc-head{margin-bottom:1.6rem}
-.eyebrow{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem}
-h1{font-family:"Bebas Neue",sans-serif;font-size:clamp(2.4rem,8vw,3.6rem);line-height:.95;letter-spacing:.02em;color:#fff}
+.nav-logo{font-family:var(--FD);font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--ink);text-decoration:none;line-height:1;text-align:center}
+.nav-logo span{color:var(--orange)}
+.nav-logo small{display:block;font-family:var(--FM);font-size:.44rem;letter-spacing:.42em;color:var(--steel);font-weight:400;margin-top:1px}
+.lang-toggle{display:flex;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.lang-btn{border:0;background:transparent;padding:.34rem .62rem;font-family:var(--FM);font-size:.64rem;cursor:pointer;color:var(--steel)}
+.lang-btn.active{background:var(--ink);color:#fff}
+.shell{max-width:860px;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+.doc-head{margin-bottom:1.8rem}
+.eyebrow{font-family:var(--FM);font-size:.6rem;letter-spacing:.24em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:100px;padding:.5rem 1rem;margin-bottom:1.2rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+h1{font-family:var(--FD);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.06;letter-spacing:-.02em}
 h1 em{font-style:normal;color:var(--orange)}
-.updated{font-family:"Space Mono",monospace;font-size:.62rem;letter-spacing:.08em;color:var(--ash);margin-top:.7rem}
-
-.subnav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 2.2rem;padding-bottom:1.4rem;border-bottom:1px solid rgba(255,255,255,0.08)}
-.subnav a{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);text-decoration:none;border:1px solid var(--wire);padding:.4rem .7rem;transition:all .2s}
-.subnav a:hover{border-color:var(--orange);color:#fff}
-.subnav a.current{background:var(--orange);color:#fff;border-color:var(--orange);font-weight:700}
-
-.lede{font-size:1rem;font-weight:300;color:var(--silver);line-height:1.7;margin-bottom:2.2rem}
-
-section.clause{margin-bottom:1.9rem}
-section.clause h2{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;letter-spacing:.03em;color:#fff;margin-bottom:.6rem;line-height:1.08}
-section.clause h2 .num{font-family:"Space Mono",monospace;font-size:.8rem;color:var(--orange);letter-spacing:0;margin-right:.5rem}
-.clause p{font-size:.93rem;font-weight:300;color:var(--silver);line-height:1.75;margin-bottom:.7rem}
-.clause p strong{color:#fff;font-weight:500}
-.clause ul{list-style:none;margin:.2rem 0 .7rem}
-.clause li{font-size:.93rem;font-weight:300;color:var(--silver);line-height:1.7;padding-left:1.1rem;position:relative;margin-bottom:.35rem}
-.clause li::before{content:"—";position:absolute;left:0;color:var(--orange)}
-.clause a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,0.35)}
-.clause a:hover{border-bottom-color:var(--orange)}
-
-.callout{border:1px solid var(--card-border);background:rgba(255,100,13,0.05);padding:1rem 1.1rem;margin:.4rem 0 1rem}
-.callout p{margin:0;color:#e8e8e8}
-
-.note{font-size:.78rem;font-style:italic;color:var(--ash);line-height:1.6;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,0.08)}
-
-footer{position:relative;z-index:1;background:rgba(10,10,10,0.85);border-top:1px solid rgba(255,100,13,0.15);padding:1.6rem 2rem;text-align:center;backdrop-filter:blur(10px)}
-.flinks{display:flex;flex-wrap:wrap;gap:.4rem 1rem;justify-content:center;margin-bottom:.9rem}
-.flinks a{font-family:"Space Mono",monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);text-decoration:none}
+.updated{font-family:var(--FM);font-size:.66rem;letter-spacing:.08em;color:var(--steel);margin-top:.9rem}
+.subnav{display:flex;gap:.4rem;flex-wrap:wrap;background:var(--band);border:1px solid var(--hairline);border-radius:10px;padding:.32rem;margin-bottom:2.4rem}
+.subnav a{flex:1;text-align:center;min-width:88px;font-family:var(--FD);font-weight:600;font-size:.78rem;color:var(--steel);text-decoration:none;padding:.55rem .5rem;border-radius:8px}
+.subnav a.current{background:var(--ink);color:#fff}
+.subnav a:not(.current):hover{color:var(--orange)}
+.lede{font-size:1rem;font-weight:300;color:var(--steel);padding-bottom:1.8rem;border-bottom:1px solid var(--hairline)}
+.clause{padding:1.9rem 0;border-bottom:1px solid var(--hairline)}
+.clause:last-of-type{border-bottom:0}
+.clause h2{font-family:var(--FD);font-weight:600;font-size:1.14rem;letter-spacing:-.01em;display:flex;gap:.75rem;align-items:baseline;margin-bottom:.85rem}
+.num{font-family:var(--FM);font-size:.68rem;color:var(--orange);font-weight:500}
+.clause p{font-size:.93rem;color:var(--steel);font-weight:300;margin-bottom:.7rem}
+.clause p:last-child{margin-bottom:0}
+.clause strong{color:var(--ink);font-weight:600}
+.clause ul{list-style:none;margin:.5rem 0 .8rem}
+.clause li{font-size:.93rem;color:var(--steel);font-weight:300;padding-left:1.1rem;position:relative;margin-bottom:.45rem}
+.clause li::before{content:'';position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.note{background:var(--band);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:1rem 1.15rem;font-size:.88rem;color:var(--steel);font-weight:300;margin-top:1rem}
+.note strong{color:var(--ink)}
+a.inline{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.35)}
+footer{border-top:1px solid var(--hairline);background:#fff}
+.foot-in{max-width:860px;margin:0 auto;padding:1.8rem 1.5rem;text-align:center}
+.flinks{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:.9rem}
+.flinks a{font-size:.8rem;color:var(--ink);text-decoration:none}
 .flinks a:hover{color:var(--orange)}
-.fcopy{font-family:"Space Mono",monospace;font-size:.52rem;letter-spacing:.12em;color:var(--ash)}
-.fcopy a{color:var(--orange);text-decoration:none}
-
-[data-lang="es"]{display:none}
-body.es [data-lang="es"]{display:block}
-body.es [data-lang="en"]{display:none}
-span[data-lang="es"]{display:none}
-body.es span[data-lang="es"]{display:inline}
-body.es span[data-lang="en"]{display:none}
-</style>
+.fcopy{font-family:var(--FM);font-size:.58rem;letter-spacing:.1em;color:var(--steel);line-height:1.9}</style>
 </head>
 <body>
-<nav class="nav">
+<nav class="nav"><div class="nav-in">
   <a href="index.html" class="back-link">← <span data-lang="en">Back</span><span data-lang="es">Volver</span></a>
-  <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
-  </div>
-</nav>
+  <a class="nav-logo" href="index.html">BRIDG<span>.</span><small>CONNECTS</small></a>
+  <div class="lang-toggle"><button class="lang-btn active" id="lgEN" onclick="setLang('en')">EN</button><button class="lang-btn" id="lgES" onclick="setLang('es')">ES</button></div>
+</div></nav>
 
 <main class="shell">
   <div class="doc-head">
     <p class="eyebrow" data-lang="en">How we use artificial intelligence</p>
     <p class="eyebrow" data-lang="es">Cómo usamos inteligencia artificial</p>
     <h1 data-lang="en">AI <em>DISCLOSURE</em></h1>
-    <h1 data-lang="es">DIVULGACIÓN DE <em>IA</em></h1>
-    <p class="updated"><span data-lang="en">Last updated: June 28, 2026</span><span data-lang="es">Última actualización: 28 de junio de 2026</span></p>
+    <h1 data-lang="es">DIVULGACIÓN <em>DE IA</em></h1>
+    <p class="updated"><span data-lang="en">Last updated: July 25, 2026</span><span data-lang="es">Última actualización: 25 de julio de 2026</span></p>
   </div>
 
   <nav class="subnav"><a class="" href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a><a class="" href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Mensajería</span></a><a class="" href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a><a class="current" href="ai-disclosure.html"><span data-lang="en">AI</span><span data-lang="es">IA</span></a></nav>
 
-  <p class="lede" data-lang="en">Bridg Connects LLC ("Bridg") uses artificial intelligence (AI) tools to help run our business. We believe in being transparent about where and how AI is involved.</p>
-  <p class="lede" data-lang="es">Bridg Connects LLC ("Bridg") usa herramientas de inteligencia artificial (IA) para ayudar a operar el negocio. Creemos en ser transparentes sobre dónde y cómo se usa la IA.</p>
+  <p class="lede" data-lang="en">Bridg Connects LLC ("Bridg") uses artificial intelligence and automation to help run our business. We believe in being transparent about where it is involved — and where a human being makes the call.</p>
+  <p class="lede" data-lang="es">Bridg Connects LLC ("Bridg") usa inteligencia artificial y automatización para ayudar a operar el negocio. Creemos en ser transparentes sobre dónde se usa — y dónde decide una persona.</p>
 
-  <section class="clause">
-  <h2 data-lang="en"><span class="num">01</span>Where We Use AI</h2>
-  <h2 data-lang="es"><span class="num">01</span>Dónde Usamos IA</h2>
-  <div data-lang="en"><p>We use AI tools to support tasks such as drafting and translating communications, organizing operations, and analyzing our own business information. AI helps us move faster — it does not replace our judgment.</p></div>
-  <div data-lang="es"><p>Usamos herramientas de IA para apoyar tareas como redactar y traducir comunicaciones, organizar operaciones y analizar nuestra propia información de negocio. La IA nos ayuda a ir más rápido — no reemplaza nuestro criterio.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">02</span>Human Oversight</h2>
-  <h2 data-lang="es"><span class="num">02</span>Supervisión Humana</h2>
-  <div data-lang="en"><p>A person remains responsible for the decisions that affect your order. We do not use AI to make automated decisions that produce legal or similarly significant effects about you without human review.</p></div>
-  <div data-lang="es"><p>Una persona sigue siendo responsable de las decisiones que afectan tu pedido. No usamos IA para tomar decisiones automatizadas con efectos legales o similarmente significativos sobre ti sin revisión humana.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">03</span>Your Data & AI</h2>
-  <h2 data-lang="es"><span class="num">03</span>Tus Datos y la IA</h2>
-  <div data-lang="en"><p>We do not sell your personal information, and we do not provide it to third parties to train their AI models for their own purposes. Any information shared with an AI service provider is handled under that provider's terms and our <a href='privacy.html'>Privacy Policy</a>.</p></div>
-  <div data-lang="es"><p>No vendemos tu información personal, y no la entregamos a terceros para entrenar sus modelos de IA con fines propios. Cualquier información compartida con un proveedor de IA se maneja bajo los términos de ese proveedor y nuestra <a href='privacy.html'>Política de Privacidad</a>.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">04</span>Accuracy</h2>
-  <h2 data-lang="es"><span class="num">04</span>Exactitud</h2>
-  <div data-lang="en"><p>AI tools can make mistakes. We review AI-assisted work that affects customers, and you can always reach a real person with questions about your delivery.</p></div>
-  <div data-lang="es"><p>Las herramientas de IA pueden cometer errores. Revisamos el trabajo asistido por IA que afecta a clientes, y siempre puedes comunicarte con una persona real para preguntas sobre tu entrega.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">05</span>Contact</h2>
-  <h2 data-lang="es"><span class="num">05</span>Contacto</h2>
-  <div data-lang="en"><p>Questions about our use of AI? Contact Bridg Connects LLC at <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a>.</p></div>
-  <div data-lang="es"><p>¿Preguntas sobre nuestro uso de IA? Contacta a Bridg Connects LLC en <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a>.</p></div>
+<section class="clause">
+  <h2 data-lang="en"><span class="num">01</span>Where We Use AI & Automation</h2>
+  <h2 data-lang="es"><span class="num">01</span>Dónde Usamos IA y Automatización</h2>
+  <div data-lang="en"><p>Bridg uses AI tools and automated systems to support how we run the business. Specifically:</p>
+<ul>
+<li><strong>Vehicle matching</strong> — when you describe a load, our system suggests the vehicle class that fits the weight and cargo type.</li>
+<li><strong>Price estimating</strong> — our quote tool calculates an estimate using the details you enter plus live driving distance and route time from a mapping provider.</li>
+<li><strong>Dispatch coordination</strong> — automated notifications, tracking links, and proof-of-delivery capture flow through our delivery management platform without manual sending.</li>
+<li><strong>Operations and documents</strong> — we use AI assistance for drafting internal documents, invoices, summaries, and communications.</li>
+<li><strong>Website and tooling</strong> — parts of our site and internal tools were built with AI assistance.</li>
+</ul></div>
+  <div data-lang="es"><p>Bridg usa herramientas de IA y sistemas automatizados para apoyar la operación del negocio. Específicamente:</p>
+<ul>
+<li><strong>Emparejamiento de vehículo</strong> — cuando describes una carga, nuestro sistema sugiere la clase de vehículo que corresponde al peso y tipo de carga.</li>
+<li><strong>Estimación de precio</strong> — nuestra herramienta calcula un estimado usando los datos que ingresas más la distancia y tiempo de ruta en vivo de un proveedor de mapas.</li>
+<li><strong>Coordinación de despacho</strong> — notificaciones automáticas, links de rastreo y captura de prueba de entrega fluyen por nuestra plataforma de gestión sin envío manual.</li>
+<li><strong>Operaciones y documentos</strong> — usamos asistencia de IA para redactar documentos internos, facturas, resúmenes y comunicaciones.</li>
+<li><strong>Sitio web y herramientas</strong> — partes de nuestro sitio y herramientas internas fueron construidas con asistencia de IA.</li>
+</ul></div>
 </section>
 
-  <p class="note" data-lang="en">This document is a general template provided for Bridg Connects LLC. It is not legal advice. Before relying on it, have it reviewed by a licensed attorney — especially the California privacy (CCPA/CPRA) terms and any provisions affecting liability or contractor classification.</p>
-  <p class="note" data-lang="es">Este documento es una plantilla general para Bridg Connects LLC. No constituye asesoría legal. Antes de confiarte en él, hazlo revisar por un abogado licenciado — en especial los términos de privacidad de California (CCPA/CPRA) y cualquier cláusula que afecte responsabilidad o clasificación de contratistas.</p>
+<section class="clause">
+  <h2 data-lang="en"><span class="num">02</span>A Human Always Decides</h2>
+  <h2 data-lang="es"><span class="num">02</span>Siempre Decide una Persona</h2>
+  <div data-lang="en"><p>Automation supports our work; it does not replace judgment. <strong>A person at Bridg reviews and confirms every delivery before it is dispatched</strong>, including the final price and the vehicle assigned.</p>
+<p>No AI system makes a final decision about your pricing, your order, whether we accept a load, or whether a driver is approved to work with us.</p></div>
+  <div data-lang="es"><p>La automatización apoya nuestro trabajo; no reemplaza el criterio. <strong>Una persona en Bridg revisa y confirma cada entrega antes de despacharla</strong>, incluyendo el precio final y el vehículo asignado.</p>
+<p>Ningún sistema de IA toma una decisión final sobre tu precio, tu pedido, si aceptamos una carga, o si un conductor es aprobado para trabajar con nosotros.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">03</span>What Estimates Mean</h2>
+  <h2 data-lang="es"><span class="num">03</span>Qué Significan los Estimados</h2>
+  <div data-lang="en"><p>The instant estimate our quote tool produces is a <strong>calculated range, not a binding price</strong>. It depends on the accuracy of what you enter. Final pricing is confirmed by our team before dispatch.</p>
+<p>If the actual load differs from the description — heavier, more stops, larger vehicle needed, extended wait — the final price will reflect that. See our <a class="inline" href="terms.html">Terms of Service</a>.</p></div>
+  <div data-lang="es"><p>El estimado instantáneo de nuestra herramienta es un <strong>rango calculado, no un precio vinculante</strong>. Depende de la exactitud de lo que ingreses. El precio final lo confirma nuestro equipo antes del despacho.</p>
+<p>Si la carga real difiere de la descripción — más peso, más paradas, vehículo más grande, espera extendida — el precio final lo reflejará. Ve nuestros <a class="inline" href="terms.html">Términos del Servicio</a>.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">04</span>Your Data and AI</h2>
+  <h2 data-lang="es"><span class="num">04</span>Tus Datos y la IA</h2>
+  <div data-lang="en"><p>We do <strong>not</strong> feed your personal information, account credentials, or customer lists into public AI chatbots or use them to train third-party AI models.</p>
+<p>Address information is transmitted to our mapping provider solely to calculate distance and drive time for a quote or an active delivery. Order and account data stay within our operational systems described in the <a class="inline" href="privacy.html">Privacy Policy</a>.</p></div>
+  <div data-lang="es"><p><strong>No</strong> introducimos tu información personal, credenciales de cuenta ni listas de clientes en chatbots públicos de IA, ni las usamos para entrenar modelos de IA de terceros.</p>
+<p>La información de direcciones se transmite a nuestro proveedor de mapas únicamente para calcular distancia y tiempo de manejo para una cotización o entrega activa. Los datos de pedidos y cuentas permanecen en los sistemas operativos descritos en la <a class="inline" href="privacy.html">Política de Privacidad</a>.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">05</span>Accuracy & Limits</h2>
+  <h2 data-lang="es"><span class="num">05</span>Exactitud y Límites</h2>
+  <div data-lang="en"><p>AI tools can make mistakes. Route times change with traffic, and automated suggestions are only as good as the information provided. That is why a person confirms the details before your delivery moves.</p>
+<p>If you ever believe an estimate or a suggested vehicle looks wrong, tell us and we will review it manually before anything is dispatched.</p></div>
+  <div data-lang="es"><p>Las herramientas de IA pueden equivocarse. Los tiempos de ruta cambian con el tráfico, y las sugerencias automáticas son tan buenas como la información proporcionada. Por eso una persona confirma los detalles antes de que tu entrega se mueva.</p>
+<p>Si en algún momento crees que un estimado o vehículo sugerido está mal, dínoslo y lo revisamos manualmente antes de despachar.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">06</span>Questions & Changes</h2>
+  <h2 data-lang="es"><span class="num">06</span>Preguntas y Cambios</h2>
+  <div data-lang="en"><p>We update this disclosure as our use of AI and automation evolves. The "last updated" date reflects the current version.</p>
+<p>If you have questions about how automation affects your order, reach us through the scheduling link on bridgconnects.com. Bridg Connects LLC is a Novar Holding Corp company operating from Burbank, California.</p></div>
+  <div data-lang="es"><p>Actualizamos esta divulgación conforme evoluciona nuestro uso de IA y automatización. La fecha de "última actualización" refleja la versión vigente.</p>
+<p>Si tienes preguntas sobre cómo la automatización afecta tu pedido, contáctanos por el enlace de agenda en bridgconnects.com. Bridg Connects LLC es una empresa de Novar Holding Corp que opera desde Burbank, California.</p></div>
+</section>
+
 </main>
 
-<footer>
-  <div class="flinks"><a href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a><a href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Mensajería</span></a><a href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a><a href="ai-disclosure.html"><span data-lang="en">AI</span><span data-lang="es">IA</span></a><a href="index.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></div>
-  <div class="fcopy">© 2025 Bridg Connects · A <a href="https://novarholding.com" target="_blank" rel="noopener">Novar Holding Corp</a> Company</div>
-</footer>
+<footer><div class="foot-in">
+  <div class="flinks">
+    <a href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a>
+    <a href="sms-terms.html">SMS</a>
+    <a href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a>
+    <a href="ai-disclosure.html"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación IA</span></a>
+    <a href="index.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a>
+  </div>
+  <div class="fcopy">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER<br/>
+  © 2026 BRIDG CONNECTS LLC · A NOVAR HOLDING CORP COMPANY · BURBANK, CA</div>
+</div></footer>
 
 <script>
 function setLang(l){
-  document.body.classList.toggle("es",l==="es");
-  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.textContent.trim()===l.toUpperCase()));
-  document.documentElement.lang=l;
+  document.body.classList.toggle('es', l==='es');
+  document.getElementById('lgEN').classList.toggle('active', l==='en');
+  document.getElementById('lgES').classList.toggle('active', l==='es');
 }
 </script>
 </body>

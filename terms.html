@@ -2,89 +2,69 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<meta name="color-scheme" content="light only"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>TERMS OF <em>SERVICE</em> — Bridg Connects</title>
+<title>TERMS OF SERVICE — Bridg Connects</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;font-family:"DM Sans",sans-serif;overflow-x:hidden;color:#fff;
-  background-color:#1a1a1a;
-  background-image:
-    repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(255,100,13,0.03) 2px,rgba(255,100,13,0.03) 4px),
-    repeating-linear-gradient(-45deg,transparent,transparent 2px,rgba(80,80,80,0.12) 2px,rgba(80,80,80,0.12) 4px),
-    linear-gradient(135deg,#1c1c1c 0%,#242424 25%,#1a1a1a 50%,#222222 75%,#1c1c1c 100%);
-  background-size:8px 8px,8px 8px,100% 100%;
-}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 0%, rgba(255,100,13,0.08) 0%, transparent 55%)}
-:root{--orange:#FF640D;--orange-dark:#cc4d00;--wire:#3a3a3a;--ash:#8a8a8a;--silver:#cfcfcf;--card-bg:rgba(18,18,18,0.92);--card-border:rgba(255,100,13,0.22)}
-
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 1.4rem;height:54px;background:rgba(15,15,15,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,100,13,0.2)}
-.nav-logo img{height:32px;width:auto;display:block;object-fit:contain}
-.lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
-.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"Space Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
-.lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
-.lang-btn:hover:not(.active){background:#2a2a2a;color:#fff}
-.back-link{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>:root{color-scheme:light only;
+  --white:#FFFFFF;--ink:#0B0B0C;--steel:#4A4A50;--hairline:#E8E8EA;--band:#F6F6F7;
+  --orange:#FF640D;--orange-soft:rgba(255,100,13,.08);
+  --FD:'Space Grotesk',sans-serif;--FB:'Inter',sans-serif;--FM:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:#FFFFFF}
+body{background:#FFFFFF !important;color:#0B0B0C !important;font-family:var(--FB);line-height:1.68;-webkit-font-smoothing:antialiased}
+body.es [data-lang="en"]{display:none!important}
+body:not(.es) [data-lang="es"]{display:none!important}
+.nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)}
+.nav-in{max-width:860px;margin:0 auto;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.back-link{font-family:var(--FM);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);text-decoration:none}
 .back-link:hover{color:var(--orange)}
-
-.shell{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:6.5rem 1.5rem 3rem}
-.doc-head{margin-bottom:1.6rem}
-.eyebrow{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem}
-h1{font-family:"Bebas Neue",sans-serif;font-size:clamp(2.4rem,8vw,3.6rem);line-height:.95;letter-spacing:.02em;color:#fff}
+.nav-logo{font-family:var(--FD);font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--ink);text-decoration:none;line-height:1;text-align:center}
+.nav-logo span{color:var(--orange)}
+.nav-logo small{display:block;font-family:var(--FM);font-size:.44rem;letter-spacing:.42em;color:var(--steel);font-weight:400;margin-top:1px}
+.lang-toggle{display:flex;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.lang-btn{border:0;background:transparent;padding:.34rem .62rem;font-family:var(--FM);font-size:.64rem;cursor:pointer;color:var(--steel)}
+.lang-btn.active{background:var(--ink);color:#fff}
+.shell{max-width:860px;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+.doc-head{margin-bottom:1.8rem}
+.eyebrow{font-family:var(--FM);font-size:.6rem;letter-spacing:.24em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:100px;padding:.5rem 1rem;margin-bottom:1.2rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+h1{font-family:var(--FD);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.06;letter-spacing:-.02em}
 h1 em{font-style:normal;color:var(--orange)}
-.updated{font-family:"Space Mono",monospace;font-size:.62rem;letter-spacing:.08em;color:var(--ash);margin-top:.7rem}
-
-.subnav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 2.2rem;padding-bottom:1.4rem;border-bottom:1px solid rgba(255,255,255,0.08)}
-.subnav a{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);text-decoration:none;border:1px solid var(--wire);padding:.4rem .7rem;transition:all .2s}
-.subnav a:hover{border-color:var(--orange);color:#fff}
-.subnav a.current{background:var(--orange);color:#fff;border-color:var(--orange);font-weight:700}
-
-.lede{font-size:1rem;font-weight:300;color:var(--silver);line-height:1.7;margin-bottom:2.2rem}
-
-section.clause{margin-bottom:1.9rem}
-section.clause h2{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;letter-spacing:.03em;color:#fff;margin-bottom:.6rem;line-height:1.08}
-section.clause h2 .num{font-family:"Space Mono",monospace;font-size:.8rem;color:var(--orange);letter-spacing:0;margin-right:.5rem}
-.clause p{font-size:.93rem;font-weight:300;color:var(--silver);line-height:1.75;margin-bottom:.7rem}
-.clause p strong{color:#fff;font-weight:500}
-.clause ul{list-style:none;margin:.2rem 0 .7rem}
-.clause li{font-size:.93rem;font-weight:300;color:var(--silver);line-height:1.7;padding-left:1.1rem;position:relative;margin-bottom:.35rem}
-.clause li::before{content:"—";position:absolute;left:0;color:var(--orange)}
-.clause a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,0.35)}
-.clause a:hover{border-bottom-color:var(--orange)}
-
-.callout{border:1px solid var(--card-border);background:rgba(255,100,13,0.05);padding:1rem 1.1rem;margin:.4rem 0 1rem}
-.callout p{margin:0;color:#e8e8e8}
-
-.note{font-size:.78rem;font-style:italic;color:var(--ash);line-height:1.6;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,0.08)}
-
-footer{position:relative;z-index:1;background:rgba(10,10,10,0.85);border-top:1px solid rgba(255,100,13,0.15);padding:1.6rem 2rem;text-align:center;backdrop-filter:blur(10px)}
-.flinks{display:flex;flex-wrap:wrap;gap:.4rem 1rem;justify-content:center;margin-bottom:.9rem}
-.flinks a{font-family:"Space Mono",monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);text-decoration:none}
+.updated{font-family:var(--FM);font-size:.66rem;letter-spacing:.08em;color:var(--steel);margin-top:.9rem}
+.subnav{display:flex;gap:.4rem;flex-wrap:wrap;background:var(--band);border:1px solid var(--hairline);border-radius:10px;padding:.32rem;margin-bottom:2.4rem}
+.subnav a{flex:1;text-align:center;min-width:88px;font-family:var(--FD);font-weight:600;font-size:.78rem;color:var(--steel);text-decoration:none;padding:.55rem .5rem;border-radius:8px}
+.subnav a.current{background:var(--ink);color:#fff}
+.subnav a:not(.current):hover{color:var(--orange)}
+.lede{font-size:1rem;font-weight:300;color:var(--steel);padding-bottom:1.8rem;border-bottom:1px solid var(--hairline)}
+.clause{padding:1.9rem 0;border-bottom:1px solid var(--hairline)}
+.clause:last-of-type{border-bottom:0}
+.clause h2{font-family:var(--FD);font-weight:600;font-size:1.14rem;letter-spacing:-.01em;display:flex;gap:.75rem;align-items:baseline;margin-bottom:.85rem}
+.num{font-family:var(--FM);font-size:.68rem;color:var(--orange);font-weight:500}
+.clause p{font-size:.93rem;color:var(--steel);font-weight:300;margin-bottom:.7rem}
+.clause p:last-child{margin-bottom:0}
+.clause strong{color:var(--ink);font-weight:600}
+.clause ul{list-style:none;margin:.5rem 0 .8rem}
+.clause li{font-size:.93rem;color:var(--steel);font-weight:300;padding-left:1.1rem;position:relative;margin-bottom:.45rem}
+.clause li::before{content:'';position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.note{background:var(--band);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:1rem 1.15rem;font-size:.88rem;color:var(--steel);font-weight:300;margin-top:1rem}
+.note strong{color:var(--ink)}
+a.inline{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.35)}
+footer{border-top:1px solid var(--hairline);background:#fff}
+.foot-in{max-width:860px;margin:0 auto;padding:1.8rem 1.5rem;text-align:center}
+.flinks{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:.9rem}
+.flinks a{font-size:.8rem;color:var(--ink);text-decoration:none}
 .flinks a:hover{color:var(--orange)}
-.fcopy{font-family:"Space Mono",monospace;font-size:.52rem;letter-spacing:.12em;color:var(--ash)}
-.fcopy a{color:var(--orange);text-decoration:none}
-
-[data-lang="es"]{display:none}
-body.es [data-lang="es"]{display:block}
-body.es [data-lang="en"]{display:none}
-span[data-lang="es"]{display:none}
-body.es span[data-lang="es"]{display:inline}
-body.es span[data-lang="en"]{display:none}
-</style>
+.fcopy{font-family:var(--FM);font-size:.58rem;letter-spacing:.1em;color:var(--steel);line-height:1.9}</style>
 </head>
 <body>
-<nav class="nav">
+<nav class="nav"><div class="nav-in">
   <a href="index.html" class="back-link">← <span data-lang="en">Back</span><span data-lang="es">Volver</span></a>
-  <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
-  </div>
-</nav>
+  <a class="nav-logo" href="index.html">BRIDG<span>.</span><small>CONNECTS</small></a>
+  <div class="lang-toggle"><button class="lang-btn active" id="lgEN" onclick="setLang('en')">EN</button><button class="lang-btn" id="lgES" onclick="setLang('es')">ES</button></div>
+</div></nav>
 
 <main class="shell">
   <div class="doc-head">
@@ -92,85 +72,170 @@ body.es span[data-lang="en"]{display:none}
     <p class="eyebrow" data-lang="es">Las reglas para usar Bridg</p>
     <h1 data-lang="en">TERMS OF <em>SERVICE</em></h1>
     <h1 data-lang="es">TÉRMINOS DEL <em>SERVICIO</em></h1>
-    <p class="updated"><span data-lang="en">Last updated: June 28, 2026</span><span data-lang="es">Última actualización: 28 de junio de 2026</span></p>
+    <p class="updated"><span data-lang="en">Last updated: July 25, 2026</span><span data-lang="es">Última actualización: 25 de julio de 2026</span></p>
   </div>
 
   <nav class="subnav"><a class="" href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a><a class="" href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Mensajería</span></a><a class="current" href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a><a class="" href="ai-disclosure.html"><span data-lang="en">AI</span><span data-lang="es">IA</span></a></nav>
 
-  <p class="lede" data-lang="en">These Terms govern your use of bridgconnects.com and the delivery brokerage services of Bridg Connects LLC, operating as Bridg Connects ("Bridg"). By requesting a quote, placing an order, or using the site, you agree to these Terms.</p>
-  <p class="lede" data-lang="es">Estos Términos rigen tu uso de bridgconnects.com y los servicios de intermediación de entregas de Bridg Connects LLC, operando como Bridg Connects ("Bridg"). Al pedir una cotización, hacer un pedido o usar el sitio, aceptas estos Términos.</p>
+  <p class="lede" data-lang="en">These Terms govern your use of bridgconnects.com and the delivery brokerage services of Bridg Connects LLC, operating as Bridg Connects ("Bridg"). By requesting a quote, creating an account, placing an order, or using the site, you agree to these Terms.</p>
+  <p class="lede" data-lang="es">Estos Términos rigen tu uso de bridgconnects.com y los servicios de intermediación de entregas de Bridg Connects LLC, operando como Bridg Connects ("Bridg"). Al pedir una cotización, crear una cuenta, hacer un pedido o usar el sitio, aceptas estos Términos.</p>
 
-  <section class="clause">
+<section class="clause">
   <h2 data-lang="en"><span class="num">01</span>What Bridg Is</h2>
-  <h2 data-lang="es"><span class="num">01</span>Qué es Bridg</h2>
-  <div data-lang="en"><p>Bridg is a <strong>delivery brokerage and technology platform</strong>. We connect clients who need same-day delivery with independent contractor drivers. <strong>Bridg is not a motor carrier and does not physically transport cargo itself.</strong> Drivers are independent contractors, not employees or agents of Bridg.</p></div>
-  <div data-lang="es"><p>Bridg es una <strong>plataforma tecnológica y de intermediación de entregas</strong>. Conectamos a clientes que necesitan entrega el mismo día con conductores contratistas independientes. <strong>Bridg no es un transportista y no transporta carga físicamente.</strong> Los conductores son contratistas independientes, no empleados ni agentes de Bridg.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">02</span>Quotes & Pricing</h2>
-  <h2 data-lang="es"><span class="num">02</span>Cotizaciones y Precios</h2>
-  <div data-lang="en"><p>Quotes are estimates based on the details you provide — distance, weight, number of stops, handling difficulty, fragility, and vehicle type. Final pricing may change if the actual job differs from what was quoted. Specialty or fragile cargo may carry additional handling charges, disclosed before the job.</p></div>
-  <div data-lang="es"><p>Las cotizaciones son estimados basados en los datos que proporcionas — distancia, peso, número de paradas, dificultad de manejo, fragilidad y tipo de vehículo. El precio final puede cambiar si el trabajo real difiere de lo cotizado. La carga especial o frágil puede tener cargos adicionales de manejo, informados antes del trabajo.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">03</span>Orders, Pickup & Delivery</h2>
-  <h2 data-lang="es"><span class="num">03</span>Pedidos, Recogida y Entrega</h2>
-  <div data-lang="en"><p>You agree to provide accurate pickup and delivery information and to have someone available to release or receive the goods. Delivery windows are estimates and may be affected by traffic, weather, or supplier readiness. Proof of delivery (photo and/or signature) may be collected at drop-off.</p></div>
-  <div data-lang="es"><p>Aceptas proporcionar información precisa de recogida y entrega y tener a alguien disponible para entregar o recibir la mercancía. Las ventanas de entrega son estimados y pueden verse afectadas por tráfico, clima o disponibilidad del proveedor. Se puede recopilar prueba de entrega (foto y/o firma) al momento de la entrega.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">04</span>Payment</h2>
-  <h2 data-lang="es"><span class="num">04</span>Pago</h2>
-  <div data-lang="en"><p>You agree to pay the quoted amount plus any disclosed additional charges. Payments are handled through our payment provider. Late or failed payments may result in suspension of service.</p></div>
-  <div data-lang="es"><p>Aceptas pagar el monto cotizado más cualquier cargo adicional informado. Los pagos se manejan a través de nuestro proveedor de pagos. Los pagos atrasados o fallidos pueden resultar en suspensión del servicio.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">05</span>Prohibited & Restricted Items</h2>
-  <h2 data-lang="es"><span class="num">05</span>Artículos Prohibidos y Restringidos</h2>
-  <div data-lang="en"><p>You may not ship illegal goods, hazardous materials, weapons, perishable food requiring refrigeration, living things, or any item you are not legally entitled to transport. Flatbed and oversize loads are not currently accepted. We may refuse or cancel any order that violates this section.</p></div>
-  <div data-lang="es"><p>No puedes enviar bienes ilegales, materiales peligrosos, armas, alimentos perecederos que requieran refrigeración, seres vivos, ni ningún artículo que no tengas derecho legal a transportar. No aceptamos cargas de plataforma (flatbed) ni de gran tamaño por ahora. Podemos rechazar o cancelar cualquier pedido que viole esta sección.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">06</span>Liability & Claims</h2>
-  <h2 data-lang="es"><span class="num">06</span>Responsabilidad y Reclamos</h2>
-  <div data-lang="en"><p>Bridg coordinates delivery but does not guarantee against all loss or damage. Claims for loss or damage must be reported promptly with supporting documentation. <strong>To the maximum extent permitted by law, Bridg's total liability for any order is limited to the fees paid for that order</strong>, and Bridg is not liable for indirect, incidental, or consequential damages.</p></div>
-  <div data-lang="es"><p>Bridg coordina la entrega pero no garantiza contra toda pérdida o daño. Los reclamos por pérdida o daño deben reportarse de inmediato con documentación de respaldo. <strong>En la máxima medida permitida por la ley, la responsabilidad total de Bridg por cualquier pedido se limita a las tarifas pagadas por ese pedido</strong>, y Bridg no es responsable por daños indirectos, incidentales o consecuentes.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">07</span>Disclaimers</h2>
-  <h2 data-lang="es"><span class="num">07</span>Renuncias</h2>
-  <div data-lang="en"><p>The site and services are provided "as is" without warranties of any kind, express or implied, to the maximum extent permitted by law.</p></div>
-  <div data-lang="es"><p>El sitio y los servicios se proporcionan "tal cual" sin garantías de ningún tipo, expresas o implícitas, en la máxima medida permitida por la ley.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">08</span>Indemnification</h2>
-  <h2 data-lang="es"><span class="num">08</span>Indemnización</h2>
-  <div data-lang="en"><p>You agree to indemnify and hold harmless Bridg, Novar Holding Corp, and their drivers and partners from claims arising out of your orders, the goods you ship, or your breach of these Terms.</p></div>
-  <div data-lang="es"><p>Aceptas indemnizar y mantener libre de responsabilidad a Bridg, Novar Holding Corp, y a sus conductores y socios, frente a reclamos derivados de tus pedidos, los bienes que envías o tu incumplimiento de estos Términos.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">09</span>Intellectual Property</h2>
-  <h2 data-lang="es"><span class="num">09</span>Propiedad Intelectual</h2>
-  <div data-lang="en"><p>The Bridg Connects name, logo, site, and content are owned by Novar Holding Corp and may not be used without permission.</p></div>
-  <div data-lang="es"><p>El nombre, logo, sitio y contenido de Bridg Connects son propiedad de Novar Holding Corp y no pueden usarse sin permiso.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">10</span>Governing Law & Disputes</h2>
-  <h2 data-lang="es"><span class="num">10</span>Ley Aplicable y Disputas</h2>
-  <div data-lang="en"><p>These Terms are governed by the laws of the State of California. Any dispute will be resolved in the state or federal courts located in California, unless otherwise required by law.</p></div>
-  <div data-lang="es"><p>Estos Términos se rigen por las leyes del Estado de California. Cualquier disputa se resolverá en los tribunales estatales o federales ubicados en California, salvo que la ley exija lo contrario.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">11</span>Changes & Contact</h2>
-  <h2 data-lang="es"><span class="num">11</span>Cambios y Contacto</h2>
-  <div data-lang="en"><p>We may update these Terms; continued use after changes means you accept them. Contact Bridg Connects LLC at <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a> or 3900 W Alameda Ave, Suite OPS 020, Burbank, CA 91505.</p></div>
-  <div data-lang="es"><p>Podemos actualizar estos Términos; el uso continuado tras los cambios significa que los aceptas. Contacta a Bridg Connects LLC en <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a> o 3900 W Alameda Ave, Suite OPS 020, Burbank, CA 91505.</p></div>
+  <h2 data-lang="es"><span class="num">01</span>Qué Es Bridg</h2>
+  <div data-lang="en"><p>Bridg Connects LLC is a <strong>licensed property broker</strong> (USDOT 9709109 · MC 88040280). We arrange same-day delivery of construction, building supply, and trade materials in Southern California.</p>
+<p>Bridg does not own a fleet and does not operate the vehicles. Deliveries are performed by <strong>independent contractors</strong> who use their own vehicles and carry their own insurance. Our role is to match your load to a qualified vehicle, price the job, dispatch it, and document the delivery.</p></div>
+  <div data-lang="es"><p>Bridg Connects LLC es un <strong>broker de propiedad con licencia</strong> (USDOT 9709109 · MC 88040280). Coordinamos entregas el mismo día de materiales de construcción y suministros en el Sur de California.</p>
+<p>Bridg no posee una flota y no opera los vehículos. Las entregas las realizan <strong>contratistas independientes</strong> que usan sus propios vehículos y cargan su propio seguro. Nuestro rol es emparejar tu carga con el vehículo adecuado, cotizar el trabajo, despacharlo y documentar la entrega.</p></div>
 </section>
 
-  <p class="note" data-lang="en">This document is a general template provided for Bridg Connects LLC. It is not legal advice. Before relying on it, have it reviewed by a licensed attorney — especially the California privacy (CCPA/CPRA) terms and any provisions affecting liability or contractor classification.</p>
-  <p class="note" data-lang="es">Este documento es una plantilla general para Bridg Connects LLC. No constituye asesoría legal. Antes de confiarte en él, hazlo revisar por un abogado licenciado — en especial los términos de privacidad de California (CCPA/CPRA) y cualquier cláusula que afecte responsabilidad o clasificación de contratistas.</p>
+<section class="clause">
+  <h2 data-lang="en"><span class="num">02</span>Quotes & Estimates</h2>
+  <h2 data-lang="es"><span class="num">02</span>Cotizaciones y Estimados</h2>
+  <div data-lang="en"><p>Prices shown on our site as "Starting at" are <strong>minimum starting rates</strong>, not final prices. The instant estimate generated by our quote tool is calculated from the information you provide plus live route data, and is presented as a <strong>range</strong>.</p>
+<p>Your estimate is <strong>not a binding contract</strong>. Final pricing is confirmed before dispatch and may change if the actual load differs from what was described — for example greater weight, additional stops, a larger vehicle requirement, extended wait time, or access restrictions at either location.</p>
+<p>Promotional discounts, where offered, apply to a single delivery for new accounts unless stated otherwise, and expire at the time shown on the quote.</p></div>
+  <div data-lang="es"><p>Los precios que muestra el sitio como "Starting at" (desde) son <strong>tarifas mínimas de inicio</strong>, no precios finales. El estimado instantáneo de nuestra herramienta se calcula con la información que proporcionas más datos de ruta en vivo, y se presenta como un <strong>rango</strong>.</p>
+<p>Tu estimado <strong>no es un contrato vinculante</strong>. El precio final se confirma antes del despacho y puede cambiar si la carga real difiere de lo descrito — por ejemplo mayor peso, paradas adicionales, necesidad de un vehículo más grande, tiempo de espera extendido o restricciones de acceso en cualquiera de los puntos.</p>
+<p>Los descuentos promocionales, cuando se ofrecen, aplican a una sola entrega para cuentas nuevas salvo que se indique lo contrario, y expiran en el momento mostrado en la cotización.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">03</span>Business Accounts</h2>
+  <h2 data-lang="es"><span class="num">03</span>Cuentas Empresariales</h2>
+  <div data-lang="en"><p>You may create a business account to save quotes and view your delivery history. You are responsible for the accuracy of the information you provide and for keeping your password confidential. You are responsible for activity that occurs under your account.</p>
+<p>Accounts are intended for business use. We may suspend or close an account for non-payment, misuse of the platform, or attempts to circumvent these Terms.</p></div>
+  <div data-lang="es"><p>Puedes crear una cuenta empresarial para guardar cotizaciones y ver tu historial de entregas. Eres responsable de la exactitud de la información que proporcionas y de mantener tu contraseña confidencial. Eres responsable de la actividad que ocurra bajo tu cuenta.</p>
+<p>Las cuentas están destinadas a uso empresarial. Podemos suspender o cerrar una cuenta por falta de pago, uso indebido de la plataforma o intentos de eludir estos Términos.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">04</span>Your Responsibilities</h2>
+  <h2 data-lang="es"><span class="num">04</span>Tus Responsabilidades</h2>
+  <div data-lang="en"><ul>
+<li><strong>Describe the load accurately</strong> — weight, dimensions, quantity, and any fragility or handling requirements.</li>
+<li><strong>Have the order ready</strong> at the pickup location, staged and identifiable, when the driver arrives.</li>
+<li><strong>Provide access</strong> — gate codes, contact names, dock or entry instructions for both locations.</li>
+<li><strong>Ensure someone can receive</strong> the delivery, or authorize an unattended drop in writing.</li>
+<li><strong>Do not tender prohibited items</strong> (see below).</li>
+</ul>
+<p>Delays, failed deliveries, or additional charges caused by inaccurate information or lack of access are your responsibility.</p></div>
+  <div data-lang="es"><ul>
+<li><strong>Describe la carga con exactitud</strong> — peso, dimensiones, cantidad y cualquier requisito de fragilidad o manejo.</li>
+<li><strong>Ten el pedido listo</strong> en el punto de recogida, preparado e identificable, cuando llegue el conductor.</li>
+<li><strong>Proporciona acceso</strong> — códigos de portón, nombres de contacto, instrucciones de muelle o entrada para ambos puntos.</li>
+<li><strong>Asegura que alguien pueda recibir</strong> la entrega, o autoriza por escrito una entrega sin presencia.</li>
+<li><strong>No entregues artículos prohibidos</strong> (ver abajo).</li>
+</ul>
+<p>Los retrasos, entregas fallidas o cargos adicionales causados por información inexacta o falta de acceso son tu responsabilidad.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">05</span>Prohibited Items</h2>
+  <h2 data-lang="es"><span class="num">05</span>Artículos Prohibidos</h2>
+  <div data-lang="en"><p>We do not transport:</p>
+<ul>
+<li>Hazardous materials requiring placarding or special licensing.</li>
+<li>Firearms, ammunition, explosives, or controlled substances.</li>
+<li>Live animals or perishable food requiring temperature control.</li>
+<li>Cash, precious metals, jewelry, or other high-value negotiable items.</li>
+<li>Loads exceeding the stated capacity of the vehicle requested, or requiring permits for oversize or overweight transport.</li>
+<li>Anything unlawful to possess or transport.</li>
+</ul>
+<p>If a driver arrives and the load falls into a prohibited category, the delivery will be declined and a trip charge may apply.</p></div>
+  <div data-lang="es"><p>No transportamos:</p>
+<ul>
+<li>Materiales peligrosos que requieran rotulación o licencia especial.</li>
+<li>Armas de fuego, municiones, explosivos o sustancias controladas.</li>
+<li>Animales vivos o alimentos perecederos que requieran control de temperatura.</li>
+<li>Efectivo, metales preciosos, joyería u otros bienes negociables de alto valor.</li>
+<li>Cargas que excedan la capacidad declarada del vehículo solicitado, o que requieran permisos por sobredimensión o sobrepeso.</li>
+<li>Cualquier cosa ilegal de poseer o transportar.</li>
+</ul>
+<p>Si el conductor llega y la carga entra en una categoría prohibida, la entrega se rechazará y puede aplicar un cargo por viaje.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">06</span>Payment</h2>
+  <h2 data-lang="es"><span class="num">06</span>Pago</h2>
+  <div data-lang="en"><p>Invoices are issued per delivery unless we have agreed to different terms in writing. Payment is accepted by the methods shown on your invoice, including online payment links.</p>
+<p>Standard terms are <strong>due upon receipt</strong> unless otherwise stated on the invoice. Accounts with approved terms are subject to the payment window shown. Late balances may pause new dispatch until cleared.</p>
+<p>Surcharges that apply to your delivery — additional stops, wait time, heavy load, second helper, rush window, or compliance fees — are itemized on the invoice.</p></div>
+  <div data-lang="es"><p>Las facturas se emiten por entrega salvo que hayamos acordado términos distintos por escrito. Se acepta pago por los métodos indicados en tu factura, incluyendo enlaces de pago en línea.</p>
+<p>Los términos estándar son <strong>pago al recibir</strong> salvo indicación distinta en la factura. Las cuentas con términos aprobados están sujetas a la ventana de pago mostrada. Los saldos vencidos pueden pausar nuevos despachos hasta ser liquidados.</p>
+<p>Los sobrecargos que apliquen a tu entrega — paradas adicionales, tiempo de espera, carga pesada, segundo ayudante, ventana urgente o cargos de cumplimiento — se detallan en la factura.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">07</span>Cancellation</h2>
+  <h2 data-lang="es"><span class="num">07</span>Cancelación</h2>
+  <div data-lang="en"><p>You may cancel at no charge before a driver is dispatched. Once a driver has been dispatched or has arrived at the pickup location, a trip charge may apply to cover the driver's time and mileage.</p>
+<p>If we cannot complete a delivery for reasons within our control, you are not charged for that delivery.</p></div>
+  <div data-lang="es"><p>Puedes cancelar sin cargo antes de que se despache un conductor. Una vez despachado o cuando el conductor ya llegó al punto de recogida, puede aplicar un cargo por viaje para cubrir su tiempo y millaje.</p>
+<p>Si no podemos completar una entrega por razones dentro de nuestro control, no se te cobra esa entrega.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">08</span>Cargo Claims & Liability</h2>
+  <h2 data-lang="es"><span class="num">08</span>Reclamos de Carga y Responsabilidad</h2>
+  <div data-lang="en"><p>As a broker, Bridg arranges transportation; it does not act as the motor carrier. Claims for loss or damage are handled under the applicable cargo coverage for the delivery.</p>
+<p>Report any loss or damage <strong>within 24 hours</strong> of delivery, with photos and a copy of the proof of delivery. Late notice may limit recovery.</p>
+<p>Bridg is not liable for indirect, incidental, special, or consequential damages, including lost profits, project delays, crew downtime, or liquidated damages under your own contracts. Our total liability for any delivery is limited to the amount you paid for that delivery, except where a higher amount is provided under applicable cargo coverage.</p>
+<div class="note"><strong>High-value or irreplaceable cargo:</strong> tell us before dispatch so appropriate handling and coverage can be arranged. Undeclared high-value items are moved at your risk.</div></div>
+  <div data-lang="es"><p>Como broker, Bridg coordina el transporte; no actúa como transportista. Los reclamos por pérdida o daño se atienden bajo la cobertura de carga aplicable a la entrega.</p>
+<p>Reporta cualquier pérdida o daño <strong>dentro de 24 horas</strong> de la entrega, con fotos y copia de la prueba de entrega. El aviso tardío puede limitar la recuperación.</p>
+<p>Bridg no es responsable por daños indirectos, incidentales, especiales o consecuentes, incluyendo pérdida de ganancias, retrasos de proyecto, tiempo muerto de personal o penalizaciones bajo tus propios contratos. Nuestra responsabilidad total por cualquier entrega se limita al monto que pagaste por esa entrega, salvo donde una cobertura de carga aplicable provea un monto mayor.</p>
+<div class="note"><strong>Carga de alto valor o irreemplazable:</strong> avísanos antes del despacho para coordinar manejo y cobertura apropiados. Los artículos de alto valor no declarados se mueven a tu riesgo.</div></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">09</span>Independent Contractors</h2>
+  <h2 data-lang="es"><span class="num">09</span>Contratistas Independientes</h2>
+  <div data-lang="en"><p>Drivers who accept deliveries through Bridg are independent contractors, not employees of Bridg. They are responsible for their own vehicle, licensing, insurance, taxes, and compliance with traffic and vehicle regulations.</p>
+<p>Nothing in these Terms creates an employment, partnership, joint venture, or agency relationship between Bridg and a driver, or between you and a driver.</p></div>
+  <div data-lang="es"><p>Los conductores que aceptan entregas a través de Bridg son contratistas independientes, no empleados de Bridg. Son responsables de su vehículo, licencias, seguro, impuestos y cumplimiento de las regulaciones de tránsito y vehículos.</p>
+<p>Nada en estos Términos crea una relación de empleo, sociedad, empresa conjunta o agencia entre Bridg y un conductor, ni entre tú y un conductor.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">10</span>Site Use & AI Features</h2>
+  <h2 data-lang="es"><span class="num">10</span>Uso del Sitio y Funciones de IA</h2>
+  <div data-lang="en"><p>Our site includes automated tools that generate price estimates and suggest a vehicle based on the load you describe. These outputs are informational and are reviewed by our team before dispatch. See our <a class="inline" href="ai-disclosure.html">AI Disclosure</a> for details.</p>
+<p>You agree not to scrape, reverse engineer, overload, or attempt to gain unauthorized access to the site, our accounts system, or our providers' systems.</p></div>
+  <div data-lang="es"><p>Nuestro sitio incluye herramientas automatizadas que generan estimados de precio y sugieren un vehículo según la carga que describes. Estos resultados son informativos y son revisados por nuestro equipo antes del despacho. Ve nuestra <a class="inline" href="ai-disclosure.html">Divulgación de IA</a> para detalles.</p>
+<p>Aceptas no extraer datos automáticamente, hacer ingeniería inversa, sobrecargar ni intentar acceso no autorizado al sitio, a nuestro sistema de cuentas ni a los sistemas de nuestros proveedores.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">11</span>Governing Law & Changes</h2>
+  <h2 data-lang="es"><span class="num">11</span>Ley Aplicable y Cambios</h2>
+  <div data-lang="en"><p>These Terms are governed by the laws of the State of California, without regard to conflict-of-law rules. Any dispute will be brought in the state or federal courts located in Los Angeles County, California.</p>
+<p>We may update these Terms as our services evolve. The "last updated" date reflects the current version. Continued use of the site or placing a new order after changes are posted constitutes acceptance.</p>
+<p>Bridg Connects LLC is a Novar Holding Corp company operating from Burbank, California. Questions about these Terms can be directed to us through the scheduling link on bridgconnects.com.</p></div>
+  <div data-lang="es"><p>Estos Términos se rigen por las leyes del Estado de California, sin considerar reglas de conflicto de leyes. Cualquier disputa se presentará en los tribunales estatales o federales ubicados en el Condado de Los Ángeles, California.</p>
+<p>Podemos actualizar estos Términos conforme evolucionan nuestros servicios. La fecha de "última actualización" refleja la versión vigente. El uso continuado del sitio o hacer un nuevo pedido después de publicarse cambios constituye aceptación.</p>
+<p>Bridg Connects LLC es una empresa de Novar Holding Corp que opera desde Burbank, California. Las preguntas sobre estos Términos pueden dirigirse a nosotros por el enlace de agenda en bridgconnects.com.</p></div>
+</section>
+
 </main>
 
-<footer>
-  <div class="flinks"><a href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a><a href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Mensajería</span></a><a href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a><a href="ai-disclosure.html"><span data-lang="en">AI</span><span data-lang="es">IA</span></a><a href="index.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></div>
-  <div class="fcopy">© 2025 Bridg Connects · A <a href="https://novarholding.com" target="_blank" rel="noopener">Novar Holding Corp</a> Company</div>
-</footer>
+<footer><div class="foot-in">
+  <div class="flinks">
+    <a href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a>
+    <a href="sms-terms.html">SMS</a>
+    <a href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a>
+    <a href="ai-disclosure.html"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación IA</span></a>
+    <a href="index.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a>
+  </div>
+  <div class="fcopy">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER<br/>
+  © 2026 BRIDG CONNECTS LLC · A NOVAR HOLDING CORP COMPANY · BURBANK, CA</div>
+</div></footer>
 
 <script>
 function setLang(l){
-  document.body.classList.toggle("es",l==="es");
-  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.textContent.trim()===l.toUpperCase()));
-  document.documentElement.lang=l;
+  document.body.classList.toggle('es', l==='es');
+  document.getElementById('lgEN').classList.toggle('active', l==='en');
+  document.getElementById('lgES').classList.toggle('active', l==='es');
 }
 </script>
 </body>

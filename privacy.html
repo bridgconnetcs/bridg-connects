@@ -2,89 +2,69 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<meta name="color-scheme" content="light only"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PRIVACY <em>POLICY</em> — Bridg Connects</title>
+<title>PRIVACY POLICY — Bridg Connects</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{
-  min-height:100vh;font-family:"DM Sans",sans-serif;overflow-x:hidden;color:#fff;
-  background-color:#1a1a1a;
-  background-image:
-    repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(255,100,13,0.03) 2px,rgba(255,100,13,0.03) 4px),
-    repeating-linear-gradient(-45deg,transparent,transparent 2px,rgba(80,80,80,0.12) 2px,rgba(80,80,80,0.12) 4px),
-    linear-gradient(135deg,#1c1c1c 0%,#242424 25%,#1a1a1a 50%,#222222 75%,#1c1c1c 100%);
-  background-size:8px 8px,8px 8px,100% 100%;
-}
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% 0%, rgba(255,100,13,0.08) 0%, transparent 55%)}
-:root{--orange:#FF640D;--orange-dark:#cc4d00;--wire:#3a3a3a;--ash:#8a8a8a;--silver:#cfcfcf;--card-bg:rgba(18,18,18,0.92);--card-border:rgba(255,100,13,0.22)}
-
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 1.4rem;height:54px;background:rgba(15,15,15,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,100,13,0.2)}
-.nav-logo img{height:32px;width:auto;display:block;object-fit:contain}
-.lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
-.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"Space Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
-.lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
-.lang-btn:hover:not(.active){background:#2a2a2a;color:#fff}
-.back-link{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>:root{color-scheme:light only;
+  --white:#FFFFFF;--ink:#0B0B0C;--steel:#4A4A50;--hairline:#E8E8EA;--band:#F6F6F7;
+  --orange:#FF640D;--orange-soft:rgba(255,100,13,.08);
+  --FD:'Space Grotesk',sans-serif;--FB:'Inter',sans-serif;--FM:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:#FFFFFF}
+body{background:#FFFFFF !important;color:#0B0B0C !important;font-family:var(--FB);line-height:1.68;-webkit-font-smoothing:antialiased}
+body.es [data-lang="en"]{display:none!important}
+body:not(.es) [data-lang="es"]{display:none!important}
+.nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)}
+.nav-in{max-width:860px;margin:0 auto;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.back-link{font-family:var(--FM);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);text-decoration:none}
 .back-link:hover{color:var(--orange)}
-
-.shell{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:6.5rem 1.5rem 3rem}
-.doc-head{margin-bottom:1.6rem}
-.eyebrow{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem}
-h1{font-family:"Bebas Neue",sans-serif;font-size:clamp(2.4rem,8vw,3.6rem);line-height:.95;letter-spacing:.02em;color:#fff}
+.nav-logo{font-family:var(--FD);font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--ink);text-decoration:none;line-height:1;text-align:center}
+.nav-logo span{color:var(--orange)}
+.nav-logo small{display:block;font-family:var(--FM);font-size:.44rem;letter-spacing:.42em;color:var(--steel);font-weight:400;margin-top:1px}
+.lang-toggle{display:flex;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.lang-btn{border:0;background:transparent;padding:.34rem .62rem;font-family:var(--FM);font-size:.64rem;cursor:pointer;color:var(--steel)}
+.lang-btn.active{background:var(--ink);color:#fff}
+.shell{max-width:860px;margin:0 auto;padding:3.5rem 1.5rem 4rem}
+.doc-head{margin-bottom:1.8rem}
+.eyebrow{font-family:var(--FM);font-size:.6rem;letter-spacing:.24em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:100px;padding:.5rem 1rem;margin-bottom:1.2rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+h1{font-family:var(--FD);font-weight:700;font-size:clamp(1.9rem,5vw,2.9rem);line-height:1.06;letter-spacing:-.02em}
 h1 em{font-style:normal;color:var(--orange)}
-.updated{font-family:"Space Mono",monospace;font-size:.62rem;letter-spacing:.08em;color:var(--ash);margin-top:.7rem}
-
-.subnav{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 2.2rem;padding-bottom:1.4rem;border-bottom:1px solid rgba(255,255,255,0.08)}
-.subnav a{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);text-decoration:none;border:1px solid var(--wire);padding:.4rem .7rem;transition:all .2s}
-.subnav a:hover{border-color:var(--orange);color:#fff}
-.subnav a.current{background:var(--orange);color:#fff;border-color:var(--orange);font-weight:700}
-
-.lede{font-size:1rem;font-weight:300;color:var(--silver);line-height:1.7;margin-bottom:2.2rem}
-
-section.clause{margin-bottom:1.9rem}
-section.clause h2{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;letter-spacing:.03em;color:#fff;margin-bottom:.6rem;line-height:1.08}
-section.clause h2 .num{font-family:"Space Mono",monospace;font-size:.8rem;color:var(--orange);letter-spacing:0;margin-right:.5rem}
-.clause p{font-size:.93rem;font-weight:300;color:var(--silver);line-height:1.75;margin-bottom:.7rem}
-.clause p strong{color:#fff;font-weight:500}
-.clause ul{list-style:none;margin:.2rem 0 .7rem}
-.clause li{font-size:.93rem;font-weight:300;color:var(--silver);line-height:1.7;padding-left:1.1rem;position:relative;margin-bottom:.35rem}
-.clause li::before{content:"—";position:absolute;left:0;color:var(--orange)}
-.clause a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,0.35)}
-.clause a:hover{border-bottom-color:var(--orange)}
-
-.callout{border:1px solid var(--card-border);background:rgba(255,100,13,0.05);padding:1rem 1.1rem;margin:.4rem 0 1rem}
-.callout p{margin:0;color:#e8e8e8}
-
-.note{font-size:.78rem;font-style:italic;color:var(--ash);line-height:1.6;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,0.08)}
-
-footer{position:relative;z-index:1;background:rgba(10,10,10,0.85);border-top:1px solid rgba(255,100,13,0.15);padding:1.6rem 2rem;text-align:center;backdrop-filter:blur(10px)}
-.flinks{display:flex;flex-wrap:wrap;gap:.4rem 1rem;justify-content:center;margin-bottom:.9rem}
-.flinks a{font-family:"Space Mono",monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--silver);text-decoration:none}
+.updated{font-family:var(--FM);font-size:.66rem;letter-spacing:.08em;color:var(--steel);margin-top:.9rem}
+.subnav{display:flex;gap:.4rem;flex-wrap:wrap;background:var(--band);border:1px solid var(--hairline);border-radius:10px;padding:.32rem;margin-bottom:2.4rem}
+.subnav a{flex:1;text-align:center;min-width:88px;font-family:var(--FD);font-weight:600;font-size:.78rem;color:var(--steel);text-decoration:none;padding:.55rem .5rem;border-radius:8px}
+.subnav a.current{background:var(--ink);color:#fff}
+.subnav a:not(.current):hover{color:var(--orange)}
+.lede{font-size:1rem;font-weight:300;color:var(--steel);padding-bottom:1.8rem;border-bottom:1px solid var(--hairline)}
+.clause{padding:1.9rem 0;border-bottom:1px solid var(--hairline)}
+.clause:last-of-type{border-bottom:0}
+.clause h2{font-family:var(--FD);font-weight:600;font-size:1.14rem;letter-spacing:-.01em;display:flex;gap:.75rem;align-items:baseline;margin-bottom:.85rem}
+.num{font-family:var(--FM);font-size:.68rem;color:var(--orange);font-weight:500}
+.clause p{font-size:.93rem;color:var(--steel);font-weight:300;margin-bottom:.7rem}
+.clause p:last-child{margin-bottom:0}
+.clause strong{color:var(--ink);font-weight:600}
+.clause ul{list-style:none;margin:.5rem 0 .8rem}
+.clause li{font-size:.93rem;color:var(--steel);font-weight:300;padding-left:1.1rem;position:relative;margin-bottom:.45rem}
+.clause li::before{content:'';position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.note{background:var(--band);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:1rem 1.15rem;font-size:.88rem;color:var(--steel);font-weight:300;margin-top:1rem}
+.note strong{color:var(--ink)}
+a.inline{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.35)}
+footer{border-top:1px solid var(--hairline);background:#fff}
+.foot-in{max-width:860px;margin:0 auto;padding:1.8rem 1.5rem;text-align:center}
+.flinks{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:.9rem}
+.flinks a{font-size:.8rem;color:var(--ink);text-decoration:none}
 .flinks a:hover{color:var(--orange)}
-.fcopy{font-family:"Space Mono",monospace;font-size:.52rem;letter-spacing:.12em;color:var(--ash)}
-.fcopy a{color:var(--orange);text-decoration:none}
-
-[data-lang="es"]{display:none}
-body.es [data-lang="es"]{display:block}
-body.es [data-lang="en"]{display:none}
-span[data-lang="es"]{display:none}
-body.es span[data-lang="es"]{display:inline}
-body.es span[data-lang="en"]{display:none}
-</style>
+.fcopy{font-family:var(--FM);font-size:.58rem;letter-spacing:.1em;color:var(--steel);line-height:1.9}</style>
 </head>
 <body>
-<nav class="nav">
+<nav class="nav"><div class="nav-in">
   <a href="index.html" class="back-link">← <span data-lang="en">Back</span><span data-lang="es">Volver</span></a>
-  <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" onclick="setLang('es')">ES</button>
-  </div>
-</nav>
+  <a class="nav-logo" href="index.html">BRIDG<span>.</span><small>CONNECTS</small></a>
+  <div class="lang-toggle"><button class="lang-btn active" id="lgEN" onclick="setLang('en')">EN</button><button class="lang-btn" id="lgES" onclick="setLang('es')">ES</button></div>
+</div></nav>
 
 <main class="shell">
   <div class="doc-head">
@@ -92,75 +72,193 @@ body.es span[data-lang="en"]{display:none}
     <p class="eyebrow" data-lang="es">Cómo manejamos tu información</p>
     <h1 data-lang="en">PRIVACY <em>POLICY</em></h1>
     <h1 data-lang="es">POLÍTICA DE <em>PRIVACIDAD</em></h1>
-    <p class="updated"><span data-lang="en">Last updated: June 28, 2026</span><span data-lang="es">Última actualización: 28 de junio de 2026</span></p>
+    <p class="updated"><span data-lang="en">Last updated: July 25, 2026</span><span data-lang="es">Última actualización: 25 de julio de 2026</span></p>
   </div>
 
   <nav class="subnav"><a class="current" href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a><a class="" href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Mensajería</span></a><a class="" href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a><a class="" href="ai-disclosure.html"><span data-lang="en">AI</span><span data-lang="es">IA</span></a></nav>
 
-  <p class="lede" data-lang="en">This Privacy Policy explains how Bridg Connects LLC, operating as Bridg Connects ("Bridg," "we," "us"), a Novar Holding Corp company, collects, uses, and protects information when you use bridgconnects.com and our same-day delivery brokerage services in Southern California.</p>
-  <p class="lede" data-lang="es">Esta Política de Privacidad explica cómo Bridg Connects LLC, operando como Bridg Connects ("Bridg", "nosotros"), una empresa de Novar Holding Corp, recopila, usa y protege tu información cuando usas bridgconnects.com y nuestros servicios de intermediación de entregas el mismo día en el Sur de California.</p>
+  <p class="lede" data-lang="en">This Privacy Policy explains how Bridg Connects LLC, operating as Bridg Connects ("Bridg," "we," "us"), a Novar Holding Corp company, collects, uses, and protects information when you use bridgconnects.com, create a business account, or use our same-day delivery brokerage services in Southern California.</p>
+  <p class="lede" data-lang="es">Esta Política de Privacidad explica cómo Bridg Connects LLC, operando como Bridg Connects ("Bridg", "nosotros"), una empresa de Novar Holding Corp, recopila, usa y protege tu información cuando usas bridgconnects.com, creas una cuenta empresarial o usas nuestros servicios de intermediación de entregas el mismo día en el Sur de California.</p>
 
-  <section class="clause">
+<section class="clause">
   <h2 data-lang="en"><span class="num">01</span>Information We Collect</h2>
   <h2 data-lang="es"><span class="num">01</span>Información que Recopilamos</h2>
-  <div data-lang="en"><p>We collect only what we need to coordinate a delivery:</p><ul><li><strong>Contact details</strong> — name, phone number, email, and pickup/delivery addresses.</li><li><strong>Order details</strong> — items, weight, dimensions, and special handling notes.</li><li><strong>Delivery location data</strong> — driver location during an active delivery, used for tracking and ETA.</li><li><strong>Payment information</strong> — processed by a third-party payment provider; we do not store full card numbers.</li><li><strong>Site and device data</strong> — basic usage and device information collected automatically (see Cookies below).</li><li><strong>Communications</strong> — messages you send us by email, text, or chat.</li></ul></div>
-  <div data-lang="es"><p>Recopilamos solo lo necesario para coordinar una entrega:</p><ul><li><strong>Datos de contacto</strong> — nombre, teléfono, correo y direcciones de recogida/entrega.</li><li><strong>Detalles del pedido</strong> — artículos, peso, dimensiones y notas de manejo especial.</li><li><strong>Ubicación de entrega</strong> — ubicación del conductor durante una entrega activa, para rastreo y tiempo estimado.</li><li><strong>Información de pago</strong> — procesada por un proveedor de pagos externo; no almacenamos números de tarjeta completos.</li><li><strong>Datos del sitio y dispositivo</strong> — uso básico e información del dispositivo recopilada automáticamente (ver Cookies).</li><li><strong>Comunicaciones</strong> — mensajes que nos envías por correo, texto o chat.</li></ul></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">02</span>How We Use Your Information</h2>
-  <h2 data-lang="es"><span class="num">02</span>Cómo Usamos tu Información</h2>
-  <div data-lang="en"><p>We use your information to provide and improve our services: to schedule pickups, dispatch drivers, send delivery notifications, process payments, respond to questions, and keep records of completed deliveries. We do not use your information for purposes unrelated to providing the delivery service without telling you first.</p></div>
-  <div data-lang="es"><p>Usamos tu información para brindar y mejorar nuestros servicios: programar recogidas, asignar conductores, enviar notificaciones de entrega, procesar pagos, responder preguntas y mantener registros de entregas completadas. No usamos tu información para fines ajenos al servicio de entrega sin avisarte primero.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">03</span>SMS / Text Messages</h2>
-  <h2 data-lang="es"><span class="num">03</span>Mensajes de Texto (SMS)</h2>
-  <div data-lang="en"><p>When you place an order or give us your number, you consent to receive transactional text messages about your delivery — such as "driver on the way," delivery confirmation, and a request to rate your experience. Message frequency varies by order. Message and data rates may apply. Reply <strong>STOP</strong> to opt out at any time, or <strong>HELP</strong> for help.</p><div class='callout'><p>We do <strong>not</strong> sell, rent, or share your mobile number or SMS opt-in consent with third parties or affiliates for their marketing or promotional purposes. See our <a href='sms-terms.html'>SMS Terms</a> for full details.</p></div></div>
-  <div data-lang="es"><p>Cuando haces un pedido o nos das tu número, consientes recibir mensajes de texto transaccionales sobre tu entrega — como "conductor en camino", confirmación de entrega y una solicitud para calificar tu experiencia. La frecuencia varía por pedido. Pueden aplicar tarifas de mensajes y datos. Responde <strong>STOP</strong> para darte de baja en cualquier momento, o <strong>HELP</strong> para ayuda.</p><div class='callout'><p><strong>No</strong> vendemos, rentamos ni compartimos tu número móvil ni tu consentimiento de SMS con terceros o afiliados para sus fines de marketing o promoción. Ver nuestros <a href='sms-terms.html'>Términos de Mensajería</a> para más detalle.</p></div></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">04</span>Cookies & Tracking</h2>
-  <h2 data-lang="es"><span class="num">04</span>Cookies y Rastreo</h2>
-  <div data-lang="en"><p>Our site may use cookies and similar technologies for basic functionality, to remember your language preference, and to understand how the site is used. You can control cookies through your browser settings. Disabling them may affect some features.</p></div>
-  <div data-lang="es"><p>Nuestro sitio puede usar cookies y tecnologías similares para funciones básicas, recordar tu idioma y entender cómo se usa el sitio. Puedes controlar las cookies desde tu navegador. Desactivarlas puede afectar algunas funciones.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">05</span>How We Share Information</h2>
-  <h2 data-lang="es"><span class="num">05</span>Cómo Compartimos Información</h2>
-  <div data-lang="en"><p>We share information only as needed to complete a delivery or run our business:</p><ul><li><strong>Drivers</strong> — independent contractors receive the pickup/delivery details needed to complete your order.</li><li><strong>Service providers</strong> — dispatch, tracking, payment, and communication providers that operate on our behalf.</li><li><strong>Legal</strong> — when required by law or to protect rights, safety, or property.</li></ul><p><strong>We do not sell your personal information.</strong></p></div>
-  <div data-lang="es"><p>Compartimos información solo según sea necesario para completar una entrega u operar nuestro negocio:</p><ul><li><strong>Conductores</strong> — los contratistas independientes reciben los detalles de recogida/entrega necesarios para completar tu pedido.</li><li><strong>Proveedores de servicio</strong> — proveedores de despacho, rastreo, pagos y comunicación que operan en nuestro nombre.</li><li><strong>Legal</strong> — cuando lo exige la ley o para proteger derechos, seguridad o propiedad.</li></ul><p><strong>No vendemos tu información personal.</strong></p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">06</span>Data Retention & Security</h2>
-  <h2 data-lang="es"><span class="num">06</span>Retención y Seguridad</h2>
-  <div data-lang="en"><p>We keep information only as long as needed to provide the service, meet legal and tax obligations, and resolve disputes. We use reasonable administrative and technical safeguards to protect it, though no method of transmission or storage is completely secure.</p></div>
-  <div data-lang="es"><p>Conservamos la información solo el tiempo necesario para brindar el servicio, cumplir obligaciones legales y fiscales y resolver disputas. Usamos salvaguardas administrativas y técnicas razonables para protegerla, aunque ningún método de transmisión o almacenamiento es completamente seguro.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">07</span>Your California Privacy Rights (CCPA/CPRA)</h2>
-  <h2 data-lang="es"><span class="num">07</span>Tus Derechos de Privacidad en California (CCPA/CPRA)</h2>
-  <div data-lang="en"><p>If you are a California resident, you may have the right to:</p><ul><li>Know what personal information we collect and how we use and share it.</li><li>Request access to or a copy of your personal information.</li><li>Request that we correct or delete your personal information.</li><li>Opt out of the "sale" or "sharing" of personal information (we do not sell or share it).</li><li>Not be discriminated against for exercising your rights.</li></ul><p>To exercise any of these rights, contact us at <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a>. We will verify your request and respond within the timeframes required by law.</p></div>
-  <div data-lang="es"><p>Si eres residente de California, puedes tener derecho a:</p><ul><li>Saber qué información personal recopilamos y cómo la usamos y compartimos.</li><li>Solicitar acceso o una copia de tu información personal.</li><li>Solicitar que corrijamos o eliminemos tu información personal.</li><li>Oponerte a la "venta" o "compartición" de información personal (no la vendemos ni compartimos).</li><li>No ser discriminado por ejercer tus derechos.</li></ul><p>Para ejercer cualquiera de estos derechos, escríbenos a <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a>. Verificaremos tu solicitud y responderemos dentro de los plazos que exige la ley.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">08</span>Children's Privacy</h2>
-  <h2 data-lang="es"><span class="num">08</span>Privacidad de Menores</h2>
-  <div data-lang="en"><p>Our services are intended for businesses and adults. We do not knowingly collect personal information from children under 16. If you believe a child has given us information, contact us and we will delete it.</p></div>
-  <div data-lang="es"><p>Nuestros servicios están dirigidos a empresas y adultos. No recopilamos a sabiendas información de menores de 16 años. Si crees que un menor nos dio información, contáctanos y la eliminaremos.</p></div>
-</section><section class="clause">
-  <h2 data-lang="en"><span class="num">09</span>Changes & Contact</h2>
-  <h2 data-lang="es"><span class="num">09</span>Cambios y Contacto</h2>
-  <div data-lang="en"><p>We may update this policy from time to time; the "last updated" date above reflects the latest version. Questions or requests? Contact Bridg Connects LLC at <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a> or 3900 W Alameda Ave, Suite OPS 020, Burbank, CA 91505.</p></div>
-  <div data-lang="es"><p>Podemos actualizar esta política ocasionalmente; la fecha de "última actualización" arriba refleja la versión más reciente. ¿Preguntas o solicitudes? Contacta a Bridg Connects LLC en <a href='mailto:support@bridgconnects.com'>support@bridgconnects.com</a> o 3900 W Alameda Ave, Suite OPS 020, Burbank, CA 91505.</p></div>
+  <div data-lang="en"><p>We collect only what we need to quote, coordinate, and document a delivery:</p>
+<ul>
+<li><strong>Contact details</strong> — name, company name, phone number, email, and pickup/delivery addresses.</li>
+<li><strong>Account credentials</strong> — if you create a business account, your email and a password. Passwords are managed by Google Firebase Authentication and are never visible to us in readable form.</li>
+<li><strong>Order details</strong> — vehicle type, cargo description, weight, timing, and special handling notes.</li>
+<li><strong>Quote and delivery history</strong> — estimates generated for you and records of completed deliveries, stored under your account.</li>
+<li><strong>Route data</strong> — pickup and delivery addresses are sent to our mapping provider to calculate distance and drive time. Driver location is collected during an active delivery for tracking and ETA.</li>
+<li><strong>Proof of delivery</strong> — photos and recipient signature captured at drop-off.</li>
+<li><strong>Driver applicant data</strong> — for those applying to drive: license state, vehicle details, insurance status, availability, and consent to a background check.</li>
+</ul>
+<p>We do <strong>not</strong> collect or store full payment card numbers. Card data is handled entirely by our payment processors on their own systems.</p></div>
+  <div data-lang="es"><p>Recopilamos solo lo necesario para cotizar, coordinar y documentar una entrega:</p>
+<ul>
+<li><strong>Datos de contacto</strong> — nombre, empresa, teléfono, correo y direcciones de recogida/entrega.</li>
+<li><strong>Credenciales de cuenta</strong> — si creas una cuenta empresarial, tu correo y una contraseña. Las contraseñas son administradas por Google Firebase Authentication y nunca son visibles para nosotros en forma legible.</li>
+<li><strong>Detalles del pedido</strong> — tipo de vehículo, descripción de la carga, peso, tiempos y notas de manejo especial.</li>
+<li><strong>Historial de cotizaciones y entregas</strong> — estimados generados para ti y registros de entregas completadas, guardados en tu cuenta.</li>
+<li><strong>Datos de ruta</strong> — las direcciones se envían a nuestro proveedor de mapas para calcular distancia y tiempo. La ubicación del conductor se recopila durante una entrega activa para rastreo y tiempo estimado.</li>
+<li><strong>Prueba de entrega</strong> — fotos y firma del receptor al momento de entregar.</li>
+<li><strong>Datos de aspirantes a conductor</strong> — estado de licencia, detalles del vehículo, estado del seguro, disponibilidad y consentimiento para verificación de antecedentes.</li>
+</ul>
+<p><strong>No</strong> recopilamos ni almacenamos números completos de tarjetas. Los datos de tarjeta los maneja íntegramente el procesador de pagos en sus propios sistemas.</p></div>
 </section>
 
-  <p class="note" data-lang="en">This document is a general template provided for Bridg Connects LLC. It is not legal advice. Before relying on it, have it reviewed by a licensed attorney — especially the California privacy (CCPA/CPRA) terms and any provisions affecting liability or contractor classification.</p>
-  <p class="note" data-lang="es">Este documento es una plantilla general para Bridg Connects LLC. No constituye asesoría legal. Antes de confiarte en él, hazlo revisar por un abogado licenciado — en especial los términos de privacidad de California (CCPA/CPRA) y cualquier cláusula que afecte responsabilidad o clasificación de contratistas.</p>
+<section class="clause">
+  <h2 data-lang="en"><span class="num">02</span>How We Use It</h2>
+  <h2 data-lang="es"><span class="num">02</span>Cómo la Usamos</h2>
+  <div data-lang="en"><ul>
+<li>To generate quotes and price deliveries using real route data.</li>
+<li>To dispatch a driver, coordinate pickup and drop-off, and provide live tracking.</li>
+<li>To send order confirmations, driver-assigned and en-route notifications, and delivery confirmation by SMS and email.</li>
+<li>To invoice you and collect payment.</li>
+<li>To maintain your account, saved quotes, and delivery history.</li>
+<li>To evaluate driver applications and verify eligibility.</li>
+<li>To keep records required for our operations as a licensed property broker.</li>
+</ul>
+<p>We do <strong>not</strong> sell or rent your personal information. We do not share it for cross-context behavioral advertising.</p></div>
+  <div data-lang="es"><ul>
+<li>Para generar cotizaciones y calcular precios con datos reales de ruta.</li>
+<li>Para despachar un conductor, coordinar la recogida y entrega, y dar rastreo en vivo.</li>
+<li>Para enviar confirmaciones de pedido, avisos de conductor asignado y en camino, y confirmación de entrega por mensaje y correo.</li>
+<li>Para facturarte y cobrar el pago.</li>
+<li>Para mantener tu cuenta, cotizaciones guardadas e historial de entregas.</li>
+<li>Para evaluar solicitudes de conductores y verificar elegibilidad.</li>
+<li>Para conservar los registros que requiere nuestra operación como broker de propiedad con licencia.</li>
+</ul>
+<p><strong>No</strong> vendemos ni alquilamos tu información personal. No la compartimos para publicidad conductual entre contextos.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">03</span>Service Providers We Use</h2>
+  <h2 data-lang="es"><span class="num">03</span>Proveedores de Servicio que Usamos</h2>
+  <div data-lang="en"><p>We rely on established providers to run the platform. Each receives only the data needed for its function:</p>
+<ul>
+<li><strong>Google Firebase</strong> — account authentication and secure storage of your account profile, quotes, and delivery history.</li>
+<li><strong>Delivery management platform</strong> — dispatch, driver app, live tracking pages, customer notifications, and proof of delivery.</li>
+<li><strong>Mapping provider</strong> — geocoding of addresses and calculation of distance and drive time.</li>
+<li><strong>Email delivery service</strong> — transmission of quote requests and order forms to our team.</li>
+<li><strong>Payment processors</strong> — creation of payment links and processing of card payments.</li>
+<li><strong>Hosting provider</strong> — serving bridgconnects.com.</li>
+</ul>
+<p>These providers act on our instructions and are not permitted to use your information for their own marketing.</p></div>
+  <div data-lang="es"><p>Usamos proveedores establecidos para operar la plataforma. Cada uno recibe solo los datos necesarios para su función:</p>
+<ul>
+<li><strong>Google Firebase</strong> — autenticación de cuentas y almacenamiento seguro de tu perfil, cotizaciones e historial de entregas.</li>
+<li><strong>Plataforma de gestión de entregas</strong> — despacho, app del conductor, páginas de rastreo en vivo, notificaciones al cliente y prueba de entrega.</li>
+<li><strong>Proveedor de mapas</strong> — geocodificación de direcciones y cálculo de distancia y tiempo de manejo.</li>
+<li><strong>Servicio de correo</strong> — transmisión de solicitudes de cotización y formularios a nuestro equipo.</li>
+<li><strong>Procesadores de pago</strong> — creación de links de pago y procesamiento de tarjetas.</li>
+<li><strong>Proveedor de hosting</strong> — publicación de bridgconnects.com.</li>
+</ul>
+<p>Estos proveedores actúan según nuestras instrucciones y no tienen permitido usar tu información para su propio marketing.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">04</span>Your Account</h2>
+  <h2 data-lang="es"><span class="num">04</span>Tu Cuenta</h2>
+  <div data-lang="en"><p>Creating a business account is optional. You can request a quote without one.</p>
+<p>If you create an account, you are responsible for keeping your password confidential. You can request deletion of your account and its history at any time by contacting us — see <em>Your Rights</em> below.</p>
+<p>Your delivery history is visible only to you when signed in, and to Bridg staff for operational and billing purposes.</p></div>
+  <div data-lang="es"><p>Crear una cuenta empresarial es opcional. Puedes pedir una cotización sin ella.</p>
+<p>Si creas una cuenta, eres responsable de mantener tu contraseña confidencial. Puedes solicitar la eliminación de tu cuenta y su historial en cualquier momento contactándonos — ve <em>Tus Derechos</em> abajo.</p>
+<p>Tu historial de entregas es visible solo para ti cuando inicias sesión, y para el personal de Bridg con fines operativos y de facturación.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">05</span>Text Messages</h2>
+  <h2 data-lang="es"><span class="num">05</span>Mensajes de Texto</h2>
+  <div data-lang="en"><p>We send <strong>transactional delivery notifications only</strong> — order confirmation, driver assigned, driver en route, and delivery confirmation. We do not send marketing texts.</p>
+<p>Message frequency depends on your order activity. Message and data rates may apply. Reply <strong>STOP</strong> to opt out or <strong>HELP</strong> for assistance. Full details in our <a class="inline" href="sms-terms.html">SMS Terms</a>.</p></div>
+  <div data-lang="es"><p>Enviamos <strong>únicamente notificaciones transaccionales de entrega</strong> — confirmación del pedido, conductor asignado, conductor en camino y confirmación de entrega. No enviamos mensajes de marketing.</p>
+<p>La frecuencia depende de tu actividad de pedidos. Pueden aplicar tarifas de mensajes y datos. Responde <strong>STOP</strong> para darte de baja o <strong>HELP</strong> para ayuda. Detalles completos en nuestros <a class="inline" href="sms-terms.html">Términos de Mensajería</a>.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">06</span>Data Retention</h2>
+  <h2 data-lang="es"><span class="num">06</span>Retención de Datos</h2>
+  <div data-lang="en"><p>We keep delivery records, invoices, and proof of delivery for as long as needed for accounting, tax, insurance, and regulatory recordkeeping — generally a minimum of four years.</p>
+<p>Driver location data collected during a delivery is retained only as long as needed for tracking, dispute resolution, and service quality.</p>
+<p>Account data is kept while your account is active. Driver applicant data for applicants we do not onboard is kept for a limited period and then deleted.</p></div>
+  <div data-lang="es"><p>Conservamos registros de entrega, facturas y pruebas de entrega el tiempo necesario para contabilidad, impuestos, seguros y requisitos regulatorios — generalmente un mínimo de cuatro años.</p>
+<p>Los datos de ubicación del conductor durante una entrega se conservan solo el tiempo necesario para rastreo, resolución de disputas y calidad del servicio.</p>
+<p>Los datos de cuenta se conservan mientras tu cuenta esté activa. Los datos de aspirantes que no contratamos se conservan por un periodo limitado y luego se eliminan.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">07</span>Your Rights (California)</h2>
+  <h2 data-lang="es"><span class="num">07</span>Tus Derechos (California)</h2>
+  <div data-lang="en"><p>Under the California Consumer Privacy Act as amended by the CPRA, California residents have the right to:</p>
+<ul>
+<li><strong>Know</strong> what personal information we collect, use, and disclose.</li>
+<li><strong>Access</strong> a copy of the personal information we hold about you.</li>
+<li><strong>Delete</strong> your personal information, subject to legal and recordkeeping exceptions.</li>
+<li><strong>Correct</strong> inaccurate personal information.</li>
+<li><strong>Limit</strong> use of sensitive personal information.</li>
+<li><strong>Non-discrimination</strong> — we will not deny service or change pricing because you exercised a privacy right.</li>
+</ul>
+<p>To exercise any of these rights, contact us through the scheduling link on our site and identify your request. We will verify your identity before acting and respond within the time required by law.</p>
+<div class="note"><strong>We do not sell your personal information</strong> and we do not share it for cross-context behavioral advertising, so no opt-out of sale is required.</div></div>
+  <div data-lang="es"><p>Bajo la Ley de Privacidad del Consumidor de California, según enmendada por la CPRA, los residentes de California tienen derecho a:</p>
+<ul>
+<li><strong>Saber</strong> qué información personal recopilamos, usamos y divulgamos.</li>
+<li><strong>Acceder</strong> a una copia de la información personal que tenemos sobre ti.</li>
+<li><strong>Eliminar</strong> tu información personal, sujeto a excepciones legales y de conservación de registros.</li>
+<li><strong>Corregir</strong> información personal inexacta.</li>
+<li><strong>Limitar</strong> el uso de información personal sensible.</li>
+<li><strong>No discriminación</strong> — no negaremos el servicio ni cambiaremos precios por ejercer un derecho de privacidad.</li>
+</ul>
+<p>Para ejercer estos derechos, contáctanos por el enlace de agenda en nuestro sitio e identifica tu solicitud. Verificaremos tu identidad antes de actuar y responderemos dentro del plazo que exige la ley.</p>
+<div class="note"><strong>No vendemos tu información personal</strong> ni la compartimos para publicidad conductual entre contextos, por lo que no se requiere una opción de exclusión de venta.</div></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">08</span>Security</h2>
+  <h2 data-lang="es"><span class="num">08</span>Seguridad</h2>
+  <div data-lang="en"><p>Account authentication and data storage run on Google Firebase infrastructure. Traffic to bridgconnects.com is encrypted in transit. Access to operational records is limited to authorized Bridg personnel.</p>
+<p>No system is perfectly secure. If we become aware of a breach affecting your personal information, we will notify you as required by California law.</p></div>
+  <div data-lang="es"><p>La autenticación de cuentas y el almacenamiento corren sobre infraestructura de Google Firebase. El tráfico a bridgconnects.com está cifrado en tránsito. El acceso a registros operativos está limitado a personal autorizado de Bridg.</p>
+<p>Ningún sistema es perfectamente seguro. Si detectamos una brecha que afecte tu información personal, te notificaremos según lo exige la ley de California.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">09</span>Children</h2>
+  <h2 data-lang="es"><span class="num">09</span>Menores</h2>
+  <div data-lang="en"><p>Our services are for businesses and adults. We do not knowingly collect personal information from anyone under 18. If you believe a minor has provided us information, contact us and we will delete it.</p></div>
+  <div data-lang="es"><p>Nuestros servicios son para empresas y adultos. No recopilamos a sabiendas información personal de menores de 18 años. Si crees que un menor nos dio información, contáctanos y la eliminaremos.</p></div>
+</section>
+
+<section class="clause">
+  <h2 data-lang="en"><span class="num">10</span>Changes & Contact</h2>
+  <h2 data-lang="es"><span class="num">10</span>Cambios y Contacto</h2>
+  <div data-lang="en"><p>We may update this Policy as our services evolve. The "last updated" date at the top reflects the current version. Material changes will be posted on this page.</p>
+<p>For privacy questions or requests, reach us through the scheduling link on bridgconnects.com. Bridg Connects LLC is a Novar Holding Corp company operating from Burbank, California.</p></div>
+  <div data-lang="es"><p>Podemos actualizar esta Política conforme evolucionan nuestros servicios. La fecha de "última actualización" arriba refleja la versión vigente. Los cambios importantes se publicarán en esta página.</p>
+<p>Para preguntas o solicitudes de privacidad, contáctanos por el enlace de agenda en bridgconnects.com. Bridg Connects LLC es una empresa de Novar Holding Corp que opera desde Burbank, California.</p></div>
+</section>
+
 </main>
 
-<footer>
-  <div class="flinks"><a href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a><a href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Mensajería</span></a><a href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a><a href="ai-disclosure.html"><span data-lang="en">AI</span><span data-lang="es">IA</span></a><a href="index.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></div>
-  <div class="fcopy">© 2025 Bridg Connects · A <a href="https://novarholding.com" target="_blank" rel="noopener">Novar Holding Corp</a> Company</div>
-</footer>
+<footer><div class="foot-in">
+  <div class="flinks">
+    <a href="privacy.html"><span data-lang="en">Privacy</span><span data-lang="es">Privacidad</span></a>
+    <a href="sms-terms.html">SMS</a>
+    <a href="terms.html"><span data-lang="en">Terms</span><span data-lang="es">Términos</span></a>
+    <a href="ai-disclosure.html"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación IA</span></a>
+    <a href="index.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a>
+  </div>
+  <div class="fcopy">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER<br/>
+  © 2026 BRIDG CONNECTS LLC · A NOVAR HOLDING CORP COMPANY · BURBANK, CA</div>
+</div></footer>
 
 <script>
 function setLang(l){
-  document.body.classList.toggle("es",l==="es");
-  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.textContent.trim()===l.toUpperCase()));
-  document.documentElement.lang=l;
+  document.body.classList.toggle('es', l==='es');
+  document.getElementById('lgEN').classList.toggle('active', l==='en');
+  document.getElementById('lgES').classList.toggle('active', l==='es');
 }
 </script>
 </body>
