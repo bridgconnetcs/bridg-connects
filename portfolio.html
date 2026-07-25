@@ -2,35 +2,36 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<meta name="color-scheme" content="light only"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Our Work — Bridg Connects</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:#0f0f0f;color:#fff;font-family:"DM Sans",sans-serif;overflow-x:hidden}
-:root{--orange:#FF640D;--dark:#1a1a1a;--iron:#222;--wire:#3a3a3a;--ash:#686868;--silver:#a5a5a5}
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;height:54px;background:#0f0f0f;border-bottom:1px solid var(--wire)}
+body{background:#FFFFFF;color:#0B0B0C;font-family:"Inter",sans-serif;overflow-x:hidden}
+:root{color-scheme:light only;--orange:#FF640D;--dark:#F6F6F7;--iron:#FFFFFF;--wire:#E8E8EA;--ash:#4A4A50;--silver:#3A3A40}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;height:54px;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--wire)}
 .nav-logo img{height:34px;width:auto;display:block;object-fit:contain}
 .lang-toggle{display:flex;border:1px solid var(--wire);overflow:hidden}
-.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"Space Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
+.lang-btn{background:transparent;border:none;color:var(--ash);font-family:"JetBrains Mono",monospace;font-size:.65rem;letter-spacing:.1em;padding:.3rem .65rem;cursor:pointer;transition:all .2s}
 .lang-btn.active{background:var(--orange);color:#fff;font-weight:700}
-.back-link{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
+.back-link{font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);text-decoration:none;transition:color .2s}
 .back-link:hover{color:var(--orange)}
-.hero{padding:7rem 4rem 4rem;background:#0f0f0f;border-bottom:1px solid var(--wire);position:relative;overflow:hidden}
+.hero{padding:7rem 4rem 4rem;background:#FFFFFF;border-bottom:1px solid var(--wire);position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(255,100,13,.06) 0%,transparent 65%);pointer-events:none}
-.stag{font-family:"Space Mono",monospace;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:.7rem;display:flex;align-items:center;gap:.7rem}
+.stag{font-family:"JetBrains Mono",monospace;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--orange);margin-bottom:.7rem;display:flex;align-items:center;gap:.7rem}
 .stag::before{content:"";width:18px;height:1px;background:var(--orange)}
-h1{font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,8vw,6rem);line-height:.92;letter-spacing:.02em;color:#fff;margin-bottom:1rem}
+h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(3rem,8vw,6rem);line-height:.92;letter-spacing:-.01em;color:#0B0B0C;margin-bottom:1rem}
 h1 em{font-style:normal;color:var(--orange)}
 .hero-sub{font-size:1rem;font-weight:300;color:var(--silver);line-height:1.65;max-width:600px}
 .stats{display:flex;background:var(--iron);border-top:1px solid var(--wire);border-bottom:1px solid var(--wire)}
 .stat{flex:1;padding:1.6rem 1rem;border-right:1px solid var(--wire);text-align:center}
 .stat:last-child{border-right:none}
-.stat-n{font-family:"Bebas Neue",sans-serif;font-size:2.4rem;color:var(--orange);letter-spacing:.05em;line-height:1}
-.stat-l{font-family:"Space Mono",monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin-top:.3rem}
-.portfolio-section{padding:5rem 4rem;background:#0f0f0f}
+.stat-n{font-family:"Space Grotesk",sans-serif;font-size:2.4rem;color:var(--orange);letter-spacing:.05em;line-height:1}
+.stat-l{font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ash);margin-top:.3rem}
+.portfolio-section{padding:5rem 4rem;background:#F6F6F7;border-top:1px solid var(--wire)}
 .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--wire);margin-top:3rem}
 .card{background:var(--dark);overflow:hidden;transition:transform .3s}
 .card:hover{transform:scale(1.01);z-index:2;position:relative}
@@ -38,21 +39,21 @@ h1 em{font-style:normal;color:var(--orange)}
 .card-img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .4s}
 .card:hover .card-img{transform:scale(1.05)}
 .card-body{padding:1.5rem}
-.card-category{font-family:"Space Mono",monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);background:rgba(255,100,13,.1);border:1px solid rgba(255,100,13,.2);padding:.2rem .6rem;display:inline-block;margin-bottom:.8rem}
-.card-store{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;color:#fff;letter-spacing:.05em;margin-bottom:.2rem}
-.card-location{font-family:"Space Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);margin-bottom:.8rem}
+.card-category{font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);background:rgba(255,100,13,.1);border:1px solid rgba(255,100,13,.2);padding:.2rem .6rem;display:inline-block;margin-bottom:.8rem}
+.card-store{font-family:"Space Grotesk",sans-serif;font-size:1.35rem;font-weight:600;color:#0B0B0C;letter-spacing:.05em;margin-bottom:.2rem}
+.card-location{font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ash);margin-bottom:.8rem}
 .card-desc{font-size:.82rem;font-weight:300;color:var(--silver);line-height:1.6;margin-bottom:1rem}
-.card-review{background:#0f0f0f;border-left:2px solid var(--orange);padding:.8rem 1rem;font-size:.8rem;font-style:italic;color:var(--silver);line-height:1.5}
+.card-review{background:#FFFFFF;border-left:2px solid var(--orange);padding:.8rem 1rem;font-size:.8rem;font-style:italic;color:var(--silver);line-height:1.5}
 .card-stars{color:var(--orange);font-size:.9rem;margin-bottom:.3rem}
 .cta-section{background:var(--orange);padding:4rem;text-align:center}
-.cta-title{font-family:"Bebas Neue",sans-serif;font-size:3rem;color:#343434;letter-spacing:.02em;margin-bottom:.5rem}
+.cta-title{font-family:"Space Grotesk",sans-serif;font-size:3rem;color:#343434;letter-spacing:.02em;margin-bottom:.5rem}
 .cta-sub{font-size:1rem;font-weight:300;color:rgba(52,52,52,.75);margin-bottom:2rem}
-.btn{background:#343434;color:var(--orange);font-family:"Space Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.9rem 2rem;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));margin:.3rem}
-.btn:hover{background:#0f0f0f;transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:#343434;border:2px solid #343434;font-family:"Space Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 2rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;margin:.3rem}
+.btn{background:#343434;color:var(--orange);font-family:"JetBrains Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.9rem 2rem;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));margin:.3rem}
+.btn:hover{background:#0B0B0C;transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:#343434;border:2px solid #343434;font-family:"JetBrains Mono",monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.85rem 2rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s;margin:.3rem}
 .btn-ghost:hover{background:#343434;color:var(--orange);transform:translateY(-2px)}
 footer{background:var(--dark);border-top:1px solid var(--wire);padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center}
-.fcopy{font-family:"Space Mono",monospace;font-size:.55rem;letter-spacing:.12em;color:var(--ash)}
+.fcopy{font-family:"JetBrains Mono",monospace;font-size:.55rem;letter-spacing:.12em;color:var(--ash)}
 @media(max-width:900px){
   .portfolio-grid{grid-template-columns:1fr 1fr}
   .stats{flex-wrap:wrap}.stat{min-width:50%}
@@ -68,7 +69,7 @@ body.es [data-lang="en"]{display:none}
 <body>
 <nav class="nav">
   <a href="index.html" class="back-link">← Back</a>
-  <div class="nav-logo"><img src="data:image/png;base64,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" alt="Bridg Connects"/></div>
+  <a class="nav-logo" href="index.html" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.2rem;letter-spacing:.04em;color:#0B0B0C;text-decoration:none;line-height:1">BRIDG<span style="color:#FF640D">.</span><small style="display:block;font-family:'JetBrains Mono',monospace;font-size:.45rem;letter-spacing:.42em;color:#4A4A50;font-weight:400;margin-top:1px">CONNECTS</small></a>
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('en')">EN</button>
     <button class="lang-btn" onclick="setLang('es')">ES</button>
@@ -94,8 +95,8 @@ body.es [data-lang="en"]{display:none}
 <div class="portfolio-section">
   <p class="stag" data-lang="en">Completed Deliveries</p>
   <p class="stag" data-lang="es">Entregas Completadas</p>
-  <h2 style="font-family:Bebas Neue,sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:#fff;letter-spacing:.02em" data-lang="en">OUR <em style="font-style:normal;color:var(--orange)">WORK</em></h2>
-  <h2 style="font-family:Bebas Neue,sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:#fff;letter-spacing:.02em" data-lang="es">NUESTRO <em style="font-style:normal;color:var(--orange)">TRABAJO</em></h2>
+  <h2 style="font-family:Space Grotesk,sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:#0B0B0C;letter-spacing:.02em" data-lang="en">OUR <em style="font-style:normal;color:var(--orange)">WORK</em></h2>
+  <h2 style="font-family:Space Grotesk,sans-serif;font-size:clamp(2.5rem,5vw,4rem);color:#0B0B0C;letter-spacing:.02em" data-lang="es">NUESTRO <em style="font-style:normal;color:var(--orange)">TRABAJO</em></h2>
   <div class="portfolio-grid">
     <div class="card">
       <div class="card-img-wrap">
@@ -204,13 +205,7 @@ body.es [data-lang="en"]{display:none}
 </div>
 
 <footer>
-  <div style="font-family:Bebas Neue,sans-serif;font-size:1.2rem;letter-spacing:.1em;color:#fff">BRIDG<span style="color:#FF640D">.</span> <span style="font-size:.8rem;color:#686868">CONNECTS</span></div>
-  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.6rem">
-    <a href="privacy.html" data-lang="en" style="color:var(--ash);text-decoration:none">Privacy</a><a href="privacy.html" data-lang="es" style="color:var(--ash);text-decoration:none">Privacidad</a>
-    <a href="terms.html" data-lang="en" style="color:var(--ash);text-decoration:none">Terms</a><a href="terms.html" data-lang="es" style="color:var(--ash);text-decoration:none">Términos</a>
-    <a href="sms-terms.html" data-lang="en" style="color:var(--ash);text-decoration:none">SMS</a><a href="sms-terms.html" data-lang="es" style="color:var(--ash);text-decoration:none">Mensajería</a>
-    <a href="ai-disclosure.html" data-lang="en" style="color:var(--ash);text-decoration:none">AI</a><a href="ai-disclosure.html" data-lang="es" style="color:var(--ash);text-decoration:none">IA</a>
-  </div>
+  <div style="font-family:Space Grotesk,sans-serif;font-size:1.2rem;letter-spacing:.1em;color:#0B0B0C">BRIDG<span style="color:#FF640D">.</span> <span style="font-size:.8rem;color:#686868">CONNECTS</span></div>
   <div class="fcopy">© 2025 Bridg Connects · A <a href="https://novarholding.com" target="_blank" style="color:var(--orange);text-decoration:none">Novar Holding Corp</a> Company</div>
 </footer>
 
