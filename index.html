@@ -254,7 +254,7 @@ footer a:hover{color:var(--orange)}
     <p data-lang="es">Cada vehículo tiene sus tarifas pre-configuradas. Toca uno y dinos qué lleva — nuestro motor de despacho lo cotiza en segundos.</p>
   </div>
   <div class="fleet-grid">
-    <button class="v-card" onclick="openQuote('pickup')">
+    <button class="v-card" data-vehicle="pickup" onclick="openQuote('pickup')">
       <span class="v-art"><img src="vehicle-pickup.png" alt="White pickup truck" loading="lazy"/></span>
       <h3>Pickup Truck</h3>
       <div class="v-tag" data-lang="en">The counter runner</div><div class="v-tag" data-lang="es">El corredor del mostrador</div>
@@ -267,7 +267,7 @@ footer a:hover{color:var(--orange)}
       <p class="v-fit" data-lang="es">Fittings, tile, madera, rescates de will-call, sacos, equipo pequeño.</p>
       <div class="v-go" data-lang="en">Quote this truck →</div><div class="v-go" data-lang="es">Cotizar este camión →</div>
     </button>
-    <button class="v-card" onclick="openQuote('van')">
+    <button class="v-card" data-vehicle="van" onclick="openQuote('van')">
       <span class="v-art"><img src="vehicle-van.png" alt="White cargo van" loading="lazy"/></span>
       <h3>Cargo Van</h3>
       <div class="v-tag" data-lang="en">The weather-proof workhorse</div><div class="v-tag" data-lang="es">El caballo de batalla cerrado</div>
@@ -280,7 +280,7 @@ footer a:hover{color:var(--orange)}
       <p class="v-fit" data-lang="es">Cajas de piso, fixtures, acabados frágiles, eléctrico, lo que no puede ir descubierto.</p>
       <div class="v-go" data-lang="en">Quote this van →</div><div class="v-go" data-lang="es">Cotizar esta van →</div>
     </button>
-    <button class="v-card" onclick="openQuote('box')">
+    <button class="v-card" data-vehicle="box" onclick="openQuote('box')">
       <span class="v-art"><img src="vehicle-box.png" alt="White box truck" loading="lazy"/></span>
       <h3>Box Truck</h3>
       <div class="v-tag" data-lang="en">The pallet mover</div><div class="v-tag" data-lang="es">El movedor de pallets</div>
@@ -550,10 +550,19 @@ footer a:hover{color:var(--orange)}
       <a href="https://www.linkedin.com/in/bridg-connects-a5534941a" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
-  <div class="foot-base">© 2026 BRIDG CONNECTS LLC · BURBANK, CA</div>
+  <div class="foot-base">© 2026 BRIDG CONNECTS LLC · BURBANK, CA <span style="opacity:.35">· v2.1</span></div>
 </footer>
 
 <script>
+/* BRIDG UI v2.1 */
+// Backup click mechanism — event delegation, works even if inline onclick fails
+document.addEventListener('click', function(e){
+  var card = e.target.closest && e.target.closest('[data-vehicle]');
+  if(card && typeof window.openQuote === 'function'){
+    e.preventDefault();
+    window.openQuote(card.getAttribute('data-vehicle'));
+  }
+}, true);
 // Fallbacks (overridden by Firebase module once loaded)
 window.acctClick = window.acctClick || function(){ document.getElementById('aov').classList.add('open'); document.body.style.overflow='hidden'; };
 window.closeAuth = window.closeAuth || function(){ document.getElementById('aov').classList.remove('open'); document.body.style.overflow=''; };
