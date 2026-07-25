@@ -553,116 +553,15 @@ footer a:hover{color:var(--orange)}
   <div class="foot-base">© 2026 BRIDG CONNECTS LLC · BURBANK, CA</div>
 </footer>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const fbApp = initializeApp({
-  apiKey:"AIzaSyDu7ZC8OOWR6H3EnnNcumFp9aYHf9Wf2e4",
-  authDomain:"bridg-connects.firebaseapp.com",
-  projectId:"bridg-connects",
-  storageBucket:"bridg-connects.firebasestorage.app",
-  messagingSenderId:"369949143389",
-  appId:"1:369949143389:web:a2098909557e15e69178b4"
-});
-const auth = getAuth(fbApp);
-const db = getFirestore(fbApp);
-let CURRENT_USER = null, CURRENT_PROFILE = null;
-
-onAuthStateChanged(auth, async (user)=>{
-  CURRENT_USER = user;
-  const es = document.body.classList.contains('es');
-  const txt = document.getElementById('navAcctTxt');
-  if(user){
-    try{
-      const snap = await getDoc(doc(db,'clients',user.uid));
-      CURRENT_PROFILE = snap.exists() ? snap.data() : {company:user.email};
-    }catch(e){ CURRENT_PROFILE = {company:user.email}; }
-    txt.textContent = (CURRENT_PROFILE.company||'My account');
-  } else {
-    CURRENT_PROFILE = null;
-    txt.textContent = es?'Entrar':'Log in';
-  }
-});
-
-window.acctClick = function(){
-  if(CURRENT_USER){ openHistory(); } else { openAuth(); }
-};
-window.openAuth = function(){
-  document.getElementById('aov').classList.add('open');
-  document.body.style.overflow='hidden';
-};
-window.closeAuth = function(){
-  document.getElementById('aov').classList.remove('open');
-  document.body.style.overflow='';
-};
-window.authTab = function(t){
+<script>
+// Fallbacks (overridden by Firebase module once loaded)
+window.acctClick = window.acctClick || function(){ document.getElementById('aov').classList.add('open'); document.body.style.overflow='hidden'; };
+window.closeAuth = window.closeAuth || function(){ document.getElementById('aov').classList.remove('open'); document.body.style.overflow=''; };
+window.authTab = window.authTab || function(t){
   document.getElementById('aSignup').style.display = t==='signup'?'block':'none';
   document.getElementById('aLogin').style.display = t==='login'?'block':'none';
-  ['tabSign','tabSignES'].forEach(id=>{const e=document.getElementById(id); if(e) e.classList.toggle('on',t==='signup');});
-  ['tabLog','tabLogES'].forEach(id=>{const e=document.getElementById(id); if(e) e.classList.toggle('on',t==='login');});
 };
-window.doSignup = async function(btn){
-  const es = document.body.classList.contains('es');
-  const co=document.getElementById('aCo').value.trim(), nm=document.getElementById('aName').value.trim(),
-        ph=document.getElementById('aPhone').value.trim(), em=document.getElementById('aEmail').value.trim(),
-        pw=document.getElementById('aPass').value;
-  const err=document.getElementById('aErr1'); err.style.display='none';
-  if(!co||!nm||!ph||!em||pw.length<6){ err.textContent=es?'Completa todos los campos (contraseña mín. 6).':'Complete all fields (password min. 6 chars).'; err.style.display='block'; return; }
-  btn.disabled=true; btn.textContent=es?'Creando…':'Creating…';
-  try{
-    const cred = await createUserWithEmailAndPassword(auth, em, pw);
-    await setDoc(doc(db,'clients',cred.user.uid), {company:co,name:nm,phone:ph,email:em,createdAt:new Date().toISOString()});
-    CURRENT_PROFILE = {company:co,name:nm,phone:ph,email:em};
-    document.getElementById('qName').value = nm;
-    document.getElementById('qPhone').value = ph;
-    closeAuth();
-    if(window._pendingBook) { window._pendingBook=false; }
-  }catch(e){
-    err.textContent = e.code==='auth/email-already-in-use' ? (es?'Ese email ya tiene cuenta — usa Entrar.':'That email already has an account — use Log in.') : (es?'Error: ':'Error: ')+e.message;
-    err.style.display='block';
-  }
-  btn.disabled=false; btn.textContent=es?'Crear mi cuenta →':'Create my account →';
-};
-window.doLogin = async function(btn){
-  const es = document.body.classList.contains('es');
-  const em=document.getElementById('lEmail').value.trim(), pw=document.getElementById('lPass').value;
-  const err=document.getElementById('aErr2'); err.style.display='none';
-  btn.disabled=true; btn.textContent=es?'Entrando…':'Logging in…';
-  try{
-    await signInWithEmailAndPassword(auth, em, pw);
-    closeAuth();
-  }catch(e){
-    err.textContent = es?'Email o contraseña incorrectos.':'Incorrect email or password.';
-    err.style.display='block';
-  }
-  btn.disabled=false; btn.textContent=es?'Entrar →':'Log in →';
-};
-window.doLogout = async function(){
-  await signOut(auth);
-  document.getElementById('hov').style.display='none';
-  document.body.style.overflow='';
-};
-window.openHistory = async function(){
-  document.getElementById('hCo').textContent = CURRENT_PROFILE?.company || '—';
-  document.getElementById('hEmail').textContent = CURRENT_USER?.email || '—';
-  document.getElementById('hov').style.display='flex';
-  document.body.style.overflow='hidden';
-  try{
-    const qs = await getDocs(query(collection(db,'bookings'), where('uid','==',CURRENT_USER.uid)));
-    if(!qs.empty){
-      const rows=[]; qs.forEach(d=>rows.push(d.data()));
-      rows.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
-      document.getElementById('hList').innerHTML = rows.map(r=>
-        '<div class="hist-row"><div><b>'+r.vehicle+'</b><div class="mono">'+(r.pickup||'')+' → '+(r.dropoff||'')+'</div></div><div style="text-align:right"><b>'+(r.estimate||'')+'</b><div class="mono">'+(r.createdAt||'').slice(0,10)+'</div></div></div>'
-      ).join('');
-    }
-  }catch(e){}
-};
-window._fb = {db, addDoc, collection};
-
-emailjs.init({publicKey:"WauOr9Ir9YJ0AwOvJ"});
+try{ if(window.emailjs) emailjs.init({publicKey:"WauOr9Ir9YJ0AwOvJ"}); }catch(e){ console.warn("emailjs init skipped",e); }
 window.setLang = function(l){
   document.body.classList.toggle('es', l==='es');
   document.getElementById('lgEN').classList.toggle('on', l==='en');
@@ -767,12 +666,12 @@ function startCountdown(){
 /* ── BOOK ── */
 window.qBook = function(btn){
   const es = document.body.classList.contains('es');
-  if(!CURRENT_USER){ window._pendingBook = true; openAuth(); return; }
+  if(!window.CURRENT_USER){ window._pendingBook = true; if(window.openAuth) window.openAuth(); else alert("Please create an account to book."); return; }
   const d = VEHICLES[curV];
   btn.textContent = es?'Enviando…':'Sending…'; btn.disabled = true;
   try{
-    window._fb.addDoc(window._fb.collection(window._fb.db,'bookings'),{
-      uid: CURRENT_USER.uid, company: CURRENT_PROFILE?.company||'',
+    if(window._fb) window._fb.addDoc(window._fb.collection(window._fb.db,'bookings'),{
+      uid: window.CURRENT_USER.uid, company: window.CURRENT_PROFILE?.company||'',
       vehicle: es?d.es:d.en,
       pickup: document.getElementById('qPick').value.trim(),
       dropoff: document.getElementById('qDrop').value.trim(),
@@ -780,6 +679,7 @@ window.qBook = function(btn){
       createdAt: new Date().toISOString()
     });
   }catch(e){}
+  if(!window.emailjs){ alert(es?'Cotización lista. Agenda una llamada para confirmar.':'Quote ready. Book a call to confirm.'); btn.disabled=false; btn.textContent=es?'Reservar esta entrega':'Book this delivery'; return; }
   emailjs.send("service_24ys0gu","template_7yer4c7",{
     from_name: document.getElementById('qName').value.trim(),
     phone: document.getElementById('qPhone').value.trim(),
@@ -800,6 +700,117 @@ window.qBook = function(btn){
     btn.textContent = es?'Reservar esta entrega':'Book this delivery';
   });
 }
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const fbApp = initializeApp({
+  apiKey:"AIzaSyDu7ZC8OOWR6H3EnnNcumFp9aYHf9Wf2e4",
+  authDomain:"bridg-connects.firebaseapp.com",
+  projectId:"bridg-connects",
+  storageBucket:"bridg-connects.firebasestorage.app",
+  messagingSenderId:"369949143389",
+  appId:"1:369949143389:web:a2098909557e15e69178b4"
+});
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+let CURRENT_USER = null, CURRENT_PROFILE = null;
+window.CURRENT_USER = null; window.CURRENT_PROFILE = null;
+
+onAuthStateChanged(auth, async (user)=>{
+  CURRENT_USER = user; window.CURRENT_USER = user;
+  const es = document.body.classList.contains('es');
+  const txt = document.getElementById('navAcctTxt');
+  if(user){
+    try{
+      const snap = await getDoc(doc(db,'clients',user.uid));
+      CURRENT_PROFILE = snap.exists() ? snap.data() : {company:user.email}; window.CURRENT_PROFILE = CURRENT_PROFILE;
+    }catch(e){ CURRENT_PROFILE = {company:user.email}; window.CURRENT_PROFILE = CURRENT_PROFILE; }
+    txt.textContent = (CURRENT_PROFILE.company||'My account');
+  } else {
+    CURRENT_PROFILE = null; window.CURRENT_PROFILE = null;
+    txt.textContent = es?'Entrar':'Log in';
+  }
+});
+
+window.acctClick = function(){
+  if(CURRENT_USER){ openHistory(); } else { openAuth(); }
+};
+window.openAuth = function(){
+  document.getElementById('aov').classList.add('open');
+  document.body.style.overflow='hidden';
+};
+window.closeAuth = function(){
+  document.getElementById('aov').classList.remove('open');
+  document.body.style.overflow='';
+};
+window.authTab = function(t){
+  document.getElementById('aSignup').style.display = t==='signup'?'block':'none';
+  document.getElementById('aLogin').style.display = t==='login'?'block':'none';
+  ['tabSign','tabSignES'].forEach(id=>{const e=document.getElementById(id); if(e) e.classList.toggle('on',t==='signup');});
+  ['tabLog','tabLogES'].forEach(id=>{const e=document.getElementById(id); if(e) e.classList.toggle('on',t==='login');});
+};
+window.doSignup = async function(btn){
+  const es = document.body.classList.contains('es');
+  const co=document.getElementById('aCo').value.trim(), nm=document.getElementById('aName').value.trim(),
+        ph=document.getElementById('aPhone').value.trim(), em=document.getElementById('aEmail').value.trim(),
+        pw=document.getElementById('aPass').value;
+  const err=document.getElementById('aErr1'); err.style.display='none';
+  if(!co||!nm||!ph||!em||pw.length<6){ err.textContent=es?'Completa todos los campos (contraseña mín. 6).':'Complete all fields (password min. 6 chars).'; err.style.display='block'; return; }
+  btn.disabled=true; btn.textContent=es?'Creando…':'Creating…';
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, em, pw);
+    await setDoc(doc(db,'clients',cred.user.uid), {company:co,name:nm,phone:ph,email:em,createdAt:new Date().toISOString()});
+    CURRENT_PROFILE = {company:co,name:nm,phone:ph,email:em}; window.CURRENT_PROFILE = CURRENT_PROFILE;
+    document.getElementById('qName').value = nm;
+    document.getElementById('qPhone').value = ph;
+    closeAuth();
+    if(window._pendingBook) { window._pendingBook=false; }
+  }catch(e){
+    err.textContent = e.code==='auth/email-already-in-use' ? (es?'Ese email ya tiene cuenta — usa Entrar.':'That email already has an account — use Log in.') : (es?'Error: ':'Error: ')+e.message;
+    err.style.display='block';
+  }
+  btn.disabled=false; btn.textContent=es?'Crear mi cuenta →':'Create my account →';
+};
+window.doLogin = async function(btn){
+  const es = document.body.classList.contains('es');
+  const em=document.getElementById('lEmail').value.trim(), pw=document.getElementById('lPass').value;
+  const err=document.getElementById('aErr2'); err.style.display='none';
+  btn.disabled=true; btn.textContent=es?'Entrando…':'Logging in…';
+  try{
+    await signInWithEmailAndPassword(auth, em, pw);
+    closeAuth();
+  }catch(e){
+    err.textContent = es?'Email o contraseña incorrectos.':'Incorrect email or password.';
+    err.style.display='block';
+  }
+  btn.disabled=false; btn.textContent=es?'Entrar →':'Log in →';
+};
+window.doLogout = async function(){
+  await signOut(auth);
+  document.getElementById('hov').style.display='none';
+  document.body.style.overflow='';
+};
+window.openHistory = async function(){
+  document.getElementById('hCo').textContent = CURRENT_PROFILE?.company || '—';
+  document.getElementById('hEmail').textContent = CURRENT_USER?.email || '—';
+  document.getElementById('hov').style.display='flex';
+  document.body.style.overflow='hidden';
+  try{
+    const qs = await getDocs(query(collection(db,'bookings'), where('uid','==',CURRENT_USER.uid)));
+    if(!qs.empty){
+      const rows=[]; qs.forEach(d=>rows.push(d.data()));
+      rows.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+      document.getElementById('hList').innerHTML = rows.map(r=>
+        '<div class="hist-row"><div><b>'+r.vehicle+'</b><div class="mono">'+(r.pickup||'')+' → '+(r.dropoff||'')+'</div></div><div style="text-align:right"><b>'+(r.estimate||'')+'</b><div class="mono">'+(r.createdAt||'').slice(0,10)+'</div></div></div>'
+      ).join('');
+    }
+  }catch(e){}
+};
+window._fb = {db, addDoc, collection};
 </script>
 </body>
 </html>
