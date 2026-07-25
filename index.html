@@ -117,16 +117,34 @@ h2{font-family:var(--FD);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);li
 .how-card h3{font-family:var(--FD);font-weight:600;font-size:1.05rem;margin-top:.6rem}
 .how-card p{font-size:.85rem;color:var(--steel);font-weight:300;margin-top:.5rem}
 
-/* ── AI STRIP ── */
-.ai-strip{background:#fff;border:1px solid var(--hairline);border-radius:20px;padding:2.4rem;box-shadow:0 2px 14px -8px rgba(11,11,12,.1);display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:center}
-@media(max-width:720px){.ai-strip{grid-template-columns:1fr}}
-.ai-pulse{width:52px;height:52px;border-radius:50%;background:var(--orange-soft);display:flex;align-items:center;justify-content:center;position:relative}
-.ai-pulse::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--orange);opacity:.35;animation:pulse 2.4s ease-out infinite}
-@keyframes pulse{0%{transform:scale(.8);opacity:.5}100%{transform:scale(1.35);opacity:0}}
-@media(prefers-reduced-motion:reduce){.ai-pulse::before{animation:none}}
-.ai-pulse svg{width:22px;height:22px;stroke:var(--orange)}
-.ai-strip h3{font-family:var(--FD);font-weight:600;font-size:1.1rem}
-.ai-strip p{font-size:.86rem;color:var(--steel);font-weight:300;margin-top:.3rem}
+/* ── INTELLIGENT CORE ── */
+.core-wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:center}
+@media(max-width:860px){.core-wrap{grid-template-columns:1fr}}
+.circuit-card{background:#fff;border:1px solid var(--hairline);border-radius:18px;padding:1.2rem;box-shadow:0 14px 40px -24px rgba(11,11,12,.25)}
+.circuit-card svg{width:100%;height:auto;display:block}
+.tr{stroke:var(--hairline);stroke-width:1.5;fill:none}
+.tf{stroke:var(--orange);stroke-width:1.5;fill:none;stroke-dasharray:6 90;animation:flow 3.2s linear infinite}
+.tf.d1{animation-delay:.0s}.tf.d2{animation-delay:.8s}.tf.d3{animation-delay:1.6s}.tf.d4{animation-delay:2.4s}
+@keyframes flow{to{stroke-dashoffset:-96}}
+.nodebox{fill:#fff;stroke:#E8E8EA;stroke-width:1.2}
+.nodedot{fill:var(--orange)}
+.nodetxt{font-family:'JetBrains Mono',monospace;font-size:6.6px;letter-spacing:.08em;fill:#4A4A50}
+.sphere{animation:sphturn 30s linear infinite;transform-origin:110px 80px}
+@keyframes sphturn{to{transform:rotate(360deg)}}
+.core-copy h3{font-family:var(--FD);font-weight:700;font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.015em;line-height:1.12}
+.core-copy h3 em{font-style:normal;color:var(--orange)}
+.core-copy>p{font-size:.94rem;color:var(--steel);font-weight:300;margin-top:1rem;max-width:520px}
+.core-feed{margin-top:1.6rem;background:#0B0B0C;border-radius:14px;padding:1.1rem 1.2rem;font-family:var(--FM)}
+.feed-head{font-size:.56rem;letter-spacing:.22em;color:#6E6E76;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.feed-head::before{content:'';width:7px;height:7px;border-radius:50%;background:#0B8A4B;box-shadow:0 0 6px #0B8A4B}
+.feed-line{font-size:.66rem;letter-spacing:.04em;color:#B9B9C0;padding:.36rem 0;display:flex;gap:.6rem;align-items:center;opacity:0;animation:feedin .5s forwards}
+.feed-line b{color:#fff;font-weight:500}
+.feed-line .ok{color:#35D07F}
+.feed-line::before{content:'▸';color:var(--orange)}
+.feed-line:nth-child(2){animation-delay:.2s}.feed-line:nth-child(3){animation-delay:.9s}
+.feed-line:nth-child(4){animation-delay:1.6s}.feed-line:nth-child(5){animation-delay:2.3s}
+@keyframes feedin{to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.tf,.sphere{animation:none}.feed-line{opacity:1;animation:none}}.feed-line{opacity:1;animation:none}}
 
 /* ── QUOTE OVERLAY ── */
 #qov{position:fixed;inset:0;z-index:500;background:rgba(11,11,12,.5);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2.5rem 1rem}
@@ -323,13 +341,70 @@ footer a:hover{color:var(--orange)}
 
 <section id="ai" class="band">
   <div class="sec-in">
-  <div class="ai-strip">
-    <div class="ai-pulse"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/><circle cx="12" cy="12" r="4"/></svg></div>
-    <div>
-      <h3 data-lang="en">Smart-match dispatch, running underneath</h3>
-      <h3 data-lang="es">Despacho inteligente trabajando por debajo</h3>
-      <p data-lang="en">Weight and cargo type auto-match to the right vehicle. Drive-time pricing pulls live route data. Tracking and proof-of-delivery flow to you without a phone call. The platform does the chasing — not your counter staff.</p>
-      <p data-lang="es">El peso y tipo de carga se emparejan solos con el vehículo correcto. El precio usa datos de ruta en vivo. Rastreo y prueba de entrega llegan sin una sola llamada. La plataforma persigue la entrega — no tu personal de mostrador.</p>
+  <div class="core-wrap">
+    <div class="circuit-card" aria-hidden="true">
+      <svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="coreGrad" x1="0%" y1="20%" x2="100%" y2="80%">
+            <stop offset="0%" stop-color="#5AA9F5"/>
+            <stop offset="45%" stop-color="#7B6CF6"/>
+            <stop offset="100%" stop-color="#E9439B"/>
+          </linearGradient>
+        </defs>
+        <g class="sphere" transform-origin="110 80">
+          <circle cx="110" cy="80" r="46" fill="none" stroke="url(#coreGrad)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="0.1 4.6"/>
+          <circle cx="110" cy="80" r="42.5" fill="none" stroke="url(#coreGrad)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="0.1 5.2" opacity=".85"/>
+          <circle cx="110" cy="80" r="39" fill="none" stroke="url(#coreGrad)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0.1 5.8" opacity=".65"/>
+          <ellipse cx="110" cy="80" rx="34" ry="12" fill="none" stroke="url(#coreGrad)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="0.1 4.4" opacity=".45" transform="rotate(-18 110 80)"/>
+          <ellipse cx="110" cy="80" rx="30" ry="19" fill="none" stroke="url(#coreGrad)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="0.1 5" opacity=".35" transform="rotate(24 110 80)"/>
+          <ellipse cx="110" cy="80" rx="13" ry="33" fill="none" stroke="url(#coreGrad)" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="0.1 5.4" opacity=".3" transform="rotate(12 110 80)"/>
+        </g>
+        <text x="110" y="77" text-anchor="middle" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;fill:#0B0B0C">AI</text>
+        <text x="110" y="91" text-anchor="middle" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;fill:#0B0B0C;letter-spacing:.06em">BRIDG CORE</text>
+        <!-- traces (static) -->
+        <path class="tr" d="M148 58 H176 Q184 55 184 47 V34 H216"/>
+        <path class="tr" d="M155 74 H196 V64 H216"/>
+        <path class="tr" d="M155 88 H196 V96 H216"/>
+        <path class="tr" d="M148 102 H176 Q184 105 184 113 V126 H216"/>
+        <path class="tr" d="M68 62 H52 Q44 62 44 54 V40"/>
+        <path class="tr" d="M68 96 H52 Q44 96 44 104 V120"/>
+        <!-- traces (flowing) -->
+        <path class="tf d1" d="M148 58 H176 Q184 55 184 47 V34 H216"/>
+        <path class="tf d2" d="M155 74 H196 V64 H216"/>
+        <path class="tf d3" d="M155 88 H196 V96 H216"/>
+        <path class="tf d4" d="M148 102 H176 Q184 105 184 113 V126 H216"/>
+        <!-- endpoint nodes -->
+        <g>
+          <rect class="nodebox" x="216" y="24" width="92" height="20" rx="10"/>
+          <circle class="nodedot" cx="228" cy="34" r="2.6"/>
+          <text class="nodetxt" x="236" y="36.5">SMART-MATCH</text>
+          <rect class="nodebox" x="216" y="54" width="92" height="20" rx="10"/>
+          <circle class="nodedot" cx="228" cy="64" r="2.6"/>
+          <text class="nodetxt" x="236" y="66.5">LIVE PRICING</text>
+          <rect class="nodebox" x="216" y="86" width="92" height="20" rx="10"/>
+          <circle class="nodedot" cx="228" cy="96" r="2.6"/>
+          <text class="nodetxt" x="236" y="98.5">GPS TRACKING</text>
+          <rect class="nodebox" x="216" y="116" width="92" height="20" rx="10"/>
+          <circle class="nodedot" cx="228" cy="126" r="2.6"/>
+          <text class="nodetxt" x="236" y="128.5">PROOF OF DELIVERY</text>
+        </g>
+        <!-- left small nodes -->
+        <circle cx="44" cy="36" r="3" fill="#FF640D"/>
+        <circle cx="44" cy="124" r="3" fill="#0B0B0C"/>
+      </svg>
+    </div>
+    <div class="core-copy">
+      <h3 data-lang="en">Orchestrated by an <em>intelligent core.</em></h3>
+      <h3 data-lang="es">Orquestado por un <em>núcleo inteligente.</em></h3>
+      <p data-lang="en">Every order runs through Bridg's dispatch engine — matching the vehicle to the load, pricing with live route data, and pushing tracking and proof of delivery without a single phone call. The platform does the chasing. Not your counter staff.</p>
+      <p data-lang="es">Cada orden pasa por el motor de despacho de Bridg — emparejando el vehículo con la carga, cotizando con datos de ruta en vivo, y enviando rastreo y prueba de entrega sin una sola llamada. La plataforma persigue la entrega. No tu personal de mostrador.</p>
+      <div class="core-feed" aria-hidden="true">
+        <div class="feed-head">BRIDG CORE · LIVE</div>
+        <div class="feed-line"><b>MATCH</b> 1,140 lbs · flooring → cargo van</div>
+        <div class="feed-line"><b>PRICE</b> live route · 14.2 mi · 26 min</div>
+        <div class="feed-line"><b>NOTIFY</b> tracking link → client SMS + email</div>
+        <div class="feed-line"><b>POD</b> photo + signature <span class="ok">✓ delivered</span></div>
+      </div>
     </div>
   </div>
   </div>
