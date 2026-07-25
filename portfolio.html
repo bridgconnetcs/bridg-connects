@@ -64,6 +64,11 @@ footer{background:var(--dark);border-top:1px solid var(--wire);padding:2rem 4rem
 [data-lang="es"]{display:none}
 body.es [data-lang="es"]{display:block}
 body.es [data-lang="en"]{display:none}
+
+.legal-row{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;margin-bottom:.85rem}
+.legal-row a{font-family:'Inter',sans-serif;font-size:.76rem;font-weight:400;color:#0B0B0C;text-decoration:none}
+.legal-row a:hover{color:#FF640D}
+.fcred{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:#4A4A50;line-height:1.9}
 </style>
 </head>
 <body>
@@ -205,8 +210,16 @@ body.es [data-lang="en"]{display:none}
 </div>
 
 <footer>
-  <div style="font-family:Space Grotesk,sans-serif;font-size:1.2rem;letter-spacing:.1em;color:#0B0B0C">BRIDG<span style="color:#FF640D">.</span> <span style="font-size:.8rem;color:#686868">CONNECTS</span></div>
-  <div class="fcopy">© 2025 Bridg Connects · A <a href="https://novarholding.com" target="_blank" style="color:var(--orange);text-decoration:none">Novar Holding Corp</a> Company</div>
+  <div style="max-width:1000px;margin:0 auto;padding:2.2rem 1.5rem;text-align:center">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:#0B0B0C;margin-bottom:1.2rem">BRIDG<span style="color:#FF640D">.</span><small style="display:block;font-family:'JetBrains Mono',monospace;font-size:.44rem;letter-spacing:.42em;color:#4A4A50;font-weight:400;margin-top:1px">CONNECTS</small></div>
+    <div class="legal-row">
+      <a href="privacy.html"><span data-lang="en">Privacy Policy</span><span data-lang="es">Política de Privacidad</span></a>
+      <a href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Términos SMS</span></a>
+      <a href="terms.html"><span data-lang="en">Terms of Service</span><span data-lang="es">Términos del Servicio</span></a>
+      <a href="ai-disclosure.html"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación de IA</span></a>
+    </div>
+    <div class="fcred">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER<br/>© 2026 BRIDG CONNECTS LLC · BURBANK, CA</div>
+  </div>
 </footer>
 
 <script>

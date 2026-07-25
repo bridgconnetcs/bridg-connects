@@ -204,6 +204,10 @@ footer .logo{color:var(--ink)}
 footer h4{font-family:var(--FM);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--orange);margin-bottom:.9rem}
 footer a{display:block;color:var(--ink);font-size:.84rem;text-decoration:none;margin-bottom:.5rem}
 footer a:hover{color:var(--orange)}
+
+.legal-row{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;margin-bottom:.85rem}
+.legal-row a{font-family:'Inter',sans-serif;font-size:.76rem;font-weight:400;color:#0B0B0C;text-decoration:none}
+.legal-row a:hover{color:#FF640D}
 .foot-base{border-top:1px solid var(--hairline);padding:1.2rem 1.5rem;text-align:center;font-family:var(--FM);font-size:.6rem;letter-spacing:.1em;color:var(--steel)}
 </style>
 </head>
@@ -554,7 +558,13 @@ footer a:hover{color:var(--orange)}
     </div>
   </div>
   <div class="foot-base">
-    <div style="margin-bottom:.5rem">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER</div>
+    <div class="legal-row">
+      <a href="privacy.html"><span data-lang="en">Privacy Policy</span><span data-lang="es">Política de Privacidad</span></a>
+      <a href="sms-terms.html"><span data-lang="en">SMS Terms</span><span data-lang="es">Términos SMS</span></a>
+      <a href="terms.html"><span data-lang="en">Terms of Service</span><span data-lang="es">Términos del Servicio</span></a>
+      <a href="ai-disclosure.html"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación de IA</span></a>
+    </div>
+    <div style="margin-bottom:.4rem">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER</div>
     <div>© 2026 BRIDG CONNECTS LLC · BURBANK, CA</div>
   </div>
 </footer>
