@@ -877,6 +877,7 @@ window.qBook = function(btn){
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
 
 const fbApp = initializeApp({
   apiKey:"AIzaSyDu7ZC8OOWR6H3EnnNcumFp9aYHf9Wf2e4",
@@ -886,6 +887,14 @@ const fbApp = initializeApp({
   messagingSenderId:"369949143389",
   appId:"1:369949143389:web:a2098909557e15e69178b4"
 });
+/* App Check — monitoring mode until enforcement is turned on in the console */
+try{
+  initializeAppCheck(fbApp, {
+    provider: new ReCaptchaV3Provider("6Lfjz2YtAAAAAHnuivJ87A0p_BD0_-3AzjJaOYXN"),
+    isTokenAutoRefreshEnabled: true
+  });
+}catch(e){ console.warn("App Check init skipped:", e && e.message); }
+
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
 let CURRENT_USER = null, CURRENT_PROFILE = null;
