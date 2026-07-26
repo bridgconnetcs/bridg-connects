@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="color-scheme" content="light only"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Core System — Bridg Connects</title>
+<meta name="description" content="Bridg Core: the dispatch engine behind Bridg Connects. Vehicle matching, live route pricing, automated tracking and proof of delivery — with a human confirming every dispatch."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{color-scheme:light only;
+  --white:#FFFFFF;--ink:#0B0B0C;--steel:#4A4A50;--hairline:#E8E8EA;--band:#F6F6F7;
+  --orange:#FF640D;--orange-soft:rgba(255,100,13,.08);
+  --FD:'Space Grotesk',sans-serif;--FB:'Inter',sans-serif;--FM:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:#FFFFFF}
+body{background:#FFFFFF !important;color:#0B0B0C !important;font-family:var(--FB);line-height:1.68;-webkit-font-smoothing:antialiased}
+body.es [data-lang="en"]{display:none!important}
+body:not(.es) [data-lang="es"]{display:none!important}
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)}
+.nav-in{max-width:1000px;margin:0 auto;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.back{font-family:var(--FM);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);text-decoration:none}
+.back:hover{color:var(--orange)}
+.logo{font-family:var(--FD);font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--ink);text-decoration:none;line-height:1;text-align:center}
+.logo span{color:var(--orange)}
+.logo small{display:block;font-family:var(--FM);font-size:.44rem;letter-spacing:.42em;color:var(--steel);font-weight:400;margin-top:1px}
+.lang-tg{display:flex;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+.lang-tg button{border:0;background:transparent;padding:.34rem .62rem;font-family:var(--FM);font-size:.64rem;cursor:pointer;color:var(--steel)}
+.lang-tg button.on{background:var(--ink);color:#fff}
+.btn{display:inline-block;background:var(--ink);color:#fff;font-family:var(--FD);font-weight:600;font-size:.85rem;padding:.78rem 1.6rem;border-radius:8px;text-decoration:none;border:0;cursor:pointer;transition:all .2s}
+.btn:hover{background:var(--orange)}
+.btn-o{display:inline-block;background:#fff;color:var(--ink);font-family:var(--FD);font-weight:600;font-size:.85rem;padding:.76rem 1.5rem;border-radius:8px;text-decoration:none;border:1px solid var(--ink);transition:all .2s}
+.btn-o:hover{border-color:var(--orange);color:var(--orange)}
+
+/* HERO */
+.hero{max-width:1000px;margin:0 auto;padding:4rem 1.5rem 3rem;text-align:center}
+.sphere-stage{width:clamp(210px,46vw,300px);margin:0 auto 2.2rem}
+.sphere-stage svg{width:100%;height:auto;display:block}
+.sphere{animation:sphturn 30s linear infinite;transform-origin:110px 80px}
+@keyframes sphturn{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.sphere{animation:none}}
+.eyebrow{font-family:var(--FM);font-size:.6rem;letter-spacing:.24em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:100px;padding:.5rem 1rem;margin-bottom:1.3rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+h1{font-family:var(--FD);font-weight:700;font-size:clamp(2.1rem,6vw,3.5rem);line-height:1.04;letter-spacing:-.025em}
+h1 em{font-style:normal;color:var(--orange)}
+.hero p{font-size:1.04rem;font-weight:300;color:var(--steel);max-width:600px;margin:1.3rem auto 0}
+.hero-cta{display:flex;gap:.9rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+
+
+/* NEBULA */
+.sphere-stage{position:relative}
+.neb{position:absolute;inset:-120%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.62}
+.neb svg{width:100%;height:100%;display:block}
+.nb{mix-blend-mode:multiply;transform-origin:center}
+.nb1{animation:drift1 18s ease-in-out infinite alternate}
+.nb2{animation:drift2 23s ease-in-out infinite alternate}
+.nb3{animation:drift3 28s ease-in-out infinite alternate}
+.nb4{animation:drift1 21s ease-in-out infinite alternate-reverse}
+@keyframes drift1{0%{transform:translate(-4%,2%) scale(1)}100%{transform:translate(5%,-3%) scale(1.14)}}
+@keyframes drift2{0%{transform:translate(4%,-3%) scale(1.08)}100%{transform:translate(-5%,4%) scale(.94)}}
+@keyframes drift3{0%{transform:translate(0,4%) scale(.96)}100%{transform:translate(3%,-4%) scale(1.12)}}
+.sphere-stage > svg{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.nb1,.nb2,.nb3,.nb4{animation:none}}
+
+/* SECTIONS */
+section{padding:4.5rem 1.5rem}
+.band{background:var(--band);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
+.in{max-width:1000px;margin:0 auto}
+.sec-label{font-family:var(--FM);font-size:.6rem;letter-spacing:.3em;color:var(--orange);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::before{content:'';width:22px;height:1px;background:var(--orange)}
+h2{font-family:var(--FD);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.1;letter-spacing:-.015em}
+h2 em{font-style:normal;color:var(--orange)}
+.lead{font-size:.98rem;color:var(--steel);font-weight:300;margin-top:1rem;max-width:640px}
+
+/* PILLARS */
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:2.2rem}
+@media(max-width:760px){.pillars{grid-template-columns:1fr}}
+.pillar{background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:1.7rem;box-shadow:0 2px 10px -6px rgba(11,11,12,.08)}
+.pillar .n{font-family:var(--FM);font-size:.6rem;letter-spacing:.2em;color:var(--orange)}
+.pillar h3{font-family:var(--FD);font-weight:600;font-size:1.08rem;margin-top:.6rem}
+.pillar p{font-size:.9rem;color:var(--steel);font-weight:300;margin-top:.5rem}
+.pillar .tag{display:inline-block;margin-top:.9rem;font-family:var(--FM);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);border:1px solid var(--hairline);border-radius:100px;padding:.28rem .65rem}
+
+/* FLOW */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;margin-top:2.2rem}
+@media(max-width:820px){.flow{grid-template-columns:1fr;gap:.5rem}}
+.step{background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:1.15rem .95rem;text-align:center;position:relative}
+.step .k{font-family:var(--FM);font-size:.55rem;letter-spacing:.16em;color:var(--orange);text-transform:uppercase}
+.step p{font-size:.82rem;color:var(--ink);font-weight:500;margin-top:.4rem;line-height:1.4}
+.step small{display:block;font-size:.74rem;color:var(--steel);font-weight:300;margin-top:.3rem}
+
+/* TERMINAL */
+.term{margin-top:2.2rem;background:#0B0B0C;border-radius:16px;padding:1.4rem 1.5rem;font-family:var(--FM);overflow-x:auto}
+.term-head{font-size:.56rem;letter-spacing:.22em;color:#6E6E76;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.term-head::before{content:'';width:7px;height:7px;border-radius:50%;background:#0B8A4B;box-shadow:0 0 6px #0B8A4B}
+.tl{font-size:.68rem;color:#B9B9C0;padding:.34rem 0;white-space:nowrap}
+.tl b{color:#fff;font-weight:500}
+.tl .ok{color:#35D07F}
+.tl::before{content:'▸ ';color:var(--orange)}
+
+/* HUMAN NOTE */
+.human{background:#fff;border:1px solid var(--ink);border-radius:18px;padding:2rem;margin-top:2.2rem;box-shadow:0 14px 40px -26px rgba(11,11,12,.3)}
+.human h3{font-family:var(--FD);font-weight:700;font-size:1.25rem;letter-spacing:-.01em}
+.human p{font-size:.94rem;color:var(--steel);font-weight:300;margin-top:.7rem}
+.human p strong{color:var(--ink);font-weight:600}
+
+/* NOT LIST */
+.notlist{margin-top:1.6rem;display:grid;gap:.6rem}
+.notlist div{font-size:.92rem;color:var(--steel);font-weight:300;padding-left:1.5rem;position:relative}
+.notlist div::before{content:'✕';position:absolute;left:0;top:0;color:var(--orange);font-size:.8rem}
+.notlist div strong{color:var(--ink);font-weight:600}
+
+/* CTA */
+.cta{text-align:center}
+.cta h2{max-width:620px;margin:0 auto}
+.cta p{margin:1rem auto 0}
+.cta-row{display:flex;gap:.9rem;justify-content:center;margin-top:1.8rem;flex-wrap:wrap}
+
+footer{border-top:1px solid var(--hairline);background:#fff}
+.foot-in{max-width:1000px;margin:0 auto;padding:2.2rem 1.5rem;text-align:center}
+.legal-row{display:flex;gap:1.1rem;justify-content:center;flex-wrap:wrap;margin-bottom:.85rem}
+.legal-row a{font-size:.76rem;color:var(--ink);text-decoration:none}
+.legal-row a:hover{color:var(--orange)}
+.fcred{font-family:var(--FM);font-size:.58rem;letter-spacing:.1em;color:var(--steel);line-height:1.9}
+</style>
+</head>
+<body>
+<nav><div class="nav-in">
+  <a class="back" href="/">← <span data-lang="en">Back</span><span data-lang="es">Volver</span></a>
+  <a class="logo" href="/">BRIDG<span>.</span><small>CONNECTS</small></a>
+  <div class="lang-tg"><button id="lgEN" class="on" onclick="setLang('en')">EN</button><button id="lgES" onclick="setLang('es')">ES</button></div>
+</div></nav>
+
+<div class="hero">
+  <div class="sphere-stage" aria-hidden="true">
+    <div class="neb" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="nA" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7CC5F0" stop-opacity=".9"/>
+            <stop offset="55%" stop-color="#9BD4F2" stop-opacity=".4"/>
+            <stop offset="100%" stop-color="#5AA9F5" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="nB" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F0A6C8" stop-opacity=".8"/>
+            <stop offset="55%" stop-color="#F5C2D8" stop-opacity=".35"/>
+            <stop offset="100%" stop-color="#E9439B" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="nC" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#B9AEF7" stop-opacity=".8"/>
+            <stop offset="55%" stop-color="#CFC8FA" stop-opacity=".32"/>
+            <stop offset="100%" stop-color="#7B6CF6" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="nD" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#9FE0D2" stop-opacity=".8"/>
+            <stop offset="55%" stop-color="#C3EDE4" stop-opacity=".34"/>
+            <stop offset="100%" stop-color="#9FE0D2" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <ellipse class="nb nb1" cx="56" cy="62" rx="92" ry="80" fill="url(#nA)"/>
+        <ellipse class="nb nb2" cx="148" cy="72" rx="88" ry="84" fill="url(#nB)"/>
+        <ellipse class="nb nb3" cx="112" cy="140" rx="86" ry="74" fill="url(#nC)"/>
+        <ellipse class="nb nb4" cx="46" cy="132" rx="80" ry="70" fill="url(#nD)"/>
+      </svg>
+    </div>
+    <svg viewBox="30 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+          <linearGradient id="coreGrad" x1="0%" y1="20%" x2="100%" y2="80%">
+            <stop offset="0%" stop-color="#5AA9F5"/>
+            <stop offset="45%" stop-color="#7B6CF6"/>
+            <stop offset="100%" stop-color="#E9439B"/>
+          </linearGradient>
+        </defs>
+        <g class="sphere" transform-origin="110 80">
+          <circle cx="110" cy="80" r="46" fill="none" stroke="url(#coreGrad)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="0.1 4.6"/>
+          <circle cx="110" cy="80" r="42.5" fill="none" stroke="url(#coreGrad)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="0.1 5.2" opacity=".85"/>
+          <circle cx="110" cy="80" r="39" fill="none" stroke="url(#coreGrad)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0.1 5.8" opacity=".65"/>
+          <ellipse cx="110" cy="80" rx="34" ry="12" fill="none" stroke="url(#coreGrad)" stroke-width="1.15" stroke-linecap="round" stroke-dasharray="0.1 3.4" opacity=".7" transform="rotate(-18 110 80)"/>
+          <ellipse cx="110" cy="80" rx="30" ry="19" fill="none" stroke="url(#coreGrad)" stroke-width="1.15" stroke-linecap="round" stroke-dasharray="0.1 3.6" opacity=".6" transform="rotate(24 110 80)"/>
+          <ellipse cx="110" cy="80" rx="13" ry="33" fill="none" stroke="url(#coreGrad)" stroke-width="1.05" stroke-linecap="round" stroke-dasharray="0.1 3.8" opacity=".55" transform="rotate(12 110 80)"/>
+        </g>
+      <text x="110" y="76" text-anchor="middle" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;fill:#0B0B0C">AI</text>
+      <text x="110" y="91" text-anchor="middle" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;fill:#0B0B0C;letter-spacing:.05em">BRIDG CORE</text>
+    </svg>
+  </div>
+  <div class="eyebrow" data-lang="en">Built on an integrated AI core</div>
+  <div class="eyebrow" data-lang="es">Construido sobre un núcleo de IA integrado</div>
+  <h1 data-lang="en">Not a generic chatbot.<br/><em>An operations engine.</em></h1>
+  <h1 data-lang="es">No es un chatbot genérico.<br/><em>Es un motor de operaciones.</em></h1>
+  <p data-lang="en">Bridg Core is the automation layer running underneath every delivery — matching loads to vehicles, pricing against live route data, and moving tracking and proof of delivery to the client without a single phone call.</p>
+  <p data-lang="es">Bridg Core es la capa de automatización que corre debajo de cada entrega — empareja cargas con vehículos, cotiza con datos de ruta en vivo, y envía rastreo y prueba de entrega al cliente sin una sola llamada.</p>
+  <div class="hero-cta">
+    <a class="btn" href="/#fleet" data-lang="en">Get a Quote →</a><a class="btn" href="/#fleet" data-lang="es">Cotizar →</a>
+    <a class="btn-o" href="/ai-disclosure" data-lang="en">Read our AI Disclosure</a><a class="btn-o" href="/ai-disclosure" data-lang="es">Ver nuestra Divulgación de IA</a>
+  </div>
+</div>
+
+<section class="band"><div class="in">
+  <div class="sec-label" data-lang="en">What it actually does</div>
+  <div class="sec-label" data-lang="es">Qué hace realmente</div>
+  <h2 data-lang="en">Four jobs, running on every order.</h2>
+  <h2 data-lang="es">Cuatro trabajos, en cada pedido.</h2>
+  <p class="lead" data-lang="en">No buzzwords. These are the four functions the system performs the moment a load enters the platform.</p>
+  <p class="lead" data-lang="es">Sin palabras de moda. Estas son las cuatro funciones que ejecuta el sistema en el momento que una carga entra a la plataforma.</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="n">01</div>
+      <h3 data-lang="en">Smart-Match</h3><h3 data-lang="es">Smart-Match</h3>
+      <p data-lang="en">Weight and cargo type are read against vehicle capacity to select the right class — pickup, cargo van, or box truck. A 1,140 lb flooring order doesn't get sent to a sedan.</p>
+      <p data-lang="es">El peso y tipo de carga se comparan con la capacidad del vehículo para elegir la clase correcta — pickup, cargo van o box truck. Un pedido de 1,140 lbs de piso no se manda en un sedán.</p>
+      <span class="tag" data-lang="en">Rules-based logic</span><span class="tag" data-lang="es">Lógica por reglas</span>
+    </div>
+    <div class="pillar">
+      <div class="n">02</div>
+      <h3 data-lang="en">Live Route Pricing</h3><h3 data-lang="es">Precio con Ruta en Vivo</h3>
+      <p data-lang="en">Addresses are geocoded and priced against actual driving distance and drive time — not a flat zone chart. You see a number in seconds, before anyone picks up a phone.</p>
+      <p data-lang="es">Las direcciones se geocodifican y se cotizan contra distancia y tiempo de manejo reales — no una tabla de zonas fija. Ves un número en segundos, antes de que alguien tome el teléfono.</p>
+      <span class="tag" data-lang="en">Live mapping data</span><span class="tag" data-lang="es">Datos de mapas en vivo</span>
+    </div>
+    <div class="pillar">
+      <div class="n">03</div>
+      <h3 data-lang="en">Automated Dispatch &amp; Tracking</h3><h3 data-lang="es">Despacho y Rastreo Automático</h3>
+      <p data-lang="en">Once confirmed, the order routes to a driver and the client receives a live tracking link by text and email — automatically. Nobody at your counter has to chase an update.</p>
+      <p data-lang="es">Una vez confirmado, el pedido va a un conductor y el cliente recibe un link de rastreo en vivo por mensaje y correo — automáticamente. Nadie en tu mostrador tiene que perseguir una actualización.</p>
+      <span class="tag" data-lang="en">Zero manual sending</span><span class="tag" data-lang="es">Cero envío manual</span>
+    </div>
+    <div class="pillar">
+      <div class="n">04</div>
+      <h3 data-lang="en">Proof of Delivery</h3><h3 data-lang="es">Prueba de Entrega</h3>
+      <p data-lang="en">Photo and recipient signature are captured at the drop and attached to the order record. Every load is documented — which matters when a claim or a dispute shows up weeks later.</p>
+      <p data-lang="es">Foto y firma del receptor se capturan en la entrega y se adjuntan al registro del pedido. Cada carga queda documentada — lo cual importa cuando aparece un reclamo semanas después.</p>
+      <span class="tag" data-lang="en">Captured on every load</span><span class="tag" data-lang="es">En cada carga</span>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="in">
+  <div class="sec-label" data-lang="en">One order, end to end</div>
+  <div class="sec-label" data-lang="es">Un pedido, de principio a fin</div>
+  <h2 data-lang="en">From counter to job site in <em>five automated steps.</em></h2>
+  <h2 data-lang="es">Del mostrador a la obra en <em>cinco pasos automáticos.</em></h2>
+
+  <div class="flow">
+    <div class="step"><div class="k">01</div><p data-lang="en">Order in</p><p data-lang="es">Entra el pedido</p><small data-lang="en">Load described</small><small data-lang="es">Carga descrita</small></div>
+    <div class="step"><div class="k">02</div><p data-lang="en">Vehicle matched</p><p data-lang="es">Vehículo emparejado</p><small data-lang="en">By weight &amp; type</small><small data-lang="es">Por peso y tipo</small></div>
+    <div class="step"><div class="k">03</div><p data-lang="en">Priced</p><p data-lang="es">Cotizado</p><small data-lang="en">Live route data</small><small data-lang="es">Datos de ruta</small></div>
+    <div class="step"><div class="k">04</div><p data-lang="en">Dispatched</p><p data-lang="es">Despachado</p><small data-lang="en">Tracking sent</small><small data-lang="es">Rastreo enviado</small></div>
+    <div class="step"><div class="k">05</div><p data-lang="en">Delivered</p><p data-lang="es">Entregado</p><small data-lang="en">POD attached</small><small data-lang="es">POD adjunto</small></div>
+  </div>
+
+  <div class="term" aria-hidden="true">
+    <div class="term-head">BRIDG CORE · SAMPLE ORDER LOG</div>
+    <div class="tl"><b>INTAKE</b> &nbsp;30 boxes flooring · 1,140 lbs · Burbank → Glendale</div>
+    <div class="tl"><b>MATCH</b> &nbsp;&nbsp;weight 1,140 lbs → cargo van (enclosed)</div>
+    <div class="tl"><b>PRICE</b> &nbsp;&nbsp;live route · 14.2 mi · 26 min drive time</div>
+    <div class="tl"><b>REVIEW</b> &nbsp;confirmed by dispatch <span class="ok">✓ human</span></div>
+    <div class="tl"><b>NOTIFY</b> &nbsp;tracking link → client SMS + email</div>
+    <div class="tl"><b>POD</b> &nbsp;&nbsp;&nbsp;&nbsp;photo + signature <span class="ok">✓ delivered</span></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="in">
+  <div class="sec-label" data-lang="en">Where the line is</div>
+  <div class="sec-label" data-lang="es">Dónde está la línea</div>
+  <h2 data-lang="en">The automation removes friction.<br/><em>The judgment stays with us.</em></h2>
+  <h2 data-lang="es">La automatización quita la fricción.<br/><em>El criterio se queda con nosotros.</em></h2>
+
+  <div class="human">
+    <h3 data-lang="en">A human confirms every dispatch.</h3>
+    <h3 data-lang="es">Una persona confirma cada despacho.</h3>
+    <p data-lang="en">Estimates are calculated instantly, but <strong>a person at Bridg reviews and confirms the final price and vehicle before a driver moves.</strong> No algorithm decides your pricing, accepts your load, or approves a driver. That is deliberate — construction loads have context a rules engine can't read, and the cost of getting it wrong lands on your job site, not ours.</p>
+    <p data-lang="es">Los estimados se calculan al instante, pero <strong>una persona en Bridg revisa y confirma el precio final y el vehículo antes de que un conductor se mueva.</strong> Ningún algoritmo decide tu precio, acepta tu carga ni aprueba un conductor. Es a propósito — las cargas de construcción tienen contexto que un motor de reglas no puede leer, y el costo de equivocarse cae en tu obra, no en la nuestra.</p>
+  </div>
+
+  <div class="notlist">
+    <div data-lang="en"><strong>We don't</strong> feed your customer data or account information into public AI chatbots.</div>
+    <div data-lang="es"><strong>No</strong> metemos tus datos de cliente ni información de cuenta en chatbots públicos de IA.</div>
+    <div data-lang="en"><strong>We don't</strong> use your data to train third-party AI models.</div>
+    <div data-lang="es"><strong>No</strong> usamos tus datos para entrenar modelos de IA de terceros.</div>
+    <div data-lang="en"><strong>We don't</strong> let an automated estimate stand as a final, binding price without review.</div>
+    <div data-lang="es"><strong>No</strong> dejamos que un estimado automático quede como precio final vinculante sin revisión.</div>
+    <div data-lang="en"><strong>We don't</strong> claim the system is smarter than it is — read the <a href="/ai-disclosure" style="color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.35)">AI Disclosure</a> for the full technical picture.</div>
+    <div data-lang="es"><strong>No</strong> pretendemos que el sistema es más inteligente de lo que es — lee la <a href="/ai-disclosure" style="color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.35)">Divulgación de IA</a> para el detalle técnico completo.</div>
+  </div>
+</div></section>
+
+<section><div class="in cta">
+  <div class="sec-label" style="justify-content:center" data-lang="en">Still building</div>
+  <div class="sec-label" style="justify-content:center" data-lang="es">Seguimos construyendo</div>
+  <h2 data-lang="en">And we're just getting started.</h2>
+  <h2 data-lang="es">Y esto apenas empieza.</h2>
+  <p class="lead" style="text-align:center" data-lang="en">We ship improvements weekly, not quarterly — because we're the ones on the road, and we fix what we feel. Every delivery teaches us something, and the next one runs a little tighter.</p>
+  <p class="lead" style="text-align:center" data-lang="es">Publicamos mejoras cada semana, no cada trimestre — porque nosotros somos los que estamos en la carretera, y arreglamos lo que sentimos. Cada entrega nos enseña algo, y la siguiente corre un poco más afinada.</p>
+  <div class="cta-row">
+    <a class="btn" href="/#fleet" data-lang="en">Get a Quote →</a><a class="btn" href="/#fleet" data-lang="es">Cotizar →</a>
+    <a class="btn-o" href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener" data-lang="en">Book a call</a><a class="btn-o" href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener" data-lang="es">Agendar llamada</a>
+  </div>
+</div></section>
+
+<footer><div class="foot-in">
+  <div class="legal-row">
+    <a href="/privacy"><span data-lang="en">Privacy Policy</span><span data-lang="es">Política de Privacidad</span></a>
+    <a href="/sms-terms"><span data-lang="en">SMS Terms</span><span data-lang="es">Términos SMS</span></a>
+    <a href="/terms"><span data-lang="en">Terms of Service</span><span data-lang="es">Términos del Servicio</span></a>
+    <a href="/ai-disclosure"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación de IA</span></a>
+  </div>
+  <div class="fcred">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER<br/>© 2026 BRIDG CONNECTS LLC · BURBANK, CA</div>
+</div></footer>
+
+<script>
+function setLang(l){
+  document.body.classList.toggle('es', l==='es');
+  document.getElementById('lgEN').classList.toggle('on', l==='en');
+  document.getElementById('lgES').classList.toggle('on', l==='es');
+}
+</script>
+</body>
+</html>
