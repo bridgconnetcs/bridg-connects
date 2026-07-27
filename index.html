@@ -222,6 +222,12 @@ h2{font-family:var(--FD);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);li
 .a-tabs button{flex:1;border:0;background:transparent;font-family:var(--FD);font-weight:600;font-size:.82rem;padding:.6rem;border-radius:8px;cursor:pointer;color:var(--steel)}
 .a-tabs button.on{background:var(--ink);color:#fff}
 .a-note{font-size:.78rem;color:var(--steel);margin-top:1rem;text-align:center}
+.consent{margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--hairline)}
+.consent label{display:flex;gap:.6rem;align-items:flex-start;cursor:pointer;font-size:.78rem;color:var(--steel);font-weight:300;line-height:1.5}
+.consent input[type="checkbox"]{width:16px;height:16px;margin-top:.15rem;flex-shrink:0;accent-color:var(--orange);cursor:pointer}
+.consent .opt{font-family:var(--FM);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);display:block;margin-bottom:.3rem}
+.consent .fine{font-size:.71rem;color:var(--steel);font-weight:300;margin-top:.6rem;line-height:1.5}
+.consent .fine a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.35)}
 .a-err{display:none;background:#FDECEC;color:#B3261E;font-size:.78rem;border-radius:8px;padding:.6rem .8rem;margin-top:.9rem}
 .acct-chip{display:flex;align-items:center;gap:.5rem;border:1px solid var(--hairline);border-radius:8px;padding:.4rem .8rem;font-size:.78rem;font-weight:500;cursor:pointer;background:#fff}
 .acct-chip:hover{border-color:var(--orange)}
@@ -587,6 +593,16 @@ footer a:hover{color:var(--orange)}
       </div>
       <div class="fg"><label>Email</label><input id="aEmail" type="email" autocomplete="email"/></div>
       <div class="fg"><label data-lang="en">Password</label><label data-lang="es">Contraseña</label><input id="aPass" type="password" autocomplete="new-password" placeholder="Min. 6 characters"/></div>
+      <div class="consent">
+        <span class="opt" data-lang="en">Optional</span><span class="opt" data-lang="es">Opcional</span>
+        <label>
+          <input type="checkbox" id="aPromo"/>
+          <span data-lang="en">Text me occasional offers and promotions from Bridg Connects. Reply STOP anytime to opt out. Message and data rates may apply.</span>
+          <span data-lang="es">Env&iacute;enme ofertas y promociones ocasionales de Bridg Connects por mensaje. Responde STOP en cualquier momento para darte de baja. Pueden aplicar tarifas de mensajes y datos.</span>
+        </label>
+        <p class="fine" data-lang="en">You will receive delivery notifications for your orders either way. By creating an account you agree to our <a href="/terms">Terms</a>, <a href="/privacy">Privacy Policy</a>, and <a href="/sms-terms">SMS Terms</a>.</p>
+        <p class="fine" data-lang="es">Recibir&aacute;s notificaciones de entrega de tus pedidos de cualquier forma. Al crear una cuenta aceptas nuestros <a href="/terms">T&eacute;rminos</a>, <a href="/privacy">Pol&iacute;tica de Privacidad</a> y <a href="/sms-terms">T&eacute;rminos SMS</a>.</p>
+      </div>
       <div class="a-err" id="aErr1"></div>
       <button class="btn" style="width:100%;margin-top:1.2rem" onclick="doSignup(this)" data-lang="en">Create my account →</button>
       <button class="btn" style="width:100%;margin-top:1.2rem" onclick="doSignup(this)" data-lang="es">Crear mi cuenta →</button>
@@ -678,7 +694,8 @@ document.addEventListener('click', function(e){
   }
 });
 // Fallbacks (overridden by Firebase module once loaded)
-window.acctClick = window.acctClick || function(){ document.getElementById('aov').classList.add('open'); document.body.style.overflow='hidden'; };
+window.openAuth = window.openAuth || function(){ var a=document.getElementById('aov'); if(a){ a.classList.add('open'); a.style.display='flex'; document.body.style.overflow='hidden'; } };
+window.acctClick = window.acctClick || function(){ window.openAuth(); };
 window.closeAuth = window.closeAuth || function(){ document.getElementById('aov').classList.remove('open'); document.body.style.overflow=''; };
 window.authTab = window.authTab || function(t){
   document.getElementById('aSignup').style.display = t==='signup'?'block':'none';
@@ -835,41 +852,77 @@ function startCountdown(){
 }
 
 /* ── BOOK ── */
-window.qBook = function(btn){
-  const es = document.body.classList.contains('es');
-  if(!window.CURRENT_USER){ window._pendingBook = true; if(window.openAuth) window.openAuth(); else alert("Please create an account to book."); return; }
-  const d = VEHICLES[curV];
-  btn.textContent = es?'Enviando…':'Sending…'; btn.disabled = true;
-  try{
-    if(window._fb) window._fb.addDoc(window._fb.collection(window._fb.db,'bookings'),{
-      uid: window.CURRENT_USER.uid, company: (window.CURRENT_PROFILE && window.CURRENT_PROFILE.company) || '',
-      vehicle: es?d.es:d.en,
-      pickup: document.getElementById('qPick').value.trim(),
-      dropoff: document.getElementById('qDrop').value.trim(),
-      estimate: document.getElementById('eTot').textContent,
-      createdAt: new Date().toISOString()
-    });
-  }catch(e){}
-  if(!window.emailjs){ alert(es?'Cotización lista. Agenda una llamada para confirmar.':'Quote ready. Book a call to confirm.'); btn.disabled=false; btn.textContent=es?'Reservar esta entrega':'Book this delivery'; return; }
-  emailjs.send("service_24ys0gu","template_7yer4c7",{
-    from_name: document.getElementById('qName').value.trim(),
+window.qBook = async function(btn){
+  var es = document.body.classList.contains('es');
+  if(!window.CURRENT_USER){ window._pendingBook = true; window.openAuth(); return; }
+  var d = VEHICLES[curV];
+  var lbl = es ? 'Reservar esta entrega' : 'Book this delivery';
+  btn.textContent = es ? 'Enviando\u2026' : 'Sending\u2026';
+  btn.disabled = true;
+
+  var payload = {
+    name: document.getElementById('qName').value.trim(),
     phone: document.getElementById('qPhone').value.trim(),
     pickup: document.getElementById('qPick').value.trim(),
     dropoff: document.getElementById('qDrop').value.trim(),
-    load_type: (es?d.es:d.en)+' · '+document.getElementById('qWeight').options[document.getElementById('qWeight').selectedIndex].text,
-    window: document.getElementById('qWin').options[document.getElementById('qWin').selectedIndex].text,
-    notes: document.getElementById('qDesc').value.trim()||'N/A',
-    estimate: document.getElementById('eTot').textContent+' (promo applied)',
-    reply_to:'noreply@bridgconnects.com'
-  }).then(()=>{
-    alert(es?'¡Solicitud enviada! Te contactamos en menos de 15 minutos.':'Request sent! We\'ll contact you within 15 minutes.');
-    closeQuote(); btn.disabled=false;
-    btn.textContent = es?'Reservar esta entrega':'Book this delivery';
-  }).catch(()=>{
-    alert(es?'Error al enviar. Intenta de nuevo o agenda una llamada en nuestro Calendly.':'Error sending. Try again or book a call via our Calendly.');
-    btn.disabled=false;
-    btn.textContent = es?'Reservar esta entrega':'Book this delivery';
-  });
+    weight: document.getElementById('qWeight').options[document.getElementById('qWeight').selectedIndex].text,
+    win: document.getElementById('qWin').options[document.getElementById('qWin').selectedIndex].text,
+    notes: document.getElementById('qDesc').value.trim() || 'N/A',
+    estimate: document.getElementById('eTot').textContent
+  };
+
+  /* 1. Firestore es la fuente de verdad — se espera y se verifica */
+  var saved = false;
+  try{
+    if(window._fb){
+      await window._fb.addDoc(window._fb.collection(window._fb.db,'bookings'), {
+        uid: window.CURRENT_USER.uid,
+        company: (window.CURRENT_PROFILE && window.CURRENT_PROFILE.company) || '',
+        contactName: payload.name,
+        phone: payload.phone,
+        vehicle: es ? d.es : d.en,
+        pickup: payload.pickup,
+        dropoff: payload.dropoff,
+        weight: payload.weight,
+        timing: payload.win,
+        notes: payload.notes,
+        estimate: payload.estimate,
+        status: 'new',
+        createdAt: new Date().toISOString()
+      });
+      saved = true;
+    }
+  }catch(err){
+    console.error('Booking save failed:', err && (err.code || err.message));
+  }
+
+  /* 2. El email es solo notificacion — nunca decide el resultado */
+  if(window.emailjs){
+    emailjs.send("service_24ys0gu","template_7yer4c7",{
+      from_name: payload.name, phone: payload.phone,
+      pickup: payload.pickup, dropoff: payload.dropoff,
+      load_type: (es?d.es:d.en)+' \u00B7 '+payload.weight,
+      window: payload.win, notes: payload.notes,
+      estimate: payload.estimate+' (promo applied)',
+      reply_to:'noreply@bridgconnects.com'
+    }).catch(function(err){
+      console.warn('EmailJS notify failed (booking still saved):', err && (err.text || err.status || err.message));
+    });
+  }
+
+  btn.disabled = false;
+  btn.textContent = lbl;
+
+  if(saved){
+    alert(es
+      ? '\u00A1Solicitud recibida! Qued\u00F3 registrada en tu cuenta. Te contactamos en menos de 15 minutos.'
+      : 'Request received! It is saved to your account. We will contact you within 15 minutes.');
+    closeQuote();
+  }else{
+    alert(es
+      ? 'No pudimos registrar la solicitud. Agenda una llamada y la tomamos de inmediato.'
+      : 'We could not save the request. Book a call and we will take it right away.');
+  }
 }
 </script>
 
@@ -943,7 +996,16 @@ window.doSignup = async function(btn){
   btn.disabled=true; btn.textContent=es?'Creando…':'Creating…';
   try{
     const cred = await createUserWithEmailAndPassword(auth, em, pw);
-    await setDoc(doc(db,'clients',cred.user.uid), {company:co,name:nm,phone:ph,email:em,createdAt:new Date().toISOString()});
+    var promoEl = document.getElementById('aPromo');
+    var promoOptIn = !!(promoEl && promoEl.checked);
+    var nowIso = new Date().toISOString();
+    await setDoc(doc(db,'clients',cred.user.uid), {
+      company:co, name:nm, phone:ph, email:em, createdAt:nowIso,
+      termsAcceptedAt: nowIso,
+      marketingOptIn: promoOptIn,
+      marketingOptInAt: promoOptIn ? nowIso : null,
+      marketingOptInSource: promoOptIn ? 'web signup checkbox' : null
+    });
     CURRENT_PROFILE = {company:co,name:nm,phone:ph,email:em}; window.CURRENT_PROFILE = CURRENT_PROFILE;
     document.getElementById('qName').value = nm;
     document.getElementById('qPhone').value = ph;
