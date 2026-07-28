@@ -37,6 +37,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.bridgconnects.com/help</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.bridgconnects.com/privacy</loc>
     <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>

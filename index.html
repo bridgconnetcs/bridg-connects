@@ -321,7 +321,9 @@ footer a:hover{color:var(--orange)}
     <div class="nav-links">
       <a href="#fleet" class="hideM" data-lang="en">Fleet</a><a href="#fleet" class="hideM" data-lang="es">Flota</a>
       <a href="#counter" class="hideM" data-lang="en">Why Bridg</a><a href="#counter" class="hideM" data-lang="es">Por qué Bridg</a>
-      <a href="/tracking" class="hideM" data-lang="en">Track</a><a href="/tracking" class="hideM" data-lang="es">Rastrear</a>
+      <a href="/tracking" class="hideM" data-lang="en">Track</a>
+      <a href="/help" class="hideM" data-lang="en">Help</a><a href="/tracking" class="hideM" data-lang="es">Rastrear</a>
+      <a href="/help" class="hideM" data-lang="es">Ayuda</a>
       <button class="acct-chip" id="navAcct" onclick="acctClick()"><span id="navAcctTxt">Log in</span></button>
       <div class="lang-tg"><button id="lgEN" class="on" onclick="setLang('en')">EN</button><button id="lgES" onclick="setLang('es')">ES</button></div>
     </div>
@@ -641,8 +643,16 @@ footer a:hover{color:var(--orange)}
     <div style="margin-top:1.4rem;font-family:var(--FM);font-size:.6rem;letter-spacing:.2em;color:var(--orange)" data-lang="en">DELIVERY HISTORY</div>
     <div style="margin-top:1.4rem;font-family:var(--FM);font-size:.6rem;letter-spacing:.2em;color:var(--orange)" data-lang="es">HISTORIAL DE ENTREGAS</div>
     <div id="hList"><p style="font-size:.82rem;color:var(--steel);margin-top:.8rem" data-lang="en">No deliveries yet — your first booking will appear here.</p><p style="font-size:.82rem;color:var(--steel);margin-top:.8rem" data-lang="es">Sin entregas aún — tu primera reserva aparecerá aquí.</p></div>
-    <button class="btn-o" style="width:100%;margin-top:1.4rem" onclick="doLogout()" data-lang="en">Log out</button>
-    <button class="btn-o" style="width:100%;margin-top:1.4rem" onclick="doLogout()" data-lang="es">Cerrar sesión</button>
+    <a class="btn" href="/help" style="display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:1.4rem;text-decoration:none" data-lang="en">
+      <img src="sage-avatar.png" alt="" width="20" height="20" style="width:20px;height:20px;border-radius:50%;object-fit:cover;display:inline-block"/>
+      Help &amp; chat with Sage
+    </a>
+    <a class="btn" href="/help" style="display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;margin-top:1.4rem;text-decoration:none" data-lang="es">
+      <img src="sage-avatar.png" alt="" width="20" height="20" style="width:20px;height:20px;border-radius:50%;object-fit:cover;display:inline-block"/>
+      Ayuda y chat con Sage
+    </a>
+    <button class="btn-o" style="width:100%;margin-top:.7rem" onclick="doLogout()" data-lang="en">Log out</button>
+    <button class="btn-o" style="width:100%;margin-top:.7rem" onclick="doLogout()" data-lang="es">Cerrar sesión</button>
   </div>
 </div>
 
