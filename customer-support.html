@@ -2,288 +2,147 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <meta name="color-scheme" content="light only"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Support — Bridg Connects</title>
+  <title>Help — Bridg Connects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:'Inter',sans-serif;
-      background:#ffffff;
-      color:#1a1a1a;
-      line-height:1.6;
-    }
-
+    :root{color-scheme:light only;
+      --white:#FFFFFF;--ink:#0B0B0C;--steel:#4A4A50;--hairline:#E8E8EA;--band:#F6F6F7;
+      --orange:#FF640D;--orange-soft:rgba(255,100,13,.08);
+      --FD:'Space Grotesk',sans-serif;--FB:'Inter',sans-serif;--FM:'JetBrains Mono',monospace}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;background:#FFFFFF !important}
+    body{background:#FFFFFF !important;color:var(--ink) !important;font-family:var(--FB);line-height:1.6;-webkit-font-smoothing:antialiased}
+    
     /* NAV */
-    .nav{
-      position:fixed;top:0;left:0;right:0;z-index:1000;
-      display:flex;justify-content:space-between;align-items:center;
-      padding:0 2rem;height:56px;
-      background:#ffffff;
-      border-bottom:1px solid #e5e5e5;
-      backdrop-filter:blur(8px);
-    }
-    .nav-logo{
-      font-family:'Space Grotesk',sans-serif;
-      font-weight:700;font-size:1.1rem;
-      letter-spacing:.04em;
-      color:#1a1a1a;
-      text-decoration:none;
-      display:flex;align-items:center;gap:6px;
-    }
-    .nav-logo .accent{color:#FF640D}
-    .nav-right{display:flex;align-items:center;gap:1.2rem}
-    .nav-user{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:.85rem;font-weight:500;
-      color:#666;cursor:pointer;
-      text-decoration:none;
-      transition:color .2s;
-    }
-    .nav-user:hover{color:#FF640D}
-    .nav-logout{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:.8rem;font-weight:600;
-      letter-spacing:.05em;
-      background:#f0f0f0;
-      border:none;
-      padding:.5rem 1rem;
-      cursor:pointer;
-      transition:all .2s;
-    }
-    .nav-logout:hover{background:#FF640D;color:#fff}
+    nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)}
+    .nav-in{max-width:1200px;margin:0 auto;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .back{font-family:var(--FM);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);text-decoration:none}
+    .back:hover{color:var(--orange)}
+    .logo{font-family:var(--FD);font-weight:700;font-size:1.15rem;letter-spacing:.04em;color:var(--ink);text-decoration:none;line-height:1;text-align:center}
+    .logo span{color:var(--orange)}
+    .logo small{display:block;font-family:var(--FM);font-size:.45rem;letter-spacing:.42em;color:var(--steel);font-weight:400;margin-top:1px}
+    .nav-controls{display:flex;align-items:center;gap:1.2rem}
+    .user-email{font-size:.85rem;color:var(--steel)}
+    .lang-tg{display:flex;border:1px solid var(--hairline);border-radius:6px;overflow:hidden}
+    .lang-tg button{border:0;background:transparent;padding:.35rem .65rem;font-family:var(--FM);font-size:.65rem;cursor:pointer;color:var(--steel)}
+    .lang-tg button.on{background:var(--ink);color:#fff}
+    .logout-btn{font-family:var(--FM);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--hairline);padding:.35rem .7rem;cursor:pointer;color:var(--steel);transition:all .2s;border-radius:4px}
+    .logout-btn:hover{border-color:var(--orange);color:var(--orange)}
 
     /* AUTH GUARD */
-    .auth-required{
-      position:fixed;top:0;left:0;right:0;bottom:0;
-      display:flex;align-items:center;justify-content:center;
-      background:#fff;z-index:2000;
-    }
-    .auth-box{
-      text-align:center;
-      max-width:400px;padding:2rem;
-    }
-    .auth-box h2{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:1.8rem;font-weight:700;
-      letter-spacing:.03em;
-      margin-bottom:.5rem;
-      color:#1a1a1a;
-    }
-    .auth-box p{
-      font-size:.95rem;
-      color:#666;
-      margin-bottom:1.5rem;
-    }
-    .auth-box a{
-      display:inline-block;
-      font-family:'Space Grotesk',sans-serif;
-      font-weight:600;
-      font-size:.9rem;
-      letter-spacing:.05em;
-      background:#FF640D;
-      color:#fff;
-      padding:.7rem 1.8rem;
-      text-decoration:none;
-      transition:all .2s;
-    }
+    .auth-guard{position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:2000}
+    .auth-box{text-align:center;max-width:380px;padding:2rem}
+    .auth-box h2{font-family:var(--FD);font-weight:700;font-size:1.8rem;color:var(--ink);margin-bottom:.8rem}
+    .auth-box p{font-size:.95rem;color:var(--steel);margin-bottom:1.6rem}
+    .auth-box a{display:inline-block;font-family:var(--FD);font-weight:600;font-size:.85rem;letter-spacing:.05em;background:var(--orange);color:#fff;padding:.7rem 1.6rem;text-decoration:none;border-radius:6px;transition:all .2s}
     .auth-box a:hover{background:#cc4d00}
 
-    /* MAIN LAYOUT */
-    .main{
-      min-height:100vh;
-      padding-top:56px;
-      display:grid;
-      grid-template-columns:1fr 420px;
-      gap:0;
-    }
-    @media(max-width:1024px){
-      .main{
-        grid-template-columns:1fr;
-        grid-template-rows:auto 1fr;
-      }
-    }
+    /* MAIN */
+    .wrap{max-width:1200px;margin:0 auto;padding:3rem 1.5rem}
+    .eyebrow{font-family:var(--FM);font-size:.62rem;letter-spacing:.24em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:100px;padding:.55rem 1.1rem;margin-bottom:1.2rem}
+    .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--orange)}
+    h1{font-family:var(--FD);font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.01em}
+    h1 em{font-style:normal}
+    .sub{font-size:.98rem;font-weight:300;color:var(--steel);margin-top:1rem;max-width:520px}
 
-    /* LEFT: DELIVERY INFO */
-    .delivery-section{
-      padding:2rem;
-      border-right:1px solid #e5e5e5;
-      overflow-y:auto;
-    }
-    @media(max-width:1024px){
-      .delivery-section{border-right:none;border-bottom:1px solid #e5e5e5}
-    }
+    /* LAYOUT: 2-COLUMN */
+    .content{display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;margin-top:2.5rem}
+    @media(max-width:900px){.content{grid-template-columns:1fr;gap:1.5rem}}
 
-    .section-title{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:1.3rem;font-weight:700;
-      letter-spacing:.02em;
-      margin-bottom:1.5rem;
-      color:#1a1a1a;
-    }
+    /* LEFT: DELIVERIES */
+    .deliveries{background:var(--band);border-radius:12px;padding:2rem;min-height:400px}
+    .deliveries h2{font-family:var(--FD);font-weight:600;font-size:1.2rem;letter-spacing:-.01em;margin-bottom:1.6rem;color:var(--ink)}
+    .delivery-item{background:#fff;border:1px solid var(--hairline);border-radius:8px;padding:1.4rem;margin-bottom:1.2rem;transition:all .2s}
+    .delivery-item:hover{border-color:var(--orange);box-shadow:0 2px 8px rgba(255,100,13,.08)}
+    .delivery-item:last-child{margin-bottom:0}
+    .del-code{font-family:var(--FM);font-size:.95rem;font-weight:600;color:var(--orange);margin-bottom:.4rem}
+    .del-status{font-size:.88rem;color:var(--steel);margin-bottom:.8rem}
+    .del-status.active{color:var(--orange);font-weight:600}
+    .del-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:.85rem}
+    .del-meta-item{border-left:2px solid var(--orange);padding-left:.8rem}
+    .del-meta-label{font-family:var(--FM);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#999;margin-bottom:.2rem}
+    .del-meta-value{color:var(--ink);font-weight:500}
+    .del-link{font-family:var(--FD);font-size:.8rem;font-weight:600;color:var(--orange);text-decoration:none;margin-top:1rem;display:inline-block;transition:opacity .2s}
+    .del-link:hover{opacity:.7}
 
-    .delivery-card{
-      background:#f9f9f9;
-      border:1px solid #e5e5e5;
-      padding:1.5rem;
-      margin-bottom:1.5rem;
-    }
-    .delivery-code{
-      font-family:'JetBrains Mono',monospace;
-      font-size:1.1rem;font-weight:600;
-      color:#FF640D;
-      margin-bottom:.5rem;
-    }
-    .delivery-status{
-      font-size:.95rem;
-      color:#666;
-      margin-bottom:1rem;
-    }
-    .delivery-status.active{color:#FF640D;font-weight:600}
+    .no-deliveries{text-align:center;padding:2.5rem 1rem;color:var(--steel)}
+    .no-deliveries h3{font-family:var(--FD);font-weight:600;font-size:1rem;color:var(--ink);margin-bottom:.4rem}
 
-    .delivery-meta{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:1rem;
-      font-size:.9rem;
-    }
-    .meta-item{
-      border-left:2px solid #FF640D;
-      padding-left:1rem;
-    }
-    .meta-label{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:.75rem;
-      letter-spacing:.05em;
-      text-transform:uppercase;
-      color:#999;
-      margin-bottom:.25rem;
-    }
-    .meta-value{
-      color:#1a1a1a;
-      font-weight:500;
-    }
-
-    .action-link{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:.9rem;
-      font-weight:600;
-      letter-spacing:.05em;
-      color:#FF640D;
-      text-decoration:none;
-      margin-top:1rem;
-      display:inline-block;
-      transition:opacity .2s;
-    }
-    .action-link:hover{opacity:.7}
-
-    /* RIGHT: SAGE CHAT */
-    .sage-section{
-      display:flex;flex-direction:column;
-      background:#ffffff;
-      border-left:1px solid #e5e5e5;
-      overflow:hidden;
-    }
-    @media(max-width:1024px){
-      .sage-section{border-left:none;border-top:1px solid #e5e5e5}
-    }
-
-    .sage-header{
-      padding:1.5rem 1.5rem 1rem;
-      border-bottom:1px solid #e5e5e5;
-      background:#f9f9f9;
-    }
-    .sage-title{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:1.1rem;font-weight:700;
-      letter-spacing:.02em;
-      color:#1a1a1a;
-      margin-bottom:.3rem;
-    }
-    .sage-subtitle{
-      font-size:.85rem;
-      color:#999;
-    }
-
-    .sage-widget{
-      flex:1;
-      overflow:hidden;
-      display:flex;flex-direction:column;
-    }
-    #elevenlabs-widget{
-      width:100%;
-      height:100%;
-      border:none;
-    }
-
-    /* NO DELIVERY */
-    .no-delivery{
-      text-align:center;
-      padding:3rem 2rem;
-      color:#666;
-    }
-    .no-delivery h3{
-      font-family:'Space Grotesk',sans-serif;
-      font-size:1.1rem;font-weight:600;
-      color:#1a1a1a;
-      margin-bottom:.5rem;
-    }
+    /* RIGHT: SAGE */
+    .sage-box{background:#fff;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:400px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .sage-head{background:var(--band);border-bottom:1px solid var(--hairline);padding:1.4rem}
+    .sage-head h2{font-family:var(--FD);font-weight:600;font-size:1.1rem;color:var(--ink);margin-bottom:.2rem}
+    .sage-head p{font-size:.85rem;color:var(--steel)}
+    .sage-body{flex:1;overflow:hidden}
+    #elevenlabs-widget{width:100%;height:100%;border:none}
 
     /* LOADING */
-    .loading{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      height:300px;
-      color:#999;
-    }
-    .spinner{
-      width:36px;height:36px;border:2px solid #e5e5e5;border-top-color:#FF640D;
-      border-radius:50%;animation:spin .8s linear infinite;
-    }
+    .loading{display:flex;align-items:center;justify-content:center;height:300px}
+    .spinner{width:32px;height:32px;border:2px solid var(--hairline);border-top-color:var(--orange);border-radius:50%;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
+
+    @media(max-width:600px){
+      .nav-in{flex-wrap:wrap;gap:.8rem}
+      .logo small{display:none}
+      .nav-controls{width:100%;order:3;gap:.8rem}
+      .user-email{display:none}
+      .content{grid-template-columns:1fr;gap:1.5rem}
+      .deliveries,.sage-box{min-height:350px}
+    }
   </style>
 </head>
 <body>
 
-<nav class="nav" id="navbar">
-  <a href="index.html" class="nav-logo">
-    BRIDG <span class="accent">.</span>
-  </a>
-  <div class="nav-right">
-    <span class="nav-user" id="userEmail">—</span>
-    <button class="nav-logout" onclick="logout()">Logout</button>
+<nav id="navbar">
+  <div class="nav-in">
+    <a class="back" href="/">← <span id="backLang">Back</span></a>
+    <a class="logo" href="/">BRIDG<span>.</span><small>CONNECTS</small></a>
+    <div class="nav-controls">
+      <span class="user-email" id="userEmail">—</span>
+      <div class="lang-tg">
+        <button class="on" id="lgEN" onclick="setLang('en')">EN</button>
+        <button id="lgES" onclick="setLang('es')">ES</button>
+      </div>
+      <button class="logout-btn" onclick="logout()" id="logoutLabel">Logout</button>
+    </div>
   </div>
 </nav>
 
-<div id="authGuard" class="auth-required" style="display:none">
+<div class="auth-guard" id="authGuard" style="display:none">
   <div class="auth-box">
-    <h2>Access Restricted</h2>
-    <p>You must log in to access customer support.</p>
-    <a href="index.html">← Back to Home</a>
+    <h2 id="authTitle">Access Restricted</h2>
+    <p id="authMsg">You must log in to access customer support.</p>
+    <a href="/" id="authBackLink">← Back to Home</a>
   </div>
 </div>
 
-<div class="main" id="mainContent" style="display:none">
-  
-  <!-- LEFT: DELIVERY INFO -->
-  <div class="delivery-section">
-    <div class="section-title">Your Deliveries</div>
-    <div id="deliveryContainer">
-      <div class="loading"><div class="spinner"></div></div>
-    </div>
-  </div>
+<div class="wrap" id="mainContent" style="display:none">
+  <p class="eyebrow" id="eyebrow">Your deliveries & support</p>
+  <h1 id="mainTitle">HELP & <em style="color:#FF640D">TRACKING</em></h1>
+  <p class="sub" id="mainSub">View your active deliveries and chat with Sage for any questions.</p>
 
-  <!-- RIGHT: SAGE CHAT -->
-  <div class="sage-section">
-    <div class="sage-header">
-      <div class="sage-title">Ask Sage</div>
-      <div class="sage-subtitle">Your support assistant</div>
+  <div class="content">
+    <!-- LEFT: DELIVERIES -->
+    <div class="deliveries">
+      <h2 id="delTitle">Your Deliveries</h2>
+      <div id="deliveryContainer">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
     </div>
-    <div class="sage-widget">
-      <div id="elevenlabs-widget"></div>
+
+    <!-- RIGHT: SAGE -->
+    <div class="sage-box">
+      <div class="sage-head">
+        <h2 id="sageTitle">Ask Sage</h2>
+        <p id="sageSub">Your support assistant</p>
+      </div>
+      <div class="sage-body">
+        <div id="elevenlabs-widget"></div>
+      </div>
     </div>
   </div>
 
@@ -308,33 +167,90 @@
   const db = getFirestore(app);
 
   let currentUser = null;
+  let currentLang = 'en';
+
+  const translations = {
+    en: {
+      back: 'Back',
+      logout: 'Logout',
+      eyebrow: 'Your deliveries & support',
+      title: 'HELP & TRACKING',
+      sub: 'View your active deliveries and chat with Sage for any questions.',
+      delTitle: 'Your Deliveries',
+      sageTitle: 'Ask Sage',
+      sageSub: 'Your support assistant',
+      noDeliveries: 'No active deliveries',
+      noDeliveriesMsg: 'You have no deliveries at the moment.',
+      authTitle: 'Access Restricted',
+      authMsg: 'You must log in to access customer support.',
+      authBack: '← Back to Home'
+    },
+    es: {
+      back: 'Volver',
+      logout: 'Cerrar sesión',
+      eyebrow: 'Tus entregas y soporte',
+      title: 'AYUDA Y RASTREO',
+      sub: 'Mira tus entregas activas y chatea con Sage para cualquier pregunta.',
+      delTitle: 'Tus Entregas',
+      sageTitle: 'Pregunta a Sage',
+      sageSub: 'Tu asistente de soporte',
+      noDeliveries: 'Sin entregas activas',
+      noDeliveriesMsg: 'No tienes entregas en este momento.',
+      authTitle: 'Acceso Restringido',
+      authMsg: 'Debes iniciar sesión para acceder al soporte.',
+      authBack: '← Volver al Inicio'
+    }
+  };
+
+  function setLang(l) {
+    currentLang = l;
+    document.body.classList.toggle('es', l === 'es');
+    document.getElementById('lgEN').classList.toggle('on', l === 'en');
+    document.getElementById('lgES').classList.toggle('on', l === 'es');
+    updateText();
+  }
+
+  function updateText() {
+    const t = translations[currentLang];
+    document.getElementById('backLang').textContent = t.back;
+    document.getElementById('logoutLabel').textContent = t.logout;
+    document.getElementById('eyebrow').textContent = t.eyebrow;
+    document.getElementById('mainTitle').textContent = `${t.title.split(' ')[0]} & ${t.title.split(' ')[2]}`;
+    document.getElementById('mainSub').textContent = t.sub;
+    document.getElementById('delTitle').textContent = t.delTitle;
+    document.getElementById('sageTitle').textContent = t.sageTitle;
+    document.getElementById('sageSub').textContent = t.sageSub;
+    document.getElementById('authTitle').textContent = t.authTitle;
+    document.getElementById('authMsg').textContent = t.authMsg;
+    document.getElementById('authBackLink').textContent = t.authBack;
+  }
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       currentUser = user;
-      document.getElementById("userEmail").textContent = user.email;
-      document.getElementById("mainContent").style.display = "grid";
-      document.getElementById("authGuard").style.display = "none";
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('authGuard').style.display = 'none';
       loadDeliveries(user.uid);
       initializeSageWidget();
     } else {
-      document.getElementById("mainContent").style.display = "none";
-      document.getElementById("authGuard").style.display = "flex";
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('authGuard').style.display = 'flex';
     }
   });
 
   async function loadDeliveries(userId) {
-    const container = document.getElementById("deliveryContainer");
+    const container = document.getElementById('deliveryContainer');
     try {
-      // Fetch deliveries for this user from Firestore
       const q = query(collection(db, "deliveries"), where("userId", "==", userId));
       const snapshot = await getDocs(q);
       
       if (snapshot.empty) {
+        const t = translations[currentLang];
         container.innerHTML = `
-          <div class="no-delivery">
-            <h3>No active deliveries</h3>
-            <p>You have no deliveries at the moment.</p>
+          <div class="no-deliveries">
+            <h3>${t.noDeliveries}</h3>
+            <p>${t.noDeliveriesMsg}</p>
           </div>
         `;
         return;
@@ -344,31 +260,23 @@
       snapshot.forEach((doc) => {
         const d = doc.data();
         html += `
-          <div class="delivery-card">
-            <div class="delivery-code">${d.code || "—"}</div>
-            <div class="delivery-status ${d.status === "in-transit" ? "active" : ""}">
+          <div class="delivery-item">
+            <div class="del-code">${d.code || "—"}</div>
+            <div class="del-status ${d.status === "in-transit" ? "active" : ""}">
               ${d.status === "in-transit" ? "🟢 In Transit" : "⏳ " + (d.status || "Pending")}
             </div>
-            <div class="delivery-meta">
-              <div class="meta-item">
-                <div class="meta-label">Driver</div>
-                <div class="meta-value">${d.driver || "—"}</div>
+            <div class="del-meta">
+              <div class="del-meta-item">
+                <div class="del-meta-label">Driver</div>
+                <div class="del-meta-value">${d.driver || "—"}</div>
               </div>
-              <div class="meta-item">
-                <div class="meta-label">ETA</div>
-                <div class="meta-value">${d.eta || "—"}</div>
-              </div>
-              <div class="meta-item">
-                <div class="meta-label">Pickup</div>
-                <div class="meta-value">${d.pickup_location || "—"}</div>
-              </div>
-              <div class="meta-item">
-                <div class="meta-label">Dropoff</div>
-                <div class="meta-value">${d.dropoff_location || "—"}</div>
+              <div class="del-meta-item">
+                <div class="del-meta-label">ETA</div>
+                <div class="del-meta-value">${d.eta || "—"}</div>
               </div>
             </div>
-            <a href="https://ordertracking.io/${d.code}" class="action-link" target="_blank">
-              View Full Tracking →
+            <a href="https://ordertracking.io/${d.code}" class="del-link" target="_blank">
+              Track Order →
             </a>
           </div>
         `;
@@ -376,39 +284,37 @@
       container.innerHTML = html;
     } catch (err) {
       console.error("Error loading deliveries:", err);
-      container.innerHTML = `<div class="no-delivery"><h3>Error loading deliveries</h3></div>`;
     }
   }
 
   function initializeSageWidget() {
-    // ElevenLabs widget embed
-    // Replace AGENT_ID with your actual Sage agent ID from ElevenLabs
+    // Load ElevenLabs widget
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/@elevenlabs/convai@latest/index.global.js";
     script.async = true;
     script.onload = () => {
       if (window.ElevenLabsConvAI) {
-        const widget = new window.ElevenLabsConvAI({
+        new window.ElevenLabsConvAI({
           agentId: "agent_2801kymqshm9eyfs3a1gkfertk3v",
           clientId: currentUser.uid,
           sessionId: "customer-" + Date.now()
         });
-        widget.setTarget("elevenlabs-widget");
       }
     };
     document.head.appendChild(script);
   }
 
-  function logout() {
+  window.logout = function() {
     signOut(auth).then(() => {
       currentUser = null;
-      window.location.href = "index.html";
+      window.location.href = "/";
     }).catch((err) => {
       console.error("Logout error:", err);
     });
-  }
+  };
 
-  window.logout = logout;
+  window.setLang = setLang;
+  updateText();
 </script>
 
 </body>
