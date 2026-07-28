@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Support — Bridg Connects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      background:#ffffff;
+      color:#1a1a1a;
+      line-height:1.6;
+    }
+
+    /* NAV */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:1000;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 2rem;height:56px;
+      background:#ffffff;
+      border-bottom:1px solid #e5e5e5;
+      backdrop-filter:blur(8px);
+    }
+    .nav-logo{
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:700;font-size:1.1rem;
+      letter-spacing:.04em;
+      color:#1a1a1a;
+      text-decoration:none;
+      display:flex;align-items:center;gap:6px;
+    }
+    .nav-logo .accent{color:#FF640D}
+    .nav-right{display:flex;align-items:center;gap:1.2rem}
+    .nav-user{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:.85rem;font-weight:500;
+      color:#666;cursor:pointer;
+      text-decoration:none;
+      transition:color .2s;
+    }
+    .nav-user:hover{color:#FF640D}
+    .nav-logout{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:.8rem;font-weight:600;
+      letter-spacing:.05em;
+      background:#f0f0f0;
+      border:none;
+      padding:.5rem 1rem;
+      cursor:pointer;
+      transition:all .2s;
+    }
+    .nav-logout:hover{background:#FF640D;color:#fff}
+
+    /* AUTH GUARD */
+    .auth-required{
+      position:fixed;top:0;left:0;right:0;bottom:0;
+      display:flex;align-items:center;justify-content:center;
+      background:#fff;z-index:2000;
+    }
+    .auth-box{
+      text-align:center;
+      max-width:400px;padding:2rem;
+    }
+    .auth-box h2{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:1.8rem;font-weight:700;
+      letter-spacing:.03em;
+      margin-bottom:.5rem;
+      color:#1a1a1a;
+    }
+    .auth-box p{
+      font-size:.95rem;
+      color:#666;
+      margin-bottom:1.5rem;
+    }
+    .auth-box a{
+      display:inline-block;
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:600;
+      font-size:.9rem;
+      letter-spacing:.05em;
+      background:#FF640D;
+      color:#fff;
+      padding:.7rem 1.8rem;
+      text-decoration:none;
+      transition:all .2s;
+    }
+    .auth-box a:hover{background:#cc4d00}
+
+    /* MAIN LAYOUT */
+    .main{
+      min-height:100vh;
+      padding-top:56px;
+      display:grid;
+      grid-template-columns:1fr 420px;
+      gap:0;
+    }
+    @media(max-width:1024px){
+      .main{
+        grid-template-columns:1fr;
+        grid-template-rows:auto 1fr;
+      }
+    }
+
+    /* LEFT: DELIVERY INFO */
+    .delivery-section{
+      padding:2rem;
+      border-right:1px solid #e5e5e5;
+      overflow-y:auto;
+    }
+    @media(max-width:1024px){
+      .delivery-section{border-right:none;border-bottom:1px solid #e5e5e5}
+    }
+
+    .section-title{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:1.3rem;font-weight:700;
+      letter-spacing:.02em;
+      margin-bottom:1.5rem;
+      color:#1a1a1a;
+    }
+
+    .delivery-card{
+      background:#f9f9f9;
+      border:1px solid #e5e5e5;
+      padding:1.5rem;
+      margin-bottom:1.5rem;
+    }
+    .delivery-code{
+      font-family:'JetBrains Mono',monospace;
+      font-size:1.1rem;font-weight:600;
+      color:#FF640D;
+      margin-bottom:.5rem;
+    }
+    .delivery-status{
+      font-size:.95rem;
+      color:#666;
+      margin-bottom:1rem;
+    }
+    .delivery-status.active{color:#FF640D;font-weight:600}
+
+    .delivery-meta{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+      font-size:.9rem;
+    }
+    .meta-item{
+      border-left:2px solid #FF640D;
+      padding-left:1rem;
+    }
+    .meta-label{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:.75rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+      color:#999;
+      margin-bottom:.25rem;
+    }
+    .meta-value{
+      color:#1a1a1a;
+      font-weight:500;
+    }
+
+    .action-link{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:.9rem;
+      font-weight:600;
+      letter-spacing:.05em;
+      color:#FF640D;
+      text-decoration:none;
+      margin-top:1rem;
+      display:inline-block;
+      transition:opacity .2s;
+    }
+    .action-link:hover{opacity:.7}
+
+    /* RIGHT: SAGE CHAT */
+    .sage-section{
+      display:flex;flex-direction:column;
+      background:#ffffff;
+      border-left:1px solid #e5e5e5;
+      overflow:hidden;
+    }
+    @media(max-width:1024px){
+      .sage-section{border-left:none;border-top:1px solid #e5e5e5}
+    }
+
+    .sage-header{
+      padding:1.5rem 1.5rem 1rem;
+      border-bottom:1px solid #e5e5e5;
+      background:#f9f9f9;
+    }
+    .sage-title{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:1.1rem;font-weight:700;
+      letter-spacing:.02em;
+      color:#1a1a1a;
+      margin-bottom:.3rem;
+    }
+    .sage-subtitle{
+      font-size:.85rem;
+      color:#999;
+    }
+
+    .sage-widget{
+      flex:1;
+      overflow:hidden;
+      display:flex;flex-direction:column;
+    }
+    #elevenlabs-widget{
+      width:100%;
+      height:100%;
+      border:none;
+    }
+
+    /* NO DELIVERY */
+    .no-delivery{
+      text-align:center;
+      padding:3rem 2rem;
+      color:#666;
+    }
+    .no-delivery h3{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:1.1rem;font-weight:600;
+      color:#1a1a1a;
+      margin-bottom:.5rem;
+    }
+
+    /* LOADING */
+    .loading{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:300px;
+      color:#999;
+    }
+    .spinner{
+      width:36px;height:36px;border:2px solid #e5e5e5;border-top-color:#FF640D;
+      border-radius:50%;animation:spin .8s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="navbar">
+  <a href="index.html" class="nav-logo">
+    BRIDG <span class="accent">.</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-user" id="userEmail">—</span>
+    <button class="nav-logout" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div id="authGuard" class="auth-required" style="display:none">
+  <div class="auth-box">
+    <h2>Access Restricted</h2>
+    <p>You must log in to access customer support.</p>
+    <a href="index.html">← Back to Home</a>
+  </div>
+</div>
+
+<div class="main" id="mainContent" style="display:none">
+  
+  <!-- LEFT: DELIVERY INFO -->
+  <div class="delivery-section">
+    <div class="section-title">Your Deliveries</div>
+    <div id="deliveryContainer">
+      <div class="loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SAGE CHAT -->
+  <div class="sage-section">
+    <div class="sage-header">
+      <div class="sage-title">Ask Sage</div>
+      <div class="sage-subtitle">Your support assistant</div>
+    </div>
+    <div class="sage-widget">
+      <div id="elevenlabs-widget"></div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+  import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDjgG0dqXvXnCJl-JFOzpKxXgSV-EkClkQ",
+    authDomain: "bridg-connects.firebaseapp.com",
+    projectId: "bridg-connects",
+    storageBucket: "bridg-connects.appspot.com",
+    messagingSenderId: "841383220555",
+    appId: "1:841383220555:web:0c48a4e6eab85c4f7bfcc0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      document.getElementById("userEmail").textContent = user.email;
+      document.getElementById("mainContent").style.display = "grid";
+      document.getElementById("authGuard").style.display = "none";
+      loadDeliveries(user.uid);
+      initializeSageWidget();
+    } else {
+      document.getElementById("mainContent").style.display = "none";
+      document.getElementById("authGuard").style.display = "flex";
+    }
+  });
+
+  async function loadDeliveries(userId) {
+    const container = document.getElementById("deliveryContainer");
+    try {
+      // Fetch deliveries for this user from Firestore
+      const q = query(collection(db, "deliveries"), where("userId", "==", userId));
+      const snapshot = await getDocs(q);
+      
+      if (snapshot.empty) {
+        container.innerHTML = `
+          <div class="no-delivery">
+            <h3>No active deliveries</h3>
+            <p>You have no deliveries at the moment.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      snapshot.forEach((doc) => {
+        const d = doc.data();
+        html += `
+          <div class="delivery-card">
+            <div class="delivery-code">${d.code || "—"}</div>
+            <div class="delivery-status ${d.status === "in-transit" ? "active" : ""}">
+              ${d.status === "in-transit" ? "🟢 In Transit" : "⏳ " + (d.status || "Pending")}
+            </div>
+            <div class="delivery-meta">
+              <div class="meta-item">
+                <div class="meta-label">Driver</div>
+                <div class="meta-value">${d.driver || "—"}</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">ETA</div>
+                <div class="meta-value">${d.eta || "—"}</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Pickup</div>
+                <div class="meta-value">${d.pickup_location || "—"}</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Dropoff</div>
+                <div class="meta-value">${d.dropoff_location || "—"}</div>
+              </div>
+            </div>
+            <a href="https://ordertracking.io/${d.code}" class="action-link" target="_blank">
+              View Full Tracking →
+            </a>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    } catch (err) {
+      console.error("Error loading deliveries:", err);
+      container.innerHTML = `<div class="no-delivery"><h3>Error loading deliveries</h3></div>`;
+    }
+  }
+
+  function initializeSageWidget() {
+    // ElevenLabs widget embed
+    // Replace AGENT_ID with your actual Sage agent ID from ElevenLabs
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/@elevenlabs/convai@latest/index.global.js";
+    script.async = true;
+    script.onload = () => {
+      if (window.ElevenLabsConvAI) {
+        const widget = new window.ElevenLabsConvAI({
+          agentId: "agent_2801kymqshm9eyfs3a1gkfertk3v",
+          clientId: currentUser.uid,
+          sessionId: "customer-" + Date.now()
+        });
+        widget.setTarget("elevenlabs-widget");
+      }
+    };
+    document.head.appendChild(script);
+  }
+
+  function logout() {
+    signOut(auth).then(() => {
+      currentUser = null;
+      window.location.href = "index.html";
+    }).catch((err) => {
+      console.error("Logout error:", err);
+    });
+  }
+
+  window.logout = logout;
+</script>
+
+</body>
+</html>
