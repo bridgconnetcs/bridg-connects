@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="color-scheme" content="light only"/>
+<meta name="supported-color-schemes" content="light"/>
+<title>Client Portal — Bridg Connects</title>
+<!-- BRIDG WHITE v2.0 -->
+<meta name="robots" content="noindex, nofollow"/>
+<meta name="description" content="Bridg Connects client portal — track deliveries, schedule pickups, download proof of delivery and invoices."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  color-scheme: light only;
+  --paper:#FFFFFF; --white:#FFFFFF; --ink:#0B0B0C; --steel:#4A4A50;
+  --hairline:#E8E8EA; --band:#F6F6F7;
+  --orange:#FF640D; --orange-soft:rgba(255,100,13,.08);
+  --green:#0B8A4B; --green-soft:rgba(11,138,75,.09);
+  --amber:#A15C07; --amber-soft:rgba(161,92,7,.09);
+  --red:#C4261A; --red-soft:rgba(196,38,26,.08);
+  --blue:#2563EB; --blue-soft:rgba(37,99,235,.08);
+  --FD:'Space Grotesk',sans-serif; --FB:'Inter',sans-serif; --FM:'JetBrains Mono',monospace;
+  --rail:236px; --nav:62px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:#FFFFFF;scroll-behavior:smooth}
+body{background:#FFFFFF !important;color:var(--ink);font-family:var(--FB);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+body.es [data-lang="en"]{display:none!important}
+body:not(.es) [data-lang="es"]{display:none!important}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+::selection{background:var(--orange-soft)}
+.mono{font-family:var(--FM);font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── shared site furniture ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;background:var(--ink);color:#fff;font-family:var(--FD);font-weight:600;font-size:.85rem;letter-spacing:.02em;padding:.75rem 1.5rem;border-radius:8px;transition:all .2s}
+.btn:hover{background:var(--orange);transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-o{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;background:transparent;color:var(--ink);font-family:var(--FD);font-weight:600;font-size:.85rem;padding:.72rem 1.4rem;border-radius:8px;border:1px solid var(--ink);transition:all .2s}
+.btn-o:hover{border-color:var(--orange);color:var(--orange)}
+.btn.sm,.btn-o.sm{padding:.45rem .85rem;font-size:.76rem;border-radius:7px}
+.btn.sm:hover,.btn-o.sm:hover{transform:none}
+.eyebrow{font-family:var(--FM);font-size:.62rem;letter-spacing:.24em;color:var(--orange);text-transform:uppercase;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:100px;padding:.5rem 1rem}
+.eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.lbl{font-family:var(--FM);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--steel)}
+.note{background:var(--band);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:1rem 1.15rem;font-size:.86rem;color:var(--steel);font-weight:300}
+.note b{color:var(--ink);font-weight:600}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--hairline)}
+.nav-in{height:var(--nav);padding:0 1.5rem;display:flex;align-items:center;gap:1rem}
+.logo{font-family:var(--FD);font-weight:700;font-size:1.2rem;letter-spacing:.04em;line-height:1}
+.logo span{color:var(--orange)}
+.logo small{display:block;font-family:var(--FM);font-size:.46rem;letter-spacing:.42em;color:var(--steel);font-weight:400;margin-top:2px}
+.nav-tag{font-family:var(--FM);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);border-left:1px solid var(--hairline);padding-left:.9rem;margin-left:.2rem}
+@media(max-width:640px){.nav-tag{display:none}}
+.lang-tg{display:flex;border:1px solid var(--hairline);border-radius:6px;overflow:hidden;flex-shrink:0}
+.lang-tg button{padding:.35rem .65rem;font-family:var(--FM);font-size:.65rem;color:var(--steel)}
+.lang-tg button.on{background:var(--ink);color:#fff}
+.acct-chip{display:flex;align-items:center;gap:.5rem;border:1px solid var(--hairline);border-radius:8px;padding:.4rem .8rem;font-size:.78rem;font-weight:500;background:#fff;flex-shrink:0}
+.acct-chip:hover{border-color:var(--orange)}
+.acct-chip .ini{width:22px;height:22px;border-radius:6px;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--FM);font-size:.58rem;flex-shrink:0}
+@media(max-width:520px){.acct-chip .who{display:none}}
+
+.omni{position:relative;flex:1;max-width:400px;margin-left:.6rem}
+@media(max-width:860px){.omni{max-width:none}}
+.omni-in{display:flex;align-items:center;gap:.55rem;background:var(--band);border:1px solid var(--hairline);border-radius:8px;padding:.48rem .7rem;transition:all .2s}
+.omni-in:focus-within{background:#fff;border-color:var(--ink)}
+.omni-in svg{width:14px;height:14px;stroke:var(--steel);fill:none;stroke-width:2;flex-shrink:0}
+.omni-in input{flex:1;min-width:0;background:none;border:0;outline:none;font-size:.82rem}
+.omni-in input::placeholder{color:var(--steel);font-weight:300}
+.omni-in kbd{font-family:var(--FM);font-size:.55rem;color:var(--steel);border:1px solid var(--hairline);border-radius:4px;padding:.05rem .3rem;background:#fff;flex-shrink:0}
+@media(max-width:640px){.omni-in kbd{display:none}}
+.pop{position:absolute;top:calc(100% + .55rem);background:#fff;border:1px solid var(--hairline);border-radius:14px;box-shadow:0 24px 60px -24px rgba(11,11,12,.28);z-index:300;display:none;overflow:hidden}
+.pop.open{display:block}
+.omni-pop{left:0;right:0;max-height:62vh;overflow-y:auto}
+.pop-grp{padding:.75rem .9rem .3rem;font-family:var(--FM);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange)}
+.hit{display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;padding:.55rem .9rem;transition:background .15s}
+.hit:hover{background:var(--band)}
+.hit .code{font-family:var(--FM);font-size:.68rem;color:var(--ink);font-weight:500;flex-shrink:0}
+.hit .txt{font-size:.8rem;color:var(--steel);font-weight:300;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pop-empty{padding:1.4rem .9rem;text-align:center;font-size:.82rem;color:var(--steel);font-weight:300}
+
+.bell{position:relative;width:34px;height:34px;border:1px solid var(--hairline);border-radius:8px;display:grid;place-items:center;background:#fff;flex-shrink:0}
+.bell:hover{border-color:var(--orange)}
+.bell svg{width:15px;height:15px;stroke:var(--ink);fill:none;stroke-width:1.7}
+.bell .ct{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;padding:0 .25rem;border-radius:9px;background:var(--orange);color:#fff;border:2px solid #fff;font-family:var(--FM);font-size:.55rem;font-weight:500;display:grid;place-items:center}
+.pop-right{right:0;width:min(340px,calc(100vw - 2rem))}
+.pop-hd{padding:.75rem .9rem;border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;gap:.6rem;background:var(--band)}
+.pop-hd button{font-family:var(--FM);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange)}
+.note-row{display:flex;gap:.7rem;width:100%;text-align:left;padding:.75rem .9rem;border-bottom:1px solid var(--hairline)}
+.note-row:last-child{border-bottom:0}
+.note-row:hover{background:var(--band)}
+.note-row.read{opacity:.5}
+.note-row .pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:.42rem}
+.note-row b{display:block;font-family:var(--FD);font-weight:600;font-size:.82rem;line-height:1.3}
+.note-row p{font-size:.76rem;color:var(--steel);font-weight:300;line-height:1.45;margin-top:.1rem}
+.note-row time{font-family:var(--FM);font-size:.55rem;color:var(--steel);margin-top:.2rem;display:block}
+.menu-row{display:block;width:100%;text-align:left;padding:.62rem .9rem;font-size:.82rem;color:var(--steel)}
+.menu-row:hover{background:var(--band);color:var(--ink)}
+.menu-row.danger:hover{color:var(--red)}
+
+/* ── SHELL ── */
+.shell{display:grid;grid-template-columns:var(--rail) 1fr;align-items:start}
+.rail{position:sticky;top:var(--nav);height:calc(100vh - var(--nav));border-right:1px solid var(--hairline);display:flex;flex-direction:column;background:#fff}
+.rail-nav{padding:1.1rem .7rem;display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
+.rail-sec{padding:.9rem .6rem .4rem;font-family:var(--FM);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--steel)}
+.rail-sec:first-child{padding-top:0}
+.tab{display:flex;align-items:center;gap:.65rem;padding:.6rem .65rem;border-radius:9px;font-size:.85rem;font-weight:500;color:var(--steel);transition:all .18s}
+.tab:hover{background:var(--band);color:var(--ink)}
+.tab[aria-current="page"]{background:var(--ink);color:#fff}
+.tab[aria-current="page"] .ic svg{stroke:var(--orange)}
+.tab .ic{width:16px;height:16px;flex-shrink:0}
+.tab .ic svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab .bdg{margin-left:auto;font-family:var(--FM);font-size:.58rem;min-width:19px;height:18px;padding:0 .3rem;border-radius:9px;background:var(--band);color:var(--steel);display:grid;place-items:center;flex-shrink:0}
+.tab[aria-current="page"] .bdg{background:rgba(255,255,255,.16);color:#fff}
+.bdg.hot{background:var(--red);color:#fff!important}
+.bdg.on{background:var(--orange);color:#fff!important}
+.rail-foot{padding:.85rem;border-top:1px solid var(--hairline)}
+
+/* Sage card — matches help.html treatment */
+.sage-card{background:#fff;border:1px solid var(--ink);border-radius:16px;padding:1rem;text-align:left;width:100%;box-shadow:0 14px 34px -22px rgba(11,11,12,.3);transition:all .2s;display:block}
+.sage-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.sage-top{display:flex;align-items:center;gap:.6rem}
+.sage-orb{width:34px;height:34px;border-radius:50%;position:relative;flex-shrink:0}
+.sage-orb img{width:34px;height:34px;border-radius:50%;object-fit:cover;display:block;border:2px solid #fff;box-shadow:0 2px 8px -3px rgba(11,11,12,.3)}
+.sage-orb::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:1.5px solid var(--orange);opacity:.35;animation:sp 2.6s ease-out infinite}
+@keyframes sp{0%{transform:scale(.85);opacity:.5}100%{transform:scale(1.25);opacity:0}}
+.sage-card b{font-family:var(--FD);font-weight:700;font-size:.95rem;display:block;line-height:1.2}
+.sage-card .status{font-family:var(--FM);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:.32rem;margin-top:.15rem}
+.sage-card .status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.sage-card p{font-size:.75rem;color:var(--steel);font-weight:300;line-height:1.5;margin-top:.6rem}
+
+/* ── CANVAS ── */
+.canvas{padding:2rem 1.8rem 5rem;min-width:0}
+@media(max-width:640px){.canvas{padding:1.4rem 1rem 4rem}}
+.view{display:none}
+.view.live{display:block;animation:rise .28s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.view-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.view-hd h1{font-family:var(--FD);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1.1;letter-spacing:-.02em}
+.view-hd .sub{font-size:.9rem;color:var(--steel);font-weight:300;margin-top:.35rem;max-width:520px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.4rem}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}}
+.kpi{background:#fff;border:1px solid var(--hairline);border-radius:16px;padding:1.2rem 1.3rem;text-align:left;position:relative;overflow:hidden;transition:all .25s;width:100%;box-shadow:0 2px 10px -6px rgba(11,11,12,.08)}
+.kpi:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:0 18px 40px -20px rgba(11,11,12,.18)}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.kpi:hover::after{transform:scaleX(1)}
+.kpi.alert{border-color:rgba(196,38,26,.45);background:var(--red-soft)}
+.kpi.alert::after{background:var(--red);transform:scaleX(1)}
+.kpi-n{font-family:var(--FD);font-weight:700;font-size:2.5rem;line-height:1;letter-spacing:-.02em;margin-top:.7rem}
+.kpi.alert .kpi-n{color:var(--red)}
+.kpi-meta{display:flex;align-items:baseline;gap:.45rem;margin-top:.55rem;flex-wrap:wrap}
+.delta{font-family:var(--FM);font-size:.62rem;font-weight:500}
+.delta.up{color:var(--green)}.delta.down{color:var(--red)}.delta.flat{color:var(--steel)}
+.kpi-note{font-size:.74rem;color:var(--steel);font-weight:300}
+
+/* Panels */
+.split{display:grid;grid-template-columns:1.5fr 1fr;gap:1rem;align-items:start}
+@media(max-width:1100px){.split{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--hairline);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px -6px rgba(11,11,12,.08)}
+.panel-bar{padding:.9rem 1.1rem;border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;background:var(--band)}
+.panel-bar h2{font-family:var(--FD);font-weight:600;font-size:1rem;letter-spacing:-.01em}
+
+/* Map */
+.map{position:relative;height:372px;background:var(--band);overflow:hidden}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(var(--hairline) 1px,transparent 1px),linear-gradient(90deg,var(--hairline) 1px,transparent 1px);background-size:42px 42px;opacity:.85}
+.map svg.lines{position:absolute;inset:0;width:100%;height:100%}
+.rl{fill:none;stroke:#D2D2D6;stroke-width:1.4;stroke-dasharray:5 5}
+.rl.hot{stroke:var(--orange);stroke-dasharray:none;stroke-width:1.9}
+.node{position:absolute;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 6px -1px rgba(11,11,12,.3);transition:transform .18s}
+.node:hover,.node:focus-visible{transform:translate(-50%,-50%) scale(1.5);z-index:5}
+.node.pulse::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:1.5px solid currentColor;opacity:.5;animation:sp 2.2s ease-out infinite}
+.legend{position:absolute;bottom:.75rem;left:.75rem;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border:1px solid var(--hairline);border-radius:10px;padding:.55rem .7rem;display:flex;flex-direction:column;gap:.3rem;z-index:4}
+.leg{display:flex;align-items:center;gap:.4rem;font-family:var(--FM);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+.leg i{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.map-card{position:absolute;top:.75rem;right:.75rem;width:222px;background:#fff;border:1px solid var(--ink);border-radius:14px;padding:.9rem;z-index:6;display:none;box-shadow:0 18px 44px -20px rgba(11,11,12,.3)}
+.map-card.open{display:block;animation:rise .2s ease}
+.map-card .x{position:absolute;top:.4rem;right:.55rem;color:var(--steel);font-size:.95rem;line-height:1}
+.map-card .x:hover{color:var(--ink)}
+
+/* Bars + pills */
+.bar{height:4px;border-radius:2px;background:var(--hairline);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:var(--orange);transition:width .9s cubic-bezier(.22,1,.36,1)}
+.bar.ok i{background:var(--green)}
+.bar.bad i{background:var(--red)}
+.pill{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--FM);font-size:.55rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.26rem .55rem;border-radius:100px;border:1px solid;white-space:nowrap}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.pill i.beat{animation:beat 1.6s ease-in-out infinite}
+@keyframes beat{0%,100%{opacity:1}50%{opacity:.25}}
+.pill.scheduled{color:var(--blue);border-color:rgba(37,99,235,.3);background:var(--blue-soft)}
+.pill.transit{color:var(--amber);border-color:rgba(161,92,7,.3);background:var(--amber-soft)}
+.pill.out{color:var(--orange);border-color:rgba(255,100,13,.32);background:var(--orange-soft)}
+.pill.delivered{color:var(--green);border-color:rgba(11,138,75,.3);background:var(--green-soft)}
+.pill.exception{color:var(--red);border-color:rgba(196,38,26,.3);background:var(--red-soft)}
+.frag{display:inline-flex;align-items:center;gap:.28rem;font-family:var(--FM);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.frag svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+/* Feed */
+.feed{max-height:372px;overflow-y:auto}
+.feed-row{display:flex;gap:.7rem;padding:.8rem 1.1rem;border-bottom:1px solid var(--hairline)}
+.feed-row:last-child{border-bottom:0}
+.feed-row .pip{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:.42rem}
+.feed-row .bd{flex:1;min-width:0}
+.feed-row b{font-family:var(--FM);font-size:.66rem;font-weight:500;display:block}
+.feed-row p{font-size:.8rem;color:var(--steel);font-weight:300;line-height:1.45;margin-top:.1rem}
+.feed-row time{font-family:var(--FM);font-size:.55rem;color:var(--steel);flex-shrink:0}
+
+/* Segmented control — help.html .tabs treatment */
+.seg{display:inline-flex;background:var(--band);border:1px solid var(--hairline);border-radius:9px;padding:.22rem;gap:.2rem}
+.seg button{font-family:var(--FD);font-weight:600;font-size:.78rem;color:var(--steel);padding:.4rem .8rem;border-radius:7px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg button:hover[aria-pressed="false"]{color:var(--ink)}
+.cal-nav{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.cal-nav .mo{font-family:var(--FD);font-weight:600;font-size:1rem;min-width:142px;text-align:center}
+.arrow{width:28px;height:28px;border:1px solid var(--hairline);border-radius:7px;display:grid;place-items:center;color:var(--steel);background:#fff;font-size:.9rem;line-height:1}
+.arrow:hover{border-color:var(--orange);color:var(--orange)}
+
+/* Calendar */
+.dow{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--hairline)}
+.dow span{padding:.55rem;text-align:center;font-family:var(--FM);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+.month{display:grid;grid-template-columns:repeat(7,1fr)}
+.day{min-height:94px;border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline);padding:.4rem;display:flex;flex-direction:column;gap:.22rem;cursor:pointer;background:#fff;transition:background .15s;text-align:left}
+.day:nth-child(7n){border-right:0}
+.day:hover{background:var(--band)}
+.day.void{background:#FCFCFD;cursor:default}
+.day.void:hover{background:#FCFCFD}
+.day .n{font-family:var(--FM);font-size:.66rem;color:var(--steel)}
+.day.void .n{color:#C9C9CE}
+.day.today .n{background:var(--orange);color:#fff;width:19px;height:19px;border-radius:50%;display:grid;place-items:center}
+.chip{display:flex;align-items:center;gap:.3rem;width:100%;text-align:left;font-size:.64rem;padding:.16rem .28rem;border-radius:5px;color:var(--steel);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.chip:hover{background:var(--hairline);color:var(--ink)}
+.chip i{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.chip.crit{background:var(--red-soft);color:var(--red);font-family:var(--FM);font-size:.55rem}
+.chip.crit:hover{background:rgba(196,38,26,.15)}
+.more{font-family:var(--FM);font-size:.52rem;color:var(--steel);text-align:left;padding-left:.28rem}
+.more:hover{color:var(--orange)}
+@media(max-width:700px){.day{min-height:64px}.chip{font-size:.55rem}}
+
+.week{display:grid;grid-template-columns:50px repeat(7,1fr);overflow-x:auto}
+.wk-h{padding:.5rem .3rem;text-align:center;border-bottom:1px solid var(--hairline);border-right:1px solid var(--hairline);background:var(--band)}
+.wk-h .d{font-family:var(--FM);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--steel)}
+.wk-h .num{font-family:var(--FD);font-weight:700;font-size:1.1rem;line-height:1.15}
+.wk-h.today .num{color:var(--orange)}
+.hr-lbl{font-family:var(--FM);font-size:.5rem;color:var(--steel);text-align:right;padding:.15rem .4rem 0 0;border-right:1px solid var(--hairline);height:42px}
+.slot{height:42px;border-bottom:1px solid var(--hairline);border-right:1px solid var(--hairline);padding:2px;cursor:pointer}
+.slot:hover{background:var(--band)}
+.wk-ev{display:block;width:100%;text-align:left;font-size:.56rem;line-height:1.25;padding:.14rem .28rem;border-radius:4px;border-left:2px solid;overflow:hidden}
+.wk-ev:hover{filter:brightness(.97)}
+
+.ag-day{border-bottom:1px solid var(--hairline)}
+.ag-hd{padding:.6rem 1.1rem;background:var(--band);display:flex;align-items:center;gap:.6rem}
+.ag-hd .dt{font-family:var(--FM);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange)}
+.ag-hd .ct{font-family:var(--FM);font-size:.55rem;color:var(--steel);margin-left:auto}
+.ag-row{display:flex;align-items:center;gap:.85rem;width:100%;text-align:left;padding:.75rem 1.1rem;border-bottom:1px solid var(--hairline)}
+.ag-row:last-child{border-bottom:0}
+.ag-row:hover{background:var(--band)}
+.ag-row .tm{font-family:var(--FM);font-size:.66rem;color:var(--steel);width:60px;flex-shrink:0}
+
+/* Table */
+.filters{display:flex;align-items:center;gap:.5rem;padding:.8rem 1.1rem;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
+.sel{background:#fff;border:1px solid var(--hairline);border-radius:8px;padding:.45rem .6rem;font-family:var(--FM);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);outline:none}
+.sel:focus{border-color:var(--ink)}
+.bulk{display:none;align-items:center;gap:.55rem;padding:.65rem 1.1rem;background:var(--orange-soft);border-bottom:1px solid rgba(255,100,13,.28);flex-wrap:wrap}
+.bulk.open{display:flex}
+.bulk .n{font-family:var(--FM);font-size:.65rem;color:var(--orange);font-weight:500}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+thead th{font-family:var(--FM);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);text-align:left;padding:.65rem .8rem;border-bottom:1px solid var(--hairline);white-space:nowrap;background:#fff}
+thead th.sortable:hover{color:var(--orange);cursor:pointer}
+tbody td{padding:.75rem .8rem;border-bottom:1px solid var(--hairline);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:var(--band)}
+tbody tr.picked{background:var(--orange-soft)}
+.tid{display:flex;align-items:center;gap:.35rem}
+.tid code{font-family:var(--FM);font-size:.72rem;font-weight:500}
+.copy{width:20px;height:20px;display:grid;place-items:center;color:var(--steel);border-radius:4px;flex-shrink:0}
+.copy:hover{color:var(--orange);background:var(--hairline)}
+.copy svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.8}
+.route{font-size:.78rem;color:var(--ink);font-weight:400;line-height:1.4}
+.route .to{color:var(--steel);font-weight:300}
+.route .ar{color:var(--orange);margin:0 .28rem}
+.sub-mono{font-family:var(--FM);font-size:.55rem;color:var(--steel);margin-top:.12rem}
+.prog{min-width:120px}
+.prog .t{display:flex;justify-content:space-between;gap:.4rem;font-family:var(--FM);font-size:.55rem;color:var(--steel);margin-bottom:.3rem}
+input[type=checkbox]{appearance:none;width:15px;height:15px;border:1px solid #C9C9CE;border-radius:4px;background:#fff;display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+input[type=checkbox]:checked{background:var(--ink);border-color:var(--ink)}
+input[type=checkbox]:checked::after{content:'';width:7px;height:4px;border-left:1.6px solid #fff;border-bottom:1.6px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.kebab{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;color:var(--steel)}
+.kebab:hover{color:var(--orange);background:var(--hairline)}
+.empty{padding:3rem 1.2rem;text-align:center}
+.empty h3{font-family:var(--FD);font-weight:700;font-size:1.15rem}
+.empty p{font-size:.86rem;color:var(--steel);font-weight:300;margin:.4rem auto 1.1rem;max-width:340px}
+
+/* Doc rows */
+.doc-row{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--hairline);flex-wrap:wrap}
+.doc-row:last-child{border-bottom:0}
+.doc-row:hover{background:var(--band)}
+.doc-ic{width:32px;height:32px;border-radius:9px;border:1px solid var(--hairline);background:#fff;display:grid;place-items:center;color:var(--orange);flex-shrink:0}
+.doc-ic svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.doc-row .meta{flex:1;min-width:140px}
+.doc-row .meta b{display:block;font-family:var(--FD);font-weight:600;font-size:.86rem}
+.doc-row .meta small{font-family:var(--FM);font-size:.55rem;color:var(--steel)}
+.amt{font-family:var(--FM);font-size:.88rem;font-weight:500;text-align:right}
+.state{font-family:var(--FM);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase}
+
+/* Drawer + modal */
+.scrim{position:fixed;inset:0;background:rgba(11,11,12,.42);backdrop-filter:blur(2px);z-index:400;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,100vw);z-index:420;background:#fff;border-left:1px solid var(--hairline);transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;box-shadow:-24px 0 60px -30px rgba(11,11,12,.3)}
+.drawer.open{transform:none}
+.drawer-hd{padding:1.2rem 1.3rem;border-bottom:1px solid var(--hairline);flex-shrink:0;position:relative;background:var(--band)}
+.drawer-hd .x,.modal-hd .x{position:absolute;top:.95rem;right:1.05rem;width:26px;height:26px;border-radius:6px;display:grid;place-items:center;color:var(--steel);font-size:1rem;line-height:1}
+.drawer-hd .x:hover,.modal-hd .x:hover{background:var(--hairline);color:var(--ink)}
+.drawer-hd h2{font-family:var(--FD);font-weight:700;font-size:1.45rem;letter-spacing:-.02em;line-height:1.1;margin:.3rem 0 .15rem;padding-right:2rem}
+.drawer-bd{overflow-y:auto;flex:1}
+.dsec{padding:1.05rem 1.3rem;border-bottom:1px solid var(--hairline)}
+.dsec:last-child{border-bottom:0}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem .9rem;margin-top:.65rem}
+.dcell b{display:block;font-size:.84rem;font-weight:500;margin-top:.15rem;line-height:1.4}
+.tl{margin-top:.75rem;position:relative;padding-left:1.1rem}
+.tl::before{content:'';position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:var(--hairline)}
+.tl-row{position:relative;padding-bottom:.9rem}
+.tl-row:last-child{padding-bottom:0}
+.tl-row::before{content:'';position:absolute;left:-1.1rem;top:4px;width:9px;height:9px;border-radius:50%;background:var(--hairline);border:2px solid #fff}
+.tl-row.done::before{background:var(--green)}
+.tl-row.now::before{background:var(--orange);box-shadow:0 0 0 3px var(--orange-soft)}
+.tl-row b{display:block;font-size:.8rem;font-weight:500}
+.tl-row.pend b{color:var(--steel);font-weight:300}
+.tl-row time{font-family:var(--FM);font-size:.56rem;color:var(--steel)}
+.drawer-ft{padding:.95rem 1.3rem;border-top:1px solid var(--hairline);display:flex;gap:.55rem;flex-shrink:0;background:#fff}
+.drawer-ft>*{flex:1}
+
+.modal{position:fixed;inset:0;z-index:440;display:none;align-items:center;justify-content:center;padding:1.5rem}
+.modal.open{display:flex}
+.modal-box{background:#fff;border:1px solid var(--hairline);border-radius:18px;width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;position:relative;animation:rise .25s ease;box-shadow:0 30px 80px -30px rgba(11,11,12,.4)}
+.modal-box.wide{max-width:620px}
+.modal-hd{padding:1.2rem 1.3rem;border-bottom:1px solid var(--hairline);flex-shrink:0}
+.modal-hd h2{font-family:var(--FD);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;line-height:1.15;margin-top:.35rem;padding-right:2rem}
+.modal-bd{padding:1.3rem;overflow-y:auto;flex:1}
+.modal-ft{padding:.95rem 1.3rem;border-top:1px solid var(--hairline);display:flex;gap:.55rem;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap}
+@media(max-width:560px){.modal{padding:0}.modal-box{max-width:none;max-height:100vh;height:100%;border-radius:0;border:0}.modal-ft>*{flex:1}}
+
+.field{margin-bottom:1rem}
+.field label{display:block;font-family:var(--FM);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel);margin-bottom:.38rem}
+.field input,.field select,.field textarea{width:100%;background:#fff;border:1px solid var(--hairline);border-radius:8px;padding:.65rem .75rem;font-size:.88rem;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink)}
+.field textarea{resize:vertical;min-height:76px;font-weight:300}
+.hint{font-size:.74rem;color:var(--steel);font-weight:300;margin-top:.35rem;line-height:1.5}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+
+/* Vehicle picker — real fleet art */
+.veh-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+.veh{border:1px solid var(--hairline);border-radius:12px;padding:.7rem;text-align:left;background:#fff;transition:all .2s}
+.veh:hover{border-color:var(--ink)}
+.veh[aria-pressed="true"]{border-color:var(--orange);background:var(--orange-soft)}
+.veh img{width:100%;height:52px;object-fit:contain;display:block;pointer-events:none}
+.veh b{display:block;font-family:var(--FD);font-weight:600;font-size:.8rem;margin-top:.35rem}
+.veh small{font-family:var(--FM);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+
+/* POD */
+.pod-sig{background:#fff;border:1px solid var(--hairline);border-radius:10px;height:112px;display:grid;place-items:center;margin-top:.5rem}
+.pod-sig svg{width:210px;height:66px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.5rem}
+.shot{aspect-ratio:4/3;background:var(--band);border:1px solid var(--hairline);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;position:relative}
+.shot svg{width:26px;height:26px;stroke:#B9B9BF;fill:none;stroke-width:1.5}
+.shot span{font-family:var(--FM);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+.shot .stamp{position:absolute;bottom:.35rem;right:.45rem;font-family:var(--FM);font-size:.46rem;color:var(--steel)}
+
+/* Toasts */
+.toasts{position:fixed;bottom:1.3rem;left:1.3rem;z-index:480;display:flex;flex-direction:column;gap:.5rem;max-width:340px}
+@media(max-width:560px){.toasts{left:.8rem;right:.8rem;max-width:none;bottom:.8rem}}
+.toast{background:#fff;border:1px solid var(--hairline);border-left:3px solid var(--orange);border-radius:0 10px 10px 0;padding:.75rem .9rem;box-shadow:0 18px 44px -18px rgba(11,11,12,.28);animation:slidein .28s cubic-bezier(.22,1,.36,1)}
+.toast.ok{border-left-color:var(--green)}
+.toast.bad{border-left-color:var(--red)}
+.toast b{display:block;font-family:var(--FM);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.18rem}
+.toast p{font-size:.8rem;color:var(--steel);font-weight:300;line-height:1.45}
+.toast.leaving{animation:slideout .22s ease forwards}
+@keyframes slidein{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+@keyframes slideout{to{opacity:0;transform:translateX(-22px)}}
+
+/* Auth gate */
+#gate{min-height:100vh;display:grid;place-items:center;padding:2rem 1.2rem}
+.gate-box{width:100%;max-width:400px}
+.gate-box .logo{font-size:1.6rem;text-align:center;display:block;margin-bottom:.4rem}
+.gate-box .logo small{letter-spacing:.44em}
+.gate-card{background:#fff;border:1px solid var(--hairline);border-radius:18px;padding:1.8rem;margin-top:1.6rem;box-shadow:0 18px 46px -26px rgba(11,11,12,.22)}
+.gate-card h1{font-family:var(--FD);font-weight:700;font-size:1.4rem;letter-spacing:-.02em}
+.gate-card .sub{font-size:.86rem;color:var(--steel);font-weight:300;margin:.3rem 0 1.3rem}
+.gate-err{color:var(--red);font-size:.8rem;margin-top:.7rem;display:none}
+.gate-alt{text-align:center;font-size:.8rem;color:var(--steel);font-weight:300;margin-top:1.1rem}
+.gate-alt a{color:var(--orange);border-bottom:1px solid rgba(255,100,13,.35)}
+.demo-line{margin-top:1.3rem;text-align:center}
+.demo-line button{font-family:var(--FM);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);border-bottom:1px solid var(--hairline);padding-bottom:2px}
+.demo-line button:hover{color:var(--orange);border-color:var(--orange)}
+
+/* Demo banner */
+.demo-bar{background:var(--ink);color:#fff;font-family:var(--FM);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:.5rem 1rem;display:flex;align-items:center;justify-content:center;gap:.7rem;flex-wrap:wrap}
+.demo-bar i{width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0}
+.demo-bar button{color:var(--orange);text-decoration:underline;font-family:inherit;font-size:inherit;letter-spacing:inherit;text-transform:inherit}
+
+/* Footer */
+footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
+.foot-in{max-width:1200px;margin:0 auto;padding:1.6rem 1.5rem;text-align:center}
+.legal-row{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:.8rem}
+.legal-row a{font-size:.8rem;color:var(--ink)}
+.legal-row a:hover{color:var(--orange)}
+.fcred{font-family:var(--FM);font-size:.58rem;letter-spacing:.1em;color:var(--steel);line-height:1.9}
+
+/* Mobile rail */
+.burger{width:32px;height:32px;border:1px solid var(--hairline);border-radius:8px;display:none;place-items:center;background:#fff;flex-shrink:0}
+.burger svg{width:15px;height:15px;stroke:var(--ink);fill:none;stroke-width:1.9}
+@media(max-width:900px){
+  :root{--rail:0px}
+  .shell{grid-template-columns:1fr}
+  .rail{position:fixed;top:var(--nav);left:0;width:236px;z-index:210;transform:translateX(-100%);transition:transform .28s ease;border-right:1px solid var(--hairline)}
+  .rail.open{transform:none;box-shadow:14px 0 40px -20px rgba(11,11,12,.28)}
+  .burger{display:grid}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+@media print{nav,.rail,.toasts,.demo-bar,elevenlabs-convai{display:none!important}.shell{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ══ AUTH GATE ══════════════════════════════ -->
+<div id="gate">
+  <div class="gate-box">
+    <a class="logo" href="/">BRIDG<span>.</span><small>CONNECTS</small></a>
+    <div class="gate-card">
+      <h1 data-lang="en">Client portal</h1>
+      <h1 data-lang="es">Portal de clientes</h1>
+      <p class="sub" data-lang="en">Track your deliveries, book pickups and pull proof of delivery.</p>
+      <p class="sub" data-lang="es">Rastrea tus entregas, agenda recogidas y descarga tu prueba de entrega.</p>
+
+      <div class="field">
+        <label for="gEmail" data-lang="en">Email</label>
+        <label for="gEmail" data-lang="es">Correo</label>
+        <input type="email" id="gEmail" autocomplete="email" placeholder="you@company.com"/>
+      </div>
+      <div class="field">
+        <label for="gPass" data-lang="en">Password</label>
+        <label for="gPass" data-lang="es">Contraseña</label>
+        <input type="password" id="gPass" autocomplete="current-password" onkeydown="if(event.key==='Enter')doGateLogin()"/>
+      </div>
+      <button class="btn" style="width:100%" id="gBtn" onclick="doGateLogin()">
+        <span data-lang="en">Log in</span><span data-lang="es">Entrar</span>
+      </button>
+      <p class="gate-err" id="gErr"></p>
+
+      <p class="gate-alt">
+        <span data-lang="en">No account yet? <a href="/#fleet">Get a quote</a> and one is created for you.</span>
+        <span data-lang="es">¿Sin cuenta? <a href="/#fleet">Cotiza</a> y se crea automáticamente.</span>
+      </p>
+      <div class="demo-line">
+        <button onclick="enterDemo()">
+          <span data-lang="en">View the portal with sample data</span>
+          <span data-lang="es">Ver el portal con datos de ejemplo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ════════════════════════════════════ -->
+<div id="app" hidden>
+
+<div class="demo-bar" id="demoBar" hidden>
+  <i></i>
+  <span data-lang="en">Sample data — nothing here is a real order.</span>
+  <span data-lang="es">Datos de ejemplo — nada aquí es un pedido real.</span>
+  <button onclick="leaveDemo()"><span data-lang="en">Log in</span><span data-lang="es">Entrar</span></button>
+</div>
+
+<nav>
+  <div class="nav-in">
+    <button class="burger" onclick="toggleRail()" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <a class="logo" href="/">BRIDG<span>.</span><small>CONNECTS</small></a>
+    <span class="nav-tag" data-lang="en">Client portal</span>
+    <span class="nav-tag" data-lang="es">Portal de clientes</span>
+
+    <div class="omni">
+      <div class="omni-in">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="omni" type="search" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="omniPop"
+               data-ph-en="Tracking ID, PO, site or city" data-ph-es="ID de rastreo, PO, obra o ciudad"
+               oninput="runSearch(this.value)" onfocus="runSearch(this.value)"/>
+        <kbd>/</kbd>
+      </div>
+      <div class="pop omni-pop" id="omniPop" role="listbox" aria-label="Search results"></div>
+    </div>
+
+    <span style="flex:1"></span>
+
+    <div style="position:relative">
+      <button class="bell" onclick="togglePop('notes')" aria-haspopup="true" aria-label="Notifications">
+        <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        <span class="ct" id="noteCt">0</span>
+      </button>
+      <div class="pop pop-right" id="popNotes">
+        <div class="pop-hd">
+          <span class="lbl" data-lang="en">Updates</span><span class="lbl" data-lang="es">Avisos</span>
+          <button onclick="clearNotes()"><span data-lang="en">Mark all read</span><span data-lang="es">Marcar leído</span></button>
+        </div>
+        <div id="noteList"></div>
+      </div>
+    </div>
+
+    <div style="position:relative">
+      <button class="acct-chip" onclick="togglePop('me')" aria-haspopup="true">
+        <span class="ini" id="acctIni">—</span>
+        <span class="who" id="acctWho">—</span>
+      </button>
+      <div class="pop pop-right" id="popMe" style="width:236px">
+        <div class="pop-hd" style="display:block">
+          <b style="font-family:var(--FD);font-size:.85rem" id="meCo">—</b>
+          <div class="mono" style="font-size:.56rem;color:var(--steel);margin-top:.15rem" id="meEmail">—</div>
+        </div>
+        <button class="menu-row" onclick="go('docs')"><span data-lang="en">Invoices &amp; PODs</span><span data-lang="es">Facturas y PODs</span></button>
+        <button class="menu-row" onclick="openModal('mNotify')"><span data-lang="en">Notification settings</span><span data-lang="es">Ajustes de avisos</span></button>
+        <a class="menu-row" href="/help"><span data-lang="en">Help center</span><span data-lang="es">Centro de ayuda</span></a>
+        <button class="menu-row danger" onclick="doLogout()"><span data-lang="en">Log out</span><span data-lang="es">Salir</span></button>
+      </div>
+    </div>
+
+    <div class="lang-tg">
+      <button id="lgEN" class="on" onclick="setLang('en')">EN</button>
+      <button id="lgES" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<div class="shell">
+
+  <!-- ── RAIL ── -->
+  <aside class="rail" id="rail">
+    <nav class="rail-nav" aria-label="Portal sections">
+      <div class="rail-sec"><span data-lang="en">Operations</span><span data-lang="es">Operación</span></div>
+      <a href="#" class="tab" data-view="overview" aria-current="page">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span>
+        <span data-lang="en">Live overview</span><span data-lang="es">Vista en vivo</span>
+      </a>
+      <a href="#" class="tab" data-view="calendar">
+        <span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+        <span data-lang="en">Calendar</span><span data-lang="es">Calendario</span>
+        <span class="bdg on" id="bCal">0</span>
+      </a>
+      <a href="#" class="tab" data-view="shipments">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></span>
+        <span data-lang="en">Deliveries</span><span data-lang="es">Entregas</span>
+        <span class="bdg" id="bShip">0</span>
+      </a>
+      <a href="#" class="tab" data-view="exceptions">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span>
+        <span data-lang="en">Needs you</span><span data-lang="es">Requiere acción</span>
+        <span class="bdg hot" id="bExc">0</span>
+      </a>
+
+      <div class="rail-sec"><span data-lang="en">Records</span><span data-lang="es">Registros</span></div>
+      <a href="#" class="tab" data-view="docs">
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15h6"/></svg></span>
+        <span data-lang="en">Invoices &amp; PODs</span><span data-lang="es">Facturas y PODs</span>
+        <span class="bdg" id="bDocs">0</span>
+      </a>
+      <a href="#" class="tab" data-view="support">
+        <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 015.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg></span>
+        <span data-lang="en">Tickets</span><span data-lang="es">Reportes</span>
+      </a>
+    </nav>
+
+    <div class="rail-foot">
+      <button class="sage-card" onclick="startSage()">
+        <span class="sage-top">
+          <span class="sage-orb"><img src="sage-avatar.png" alt="" width="34" height="34"/></span>
+          <span>
+            <b>Sage</b>
+            <span class="status" data-lang="en">Available now</span>
+            <span class="status" data-lang="es">Disponible ahora</span>
+          </span>
+        </span>
+        <p data-lang="en">Ask about an active order, pricing or coverage. A person handles anything Sage can't.</p>
+        <p data-lang="es">Pregunta por un pedido activo, precios o cobertura. Una persona atiende lo que Sage no pueda.</p>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── CANVAS ── -->
+  <main class="canvas">
+
+    <!-- OVERVIEW -->
+    <section class="view live" id="v-overview">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Live overview</h1>
+          <h1 data-lang="es">Vista en vivo</h1>
+          <p class="sub" data-lang="en">Everything moving on your account right now, updating as drivers report in.</p>
+          <p class="sub" data-lang="es">Todo lo que se mueve en tu cuenta ahora, actualizado conforme reportan los conductores.</p>
+        </div>
+        <button class="btn" onclick="openSchedule()">
+          <span data-lang="en">+ Schedule a pickup</span><span data-lang="es">+ Agendar recogida</span>
+        </button>
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="split">
+        <div class="panel">
+          <div class="panel-bar">
+            <h2 data-lang="en">Active routes</h2><h2 data-lang="es">Rutas activas</h2>
+            <span class="lbl" id="mapCt"></span>
+          </div>
+          <div class="map" id="map">
+            <div class="map-grid"></div>
+            <svg class="lines" id="mapLines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="legend" id="legend"></div>
+            <div class="map-card" id="mapCard"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-bar">
+            <h2 data-lang="en">Driver reports</h2><h2 data-lang="es">Reportes del conductor</h2>
+            <span class="lbl" data-lang="en">Live</span><span class="lbl" data-lang="es">En vivo</span>
+          </div>
+          <div class="feed" id="feed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="view" id="v-calendar">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Calendar</h1>
+          <h1 data-lang="es">Calendario</h1>
+          <p class="sub" data-lang="en">Pickups you booked and deliveries we committed to. Tap any day to book into it.</p>
+          <p class="sub" data-lang="es">Recogidas que agendaste y entregas que comprometimos. Toca cualquier día para agendar.</p>
+        </div>
+        <button class="btn" onclick="openSchedule()">
+          <span data-lang="en">+ Schedule a pickup</span><span data-lang="es">+ Agendar recogida</span>
+        </button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-bar">
+          <div class="cal-nav">
+            <button class="arrow" onclick="shiftCal(-1)" aria-label="Previous">‹</button>
+            <span class="mo" id="calLabel"></span>
+            <button class="arrow" onclick="shiftCal(1)" aria-label="Next">›</button>
+            <button class="btn-o sm" onclick="shiftCal(0)"><span data-lang="en">Today</span><span data-lang="es">Hoy</span></button>
+          </div>
+          <div class="seg" role="group">
+            <button data-cal="month" aria-pressed="true" onclick="setCal('month')"><span data-lang="en">Month</span><span data-lang="es">Mes</span></button>
+            <button data-cal="week" aria-pressed="false" onclick="setCal('week')"><span data-lang="en">Week</span><span data-lang="es">Semana</span></button>
+            <button data-cal="agenda" aria-pressed="false" onclick="setCal('agenda')"><span data-lang="en">Agenda</span><span data-lang="es">Agenda</span></button>
+          </div>
+        </div>
+        <div id="calMount"></div>
+      </div>
+    </section>
+
+    <!-- SHIPMENTS -->
+    <section class="view" id="v-shipments">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Deliveries</h1>
+          <h1 data-lang="es">Entregas</h1>
+          <p class="sub" data-lang="en">Every load on your account, with live transit progress.</p>
+          <p class="sub" data-lang="es">Toda la carga de tu cuenta, con avance en vivo.</p>
+        </div>
+        <button class="btn-o" onclick="exportRows(true)">
+          <span data-lang="en">Export all to CSV</span><span data-lang="es">Exportar todo a CSV</span>
+        </button>
+      </div>
+
+      <div class="panel">
+        <div class="filters">
+          <select class="sel" id="fStatus" onchange="renderTable()" aria-label="Status"></select>
+          <select class="sel" id="fType" onchange="renderTable()" aria-label="Service"></select>
+          <select class="sel" id="fCargo" onchange="renderTable()" aria-label="Cargo"></select>
+          <select class="sel" id="fDays" onchange="renderTable()" aria-label="Date range"></select>
+          <span style="flex:1"></span>
+          <span class="lbl" id="tableCt"></span>
+        </div>
+
+        <div class="bulk" id="bulk">
+          <span class="n" id="bulkN"></span>
+          <button class="btn-o sm" onclick="exportRows(false)"><span data-lang="en">Export CSV</span><span data-lang="es">Exportar CSV</span></button>
+          <button class="btn-o sm" onclick="bulkPods()"><span data-lang="en">Download PODs</span><span data-lang="es">Descargar PODs</span></button>
+          <span style="flex:1"></span>
+          <button class="btn-o sm" onclick="clearPicks()"><span data-lang="en">Clear</span><span data-lang="es">Limpiar</span></button>
+        </div>
+
+        <div class="tw">
+          <table>
+            <thead><tr id="thead"></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div id="tableEmpty"></div>
+      </div>
+    </section>
+
+    <!-- EXCEPTIONS -->
+    <section class="view" id="v-exceptions">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Needs you</h1>
+          <h1 data-lang="es">Requiere acción</h1>
+          <p class="sub" data-lang="en">Loads that stopped moving and need a decision from you.</p>
+          <p class="sub" data-lang="es">Cargas detenidas que necesitan una decisión tuya.</p>
+        </div>
+      </div>
+      <div class="panel"><div id="excMount"></div></div>
+    </section>
+
+    <!-- DOCS -->
+    <section class="view" id="v-docs">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Invoices &amp; PODs</h1>
+          <h1 data-lang="es">Facturas y PODs</h1>
+          <p class="sub" data-lang="en">Signed proof of delivery and billing for completed runs.</p>
+          <p class="sub" data-lang="es">Prueba de entrega firmada y facturación de viajes completados.</p>
+        </div>
+      </div>
+      <div class="split" style="grid-template-columns:1fr 1fr">
+        <div class="panel">
+          <div class="panel-bar">
+            <h2 data-lang="en">Invoices</h2><h2 data-lang="es">Facturas</h2>
+            <span class="lbl" id="arTotal"></span>
+          </div>
+          <div id="invMount"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-bar">
+            <h2 data-lang="en">Proof of delivery</h2><h2 data-lang="es">Prueba de entrega</h2>
+            <span class="lbl" data-lang="en">Photo + signature</span><span class="lbl" data-lang="es">Foto + firma</span>
+          </div>
+          <div id="podMount"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="view" id="v-support">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Tickets</h1>
+          <h1 data-lang="es">Reportes</h1>
+          <p class="sub" data-lang="en">Damage claims, address changes and anything dispatch needs to fix.</p>
+          <p class="sub" data-lang="es">Reclamos por daño, cambios de dirección y lo que despacho deba resolver.</p>
+        </div>
+        <button class="btn" onclick="openTicket()">
+          <span data-lang="en">+ Open a ticket</span><span data-lang="es">+ Abrir reporte</span>
+        </button>
+      </div>
+      <div class="panel"><div id="tkMount"></div></div>
+    </section>
+
+  </main>
+
+  <footer><div class="foot-in">
+    <div class="legal-row">
+      <a href="/help"><span data-lang="en">Help Center</span><span data-lang="es">Centro de Ayuda</span></a>
+      <a href="/privacy"><span data-lang="en">Privacy Policy</span><span data-lang="es">Política de Privacidad</span></a>
+      <a href="/sms-terms"><span data-lang="en">SMS Terms</span><span data-lang="es">Términos SMS</span></a>
+      <a href="/terms"><span data-lang="en">Terms of Service</span><span data-lang="es">Términos del Servicio</span></a>
+      <a href="/ai-disclosure"><span data-lang="en">AI Disclosure</span><span data-lang="es">Divulgación de IA</span></a>
+    </div>
+    <div class="fcred">USDOT 9709109 · MC 88040280 · LICENSED PROPERTY BROKER<br/>© 2026 BRIDG CONNECTS LLC · BURBANK, CA</div>
+  </div></footer>
+</div>
+</div>
+
+<!-- ══ DRAWER ═════════════════════════════════ -->
+<div class="scrim" id="scrim" onclick="closeAll()"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle" tabindex="-1">
+  <div class="drawer-hd">
+    <button class="x" onclick="closeAll()" aria-label="Close">✕</button>
+    <span class="lbl" id="dKind"></span>
+    <h2 id="dTitle">—</h2>
+    <div class="mono" style="font-size:.6rem;color:var(--steel);letter-spacing:.06em" id="dSub"></div>
+  </div>
+  <div class="drawer-bd" id="dBody"></div>
+  <div class="drawer-ft" id="dFoot"></div>
+</aside>
+
+<!-- ══ MODALS ═════════════════════════════════ -->
+<div class="modal" id="mSched" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <button class="x" onclick="closeAll()" aria-label="Close">✕</button>
+      <span class="lbl" data-lang="en">New request</span><span class="lbl" data-lang="es">Nueva solicitud</span>
+      <h2 data-lang="en">Schedule a pickup</h2><h2 data-lang="es">Agendar recogida</h2>
+    </div>
+    <div class="modal-bd">
+      <div class="row2">
+        <div class="field">
+          <label for="sDate" data-lang="en">Pickup date</label><label for="sDate" data-lang="es">Fecha de recogida</label>
+          <input type="date" id="sDate"/>
+        </div>
+        <div class="field">
+          <label for="sTime" data-lang="en">Ready by</label><label for="sTime" data-lang="es">Listo a las</label>
+          <input type="time" id="sTime" value="09:00"/>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sFrom" data-lang="en">Pickup address</label><label for="sFrom" data-lang="es">Dirección de recogida</label>
+        <input type="text" id="sFrom" data-ph-en="Store, supply house or yard" data-ph-es="Tienda, proveedor o depósito"/>
+      </div>
+      <div class="field">
+        <label for="sTo" data-lang="en">Delivery address</label><label for="sTo" data-lang="es">Dirección de entrega</label>
+        <input type="text" id="sTo" data-ph-en="Job site" data-ph-es="Obra"/>
+      </div>
+
+      <div class="field">
+        <label data-lang="en">Vehicle</label><label data-lang="es">Vehículo</label>
+        <div class="veh-grid" id="vehGrid"></div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="sWeight" data-lang="en">Weight (lbs)</label><label for="sWeight" data-lang="es">Peso (lbs)</label>
+          <input type="number" id="sWeight" min="0" placeholder="0"/>
+        </div>
+        <div class="field">
+          <label for="sCargo" data-lang="en">Cargo class</label><label for="sCargo" data-lang="es">Tipo de carga</label>
+          <select id="sCargo"></select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="sNotes" data-lang="en">Site notes</label><label for="sNotes" data-lang="es">Notas de la obra</label>
+        <textarea id="sNotes" data-ph-en="Gate code, dock hours, stairs, who signs" data-ph-es="Código de portón, horario, escaleras, quién firma"></textarea>
+      </div>
+      <div class="note">
+        <b data-lang="en">Fragile loads</b><b data-lang="es">Cargas frágiles</b>
+        <span data-lang="en"> — tile, slab, glass and stone ride wrapped and strapped, with a second set of hands at the drop when the site needs it. It carries a handling surcharge, shown before you confirm.</span>
+        <span data-lang="es"> — tile, losa, vidrio y piedra van envueltos y amarrados, con un segundo par de manos en la descarga si la obra lo requiere. Lleva un cargo por manejo, visible antes de confirmar.</span>
+      </div>
+      <p class="hint" data-lang="en">This is a request, not a confirmed booking. A person at Bridg reviews it and confirms the final price and vehicle before dispatch.</p>
+      <p class="hint" data-lang="es">Esto es una solicitud, no una reserva confirmada. Una persona en Bridg la revisa y confirma el precio final y el vehículo antes de despachar.</p>
+    </div>
+    <div class="modal-ft">
+      <button class="btn-o" onclick="closeAll()"><span data-lang="en">Cancel</span><span data-lang="es">Cancelar</span></button>
+      <button class="btn" onclick="submitSchedule()"><span data-lang="en">Request pickup</span><span data-lang="es">Solicitar recogida</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="mTicket" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <button class="x" onclick="closeAll()" aria-label="Close">✕</button>
+      <span class="lbl" data-lang="en">Incident</span><span class="lbl" data-lang="es">Incidente</span>
+      <h2 data-lang="en">Open a ticket</h2><h2 data-lang="es">Abrir un reporte</h2>
+    </div>
+    <div class="modal-bd">
+      <div class="field">
+        <label for="tkShip" data-lang="en">Attach to delivery</label><label for="tkShip" data-lang="es">Asociar a la entrega</label>
+        <select id="tkShip"></select>
+      </div>
+      <div class="field">
+        <label for="tkType" data-lang="en">What happened</label><label for="tkType" data-lang="es">Qué pasó</label>
+        <select id="tkType"></select>
+      </div>
+      <div class="field">
+        <label for="tkDesc" data-lang="en">Details</label><label for="tkDesc" data-lang="es">Detalles</label>
+        <textarea id="tkDesc" data-ph-en="What you saw, when, and what you need done" data-ph-es="Qué viste, cuándo y qué necesitas que se resuelva"></textarea>
+      </div>
+      <div class="field">
+        <label for="tkPhoto" data-lang="en">Photos</label><label for="tkPhoto" data-lang="es">Fotos</label>
+        <input type="file" id="tkPhoto" accept="image/*" multiple/>
+        <p class="hint" data-lang="en">Photos of damaged cargo move a claim faster than anything else. Attach them now if you have them.</p>
+        <p class="hint" data-lang="es">Las fotos de carga dañada aceleran un reclamo más que cualquier otra cosa. Adjúntalas ahora si las tienes.</p>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn-o" onclick="closeAll()"><span data-lang="en">Cancel</span><span data-lang="es">Cancelar</span></button>
+      <button class="btn" onclick="submitTicket()"><span data-lang="en">Submit ticket</span><span data-lang="es">Enviar reporte</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="mPod" role="dialog" aria-modal="true">
+  <div class="modal-box wide">
+    <div class="modal-hd">
+      <button class="x" onclick="closeAll()" aria-label="Close">✕</button>
+      <span class="lbl mono" id="podCode">—</span>
+      <h2 data-lang="en">Proof of delivery</h2><h2 data-lang="es">Prueba de entrega</h2>
+    </div>
+    <div class="modal-bd" id="podBody"></div>
+    <div class="modal-ft">
+      <button class="btn-o" onclick="closeAll()"><span data-lang="en">Close</span><span data-lang="es">Cerrar</span></button>
+      <button class="btn" onclick="downloadPod()"><span data-lang="en">Download PDF</span><span data-lang="es">Descargar PDF</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="mNotify" role="dialog" aria-modal="true">
+  <div class="modal-box" style="max-width:430px">
+    <div class="modal-hd">
+      <button class="x" onclick="closeAll()" aria-label="Close">✕</button>
+      <span class="lbl" data-lang="en">Preferences</span><span class="lbl" data-lang="es">Preferencias</span>
+      <h2 data-lang="en">Notifications</h2><h2 data-lang="es">Avisos</h2>
+    </div>
+    <div class="modal-bd">
+      <div class="field">
+        <label for="nEmail" data-lang="en">Delivery updates to</label><label for="nEmail" data-lang="es">Avisos de entrega a</label>
+        <input type="email" id="nEmail"/>
+      </div>
+      <div class="field">
+        <label for="nPhone" data-lang="en">Text alerts to</label><label for="nPhone" data-lang="es">Mensajes de texto a</label>
+        <input type="tel" id="nPhone"/>
+      </div>
+      <div class="note">
+        <b data-lang="en">Delivery notifications are always on.</b><b data-lang="es">Los avisos de entrega siempre están activos.</b>
+        <span data-lang="en"> They are transactional. Promotional texts stay off unless you opted in separately — see the </span>
+        <span data-lang="es"> Son transaccionales. Los textos promocionales están apagados salvo que los hayas autorizado aparte — ve los </span>
+        <a href="/sms-terms" style="color:var(--orange)"><span data-lang="en">SMS Terms</span><span data-lang="es">Términos SMS</span></a>.
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn-o" onclick="closeAll()"><span data-lang="en">Cancel</span><span data-lang="es">Cancelar</span></button>
+      <button class="btn" onclick="saveNotify()"><span data-lang="en">Save changes</span><span data-lang="es">Guardar</span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- Sage — ElevenLabs -->
+<elevenlabs-convai
+  id="sage"
+  agent-id="agent_2801kymqshm9eyfs3a1gkfertk3v"
+  action-text="Chat with Sage"
+  start-call-text="Talk to Sage"
+  end-call-text="End chat"
+  avatar-image-url="https://www.bridgconnects.com/sage-avatar.png"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+<script>
+'use strict';
+/* ══════════════════════════════════════════════════════════════
+   BRIDG CONNECTS · CLIENT PORTAL  (Bridg White v2.0)
+   Auth + data: Firebase (clients/{uid}, bookings). Demo mode uses
+   generated sample rows so the UI can be reviewed without a login.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── i18n ───────────────────────────────────────────────────── */
+const L = () => document.body.classList.contains('es') ? 'es' : 'en';
+const T = {
+  scheduled:['Scheduled','Programado'], transit:['In transit','En tránsito'],
+  out:['Out for delivery','En reparto'], delivered:['Delivered','Entregado'],
+  exception:['Needs action','Requiere acción'],
+  allStatus:['All statuses','Todos los estados'], allSvc:['All services','Todos los servicios'],
+  allCargo:['All cargo','Toda la carga'], fragileOnly:['Fragile only','Solo frágil'],
+  stdOnly:['Standard only','Solo estándar'],
+  ground:['Ground','Terrestre'], express:['Express','Exprés'], freight:['Freight','Carga pesada'],
+  d7:['Last 7 days','Últimos 7 días'], d30:['Last 30 days','Últimos 30 días'],
+  d90:['Last 90 days','Últimos 90 días'], dAll:['All time','Todo'],
+  thId:['Tracking ID','ID de rastreo'], thRoute:['Route','Ruta'], thCargo:['Cargo','Carga'],
+  thStatus:['Status','Estado'], thEta:['ETA / progress','ETA / avance'],
+  fragile:['Fragile','Frágil'], standard:['Standard','Estándar'],
+  pickup:['Pickup','Recogida'], delivery:['Delivery','Entrega'], hold:['Hold','Detenido'],
+  ofShip:['of','de'], shipments:['deliveries','entregas'], selected:['selected','seleccionadas'],
+  vehMoving:['vehicles moving','vehículos en ruta'],
+  legPickup:['Pickup pending','Recogida pendiente'], legTransit:['In transit','En tránsito'],
+  legDone:['Delivered','Entregado'], legExc:['Needs action','Requiere acción'],
+  route:['Route','Ruta'], cargoSec:['Cargo','Carga'], driver:['Driver','Conductor'],
+  timeline:['Timeline','Cronología'], charges:['Charges','Cargos'],
+  pickupAt:['Pickup','Recogida'], deliverTo:['Delivery','Entrega'],
+  readyBy:['Ready by','Listo a las'], eta:['ETA','ETA'], deliveredAt:['Delivered','Entregado'],
+  contents:['Contents','Contenido'], cargoClass:['Class','Tipo'],
+  weight:['Weight','Peso'], dims:['Dimensions','Dimensiones'],
+  name:['Name','Nombre'], vehicle:['Vehicle','Vehículo'],
+  directLine:['Direct line','Línea directa'], consignee:['Receives','Recibe'],
+  baseRun:['Base run','Viaje base'], fragHandling:['Fragile handling','Manejo frágil'],
+  total:['Total','Total'], pending:['Pending','Pendiente'],
+  fragWrapped:['Fragile — wrapped and strapped','Frágil — envuelto y amarrado'],
+  stdMat:['Standard materials','Materiales estándar'],
+  stReceived:['Request received','Solicitud recibida'],
+  stAssigned:['Driver assigned','Conductor asignado'],
+  stPicked:['Picked up','Recogido'], stOut:['Out for delivery','En reparto'],
+  stDone:['Delivered and signed','Entregado y firmado'], stHeld:['Held on site','Detenido en sitio'],
+  viewPod:['View POD','Ver POD'], askSage:['Ask Sage','Preguntar a Sage'],
+  reportIssue:['Report an issue','Reportar problema'], review:['Review','Revisar'],
+  ticket:['Ticket','Reporte'], open:['Open','Abrir'], receipt:['Receipt','Recibo'], pay:['Pay','Pagar'],
+  paid:['Paid','Pagada'], openInv:['Open','Abierta'], overdue:['Overdue','Vencida'],
+  outstanding:['outstanding','por cobrar'], nothingOut:['Nothing outstanding','Nada por cobrar'],
+  run:['run','viaje'], runs:['runs','viajes'],
+  stop:['stop','parada'], stops:['stops','paradas'],
+  signedBy:['Received by','Recibido por'], site:['Site','Obra'],
+  sigCap:['Signature captured on delivery','Firma capturada en la entrega'],
+  photosAt:['Cargo photos at drop-off','Fotos de la carga en la entrega'],
+  photoOf:['Photo','Foto'],
+  podNote:['Photos are taken by the driver at the drop point and time-stamped by dispatch.',
+           'Las fotos las toma el conductor en el punto de entrega y despacho les pone hora.'],
+  daySched:['Day schedule','Agenda del día'], addPickup:['+ Add a pickup','+ Agregar recogida'],
+  nextTwo:['Next 14 days','Próximos 14 días'], today:['Today','Hoy'],
+  /* empty + error states */
+  eNoMatch:['No deliveries match','Ninguna entrega coincide'],
+  eNoMatchP:['Widen the date range or clear a filter to see more.','Amplía el rango de fechas o quita un filtro para ver más.'],
+  clearFilters:['Clear filters','Quitar filtros'],
+  eAllClear:['All clear','Todo en orden'],
+  eAllClearP:['Nothing on your account is held up right now.','Nada en tu cuenta está detenido ahora.'],
+  eNoBooked:['Nothing booked','Nada agendado'],
+  eNoBookedP:['Your next two weeks are open.','Tus próximas dos semanas están libres.'],
+  eNoInv:['No invoices yet','Aún sin facturas'],
+  eNoInvP:['Billing appears here once a run is completed.','La facturación aparece aquí al completar un viaje.'],
+  eNoPod:['No PODs yet','Aún sin PODs'],
+  eNoPodP:['Signed proof appears the moment a driver closes a stop.','La prueba firmada aparece en cuanto el conductor cierra una parada.'],
+  eNoTk:['No open tickets','Sin reportes abiertos'],
+  eNoTkP:['Report damage, a wrong drop or an address change and it lands here.','Reporta daño, una entrega equivocada o un cambio de dirección y aparece aquí.'],
+  eNoFeed:['No driver reports yet today.','Aún sin reportes de conductores hoy.'],
+  eNothing:['Nothing new.','Nada nuevo.'],
+  eSearch:['Nothing matches','Nada coincide'],
+  eSearchP:['Try a tracking ID, a PO number or a city.','Prueba un ID de rastreo, un número de PO o una ciudad.'],
+  /* groups */
+  gActive:['Active orders','Pedidos activos'], gPast:['Past deliveries','Entregas anteriores'],
+  gHelp:['Help articles','Artículos de ayuda'],
+  /* KPIs */
+  kInTransit:['In transit now','En tránsito ahora'], kPickups:['Pickups today','Recogidas hoy'],
+  kDelivered:['Delivered, 24h','Entregado, 24h'], kAction:['Needs action','Requiere acción'],
+  vsWeek:['vs last week','vs semana pasada'], onTime:['on-time rate','a tiempo'],
+  needsDecision:['Needs your decision','Necesita tu decisión'],
+  nothingHeld:['Nothing held up','Nada detenido'],
+  /* toasts */
+  tCopied:['Copied','Copiado'], tCopiedP:['is on your clipboard.','está en tu portapapeles.'],
+  tCopyBad:['Copy blocked','Copia bloqueada'],
+  tCopyBadP:['Your browser blocked clipboard access. Select the ID manually.','Tu navegador bloqueó el portapapeles. Selecciona el ID manualmente.'],
+  tNoSel:['Nothing selected','Nada seleccionado'],
+  tNoSelP:['Tick at least one delivery first.','Marca al menos una entrega primero.'],
+  tExport:['Export ready','Exportación lista'],
+  tExportP:['deliveries written to CSV.','entregas escritas a CSV.'],
+  tNoPod:['No PODs yet','Aún sin PODs'],
+  tNoPodP:['Proof of delivery exists only for completed runs.','La prueba de entrega existe solo para viajes completados.'],
+  tBundle:['Bundling PODs','Agrupando PODs'],
+  tBundleP:['signed delivery records queued as one PDF.','registros firmados en un solo PDF.'],
+  tAddr:['Two addresses needed','Faltan dos direcciones'],
+  tAddrP:['Add both the pickup and the delivery address.','Agrega la dirección de recogida y la de entrega.'],
+  tReq:['Pickup requested','Recogida solicitada'],
+  tReqP:['A person reviews it and confirms the price before dispatch.','Una persona la revisa y confirma el precio antes de despachar.'],
+  tTellUs:['Tell us what happened','Cuéntanos qué pasó'],
+  tTellUsP:['A short description lets dispatch act without calling you back.','Una descripción corta permite que despacho actúe sin llamarte.'],
+  tTkOpen:['Ticket opened','Reporte abierto'],
+  tTkOpenP:['is with dispatch. You will get a text as soon as it moves.','está con despacho. Recibirás un texto en cuanto avance.'],
+  tSaved:['Saved','Guardado'],
+  tSavedP:['Notification preferences updated.','Preferencias de avisos actualizadas.'],
+  tPodDl:['Downloading','Descargando'],
+  tPodDlP:['POD generated from the delivery record.','POD generado del registro de entrega.'],
+  tPayP:['Secure payment link for','Enlace de pago seguro para'],
+  tOpenPay:['Opening payment','Abriendo pago'],
+  tReceipt:['Receipt sent','Recibo enviado'],
+  tReceiptP:['Emailed to the address on the account.','Enviado al correo de la cuenta.'],
+  tOut:['Out for delivery','En reparto'],
+  tOutP:['is on the way to','va en camino a'],
+  tDone:['Delivered','Entregado'],
+  tSignedBy:['signed by','firmado por'],
+  /* ticket types */
+  tt1:['Cargo arrived damaged','La carga llegó dañada'],
+  tt2:['Wrong or incomplete delivery','Entrega equivocada o incompleta'],
+  tt3:['Delivery address needs to change','Hay que cambiar la dirección'],
+  tt4:['Driver could not access the site','El conductor no pudo entrar a la obra'],
+  tt5:['Billing question','Duda de facturación'],
+  tt6:['Something else','Otra cosa'],
+  tsOpen:['Open','Abierto'], tsReview:['In review','En revisión'], tsDone:['Resolved','Resuelto'],
+  withDispatch:['with','con'], opened:['opened','abierto'], dispatch:['Dispatch','Despacho'],
+  heldOn:['Held','Detenido'],
+  /* sage / gate */
+  sageWait:['Sage is still connecting. If it does not open in a few seconds, book a call and we will help you.',
+            'Sage se está conectando. Si no abre en unos segundos, agenda una llamada y te atendemos.'],
+  gBad:['Incorrect email or password.','Email o contraseña incorrectos.'],
+  gFill:['Enter your email and password.','Ingresa tu correo y contraseña.'],
+  gOffline:['Sign-in is unavailable right now. Try again in a moment.','El acceso no está disponible ahora. Intenta en un momento.'],
+  gLoading:['Logging in…','Entrando…'],
+  demoCo:['Sample Contractor','Contratista de Ejemplo']
+};
+const t = k => (T[k] || ['',''])[L() === 'es' ? 1 : 0];
+
+/* ── helpers ────────────────────────────────────────────────── */
+let _s = 20260729;
+const rnd = () => (_s = (_s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+const pick = a => a[Math.floor(rnd() * a.length)];
+const int = (lo, hi) => lo + Math.floor(rnd() * (hi - lo + 1));
+const DAY = 864e5;
+const TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
+const iso = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+const addDays = (d, n) => new Date(d.getTime() + n * DAY);
+const loc = () => L() === 'es' ? 'es-US' : 'en-US';
+const fmtDay = d => d.toLocaleDateString(loc(), { weekday: 'short', month: 'short', day: 'numeric' });
+const fmtTime = d => d.toLocaleTimeString(loc(), { hour: 'numeric', minute: '2-digit' });
+const money = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const esc = x => String(x == null ? '' : x).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const el = id => document.getElementById(id);
+
+const SCLS = { scheduled: 'scheduled', transit: 'transit', out: 'out', delivered: 'delivered', exception: 'exception' };
+const SCOL = { scheduled: '#2563EB', transit: '#A15C07', out: '#FF640D', delivered: '#0B8A4B', exception: '#C4261A' };
+const KCOL = { pickup: '#2563EB', delivery: '#0B8A4B', hold: '#C4261A' };
+const FLEET = [
+  ['suv', 'Large SUV', 'vehicle-suv.png', ['Up to 800 lbs', 'Hasta 800 lbs']],
+  ['pickup', 'Pickup Truck', 'vehicle-pickup.png', ['Up to 1,500 lbs', 'Hasta 1,500 lbs']],
+  ['van', 'Cargo Van', 'vehicle-van.png', ['Up to 3,000 lbs', 'Hasta 3,000 lbs']],
+  ['box', 'Box Truck', 'vehicle-box.png', ['Up to 8,000 lbs', 'Hasta 8,000 lbs']]
+];
+const vehName = k => (FLEET.find(f => f[0] === k) || FLEET[1])[1];
+
+/* ── state ──────────────────────────────────────────────────── */
+const S = {
+  view: 'overview', cal: 'month',
+  calCursor: new Date(TODAY.getFullYear(), TODAY.getMonth(), 1),
+  weekStart: sow(TODAY),
+  picked: new Set(), sort: { key: 'pickAt', dir: -1 },
+  pop: null, demo: false, live: null, veh: 'pickup',
+  profile: null, email: null
+};
+function sow(d) { const x = new Date(d); x.setDate(x.getDate() - x.getDay()); x.setHours(0, 0, 0, 0); return x; }
+window.S = S;
+window.t = t;
+window.toast = toast;
+
+let SHIPMENTS = [], NOTES = [], FEED = [], TICKETS = [];
+const byId = id => SHIPMENTS.find(x => x.id === id);
+
+/* ── sample data (demo mode only) ───────────────────────────── */
+const ORIGINS = ['Tile and stone yard, Sun Valley', 'Flooring warehouse, Van Nuys', 'Slab yard, Sun Valley',
+  'Building supply, Pacoima', 'Cabinet warehouse, North Hollywood', 'Plumbing supply, Glendale',
+  'Lumber yard, Sylmar', 'Surface showroom, Burbank'];
+const SITES = ['Glendale', 'Pasadena', 'Sherman Oaks', 'Santa Clarita', 'Encino', 'Woodland Hills',
+  'Northridge', 'Studio City', 'Simi Valley', 'Downtown LA', 'Culver City', 'Toluca Lake', 'Altadena', 'Chatsworth'];
+const CARGO_F = [['Porcelain tile, 42 boxes', 'Tile porcelánico, 42 cajas'], ['Quartz slab, 2 pieces', 'Losa de cuarzo, 2 piezas'],
+  ['Glass shower panels', 'Paneles de vidrio para regadera'], ['Marble threshold and wall tile', 'Umbral de mármol y tile de muro'],
+  ['Natural stone pavers', 'Adoquín de piedra natural'], ['Mirrored closet doors', 'Puertas de clóset con espejo']];
+const CARGO_S = [['LVP flooring, 38 cartons', 'Piso LVP, 38 cartones'], ['Grout and thinset, 24 bags', 'Boquilla y pegamento, 24 sacos'],
+  ['Cabinet boxes, 11 units', 'Gabinetes, 11 unidades'], ['Baseboard and trim bundles', 'Rodapié y moldura'],
+  ['Underlayment rolls, 12', 'Rollos de underlayment, 12'], ['Fixture crates, 6', 'Cajas de fixtures, 6']];
+const DRV = [['Marco A.', 'pickup'], ['Devin R.', 'van'], ['Luis T.', 'box'], ['Ana G.', 'suv'],
+  ['Chris P.', 'pickup'], ['Ray M.', 'van'], ['Sofia N.', 'box'], ['Tomas V.', 'pickup']];
+const RCV = ['J. Okafor', 'D. Ramírez', 'S. Whitfield', 'M. Delgado', 'A. Bennett', 'P. Nakamura',
+  'L. Castillo', 'R. Oyelaran', 'T. Moreau', 'K. Abadi'];
+const HOLDS = [['Site gate locked, nobody on site', 'Portón cerrado, nadie en la obra'],
+  ['Receiver refused a partial load', 'El receptor rechazó una carga parcial'],
+  ['Slab cracked in transit, claim opened', 'Losa fracturada en tránsito, reclamo abierto'],
+  ['Address unreachable by box truck', 'Dirección inaccesible para box truck'],
+  ['Job site not ready to receive', 'La obra no está lista para recibir']];
+
+function sampleData() {
+  const out = [];
+  for (let i = 0; i < 26; i++) {
+    const off = int(-24, 9);
+    const pd = addDays(TODAY, off);
+    const dd = addDays(pd, rnd() > 0.78 ? 1 : 0);
+    const frag = rnd() > 0.44;
+    let st, pr;
+    if (off > 0) { st = 'scheduled'; pr = 0; }
+    else if (off === 0) { st = pick(['transit', 'out', 'scheduled', 'out']); pr = st === 'scheduled' ? 0 : int(20, 86); }
+    else if (off > -3) { st = pick(['delivered', 'delivered', 'exception', 'transit']); pr = st === 'delivered' ? 100 : int(35, 88); }
+    else { st = rnd() > 0.9 ? 'exception' : 'delivered'; pr = st === 'delivered' ? 100 : int(40, 80); }
+    const d = pick(DRV), miles = int(6, 46);
+    const base = 48 + miles * 2.35, sur = frag ? Math.round(base * 0.34) : 0;
+    const h = int(7, 15);
+    const pa = new Date(pd); pa.setHours(h, pick([0, 15, 30, 45]), 0, 0);
+    const da = new Date(dd); da.setHours(h + int(1, 4), pick([0, 15, 30, 45]), 0, 0);
+    const rec = pick(RCV);
+    out.push({
+      id: 'BRG-' + (24100 + i * 37 + int(1, 9)), ref: 'PO-' + int(1000, 9999),
+      origin: pick(ORIGINS), city: pick(SITES), consignee: rec,
+      cargo: frag ? pick(CARGO_F) : pick(CARGO_S), fragile: frag,
+      service: pick(['ground', 'ground', 'express', 'freight']),
+      weight: int(120, 2400), pallets: int(2, 6), longest: int(30, 96),
+      status: st, progress: pr, pickAt: pa, dropAt: da,
+      driver: d[0], vehicle: d[1], phone: '(818) ' + int(200, 899) + '-' + int(1000, 9999),
+      hold: st === 'exception' ? pick(HOLDS) : null,
+      rate: Math.round(base + sur), surcharge: sur, miles,
+      signedBy: st === 'delivered' ? rec : null, notes: ''
+    });
+  }
+  out.sort((a, b) => b.pickAt - a.pickAt);
+  return out;
+}
+const cargoTxt = s => Array.isArray(s.cargo) ? s.cargo[L() === 'es' ? 1 : 0] : s.cargo;
+const holdTxt = s => !s.hold ? '' : (Array.isArray(s.hold) ? s.hold[L() === 'es' ? 1 : 0] : s.hold);
+
+/* ── toasts ─────────────────────────────────────────────────── */
+function toast(title, body, kind) {
+  const n = document.createElement('div');
+  n.className = 'toast' + (kind ? ' ' + kind : '');
+  n.innerHTML = '<b>' + esc(title) + '</b><p>' + esc(body) + '</p>';
+  el('toasts').appendChild(n);
+  setTimeout(() => { n.classList.add('leaving'); setTimeout(() => n.remove(), 240); }, 4200);
+}
+
+/* ── language ───────────────────────────────────────────────── */
+function setLang(l) {
+  document.body.classList.toggle('es', l === 'es');
+  el('lgEN').classList.toggle('on', l === 'en');
+  el('lgES').classList.toggle('on', l === 'es');
+  try { localStorage.setItem('bridg_lang', l); } catch (e) {}
+  applyPlaceholders();
+  if (!el('app').hidden) renderAll();
+}
+function applyPlaceholders() {
+  const k = L() === 'es' ? 'phEs' : 'phEn';
+  document.querySelectorAll('[data-ph-en]').forEach(i => { i.placeholder = i.dataset[k] || ''; });
+}
+
+/* ── nav ────────────────────────────────────────────────────── */
+function go(view) {
+  S.view = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('live'));
+  el('v-' + view).classList.add('live');
+  document.querySelectorAll('.tab').forEach(x =>
+    x.dataset.view === view ? x.setAttribute('aria-current', 'page') : x.removeAttribute('aria-current'));
+  closePops();
+  el('rail').classList.remove('open');
+  try { window.scrollTo(0, 0); } catch (e) {}
+  renderView();
+}
+function renderView() {
+  if (S.view === 'calendar') renderCal();
+  else if (S.view === 'shipments') renderTable();
+  else if (S.view === 'exceptions') renderExc();
+  else if (S.view === 'docs') renderDocs();
+  else if (S.view === 'support') renderTk();
+}
+function toggleRail() { el('rail').classList.toggle('open'); }
+function togglePop(w) {
+  const id = 'pop' + w[0].toUpperCase() + w.slice(1);
+  const was = S.pop === id;
+  closePops();
+  if (!was) { el(id).classList.add('open'); S.pop = id; }
+}
+function closePops() {
+  document.querySelectorAll('.pop').forEach(p => p.classList.remove('open'));
+  const o = el('omni'); if (o) o.setAttribute('aria-expanded', 'false');
+  S.pop = null;
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.pop') && !e.target.closest('.bell') &&
+      !e.target.closest('.acct-chip') && !e.target.closest('.omni')) closePops();
+});
+
+/* ── badges ─────────────────────────────────────────────────── */
+function renderBadges() {
+  const active = SHIPMENTS.filter(x => x.status === 'transit' || x.status === 'out').length;
+  const exc = SHIPMENTS.filter(x => x.status === 'exception').length;
+  const tdy = SHIPMENTS.filter(x => iso(x.pickAt) === iso(TODAY)).length;
+  const done = SHIPMENTS.filter(x => x.status === 'delivered').length;
+  const set = (id, n) => { const e = el(id); e.textContent = n; e.style.display = n ? 'grid' : 'none'; };
+  set('bCal', tdy); set('bShip', active); set('bExc', exc); set('bDocs', done);
+  const un = NOTES.filter(n => !n.read).length;
+  el('noteCt').textContent = un;
+  el('noteCt').style.display = un ? 'grid' : 'none';
+}
+
+/* ── KPIs ───────────────────────────────────────────────────── */
+function renderKpis() {
+  const active = SHIPMENTS.filter(x => x.status === 'transit' || x.status === 'out');
+  const tdy = SHIPMENTS.filter(x => iso(x.pickAt) === iso(TODAY) && x.status !== 'delivered');
+  const l24 = SHIPMENTS.filter(x => x.status === 'delivered' && (Date.now() - x.dropAt) < DAY * 1.5);
+  const exc = SHIPMENTS.filter(x => x.status === 'exception');
+  const done = SHIPMENTS.filter(x => x.status === 'delivered').length;
+  const rate = Math.round(done / Math.max(1, done + exc.length) * 1000) / 10;
+  const card = (n, label, meta, cls, act) =>
+    '<button class="kpi ' + (cls || '') + '"' + (act ? ' onclick="go(\'' + act + '\')"' : '') + '>' +
+      '<span class="lbl">' + esc(label) + '</span>' +
+      '<div class="kpi-n">' + n + '</div><div class="kpi-meta">' + meta + '</div></button>';
+  el('kpis').innerHTML =
+    card(active.length, t('kInTransit'),
+      '<span class="delta up">▲ 12%</span><span class="kpi-note">' + t('vsWeek') + '</span>', '', 'shipments') +
+    card(tdy.length, t('kPickups'),
+      '<span class="kpi-note">' + tdy.filter(x => x.fragile).length + ' ' + t('fragile').toLowerCase() +
+      ' · ' + tdy.filter(x => !x.fragile).length + ' ' + t('standard').toLowerCase() + '</span>', '', 'calendar') +
+    card(l24.length, t('kDelivered'),
+      '<span class="delta ' + (rate > 95 ? 'up' : 'flat') + '">' + rate + '%</span>' +
+      '<span class="kpi-note">' + t('onTime') + '</span>', '', 'docs') +
+    card(exc.length, t('kAction'),
+      '<span class="kpi-note">' + (exc.length ? t('needsDecision') : t('nothingHeld')) + '</span>',
+      exc.length ? 'alert' : '', 'exceptions');
+}
+
+/* ── map ────────────────────────────────────────────────────── */
+function renderMap() {
+  const m = el('map');
+  m.querySelectorAll('.node').forEach(n => n.remove());
+  const live = SHIPMENTS.filter(x => x.status !== 'scheduled').slice(0, 14);
+  let lines = '';
+  live.forEach(s => {
+    if (!s._p) s._p = { ox: 12 + rnd() * 26, oy: 18 + rnd() * 62, dx: 52 + rnd() * 34, dy: 14 + rnd() * 70 };
+    const p = s._p, k = s.progress / 100;
+    const hot = s.status === 'transit' || s.status === 'out';
+    lines += '<line class="rl' + (hot ? ' hot' : '') + '" x1="' + p.ox + '" y1="' + p.oy + '" x2="' + p.dx + '" y2="' + p.dy + '"/>';
+    const n = document.createElement('button');
+    n.className = 'node' + (hot ? ' pulse' : '');
+    n.style.left = (p.ox + (p.dx - p.ox) * k) + '%';
+    n.style.top = (p.oy + (p.dy - p.oy) * k) + '%';
+    n.style.background = SCOL[s.status];
+    n.style.color = SCOL[s.status];
+    n.setAttribute('aria-label', s.id + ', ' + t(s.status));
+    n.onclick = ev => { ev.stopPropagation(); mapCard(s.id); };
+    m.appendChild(n);
+  });
+  el('mapLines').innerHTML = lines;
+  el('mapCt').textContent = SHIPMENTS.filter(x => x.status === 'transit' || x.status === 'out').length + ' ' + t('vehMoving');
+  el('legend').innerHTML = [['legPickup', SCOL.scheduled], ['legTransit', SCOL.out],
+    ['legDone', SCOL.delivered], ['legExc', SCOL.exception]]
+    .map(x => '<span class="leg"><i style="background:' + x[1] + '"></i>' + t(x[0]) + '</span>').join('');
+}
+function mapCard(id) {
+  const s = byId(id); if (!s) return;
+  el('mapCard').innerHTML =
+    '<button class="x" onclick="closeMapCard()" aria-label="Close">✕</button>' +
+    '<div class="mono" style="font-size:.66rem;font-weight:500">' + s.id + '</div>' +
+    '<div style="font-size:.8rem;margin:.35rem 0 .5rem;line-height:1.35">' + esc(s.origin.split(',')[0]) +
+      ' <span style="color:var(--orange)">→</span> ' + esc(s.city) + '</div>' +
+    '<span class="pill ' + SCLS[s.status] + '"><i></i>' + t(s.status) + '</span>' +
+    '<div class="bar" style="margin:.65rem 0 .35rem"><i style="width:' + s.progress + '%"></i></div>' +
+    '<div class="mono" style="font-size:.55rem;color:var(--steel)">' + s.progress + '% · ' + t('eta') + ' ' + fmtTime(s.dropAt) + '</div>' +
+    '<button class="btn sm" style="margin-top:.75rem;width:100%" onclick="openDrawer(\'' + s.id + '\')">' + t('open') + '</button>';
+  el('mapCard').classList.add('open');
+}
+function closeMapCard() { el('mapCard').classList.remove('open'); }
+
+/* ── feed ───────────────────────────────────────────────────── */
+function pushFeed(id, key, arg, color, when) {
+  FEED.unshift({ id, key, arg, color, when: when || new Date() });
+  FEED = FEED.slice(0, 30);
+  renderFeed();
+}
+function feedText(f) {
+  const es = L() === 'es';
+  if (f.key === 'done') return es ? 'Entregado y firmado por ' + f.arg + '.' : 'Delivered and signed by ' + f.arg + '.';
+  if (f.key === 'out') return es ? 'En reparto hacia ' + f.arg + '.' : 'Out for delivery to ' + f.arg + '.';
+  if (f.key === 'loaded') return es ? 'Cargado, rumbo a ' + f.arg + '.' : 'Loaded, heading to ' + f.arg + '.';
+  if (f.key === 'pos') return es ? 'Posición actualizada, ' + f.arg + '% de la ruta.' : 'Position updated, ' + f.arg + '% of the route.';
+  if (f.key === 'booked') return es ? 'Recogida solicitada para ' + f.arg + '.' : 'Pickup requested for ' + f.arg + '.';
+  return f.arg || '';
+}
+function renderFeed() {
+  el('feed').innerHTML = FEED.length ? FEED.map(f =>
+    '<div class="feed-row"><span class="pip" style="background:' + f.color + '"></span>' +
+    '<span class="bd"><b>' + f.id + '</b><p>' + esc(feedText(f)) + '</p></span>' +
+    '<time>' + fmtTime(f.when) + '</time></div>').join('')
+    : '<div class="empty"><p>' + t('eNoFeed') + '</p></div>';
+}
+function seedFeed() {
+  FEED = [];
+  SHIPMENTS.filter(x => x.status !== 'scheduled').slice(0, 8).forEach((s, i) => FEED.push({
+    id: s.id, color: SCOL[s.status],
+    key: s.status === 'delivered' ? 'done' : s.status === 'exception' ? 'raw' : s.status === 'out' ? 'out' : 'loaded',
+    arg: s.status === 'delivered' ? s.signedBy : s.status === 'exception' ? holdTxt(s) : s.city,
+    when: new Date(Date.now() - i * 6e4 * int(8, 40))
+  }));
+  renderFeed();
+}
+
+/* ── notifications ──────────────────────────────────────────── */
+function renderNotes() {
+  el('noteList').innerHTML = NOTES.length ? NOTES.map(n =>
+    '<button class="note-row' + (n.read ? ' read' : '') + '"' + (n.ship ? ' onclick="openDrawer(\'' + n.ship + '\');closePops()"' : '') + '>' +
+    '<span class="pip" style="background:' + n.color + '"></span>' +
+    '<span><b>' + esc(n.title[L() === 'es' ? 1 : 0]) + '</b>' +
+    '<p>' + esc(n.body[L() === 'es' ? 1 : 0]) + '</p>' +
+    '<time>' + fmtTime(n.when) + '</time></span></button>').join('')
+    : '<div class="empty" style="padding:1.6rem 1rem"><p>' + t('eNothing') + '</p></div>';
+  renderBadges();
+}
+function seedNotes() {
+  NOTES = [];
+  SHIPMENTS.filter(x => x.status === 'exception').slice(0, 2).forEach(s => NOTES.push({
+    read: false, color: SCOL.exception, ship: s.id,
+    title: [s.id + ' needs a decision', s.id + ' necesita una decisión'],
+    body: [s.hold[0], s.hold[1]], when: new Date(Date.now() - 4e6)
+  }));
+  SHIPMENTS.filter(x => x.status === 'delivered').slice(0, 2).forEach(s => NOTES.push({
+    read: false, color: SCOL.delivered, ship: s.id,
+    title: [s.id + ' delivered', s.id + ' entregado'],
+    body: ['Signed by ' + s.signedBy + ' in ' + s.city + '. POD is ready.',
+           'Firmado por ' + s.signedBy + ' en ' + s.city + '. El POD está listo.'],
+    when: new Date(Date.now() - 9e6)
+  }));
+  renderNotes();
+}
+function clearNotes() { NOTES.forEach(n => n.read = true); renderNotes(); }
+
+/* ── search ─────────────────────────────────────────────────── */
+const HELP = [
+  [['How fragile cargo is handled', 'Cómo se maneja la carga frágil'], 'fragile tile slab glass quartz frágil losa vidrio cuarzo'],
+  [['Change a delivery address', 'Cambiar la dirección de entrega'], 'address change reroute dirección cambio'],
+  [['Reading your proof of delivery', 'Cómo leer tu prueba de entrega'], 'pod proof signature photo firma foto prueba'],
+  [['Invoice cycles and payment links', 'Ciclos de factura y enlaces de pago'], 'invoice billing payment pay factura pago'],
+  [['Booking a same-day pickup', 'Agendar una recogida el mismo día'], 'same day pickup schedule rush mismo día recogida']
+];
+function runSearch(q) {
+  const pop = el('omniPop'), inp = el('omni');
+  q = (q || '').trim().toLowerCase();
+  if (!q) { pop.classList.remove('open'); inp.setAttribute('aria-expanded', 'false'); return; }
+  const hit = s => [s.id, s.ref, s.consignee, s.city, s.origin, cargoTxt(s)].join(' ').toLowerCase().includes(q);
+  const act = SHIPMENTS.filter(s => hit(s) && s.status !== 'delivered').slice(0, 5);
+  const past = SHIPMENTS.filter(s => hit(s) && s.status === 'delivered').slice(0, 4);
+  const hlp = HELP.filter(h => (h[0].join(' ') + ' ' + h[1]).toLowerCase().includes(q)).slice(0, 3);
+  const grp = (name, rows) => rows.length ? '<div class="pop-grp">' + name + '</div>' + rows.join('') : '';
+  let html = grp(t('gActive'), act.map(s =>
+    '<button class="hit" onclick="openDrawer(\'' + s.id + '\');closePops()">' +
+    '<span class="code">' + s.id + '</span>' +
+    '<span class="txt">' + esc(s.city) + ' · ' + esc(cargoTxt(s)) + '</span>' +
+    '<span class="pill ' + SCLS[s.status] + '" style="margin-left:auto"><i></i>' + t(s.status) + '</span></button>'));
+  html += grp(t('gPast'), past.map(s =>
+    '<button class="hit" onclick="openDrawer(\'' + s.id + '\');closePops()">' +
+    '<span class="code">' + s.id + '</span>' +
+    '<span class="txt">' + esc(s.city) + ' · ' + fmtDay(s.dropAt) + '</span></button>'));
+  html += grp(t('gHelp'), hlp.map(h =>
+    '<a class="hit" href="/help"><span class="code">?</span>' +
+    '<span class="txt">' + esc(h[0][L() === 'es' ? 1 : 0]) + '</span></a>'));
+  pop.innerHTML = html || '<div class="pop-empty"><b>' + t('eSearch') + ' “' + esc(q) + '”</b><br/>' + t('eSearchP') + '</div>';
+  pop.classList.add('open');
+  inp.setAttribute('aria-expanded', 'true');
+}
+
+/* ── calendar ───────────────────────────────────────────────── */
+function evAll() {
+  const out = [];
+  SHIPMENTS.forEach(s => {
+    out.push({ s, kind: 'pickup', at: s.pickAt });
+    out.push({ s, kind: s.status === 'exception' ? 'hold' : 'delivery', at: s.dropAt });
+  });
+  return out;
+}
+const evOn = d => evAll().filter(e => iso(e.at) === iso(d)).sort((a, b) => a.at - b.at);
+function setCal(m) {
+  S.cal = m;
+  document.querySelectorAll('[data-cal]').forEach(b => b.setAttribute('aria-pressed', b.dataset.cal === m ? 'true' : 'false'));
+  renderCal();
+}
+function shiftCal(n) {
+  if (n === 0) { S.calCursor = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1); S.weekStart = sow(TODAY); }
+  else if (S.cal === 'week') S.weekStart = addDays(S.weekStart, n * 7);
+  else S.calCursor = new Date(S.calCursor.getFullYear(), S.calCursor.getMonth() + n, 1);
+  renderCal();
+}
+function renderCal() {
+  const lb = el('calLabel');
+  if (S.cal === 'month') {
+    lb.textContent = S.calCursor.toLocaleDateString(loc(), { month: 'long', year: 'numeric' });
+    el('calMount').innerHTML = monthHtml();
+  } else if (S.cal === 'week') {
+    const a = S.weekStart, b = addDays(a, 6);
+    lb.textContent = a.toLocaleDateString(loc(), { month: 'short', day: 'numeric' }) + ' – ' +
+                     b.toLocaleDateString(loc(), { month: 'short', day: 'numeric' });
+    el('calMount').innerHTML = weekHtml();
+  } else {
+    lb.textContent = t('nextTwo');
+    el('calMount').innerHTML = agendaHtml();
+  }
+}
+function dowNames() {
+  const base = sow(new Date(2026, 0, 4));
+  return Array.from({ length: 7 }, (_, i) => addDays(base, i).toLocaleDateString(loc(), { weekday: 'short' }));
+}
+function monthHtml() {
+  const first = S.calCursor, start = sow(first);
+  let cells = '';
+  for (let i = 0; i < 42; i++) {
+    const d = addDays(start, i);
+    const other = d.getMonth() !== first.getMonth();
+    const evs = other ? [] : evOn(d);
+    let chips = evs.slice(0, 2).map(e => e.kind === 'hold'
+      ? '<button class="chip crit" onclick="event.stopPropagation();openDrawer(\'' + e.s.id + '\')">! ' + e.s.id + '</button>'
+      : '<button class="chip" onclick="event.stopPropagation();openDrawer(\'' + e.s.id + '\')">' +
+        '<i style="background:' + KCOL[e.kind] + '"></i>' + fmtTime(e.at).replace(':00', '') + ' ' + esc(e.s.city) + '</button>'
+    ).join('');
+    if (evs.length > 2) chips += '<button class="more" onclick="event.stopPropagation();dayDrawer(\'' + iso(d) + '\')">+' + (evs.length - 2) + '</button>';
+    const tap = "openSchedule('" + iso(d) + "')";
+    cells += '<div class="day' + (other ? ' void' : '') + (iso(d) === iso(TODAY) ? ' today' : '') + '"' +
+      (other ? '' : ' role="button" tabindex="0" onclick="' + tap + '"' +
+        ' onkeydown="if(event.key===\'Enter\'){event.preventDefault();' + tap + '}"') +
+      ' aria-label="' + fmtDay(d) + '">' +
+      '<span class="n">' + d.getDate() + '</span>' + chips + '</div>';
+  }
+  return '<div class="dow">' + dowNames().map(n => '<span>' + n + '</span>').join('') + '</div>' +
+         '<div class="month">' + cells + '</div>';
+}
+function weekHtml() {
+  const days = Array.from({ length: 7 }, (_, i) => addDays(S.weekStart, i));
+  let html = '<div class="wk-h"></div>' + days.map(d =>
+    '<div class="wk-h' + (iso(d) === iso(TODAY) ? ' today' : '') + '">' +
+    '<div class="d">' + d.toLocaleDateString(loc(), { weekday: 'short' }) + '</div>' +
+    '<div class="num">' + d.getDate() + '</div></div>').join('');
+  for (let h = 6; h <= 19; h++) {
+    html += '<div class="hr-lbl">' + (h % 12 || 12) + (h < 12 ? 'a' : 'p') + '</div>';
+    days.forEach(d => {
+      const evs = evOn(d).filter(e => e.at.getHours() === h);
+      html += '<div class="slot" onclick="openSchedule(\'' + iso(d) + '\')">' + evs.map(e =>
+        '<button class="wk-ev" style="border-left-color:' + KCOL[e.kind] + ';background:' +
+        (e.kind === 'hold' ? 'var(--red-soft)' : 'var(--band)') +
+        '" onclick="event.stopPropagation();openDrawer(\'' + e.s.id + '\')">' +
+        t(e.kind) + ' · ' + esc(e.s.city) + '</button>').join('') + '</div>';
+    });
+  }
+  return '<div class="week">' + html + '</div>';
+}
+function agendaHtml() {
+  let html = '';
+  for (let i = 0; i < 14; i++) {
+    const d = addDays(TODAY, i), evs = evOn(d);
+    if (!evs.length) continue;
+    html += '<div class="ag-day"><div class="ag-hd">' +
+      '<span class="dt">' + (i === 0 ? t('today') + ' · ' : '') + fmtDay(d) + '</span>' +
+      '<span class="ct">' + evs.length + ' ' + (evs.length > 1 ? t('stops') : t('stop')) + '</span></div>' +
+      evs.map(e => '<button class="ag-row" onclick="openDrawer(\'' + e.s.id + '\')">' +
+        '<span class="tm">' + fmtTime(e.at) + '</span>' +
+        '<span class="pill ' + (e.kind === 'hold' ? 'exception' : e.kind === 'pickup' ? 'scheduled' : 'delivered') + '"><i></i>' + t(e.kind) + '</span>' +
+        '<span style="flex:1;min-width:0"><b style="font-family:var(--FD);font-weight:600;font-size:.84rem;display:block">' +
+        esc(e.s.city) + ' · ' + esc(cargoTxt(e.s)) + '</b>' +
+        '<small class="sub-mono">' + e.s.id + ' · ' + esc(e.s.driver) + ' · ' + esc(vehName(e.s.vehicle)) + '</small></span>' +
+        (e.s.fragile ? fragTag() : '') + '</button>').join('') + '</div>';
+  }
+  return html || emptyBox('eNoBooked', 'eNoBookedP', '<button class="btn" onclick="openSchedule()">' +
+    (L() === 'es' ? '+ Agendar recogida' : '+ Schedule a pickup') + '</button>');
+}
+const fragTag = () => '<span class="frag"><svg viewBox="0 0 24 24"><path d="M12 2l3 6-3 3 3 3-3 8-3-8 3-3-3-3z"/></svg>' + t('fragile') + '</span>';
+const emptyBox = (h, p, cta) => '<div class="empty"><h3>' + t(h) + '</h3><p>' + t(p) + '</p>' + (cta || '') + '</div>';
+
+/* ── table ──────────────────────────────────────────────────── */
+function fillFilters() {
+  const opts = (id, list) => {
+    const s = el(id), keep = s.value;
+    s.innerHTML = list.map(o => '<option value="' + o[0] + '">' + t(o[1]) + '</option>').join('');
+    if (keep) s.value = keep;
+  };
+  opts('fStatus', [['all', 'allStatus'], ['scheduled', 'scheduled'], ['transit', 'transit'],
+    ['out', 'out'], ['delivered', 'delivered'], ['exception', 'exception']]);
+  opts('fType', [['all', 'allSvc'], ['ground', 'ground'], ['express', 'express'], ['freight', 'freight']]);
+  opts('fCargo', [['all', 'allCargo'], ['fragile', 'fragileOnly'], ['standard', 'stdOnly']]);
+  opts('fDays', [['7', 'd7'], ['30', 'd30'], ['90', 'd90'], ['999', 'dAll']]);
+  if (!el('fDays').value) el('fDays').value = '30';
+  el('thead').innerHTML =
+    '<th style="width:34px"><input type="checkbox" id="pickAllBox" onchange="pickAll(this.checked)" aria-label="Select all"/></th>' +
+    '<th class="sortable" onclick="sortBy(\'id\')">' + t('thId') + '</th>' +
+    '<th class="sortable" onclick="sortBy(\'route\')">' + t('thRoute') + '</th>' +
+    '<th>' + t('thCargo') + '</th>' +
+    '<th class="sortable" onclick="sortBy(\'status\')">' + t('thStatus') + '</th>' +
+    '<th class="sortable" onclick="sortBy(\'progress\')">' + t('thEta') + '</th>' +
+    '<th style="width:44px"><span class="sr">Actions</span></th>';
+  el('tkType').innerHTML = ['tt1', 'tt2', 'tt3', 'tt4', 'tt5', 'tt6'].map(k => '<option>' + t(k) + '</option>').join('');
+  el('sCargo').innerHTML = '<option value="standard">' + t('stdMat') + '</option>' +
+    '<option value="fragile">' + t('fragWrapped') + '</option>';
+  el('vehGrid').innerHTML = FLEET.map(f =>
+    '<button type="button" class="veh" data-veh="' + f[0] + '" aria-pressed="' + (S.veh === f[0]) + '" onclick="pickVeh(\'' + f[0] + '\')">' +
+    '<img src="' + f[2] + '" alt=""/><b>' + f[1] + '</b><small>' + f[3][L() === 'es' ? 1 : 0] + '</small></button>').join('');
+}
+function pickVeh(k) {
+  S.veh = k;
+  document.querySelectorAll('[data-veh]').forEach(b => b.setAttribute('aria-pressed', b.dataset.veh === k ? 'true' : 'false'));
+}
+function rows() {
+  const st = el('fStatus').value, ty = el('fType').value,
+        cg = el('fCargo').value, dy = +el('fDays').value || 30;
+  const cut = Date.now() - dy * DAY;
+  const out = SHIPMENTS.filter(s =>
+    (st === 'all' || s.status === st) &&
+    (ty === 'all' || s.service === ty) &&
+    (cg === 'all' || (cg === 'fragile' ? s.fragile : !s.fragile)) &&
+    (dy > 900 || s.pickAt.getTime() > cut));
+  const k = S.sort.key, dir = S.sort.dir;
+  out.sort((a, b) => {
+    const x = k === 'route' ? a.city : k === 'status' ? a.status : k === 'progress' ? a.progress : k === 'id' ? a.id : a.pickAt;
+    const y = k === 'route' ? b.city : k === 'status' ? b.status : k === 'progress' ? b.progress : k === 'id' ? b.id : b.pickAt;
+    return x > y ? dir : x < y ? -dir : 0;
+  });
+  return out;
+}
+function sortBy(k) { S.sort = { key: k, dir: S.sort.key === k ? -S.sort.dir : 1 }; renderTable(); }
+function renderTable() {
+  const rs = rows();
+  el('tableCt').textContent = rs.length + ' ' + t('ofShip') + ' ' + SHIPMENTS.length + ' ' + t('shipments');
+  el('tbody').innerHTML = rs.map(s => {
+    const barCls = s.status === 'delivered' ? ' ok' : s.status === 'exception' ? ' bad' : '';
+    const etaTxt = s.status === 'delivered' ? t('deliveredAt') + ' ' + fmtTime(s.dropAt)
+      : s.status === 'exception' ? t('heldOn') + ' ' + fmtDay(s.dropAt)
+      : s.status === 'scheduled' ? t('pickup') + ' ' + fmtDay(s.pickAt)
+      : t('eta') + ' ' + fmtTime(s.dropAt);
+    return '<tr class="' + (S.picked.has(s.id) ? 'picked' : '') + '">' +
+      '<td><input type="checkbox"' + (S.picked.has(s.id) ? ' checked' : '') +
+        ' onchange="pickRow(\'' + s.id + '\',this.checked)" aria-label="' + s.id + '"/></td>' +
+      '<td><span class="tid"><code>' + s.id + '</code>' +
+        '<button class="copy" onclick="copyId(\'' + s.id + '\')" aria-label="Copy">' +
+        '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M5 15V5a1.5 1.5 0 011.5-1.5H15"/></svg></button></span>' +
+        '<div class="sub-mono">' + s.ref + ' · ' + t(s.service) + '</div></td>' +
+      '<td><div class="route">' + esc(s.origin.split(',')[0]) + '<span class="ar">→</span>' +
+        '<span class="to">' + esc(s.city) + '</span></div>' +
+        '<div class="sub-mono">' + esc(s.consignee) + ' · ' + s.miles + ' mi</div></td>' +
+      '<td><div style="font-size:.78rem">' + esc(cargoTxt(s)) + '</div>' +
+        (s.fragile ? fragTag() : '<span class="sub-mono" style="margin:0">' + t('standard') + '</span>') +
+        '<div class="sub-mono">' + s.weight.toLocaleString() + ' lbs</div></td>' +
+      '<td><span class="pill ' + SCLS[s.status] + '"><i class="' +
+        (s.status === 'transit' || s.status === 'out' ? 'beat' : '') + '"></i>' + t(s.status) + '</span>' +
+        (s.hold ? '<div style="font-size:.68rem;color:var(--red);margin-top:.3rem;max-width:180px;line-height:1.35">' + esc(holdTxt(s)) + '</div>' : '') + '</td>' +
+      '<td class="prog"><div class="t"><span>' + esc(etaTxt) + '</span><span>' + s.progress + '%</span></div>' +
+        '<div class="bar' + barCls + '"><i style="width:' + s.progress + '%"></i></div></td>' +
+      '<td><button class="kebab" onclick="openDrawer(\'' + s.id + '\')" aria-label="' + s.id + '">⋯</button></td></tr>';
+  }).join('');
+  el('tableEmpty').innerHTML = rs.length ? '' :
+    emptyBox('eNoMatch', 'eNoMatchP', '<button class="btn-o" onclick="resetFilters()">' + t('clearFilters') + '</button>');
+  const box = el('pickAllBox');
+  if (box) box.checked = rs.length > 0 && rs.every(s => S.picked.has(s.id));
+  renderBulk();
+}
+function resetFilters() {
+  el('fStatus').value = 'all'; el('fType').value = 'all';
+  el('fCargo').value = 'all'; el('fDays').value = '999';
+  renderTable();
+}
+function pickRow(id, on) { on ? S.picked.add(id) : S.picked.delete(id); renderTable(); }
+function pickAll(on) { rows().forEach(s => on ? S.picked.add(s.id) : S.picked.delete(s.id)); renderTable(); }
+function clearPicks() { S.picked.clear(); renderTable(); }
+function renderBulk() {
+  el('bulk').classList.toggle('open', S.picked.size > 0);
+  el('bulkN').textContent = S.picked.size + ' ' + t('selected');
+}
+function copyId(id) {
+  if (!navigator.clipboard) return toast(t('tCopyBad'), t('tCopyBadP'), 'bad');
+  navigator.clipboard.writeText(id).then(
+    () => toast(t('tCopied'), id + ' ' + t('tCopiedP'), 'ok'),
+    () => toast(t('tCopyBad'), t('tCopyBadP'), 'bad'));
+}
+function exportRows(all) {
+  const rs = all ? SHIPMENTS : SHIPMENTS.filter(s => S.picked.has(s.id));
+  if (!rs.length) return toast(t('tNoSel'), t('tNoSelP'), 'bad');
+  const head = ['Tracking ID', 'Reference', 'Pickup', 'Destination', 'Receives', 'Cargo', 'Fragile',
+    'Weight (lbs)', 'Service', 'Vehicle', 'Status', 'Progress %', 'Pickup at', 'Delivery at', 'Rate'];
+  const csv = [head.join(',')].concat(rs.map(s => [s.id, s.ref, s.origin, s.city, s.consignee,
+    cargoTxt(s), s.fragile ? 'Yes' : 'No', s.weight, s.service, vehName(s.vehicle), t(s.status),
+    s.progress, s.pickAt.toLocaleString('en-US'), s.dropAt.toLocaleString('en-US'), s.rate]
+    .map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','))).join('\n');
+  try {
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'bridg-deliveries-' + iso(new Date()) + '.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (e) {}
+  toast(t('tExport'), rs.length + ' ' + t('tExportP'), 'ok');
+}
+function bulkPods() {
+  const n = SHIPMENTS.filter(s => S.picked.has(s.id) && s.status === 'delivered').length;
+  if (!n) return toast(t('tNoPod'), t('tNoPodP'), 'bad');
+  toast(t('tBundle'), n + ' ' + t('tBundleP'), 'ok');
+}
+
+/* ── drawer ─────────────────────────────────────────────────── */
+function openDrawer(id) {
+  const s = byId(id); if (!s) return;
+  el('dKind').textContent = s.fragile ? t('fragile') : t('standard');
+  el('dTitle').textContent = s.city;
+  el('dSub').textContent = s.id + ' · ' + s.ref;
+  const cell = (l, v) => '<div class="dcell"><span class="lbl">' + l + '</span><b>' + v + '</b></div>';
+  const steps = [
+    [t('stReceived'), s.pickAt, true],
+    [t('stAssigned'), s.pickAt, s.status !== 'scheduled'],
+    [t('stPicked'), s.pickAt, ['transit', 'out', 'delivered', 'exception'].includes(s.status)],
+    [t('stOut'), s.dropAt, ['out', 'delivered'].includes(s.status)],
+    [s.status === 'exception' ? t('stHeld') : t('stDone'), s.dropAt, s.status === 'delivered' || s.status === 'exception']
+  ];
+  const last = steps.reduce((n, x, i) => x[2] ? i : n, 0);
+  el('dBody').innerHTML =
+    '<div class="dsec">' +
+      '<span class="pill ' + SCLS[s.status] + '"><i class="' + (s.status === 'transit' || s.status === 'out' ? 'beat' : '') + '"></i>' + t(s.status) + '</span>' +
+      (s.fragile ? ' ' + fragTag() : '') +
+      '<div class="bar' + (s.status === 'delivered' ? ' ok' : s.status === 'exception' ? ' bad' : '') + '" style="margin-top:.8rem"><i style="width:' + s.progress + '%"></i></div>' +
+      '<div class="sub-mono" style="margin-top:.4rem">' + s.progress + '% · ' + s.miles + ' mi</div>' +
+      (s.hold ? '<div class="note" style="margin-top:.85rem;border-left-color:var(--red)"><b>' + t('exception') + '</b> — ' + esc(holdTxt(s)) + '</div>' : '') +
+    '</div>' +
+    '<div class="dsec"><span class="lbl">' + t('route') + '</span><div class="dgrid">' +
+      cell(t('pickupAt'), esc(s.origin)) + cell(t('deliverTo'), esc(s.city)) +
+      cell(t('readyBy'), fmtDay(s.pickAt) + ', ' + fmtTime(s.pickAt)) +
+      cell(s.status === 'delivered' ? t('deliveredAt') : t('eta'), fmtDay(s.dropAt) + ', ' + fmtTime(s.dropAt)) +
+    '</div></div>' +
+    '<div class="dsec"><span class="lbl">' + t('cargoSec') + '</span><div class="dgrid">' +
+      cell(t('contents'), esc(cargoTxt(s))) +
+      cell(t('cargoClass'), s.fragile ? t('fragWrapped') : t('stdMat')) +
+      cell(t('weight'), s.weight.toLocaleString() + ' lbs') +
+      cell(t('dims'), s.pallets + ' pallets · ' + s.longest + '" ') +
+    '</div></div>' +
+    '<div class="dsec"><span class="lbl">' + t('driver') + '</span><div class="dgrid">' +
+      cell(t('name'), esc(s.driver)) + cell(t('vehicle'), esc(vehName(s.vehicle))) +
+      cell(t('directLine'), '<a href="tel:' + s.phone.replace(/\D/g, '') + '" style="color:var(--orange)">' + s.phone + '</a>') +
+      cell(t('consignee'), esc(s.consignee)) +
+    '</div></div>' +
+    '<div class="dsec"><span class="lbl">' + t('timeline') + '</span><div class="tl">' +
+      steps.map((x, i) => '<div class="tl-row ' + (x[2] ? (i === last ? 'now' : 'done') : 'pend') + '">' +
+        '<b>' + x[0] + '</b><time>' + (x[2] ? fmtDay(x[1]) + ', ' + fmtTime(x[1]) : t('pending')) + '</time></div>').join('') +
+    '</div></div>' +
+    '<div class="dsec"><span class="lbl">' + t('charges') + '</span><div class="dgrid">' +
+      cell(t('baseRun'), money(s.rate - s.surcharge)) +
+      cell(t('fragHandling'), s.surcharge ? money(s.surcharge) : '—') +
+    '</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--hairline)">' +
+      '<span class="lbl">' + t('total') + '</span>' +
+      '<span class="mono" style="font-size:1.05rem;font-weight:500;color:var(--orange)">' + money(s.rate) + '</span></div></div>';
+  el('dFoot').innerHTML =
+    (s.status === 'delivered'
+      ? '<button class="btn" onclick="openPod(\'' + s.id + '\')">' + t('viewPod') + '</button>'
+      : '<button class="btn" onclick="closeAll();startSage()">' + t('askSage') + '</button>') +
+    '<button class="btn-o" onclick="openTicket(\'' + s.id + '\')">' + t('reportIssue') + '</button>';
+  el('drawer').classList.add('open');
+  el('scrim').classList.add('open');
+  try { el('drawer').focus(); } catch (e) {}
+}
+function dayDrawer(dstr) {
+  const d = new Date(dstr + 'T12:00:00'), evs = evOn(d);
+  el('dKind').textContent = t('daySched');
+  el('dTitle').textContent = fmtDay(d);
+  el('dSub').textContent = evs.length + ' ' + (evs.length === 1 ? t('stop') : t('stops'));
+  el('dBody').innerHTML = evs.map(e =>
+    '<button class="ag-row" onclick="openDrawer(\'' + e.s.id + '\')">' +
+    '<span class="tm">' + fmtTime(e.at) + '</span>' +
+    '<span class="pill ' + (e.kind === 'hold' ? 'exception' : e.kind === 'pickup' ? 'scheduled' : 'delivered') + '"><i></i>' + t(e.kind) + '</span>' +
+    '<span style="flex:1;min-width:0"><b style="font-family:var(--FD);font-weight:600;font-size:.84rem;display:block">' + esc(e.s.city) + '</b>' +
+    '<small class="sub-mono">' + e.s.id + '</small></span></button>').join('');
+  el('dFoot').innerHTML = '<button class="btn" onclick="openSchedule(\'' + dstr + '\')">' + t('addPickup') + '</button>';
+  el('drawer').classList.add('open');
+  el('scrim').classList.add('open');
+}
+
+/* ── modals ─────────────────────────────────────────────────── */
+function openModal(id) { el(id).classList.add('open'); el('scrim').classList.add('open'); closePops(); }
+function closeAll(keepScrim) {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  el('drawer').classList.remove('open');
+  if (!keepScrim) el('scrim').classList.remove('open');
+  el('rail').classList.remove('open');
+  closeMapCard();
+  closePops();
+}
+function openSchedule(dstr) { el('sDate').value = dstr || iso(TODAY); openModal('mSched'); }
+function submitSchedule() {
+  const from = el('sFrom').value.trim(), to = el('sTo').value.trim();
+  if (!from || !to) return toast(t('tAddr'), t('tAddrP'), 'bad');
+  const frag = el('sCargo').value === 'fragile';
+  const at = new Date(el('sDate').value + 'T' + (el('sTime').value || '09:00'));
+  const miles = int(8, 40), base = 48 + miles * 2.35, sur = frag ? Math.round(base * 0.34) : 0;
+  const s = {
+    id: 'BRG-' + int(24900, 24999), ref: 'PO-' + int(1000, 9999),
+    origin: from, city: to.split(',')[0] || to,
+    consignee: L() === 'es' ? 'Por confirmar' : 'To be confirmed',
+    cargo: frag ? ['Fragile materials, to be verified', 'Materiales frágiles, por verificar']
+                : ['Building materials, to be verified', 'Materiales de construcción, por verificar'],
+    fragile: frag, service: 'ground', weight: +el('sWeight').value || 500,
+    pallets: 1, longest: 0, status: 'scheduled', progress: 0,
+    pickAt: at, dropAt: new Date(at.getTime() + 3 * 36e5),
+    driver: L() === 'es' ? 'Asignando' : 'Assigning', vehicle: S.veh,
+    phone: '(818) 000-0000', hold: null, miles,
+    rate: Math.round(base + sur), surcharge: sur, signedBy: null,
+    notes: el('sNotes').value.trim()
+  };
+  SHIPMENTS.unshift(s);
+  closeAll();
+  toast(t('tReq'), s.id + ' — ' + t('tReqP'), 'ok');
+  pushFeed(s.id, 'booked', fmtDay(at), SCOL.scheduled);
+  NOTES.unshift({ read: false, color: SCOL.scheduled, ship: s.id,
+    title: [s.id + ' requested', s.id + ' solicitado'],
+    body: ['Waiting on driver assignment.', 'Esperando asignación de conductor.'], when: new Date() });
+  ['sFrom', 'sTo', 'sNotes', 'sWeight'].forEach(i => el(i).value = '');
+  renderNotes(); renderKpis(); renderMap(); renderCal(); renderTable(); renderBadges();
+  window.saveBooking(s);
+}
+function openTicket(shipId) {
+  el('tkShip').innerHTML = SHIPMENTS.slice(0, 20).map(s =>
+    '<option value="' + s.id + '"' + (s.id === shipId ? ' selected' : '') + '>' +
+    s.id + ' — ' + esc(s.city) + ' — ' + t(s.status) + '</option>').join('');
+  closeAll(true);
+  openModal('mTicket');
+}
+function submitTicket() {
+  const d = el('tkDesc').value.trim();
+  if (!d) return toast(t('tTellUs'), t('tTellUsP'), 'bad');
+  const tk = { id: 'TK-' + int(1050, 1099), ship: el('tkShip').value,
+    type: el('tkType').value, state: 'open', opened: new Date() };
+  TICKETS.unshift(tk);
+  closeAll();
+  toast(t('tTkOpen'), tk.id + ' ' + t('tTkOpenP'), 'ok');
+  el('tkDesc').value = '';
+  NOTES.unshift({ read: false, color: SCOL.out, ship: tk.ship,
+    title: [tk.id + ' opened', tk.id + ' abierto'], body: [tk.type, tk.type], when: new Date() });
+  renderNotes(); renderTk();
+}
+let PODID = null;
+function openPod(id) {
+  const s = byId(id); if (!s) return;
+  PODID = id;
+  el('podCode').textContent = s.id + ' · ' + s.ref;
+  el('podBody').innerHTML =
+    '<div class="dgrid" style="margin-top:0">' +
+      '<div class="dcell"><span class="lbl">' + t('deliveredAt') + '</span><b>' + fmtDay(s.dropAt) + ', ' + fmtTime(s.dropAt) + '</b></div>' +
+      '<div class="dcell"><span class="lbl">' + t('signedBy') + '</span><b>' + esc(s.signedBy || s.consignee) + '</b></div>' +
+      '<div class="dcell"><span class="lbl">' + t('driver') + '</span><b>' + esc(s.driver) + '</b></div>' +
+      '<div class="dcell"><span class="lbl">' + t('site') + '</span><b>' + esc(s.city) + '</b></div>' +
+    '</div>' +
+    '<div style="margin-top:1.2rem"><span class="lbl">' + t('sigCap') + '</span>' +
+      '<div class="pod-sig"><svg viewBox="0 0 210 66" role="img" aria-label="' + t('sigCap') + '">' +
+      '<path d="M8 46c10-24 16-8 22 2s10-30 18-24 4 30 12 26 8-30 16-26 6 26 14 22 10-24 18-20 6 20 14 18 12-16 20-14 16 6 24 4"/></svg></div></div>' +
+    '<div style="margin-top:1.2rem"><span class="lbl">' + t('photosAt') + '</span>' +
+      '<div class="shots">' + [1, 2].map(n =>
+        '<div class="shot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.4-2h5.2L16 6"/></svg>' +
+        '<span>' + t('photoOf') + ' ' + n + '/2</span><span class="stamp">' + fmtTime(s.dropAt) + '</span></div>').join('') +
+      '</div><p class="hint">' + t('podNote') + '</p></div>';
+  closeAll(true);
+  openModal('mPod');
+}
+function downloadPod() {
+  const s = byId(PODID);
+  toast(t('tPodDl'), (s ? s.id + ' — ' : '') + t('tPodDlP'), 'ok');
+}
+function saveNotify() { closeAll(); toast(t('tSaved'), t('tSavedP'), 'ok'); }
+
+/* ── exceptions ─────────────────────────────────────────────── */
+function renderExc() {
+  const rs = SHIPMENTS.filter(s => s.status === 'exception');
+  el('excMount').innerHTML = rs.length ? rs.map(s =>
+    '<div class="doc-row">' +
+    '<span class="doc-ic" style="color:var(--red);border-color:rgba(196,38,26,.3)">' +
+      '<svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></span>' +
+    '<span class="meta"><b>' + s.id + ' · ' + esc(s.city) + '</b>' +
+      '<div style="font-size:.78rem;color:var(--red);margin:.15rem 0">' + esc(holdTxt(s)) + '</div>' +
+      '<small>' + esc(cargoTxt(s)) + ' · ' + esc(s.driver) + ' · ' + t('heldOn') + ' ' + fmtDay(s.dropAt) + '</small></span>' +
+    '<button class="btn sm" onclick="openDrawer(\'' + s.id + '\')">' + t('review') + '</button>' +
+    '<button class="btn-o sm" onclick="openTicket(\'' + s.id + '\')">' + t('ticket') + '</button></div>').join('')
+    : emptyBox('eAllClear', 'eAllClearP');
+}
+
+/* ── docs ───────────────────────────────────────────────────── */
+function renderDocs() {
+  const done = SHIPMENTS.filter(s => s.status === 'delivered');
+  const invs = [];
+  for (let i = 0; i < done.length; i += 2) {
+    const g = done.slice(i, i + 2);
+    const age = Math.round((Date.now() - g[0].dropAt) / DAY);
+    invs.push({ num: 'INV-' + (1200 + i), total: g.reduce((n, x) => n + x.rate, 0),
+      count: g.length, at: g[0].dropAt, state: age > 21 ? 'overdue' : age > 5 ? 'openInv' : 'paid' });
+  }
+  const owed = invs.filter(v => v.state !== 'paid').reduce((n, v) => n + v.total, 0);
+  el('arTotal').textContent = owed ? money(owed) + ' ' + t('outstanding') : t('nothingOut');
+  const col = st => st === 'paid' ? 'var(--green)' : st === 'overdue' ? 'var(--red)' : 'var(--amber)';
+  el('invMount').innerHTML = invs.length ? invs.map(v =>
+    '<div class="doc-row">' +
+    '<span class="doc-ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span>' +
+    '<span class="meta"><b>' + v.num + '</b><small>' + fmtDay(v.at) + ' · ' + v.count + ' ' + (v.count > 1 ? t('runs') : t('run')) + '</small></span>' +
+    '<span style="text-align:right"><div class="amt">' + money(v.total) + '</div>' +
+      '<span class="state" style="color:' + col(v.state) + '">' + t(v.state) + '</span></span>' +
+    (v.state === 'paid'
+      ? '<button class="btn-o sm" onclick="toast(t(\'tReceipt\'),t(\'tReceiptP\'),\'ok\')">' + t('receipt') + '</button>'
+      : '<button class="btn sm" onclick="toast(t(\'tOpenPay\'),t(\'tPayP\')+\' ' + v.num + '\')">' + t('pay') + '</button>') +
+    '</div>').join('') : emptyBox('eNoInv', 'eNoInvP');
+  el('podMount').innerHTML = done.length ? done.slice(0, 10).map(s =>
+    '<div class="doc-row">' +
+    '<span class="doc-ic" style="color:var(--green);border-color:rgba(11,138,75,.3)">' +
+      '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' +
+    '<span class="meta"><b>' + s.id + ' · ' + esc(s.city) + '</b>' +
+      '<small>' + t('signedBy') + ' ' + esc(s.signedBy) + ' · ' + fmtDay(s.dropAt) + '</small></span>' +
+    (s.fragile ? fragTag() : '') +
+    '<button class="btn-o sm" onclick="openPod(\'' + s.id + '\')">' + t('open') + '</button></div>').join('')
+    : emptyBox('eNoPod', 'eNoPodP');
+}
+
+/* ── tickets ────────────────────────────────────────────────── */
+function renderTk() {
+  const col = st => st === 'done' ? 'var(--green)' : st === 'review' ? 'var(--amber)' : 'var(--orange)';
+  const lbl = st => st === 'done' ? t('tsDone') : st === 'review' ? t('tsReview') : t('tsOpen');
+  el('tkMount').innerHTML = TICKETS.length ? TICKETS.map(k =>
+    '<div class="doc-row">' +
+    '<span class="doc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></span>' +
+    '<span class="meta"><b>' + k.id + ' · ' + esc(k.type) + '</b>' +
+      '<small>' + k.ship + ' · ' + t('opened') + ' ' + fmtDay(k.opened) + ' · ' + t('withDispatch') + ' ' + t('dispatch') + '</small></span>' +
+    '<span class="state" style="color:' + col(k.state) + '">' + lbl(k.state) + '</span>' +
+    '<button class="btn-o sm" onclick="openDrawer(\'' + k.ship + '\')">' + t('open') + '</button></div>').join('')
+    : emptyBox('eNoTk', 'eNoTkP', '<button class="btn" onclick="openTicket()">' +
+      (L() === 'es' ? '+ Abrir reporte' : '+ Open a ticket') + '</button>');
+}
+
+/* ── Sage (ElevenLabs) ──────────────────────────────────────── */
+function startSage() {
+  const w = el('sage');
+  if (w && typeof w.startConversation === 'function') {
+    try { w.startConversation(); return; } catch (e) {}
+  }
+  toast('Sage', t('sageWait'));
+}
+
+/* ── simulated live feed (demo only) ────────────────────────── */
+function tick() {
+  const moving = SHIPMENTS.filter(s => s.status === 'transit' || s.status === 'out');
+  if (!moving.length) return;
+  const s = pick(moving);
+  s.progress = Math.min(100, s.progress + int(4, 13));
+  if (s.status === 'transit' && s.progress >= 62) {
+    s.status = 'out';
+    pushFeed(s.id, 'out', s.city, SCOL.out);
+    NOTES.unshift({ read: false, color: SCOL.out, ship: s.id,
+      title: [s.id + ' out for delivery', s.id + ' en reparto'],
+      body: ['Heading to ' + s.city + '. ETA ' + fmtTime(s.dropAt) + '.',
+             'Rumbo a ' + s.city + '. ETA ' + fmtTime(s.dropAt) + '.'], when: new Date() });
+    renderNotes();
+    toast(t('tOut'), s.id + ' ' + t('tOutP') + ' ' + s.city + '.');
+  } else if (s.progress >= 100) {
+    s.status = 'delivered'; s.progress = 100; s.signedBy = s.consignee;
+    pushFeed(s.id, 'done', s.signedBy, SCOL.delivered);
+    NOTES.unshift({ read: false, color: SCOL.delivered, ship: s.id,
+      title: [s.id + ' delivered', s.id + ' entregado'],
+      body: ['Signed by ' + s.signedBy + '. POD is ready.', 'Firmado por ' + s.signedBy + '. El POD está listo.'],
+      when: new Date() });
+    renderNotes();
+    toast(t('tDone'), s.id + ' ' + t('tSignedBy') + ' ' + s.signedBy + '.', 'ok');
+  } else {
+    pushFeed(s.id, 'pos', s.progress, SCOL[s.status]);
+  }
+  renderKpis(); renderMap(); renderBadges();
+  if (S.view === 'shipments') renderTable();
+  if (S.view === 'docs') renderDocs();
+  const c = el('mapCard');
+  if (c.classList.contains('open') && c.textContent.indexOf(s.id) > -1) mapCard(s.id);
+}
+function startLive() { stopLive(); if (S.demo) S.live = setInterval(tick, 8000); }
+function stopLive() { if (S.live) clearInterval(S.live); S.live = null; }
+document.addEventListener('visibilitychange', () => document.hidden ? stopLive() : startLive());
+
+/* ── render everything (used on language switch) ────────────── */
+function renderAll() {
+  fillFilters();
+  renderKpis(); renderMap(); renderFeed(); renderNotes(); renderBadges();
+  renderCal(); renderTable(); renderExc(); renderDocs(); renderTk();
+  const p = S.profile || {};
+  el('acctWho').textContent = p.company || S.email || '—';
+  el('acctIni').textContent = (p.company || S.email || '?').trim().slice(0, 2).toUpperCase();
+  el('meCo').textContent = p.company || '—';
+  el('meEmail').textContent = S.email || '—';
+  el('nEmail').value = p.email || S.email || '';
+  el('nPhone').value = p.phone || '';
+}
+
+/* ── session ────────────────────────────────────────────────── */
+function showApp() {
+  el('gate').hidden = true;
+  el('app').hidden = false;
+  el('demoBar').hidden = !S.demo;
+  fillFilters();
+  seedFeed(); seedNotes();
+  renderAll();
+  go('overview');
+  startLive();
+}
+function enterDemo() {
+  S.demo = true;
+  S.profile = { company: t('demoCo'), email: 'sample@bridgconnects.com', phone: '(818) 000-0000' };
+  S.email = 'sample@bridgconnects.com';
+  SHIPMENTS = sampleData();
+  TICKETS = [
+    { id: 'TK-1041', ship: (SHIPMENTS.find(s => s.status === 'exception') || SHIPMENTS[0]).id,
+      type: T.tt1[L() === 'es' ? 1 : 0], state: 'review', opened: addDays(TODAY, -2) },
+    { id: 'TK-1038', ship: SHIPMENTS[4].id, type: T.tt3[L() === 'es' ? 1 : 0],
+      state: 'done', opened: addDays(TODAY, -9) }
+  ];
+  showApp();
+}
+function leaveDemo() {
+  stopLive();
+  S.demo = false; SHIPMENTS = []; NOTES = []; FEED = []; TICKETS = [];
+  el('app').hidden = true;
+  el('gate').hidden = false;
+}
+
+/* Called by the Firebase module once a real session resolves. */
+function onSession(user, profile, bookings) {
+  S.demo = false;
+  S.email = user.email;
+  S.profile = profile || { company: user.email, email: user.email };
+  SHIPMENTS = (bookings || []).map(mapBooking).filter(Boolean);
+  SHIPMENTS.sort((a, b) => b.pickAt - a.pickAt);
+  TICKETS = [];
+  showApp();
+}
+/* bookings/{doc} → portal row. Server fields win; anything the booking
+   form never captured is left explicitly blank rather than invented. */
+function mapBooking(b) {
+  if (!b) return null;
+  const created = b.createdAt ? new Date(b.createdAt) : new Date();
+  const pickAt = b.pickupAt ? new Date(b.pickupAt) : created;
+  const dropAt = b.deliveredAt ? new Date(b.deliveredAt) : new Date(pickAt.getTime() + 3 * 36e5);
+  const rate = typeof b.rate === 'number' ? b.rate : parseFloat(String(b.estimate || '').replace(/[^0-9.]/g, '')) || 0;
+  const st = ['scheduled', 'transit', 'out', 'delivered', 'exception'].includes(b.status) ? b.status : 'scheduled';
+  return {
+    id: b.trackingId || b.id || ('BRG-' + String(created.getTime()).slice(-5)),
+    ref: b.po || b.ref || '—',
+    origin: b.pickup || '—', city: (b.dropoff || '—').split(',')[0],
+    consignee: b.consignee || '—',
+    cargo: [b.cargo || '—', b.cargo || '—'], fragile: !!b.fragile,
+    service: b.service || 'ground', weight: +b.weight || 0,
+    pallets: +b.pallets || 0, longest: +b.longest || 0,
+    status: st, progress: typeof b.progress === 'number' ? b.progress : (st === 'delivered' ? 100 : 0),
+    pickAt, dropAt,
+    driver: b.driver || '—', vehicle: b.vehicle || 'pickup',
+    phone: b.driverPhone || '', hold: b.hold ? [b.hold, b.hold] : null,
+    rate, surcharge: +b.surcharge || 0, miles: +b.miles || 0,
+    signedBy: b.signedBy || null, notes: b.notes || ''
+  };
+}
+/* Overridden by the Firebase module when a live session exists. */
+window.saveBooking = window.saveBooking || function () {};
+function doLogout() {
+  if (window._bridgLogout) { window._bridgLogout(); return; }
+  leaveDemo();
+}
+function doGateLogin() {
+  const em = el('gEmail').value.trim(), pw = el('gPass').value;
+  const err = el('gErr'); err.style.display = 'none';
+  if (!em || !pw) { err.textContent = t('gFill'); err.style.display = 'block'; return; }
+  if (!window._bridgLogin) { err.textContent = t('gOffline'); err.style.display = 'block'; return; }
+  const b = el('gBtn'); b.disabled = true;
+  window._bridgLogin(em, pw).catch(() => {
+    err.textContent = t('gBad'); err.style.display = 'block';
+  }).finally(() => { b.disabled = false; });
+}
+
+/* ── keyboard ───────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAll();
+  if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+    const o = el('omni'); if (o) { e.preventDefault(); o.focus(); }
+  }
+});
+document.querySelectorAll('.tab').forEach(x =>
+  x.addEventListener('click', e => { e.preventDefault(); go(x.dataset.view); }));
+
+/* ── boot ───────────────────────────────────────────────────── */
+(function boot() {
+  let saved = null;
+  try { saved = localStorage.getItem('bridg_lang'); } catch (e) {}
+  if (saved === 'es' || (!saved && (navigator.language || '').toLowerCase().startsWith('es'))) setLang('es');
+  else applyPlaceholders();
+})();
+</script>
+
+<script type="module">
+/* Firebase — same project and config as the public site. */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyDu7ZC8OOWR6H3EnnNcumFp9aYHf9Wf2e4",
+  authDomain:"bridg-connects.firebaseapp.com",
+  projectId:"bridg-connects",
+  storageBucket:"bridg-connects.firebasestorage.app",
+  messagingSenderId:"369949143389",
+  appId:"1:369949143389:web:a2098909557e15e69178b4"
+});
+try{
+  initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider("6Lfjz2YtAAAAAHnuivJ87A0p_BD0_-3AzjJaOYXN"),
+    isTokenAutoRefreshEnabled: true
+  });
+}catch(e){ console.warn("App Check init skipped:", e && e.message); }
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window._bridgLogin = (email, pass) => signInWithEmailAndPassword(auth, email, pass);
+window._bridgLogout = async () => { try{ await signOut(auth); }catch(e){} window.leaveDemo(); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { if (!window.S.demo) window.leaveDemo(); return; }
+  let profile = null, rows = [];
+  try {
+    const snap = await getDoc(doc(db, 'clients', user.uid));
+    if (snap.exists()) profile = snap.data();
+  } catch(e){}
+  try {
+    const qs = await getDocs(query(collection(db, 'bookings'), where('uid', '==', user.uid)));
+    qs.forEach(d => rows.push(Object.assign({ id: d.id }, d.data())));
+  } catch(e){}
+  window.onSession(user, profile, rows);
+});
+
+/* Persist a new pickup request to the same collection the site writes to. */
+window.saveBooking = async (s) => {
+  if (!auth.currentUser) return;
+  try {
+    await addDoc(collection(db, 'bookings'), {
+      uid: auth.currentUser.uid,
+      trackingId: s.id, po: s.ref,
+      pickup: s.origin, dropoff: s.city,
+      vehicle: s.vehicle, weight: s.weight,
+      fragile: s.fragile, notes: s.notes,
+      pickupAt: s.pickAt.toISOString(),
+      status: 'scheduled', progress: 0,
+      source: 'client portal',
+      createdAt: new Date().toISOString()
+    });
+  } catch(e){ console.warn('booking save failed:', e && e.message); }
+};
+</script>
+</body>
+</html>
