@@ -36,7 +36,8 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.92);-webkit-b
 .btn-o:hover{border-color:var(--orange);color:var(--orange)}
 
 /* HERO */
-.hero{max-width:1000px;margin:0 auto;padding:4rem 1.5rem 3rem;text-align:center;position:relative;overflow-x:hidden;overflow-x:clip}
+.hero-wrap{position:relative;overflow:clip;isolation:isolate;background:#fff}
+.hero{max-width:1000px;margin:0 auto;padding:4rem 1.5rem 3rem;text-align:center;position:relative;z-index:1}
 .sphere-stage{width:clamp(210px,46vw,300px);margin:0 auto 2.2rem}
 .sphere-stage svg{width:100%;height:auto;display:block}
 .sphere{animation:sphturn 30s linear infinite;transform-origin:110px 80px}
@@ -51,8 +52,10 @@ h1 em{font-style:normal;color:var(--orange)}
 
 
 /* NEBULA */
-.sphere-stage{position:relative}
-.neb{position:absolute;inset:-120%;z-index:0;pointer-events:none;filter:blur(70px);opacity:.62}
+.sphere-stage{position:relative;z-index:1}
+.neb{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);
+     width:max(1500px,135vw);height:max(1000px,115%);
+     z-index:0;pointer-events:none;filter:blur(90px);opacity:.72}
 .neb svg{width:100%;height:100%;display:block}
 .nb{mix-blend-mode:multiply;transform-origin:center}
 .nb1{animation:drift1 18s ease-in-out infinite alternate}
@@ -134,10 +137,9 @@ footer{border-top:1px solid var(--hairline);background:#fff}
   <div class="lang-tg"><button id="lgEN" class="on" onclick="setLang('en')">EN</button><button id="lgES" onclick="setLang('es')">ES</button></div>
 </div></nav>
 
-<div class="hero">
-  <div class="sphere-stage" aria-hidden="true">
+<div class="hero-wrap">
     <div class="neb" aria-hidden="true">
-      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 200 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <radialGradient id="nA" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#7CC5F0" stop-opacity=".9"/>
@@ -166,6 +168,8 @@ footer{border-top:1px solid var(--hairline);background:#fff}
         <ellipse class="nb nb4" cx="46" cy="132" rx="80" ry="70" fill="url(#nD)"/>
       </svg>
     </div>
+<div class="hero">
+  <div class="sphere-stage" aria-hidden="true">
     <svg viewBox="30 0 160 160" xmlns="http://www.w3.org/2000/svg">
       <defs>
           <linearGradient id="coreGrad" x1="0%" y1="20%" x2="100%" y2="80%">
@@ -175,12 +179,12 @@ footer{border-top:1px solid var(--hairline);background:#fff}
           </linearGradient>
         </defs>
         <g class="sphere" transform-origin="110 80">
-          <circle cx="110" cy="80" r="46" fill="none" stroke="url(#coreGrad)" stroke-width="2.6" stroke-linecap="butt" stroke-dasharray="0.1 4.6"/>
-          <circle cx="110" cy="80" r="42.5" fill="none" stroke="url(#coreGrad)" stroke-width="2.2" stroke-linecap="butt" stroke-dasharray="0.1 5.2" opacity=".85"/>
-          <circle cx="110" cy="80" r="39" fill="none" stroke="url(#coreGrad)" stroke-width="1.8" stroke-linecap="butt" stroke-dasharray="0.1 5.8" opacity=".65"/>
-          <ellipse cx="110" cy="80" rx="34" ry="12" fill="none" stroke="url(#coreGrad)" stroke-width="1.15" stroke-linecap="butt" stroke-dasharray="0.1 3.4" opacity=".7" transform="rotate(-18 110 80)"/>
-          <ellipse cx="110" cy="80" rx="30" ry="19" fill="none" stroke="url(#coreGrad)" stroke-width="1.15" stroke-linecap="butt" stroke-dasharray="0.1 3.6" opacity=".6" transform="rotate(24 110 80)"/>
-          <ellipse cx="110" cy="80" rx="13" ry="33" fill="none" stroke="url(#coreGrad)" stroke-width="1.05" stroke-linecap="butt" stroke-dasharray="0.1 3.8" opacity=".55" transform="rotate(12 110 80)"/>
+          <circle cx="110" cy="80" r="46" fill="none" stroke="url(#coreGrad)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="0.1 4.6"/>
+          <circle cx="110" cy="80" r="42.5" fill="none" stroke="url(#coreGrad)" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="0.1 5.2" opacity=".85"/>
+          <circle cx="110" cy="80" r="39" fill="none" stroke="url(#coreGrad)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="0.1 5.8" opacity=".65"/>
+          <ellipse cx="110" cy="80" rx="34" ry="12" fill="none" stroke="url(#coreGrad)" stroke-width="1.15" stroke-linecap="round" stroke-dasharray="0.1 3.4" opacity=".7" transform="rotate(-18 110 80)"/>
+          <ellipse cx="110" cy="80" rx="30" ry="19" fill="none" stroke="url(#coreGrad)" stroke-width="1.15" stroke-linecap="round" stroke-dasharray="0.1 3.6" opacity=".6" transform="rotate(24 110 80)"/>
+          <ellipse cx="110" cy="80" rx="13" ry="33" fill="none" stroke="url(#coreGrad)" stroke-width="1.05" stroke-linecap="round" stroke-dasharray="0.1 3.8" opacity=".55" transform="rotate(12 110 80)"/>
         </g>
       <text x="110" y="76" text-anchor="middle" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;fill:#0B0B0C">AI</text>
       <text x="110" y="91" text-anchor="middle" style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:9.5px;fill:#0B0B0C;letter-spacing:.05em">BRIDG CORE</text>
@@ -196,6 +200,7 @@ footer{border-top:1px solid var(--hairline);background:#fff}
     <a class="btn" href="/#fleet" data-lang="en">Get a Quote →</a><a class="btn" href="/#fleet" data-lang="es">Cotizar →</a>
     <a class="btn-o" href="/ai-disclosure" data-lang="en">Read our AI Disclosure</a><a class="btn-o" href="/ai-disclosure" data-lang="es">Ver nuestra Divulgación de IA</a>
   </div>
+</div>
 </div>
 
 <section class="band"><div class="in">
