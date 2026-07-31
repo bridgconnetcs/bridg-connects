@@ -49,6 +49,9 @@ h1 em{font-style:normal;color:var(--orange)}
 .sage .status{font-family:var(--FM);font-size:.58rem;letter-spacing:.07em;text-transform:uppercase;color:#0B8A4B;display:flex;align-items:center;gap:.4rem;margin-top:.2rem}
 .sage .status::before{content:'';width:6px;height:6px;border-radius:0;background:#0B8A4B;box-shadow:0 0 6px #0B8A4B}
 .sage p{font-size:.88rem;color:var(--steel);font-weight:300;margin-top:.4rem}
+.sage-fb{grid-column:1/-1;margin-top:.9rem;padding:.7rem .9rem;background:var(--orange-soft,rgba(255,100,13,.08));border-left:3px solid var(--orange);font-size:.84rem;color:var(--steel);font-weight:300}
+.sage-fb a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(255,100,13,.4)}
+.sage-fb[hidden]{display:none}
 .btn{display:inline-block;background:var(--ink);color:#fff;font-family:var(--FD);font-weight:600;font-size:.85rem;padding:.8rem 1.5rem;border-radius:0;text-decoration:none;border:0;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn:hover{background:var(--orange)}
 .btn-o{display:inline-block;background:#fff;color:var(--ink);font-family:var(--FD);font-weight:600;font-size:.85rem;padding:.78rem 1.4rem;border-radius:0;text-decoration:none;border:1px solid var(--ink);transition:all .2s;cursor:pointer}
@@ -113,13 +116,17 @@ footer{border-top:1px solid var(--hairline);background:#fff}
       <h2>Sage</h2>
       <div class="status" data-lang="en">Bridg AI assistant &middot; available now</div>
       <div class="status" data-lang="es">Asistente IA de Bridg &middot; disponible ahora</div>
-      <p data-lang="en">Ask about pricing, coverage area, vehicles, driver requirements, or an active order. Sage answers instantly &mdash; a person handles anything it can't.</p>
-      <p data-lang="es">Pregunta sobre precios, cobertura, veh&iacute;culos, requisitos para conductores o un pedido activo. Sage responde al momento &mdash; una persona atiende lo que no pueda.</p>
+      <p data-lang="en">Ask about pricing, coverage area, vehicles, or driver requirements. Sage answers instantly &mdash; a person handles anything it can't. For a specific order, use the tracking link we texted you.</p>
+      <p data-lang="es">Pregunta sobre precios, cobertura, veh&iacute;culos o requisitos para conductores. Sage responde al momento &mdash; una persona atiende lo que no pueda. Para un pedido espec&iacute;fico, usa el link de rastreo que te enviamos por mensaje.</p>
     </div>
-    <div class="sage-cta">
+    <div class="sage-cta" id="sageCta">
       <button class="btn" onclick="startSage()" data-lang="en">Chat with Sage</button>
       <button class="btn" onclick="startSage()" data-lang="es">Chatear con Sage</button>
     </div>
+    <p class="sage-fb" id="sageFallback" hidden>
+      <span data-lang="en">Sage isn't connecting right now. <a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener">Book a call</a> and our team will help you directly.</span>
+      <span data-lang="es">Sage no est&aacute; conectando en este momento. <a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener">Agenda una llamada</a> y nuestro equipo te atiende directamente.</span>
+    </p>
   </div>
 
   <!-- SEARCH -->
@@ -261,14 +268,35 @@ function filterFaq(){
   document.getElementById('noRes').style.display = shown ? 'none' : 'block';
 }
 function startSage(){
-  var w = document.getElementById('sage');
-  if(w && typeof w.startConversation === 'function'){
-    try{ w.startConversation(); return; }catch(e){}
-  }
-  // si el widget aun no carga, avisar sin dejar al usuario sin salida
-  alert(document.body.classList.contains('es')
-    ? 'Sage se esta conectando. Si no abre en unos segundos, agenda una llamada y te atendemos.'
-    : 'Sage is still connecting. If it does not open in a few seconds, book a call and we will help you.');
+  var w    = document.getElementById('sage');
+  var es   = document.body.classList.contains('es');
+  var fb   = document.getElementById('sageFallback');
+  var btns = Array.prototype.slice.call(document.querySelectorAll('#sageCta .btn'));
+
+  function ready(){ return w && typeof w.startConversation === 'function'; }
+  function go(){ try{ w.startConversation(); }catch(e){ if(fb) fb.hidden = false; } }
+  function restore(){ btns.forEach(function(b){ if(b.dataset.prev) b.textContent = b.dataset.prev; b.removeAttribute('disabled'); }); }
+
+  if(ready()){ if(fb) fb.hidden = true; go(); return; }
+
+  // el <script> del widget carga async — esperar en vez de lanzar un alert nativo
+  btns.forEach(function(b){
+    if(!b.dataset.prev) b.dataset.prev = b.textContent.trim();
+    b.textContent = es ? 'Conectando…' : 'Connecting…';
+    b.setAttribute('disabled','');
+  });
+
+  var waited = 0;
+  var t = setInterval(function(){
+    waited += 200;
+    var ok = ready();
+    if(ok || waited >= 8000){
+      clearInterval(t);
+      restore();
+      if(ok){ if(fb) fb.hidden = true; go(); }
+      else if(fb){ fb.hidden = false; }
+    }
+  }, 200);
 }
 showGroup('client');
 </script>
