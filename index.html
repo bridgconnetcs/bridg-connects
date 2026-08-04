@@ -995,7 +995,7 @@ onAuthStateChanged(auth, async (user)=>{
 });
 
 window.acctClick = function(){
-  if(CURRENT_USER){ openHistory(); } else { openAuth(); }
+  if(CURRENT_USER){ window.location.href='/portal'; } else { openAuth(); }
 };
 window.openAuth = function(){
   document.getElementById('aov').classList.add('open');
@@ -1035,7 +1035,7 @@ window.doSignup = async function(btn){
     document.getElementById('qName').value = nm;
     document.getElementById('qPhone').value = ph;
     closeAuth();
-    if(window._pendingBook) { window._pendingBook=false; }
+    if(window._pendingBook) { window._pendingBook=false; } else { window.location.href='/portal'; }
   }catch(e){
     err.textContent = e.code==='auth/email-already-in-use' ? (es?'Ese email ya tiene cuenta — usa Entrar.':'That email already has an account — use Log in.') : (es?'Error: ':'Error: ')+e.message;
     err.style.display='block';
@@ -1050,6 +1050,7 @@ window.doLogin = async function(btn){
   try{
     await signInWithEmailAndPassword(auth, em, pw);
     closeAuth();
+    if(!window._pendingBook){ window.location.href='/portal'; }
   }catch(e){
     err.textContent = es?'Email o contraseña incorrectos.':'Incorrect email or password.';
     err.style.display='block';
