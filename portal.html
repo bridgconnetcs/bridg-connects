@@ -134,8 +134,10 @@ nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.9);backdrop-f
 .sage-orb::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:1.5px solid var(--orange);opacity:.35;animation:sp 2.6s ease-out infinite}
 @keyframes sp{0%{transform:scale(.85);opacity:.5}100%{transform:scale(1.25);opacity:0}}
 .sage-card b{font-family:var(--FD);font-weight:700;font-size:.95rem;display:block;line-height:1.2}
-.sage-card .status{font-family:var(--FM);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:.32rem;margin-top:.15rem}
-.sage-card .status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.sage-card.sage-live .status{color:var(--green)}
+.sage-card.sage-live .status::before{background:var(--green);box-shadow:0 0 6px var(--green)}
+.sage-card .status{font-family:var(--FM);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);display:flex;align-items:center;gap:.32rem;margin-top:.15rem}
+.sage-card .status::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--hairline)}
 .sage-card p{font-size:.75rem;color:var(--steel);font-weight:300;line-height:1.5;margin-top:.6rem}
 
 /* ── CANVAS ── */
@@ -1995,6 +1997,7 @@ const SAGE = {
   history: [],        // survives closing the panel
   streamEl: null,
   dotsEl: null,
+  pending: null,
   idleTimer: null
 };
 
@@ -2002,12 +2005,22 @@ function sageEl(id) { return document.getElementById(id); }
 
 function sageSetState(kind) {
   const n = sageEl('sageState');
-  if (!n) return;
-  n.className = 'sagep-state' + (kind === 'on' ? ' on' : kind === 'busy' ? ' busy' : '');
-  n.textContent =
+  const label =
     kind === 'on'   ? t('sgOn') :
     kind === 'busy' ? t('sgBusy') :
     kind === 'conn' ? t('sgConn') : t('sgOff');
+
+  if (n) {
+    n.className = 'sagep-state' + (kind === 'on' ? ' on' : kind === 'busy' ? ' busy' : '');
+    n.textContent = label;
+  }
+
+  // Keep the rail card honest — it used to always claim "Available now".
+  const card = document.querySelector('.sage-card');
+  if (card) {
+    card.classList.toggle('sage-live', kind === 'on' || kind === 'busy');
+    card.querySelectorAll('.status').forEach(s => { s.textContent = label; });
+  }
 }
 
 function sageNote(msg) {
@@ -2056,10 +2069,12 @@ function sageDots(on) {
 }
 
 function sageCanSend(on) {
+  // The composer is never locked. A blocked input leaves the customer with
+  // no way to retry. Sending while offline triggers a reconnect instead.
   const b = sageEl('sageSend');
+  if (b) b.disabled = false;
   const i = sageEl('sageIn');
-  if (b) b.disabled = !on;
-  if (i) i.disabled = !on;
+  if (i) i.disabled = false;
 }
 
 /* Open the panel. Reuses the live socket when there is one. */
@@ -2154,6 +2169,15 @@ async function sageConnect() {
         ws.send(JSON.stringify({ type: 'user_activity' }));
       }
     }, 40000);
+
+    // Deliver whatever the customer typed while we were offline.
+    if (SAGE.pending) {
+      const q = SAGE.pending;
+      SAGE.pending = null;
+      sageSetState('busy');
+      sageDots(true);
+      try { ws.send(JSON.stringify({ type: 'user_message', text: q })); } catch (e) {}
+    }
   };
 
   ws.onmessage = (ev) => {
@@ -2222,10 +2246,16 @@ async function sageConnect() {
 function sageSend(text) {
   const msg = (text || '').trim();
   if (!msg) return;
+
   if (!SAGE.ready || !SAGE.ws || SAGE.ws.readyState !== WebSocket.OPEN) {
-    sageNote(t('sgDown'));
+    // Hold the message, reconnect, and deliver it once we are live.
+    SAGE.pending = msg;
+    sageAdd('user', msg);
+    sageSetState('conn');
+    sageConnect();
     return;
   }
+
   sageAdd('user', msg);
   sageSetState('busy');
   sageDots(true);
