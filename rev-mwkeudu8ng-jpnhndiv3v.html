@@ -294,8 +294,18 @@ $('loginBtn').onclick = async () => {
   try{
     await signInWithEmailAndPassword(auth, $('e').value.trim(), $('p').value);
   }catch(e){
-    err.textContent = 'Incorrect email or password.';
+    const code = (e && e.code) || '';
+    let msg;
+    if(code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found'){
+      msg = 'Incorrect email or password.';
+    }else if(code.indexOf('app-check') > -1 || code.indexOf('recaptcha') > -1){
+      msg = 'App Check blocked this sign-in. Code: ' + code;
+    }else{
+      msg = 'Sign-in failed. Code: ' + (code || (e && e.message) || 'unknown');
+    }
+    err.textContent = msg;
     err.style.display = 'block';
+    console.error('admin login failed:', code, e && e.message);
   }
   btn.disabled = false; btn.textContent = 'Sign in';
 };
