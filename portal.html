@@ -15,8 +15,6 @@
 <style>
 :root{
   color-scheme: light only;
-  --elevenlabs-convai-widget-width:380px;
-  --elevenlabs-convai-widget-height:min(560px, calc(100vh - 140px));
   --paper:#FFFFFF; --white:#FFFFFF; --ink:#0B0B0C; --steel:#4A4A50;
   --hairline:#E8E8EA; --band:#F6F6F7;
   --orange:#FF640D; --orange-soft:rgba(255,100,13,.08);
@@ -433,10 +431,65 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 /* Sage bubble — pinned to corner so it doesn't cover portal content */
-elevenlabs-convai{position:fixed;right:18px;bottom:18px;z-index:45;--elevenlabs-convai-widget-width:380px;--elevenlabs-convai-widget-height:min(560px, calc(100vh - 120px));visibility:hidden}
-elevenlabs-convai.sage-open{visibility:visible}
-@media(max-width:600px){elevenlabs-convai{right:10px;bottom:10px}}
-@media print{nav,.rail,.toasts,.demo-bar,elevenlabs-convai{display:none!important}.shell{grid-template-columns:1fr}}
+/* ── Sage panel ─────────────────────────────────────────────── */
+.sagep{position:fixed;right:20px;bottom:20px;z-index:60;width:min(384px, calc(100vw - 40px));
+  max-height:min(600px, calc(100vh - 110px));display:flex;flex-direction:column;
+  background:var(--paper);border:1px solid var(--hairline);border-radius:18px;overflow:hidden;
+  box-shadow:0 30px 70px -30px rgba(11,11,12,.28), 0 2px 8px -4px rgba(11,11,12,.10);
+  animation:sagepIn .22s cubic-bezier(.16,1,.3,1)}
+@keyframes sagepIn{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
+
+.sagep-head{display:flex;align-items:center;gap:.6rem;padding:.85rem 1rem;border-bottom:1px solid var(--hairline);flex-shrink:0}
+.sagep-orb{width:28px;height:28px;flex-shrink:0}
+.sagep-orb img{width:28px;height:28px;border-radius:50%;object-fit:cover;display:block}
+.sagep-id{flex:1;min-width:0;line-height:1.15}
+.sagep-id b{font-family:var(--FD);font-weight:700;font-size:.9rem;display:block}
+.sagep-state{font-family:var(--FM);font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--steel);display:flex;align-items:center;gap:.34rem;margin-top:.12rem}
+.sagep-state::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--hairline);flex-shrink:0}
+.sagep-state.on{color:var(--green)}
+.sagep-state.on::before{background:var(--green);box-shadow:0 0 6px var(--green)}
+.sagep-state.busy::before{background:var(--orange);box-shadow:0 0 6px var(--orange);animation:sagePulse 1.1s ease-in-out infinite}
+@keyframes sagePulse{0%,100%{opacity:1}50%{opacity:.25}}
+.sagep-x{color:var(--steel);padding:.3rem;border-radius:8px;display:flex;transition:.15s;flex-shrink:0}
+.sagep-x:hover{color:var(--ink);background:var(--band)}
+
+.sagep-log{flex:1;overflow-y:auto;padding:1.1rem 1rem;display:flex;flex-direction:column;gap:1.05rem;
+  scrollbar-width:thin;scrollbar-color:var(--hairline) transparent}
+.sagep-log::-webkit-scrollbar{width:5px}
+.sagep-log::-webkit-scrollbar-thumb{background:var(--hairline);border-radius:3px}
+
+.sagep-m{font-size:.83rem;line-height:1.62;white-space:pre-wrap;word-wrap:break-word;max-width:100%}
+.sagep-m.a{color:var(--ink);font-weight:400}
+.sagep-m.u{align-self:flex-end;max-width:85%;background:var(--band);color:var(--ink);
+  padding:.5rem .75rem;border-radius:13px 13px 3px 13px;font-weight:400}
+.sagep-m.a::before{content:attr(data-who);font-family:var(--FM);font-size:.48rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--steel);display:block;margin-bottom:.32rem}
+
+.sagep-dots{display:flex;gap:4px;padding:.15rem 0}
+.sagep-dots i{width:4px;height:4px;border-radius:50%;background:var(--steel);opacity:.35;animation:sageDot 1.3s ease-in-out infinite}
+.sagep-dots i:nth-child(2){animation-delay:.16s}
+.sagep-dots i:nth-child(3){animation-delay:.32s}
+@keyframes sageDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:.9;transform:translateY(-2px)}}
+
+.sagep-note{padding:.7rem 1rem;border-top:1px solid var(--hairline);background:var(--band);
+  font-size:.72rem;line-height:1.5;color:var(--steel);font-weight:300;flex-shrink:0}
+.sagep-note a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+
+.sagep-form{display:flex;align-items:flex-end;gap:.5rem;padding:.7rem .75rem .75rem;
+  border-top:1px solid var(--hairline);flex-shrink:0}
+.sagep-in{flex:1;border:0;background:transparent;font-size:.83rem;padding:.45rem .3rem;line-height:1.5}
+.sagep-in::placeholder{color:var(--steel);opacity:.65}
+.sagep-in:focus{outline:0}
+.sagep-send{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.sagep-send:hover:not(:disabled){transform:translateY(-1px)}
+.sagep-send:disabled{opacity:.25;cursor:default}
+
+@media(max-width:520px){
+  .sagep{right:10px;left:10px;bottom:10px;width:auto;max-height:calc(100vh - 90px)}
+}
+@media print{nav,.rail,.toasts,.demo-bar,.sagep{display:none!important}.shell{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -949,15 +1002,34 @@ elevenlabs-convai.sage-open{visibility:visible}
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
-<!-- Sage — ElevenLabs -->
-<elevenlabs-convai
-  id="sage"
-  agent-id="agent_2801kymqshm9eyfs3a1gkfertk3v"
-  action-text="Chat with Sage"
-  start-call-text="Talk to Sage"
-  end-call-text="End chat"
-  avatar-image-url="https://www.bridgconnects.com/sage-avatar.png"></elevenlabs-convai>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<!-- Sage — custom chat (signed URL via /api/sage-token) -->
+<section class="sagep" id="sagePanel" hidden aria-live="polite">
+  <header class="sagep-head">
+    <span class="sagep-orb"><img src="sage-avatar.png" alt="" width="28" height="28"/></span>
+    <span class="sagep-id">
+      <b>Sage</b>
+      <span class="sagep-state" id="sageState"></span>
+    </span>
+    <button class="sagep-x" id="sageClose" aria-label="Close">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M3 3l10 10M13 3L3 13"/>
+      </svg>
+    </button>
+  </header>
+
+  <div class="sagep-log" id="sageLog"></div>
+
+  <div class="sagep-note" id="sageNote" hidden></div>
+
+  <form class="sagep-form" id="sageForm" autocomplete="off">
+    <input class="sagep-in" id="sageIn" type="text" maxlength="600" />
+    <button class="sagep-send" id="sageSend" type="submit" aria-label="Send">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 13V3M4 7l4-4 4 4"/>
+      </svg>
+    </button>
+  </form>
+</section>
 
 <script>
 'use strict';
@@ -1088,6 +1160,18 @@ const T = {
   withDispatch:['with','con'], opened:['opened','abierto'], dispatch:['Dispatch','Despacho'],
   heldOn:['Held','Detenido'],
   /* sage / gate */
+  sgOn:['Connected','Conectado'],
+  sgBusy:['Thinking','Pensando'],
+  sgConn:['Connecting','Conectando'],
+  sgOff:['Offline','Sin conexión'],
+  sgHello:["I'm Sage, Bridg's assistant. I can help with pricing, coverage, vehicle types and how delivery works. For a specific order, use the tracking link we texted you.",
+           'Soy Sage, la asistente de Bridg. Te ayudo con precios, cobertura, tipos de vehículo y cómo funciona la entrega. Para un pedido específico, usa el link de rastreo que te enviamos.'],
+  sgPlaceholder:['Write a message…','Escribe un mensaje…'],
+  sgBook:['Book a call','Agendar llamada'],
+  sgAuth:['Your session expired. Sign in again to chat with Sage, or','Tu sesión expiró. Vuelve a entrar para chatear con Sage, o'],
+  sgLimit:['You have reached the chat limit for this hour. It resets shortly — or','Llegaste al límite de chats de esta hora. Se reinicia pronto — o'],
+  sgDown:['Sage is unavailable right now. A person can help you instead:','Sage no está disponible ahora. Una persona puede atenderte:'],
+  sgEnded:['This conversation ended. Reopen Sage to start a new one, or','Esta conversación terminó. Abre Sage de nuevo para empezar otra, o'],
   sageWait:['Sage is still connecting. If it does not open in a few seconds, book a call and we will help you.',
             'Sage se está conectando. Si no abre en unos segundos, agenda una llamada y te atendemos.'],
   gBad:['Incorrect email or password.','Email o contraseña incorrectos.'],
@@ -1898,88 +1982,273 @@ function renderTk() {
 }
 
 /* ── Sage (ElevenLabs) ──────────────────────────────────────── */
-let SAGE_OPENED_AT = 0;
+/* ── Sage — direct client over a server-signed WebSocket ─────────
+   No third-party widget. The API key never reaches this file:
+   /api/sage-token verifies the Firebase session and returns a
+   short-lived signed URL. All agent text is inserted with
+   textContent, never innerHTML. */
 
+const SAGE = {
+  ws: null,
+  ready: false,
+  connecting: false,
+  history: [],        // survives closing the panel
+  streamEl: null,
+  dotsEl: null,
+  idleTimer: null
+};
+
+function sageEl(id) { return document.getElementById(id); }
+
+function sageSetState(kind) {
+  const n = sageEl('sageState');
+  if (!n) return;
+  n.className = 'sagep-state' + (kind === 'on' ? ' on' : kind === 'busy' ? ' busy' : '');
+  n.textContent =
+    kind === 'on'   ? t('sgOn') :
+    kind === 'busy' ? t('sgBusy') :
+    kind === 'conn' ? t('sgConn') : t('sgOff');
+}
+
+function sageNote(msg) {
+  const n = sageEl('sageNote');
+  if (!n) return;
+  if (!msg) { n.hidden = true; n.textContent = ''; return; }
+  n.textContent = '';
+  n.appendChild(document.createTextNode(msg + ' '));
+  const a = document.createElement('a');
+  a.href = 'https://calendly.com/bridgconnects';
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.textContent = t('sgBook');
+  n.appendChild(a);
+  n.hidden = false;
+}
+
+function sageAdd(who, text, remember) {
+  const log = sageEl('sageLog');
+  if (!log) return null;
+  const d = document.createElement('div');
+  d.className = 'sagep-m ' + (who === 'user' ? 'u' : 'a');
+  if (who !== 'user') d.setAttribute('data-who', 'Sage');
+  d.textContent = text;                       // never innerHTML
+  log.appendChild(d);
+  log.scrollTop = log.scrollHeight;
+  if (remember !== false) SAGE.history.push({ who, text });
+  return d;
+}
+
+function sageDots(on) {
+  const log = sageEl('sageLog');
+  if (!log) return;
+  if (on) {
+    if (SAGE.dotsEl) return;
+    const d = document.createElement('div');
+    d.className = 'sagep-dots';
+    d.innerHTML = '<i></i><i></i><i></i>';
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    SAGE.dotsEl = d;
+  } else if (SAGE.dotsEl) {
+    SAGE.dotsEl.remove();
+    SAGE.dotsEl = null;
+  }
+}
+
+function sageCanSend(on) {
+  const b = sageEl('sageSend');
+  const i = sageEl('sageIn');
+  if (b) b.disabled = !on;
+  if (i) i.disabled = !on;
+}
+
+/* Open the panel. Reuses the live socket when there is one. */
 function startSage() {
-  const host = el('sage');
-  if (!host) { toast('Sage', t('sageWait')); return; }
+  const p = sageEl('sagePanel');
+  if (!p) return;
+  p.hidden = false;
+  const i = sageEl('sageIn');
+  if (i) i.placeholder = t('sgPlaceholder');
 
-  // Reveal the widget (kept mounted at all times so the conversation survives).
-  host.classList.add('sage-open');
-  SAGE_OPENED_AT = Date.now();
-
-  // 1) If the widget ever exposes a real API, prefer it.
-  const viaApi = () => {
-    try {
-      if (typeof host.startConversation === 'function') { host.startConversation(); return true; }
-    } catch (e) {}
-    return false;
-  };
-
-  // 2) Otherwise click the widget's own trigger button inside its Shadow DOM.
-  const viaClick = () => {
-    try {
-      const stack = [host], roots = [];
-      while (stack.length) {
-        const n = stack.pop();
-        if (n && n.shadowRoot) {
-          roots.push(n.shadowRoot);
-          const kids = n.shadowRoot.querySelectorAll('*');
-          for (let i = 0; i < kids.length; i++) stack.push(kids[i]);
-        }
-      }
-      for (let r = 0; r < roots.length; r++) {
-        const btn = roots[r].querySelector('button, [role="button"]');
-        if (btn) { btn.click(); return true; }
-      }
-    } catch (e) {}
-    return false;
-  };
-
-  const go = () => viaApi() || viaClick();
-  if (go()) { sageWatch(); return; }
-
-  // Widget script is async — it may not be upgraded yet. Retry briefly, then give up.
-  let tries = 0;
-  const timer = setInterval(() => {
-    if (go()) { clearInterval(timer); sageWatch(); return; }
-    if (++tries > 12) { clearInterval(timer); host.classList.remove('sage-open'); toast('Sage', t('sageWait')); }
-  }, 250);
+  if (SAGE.history.length === 0 && sageEl('sageLog').childElementCount === 0) {
+    sageAdd('agent', t('sgHello'));
+  }
+  if (!SAGE.ready && !SAGE.connecting) sageConnect();
+  if (i) setTimeout(() => i.focus(), 60);
 }
 
-/* Hide the widget again once the customer collapses the panel.
-   The element stays in the DOM the whole time, so the conversation is never lost. */
-let SAGE_WATCHING = false;
-function sageWatch() {
-  if (SAGE_WATCHING) return;
-  SAGE_WATCHING = true;
-  const host = el('sage');
-  if (!host) return;
-
-  setInterval(() => {
-    if (!host.classList.contains('sage-open')) return;
-    if (Date.now() - SAGE_OPENED_AT < 1800) return; // grace period while it renders
-
-    let tallest = 0;
-    try {
-      const stack = [host];
-      while (stack.length) {
-        const n = stack.pop();
-        if (n && n.shadowRoot) {
-          const kids = n.shadowRoot.querySelectorAll('*');
-          for (let i = 0; i < kids.length; i++) {
-            const b = kids[i].getBoundingClientRect ? kids[i].getBoundingClientRect() : null;
-            if (b && b.height > tallest) tallest = b.height;
-            stack.push(kids[i]);
-          }
-        }
-      }
-    } catch (e) { return; }
-
-    // Panel open ≈ 400px+. Collapsed launcher ≈ 60px.
-    if (tallest > 0 && tallest < 170) host.classList.remove('sage-open');
-  }, 600);
+function closeSage() {
+  const p = sageEl('sagePanel');
+  if (p) p.hidden = true;      // socket stays open; nothing is lost
 }
+
+async function sageConnect() {
+  if (SAGE.connecting || SAGE.ready) return;
+  SAGE.connecting = true;
+  sageSetState('conn');
+  sageCanSend(false);
+  sageNote('');
+
+  let token = null;
+  try {
+    if (typeof window._bridgIdToken === 'function') token = await window._bridgIdToken();
+  } catch (e) {}
+
+  if (!token) {
+    SAGE.connecting = false;
+    sageSetState('off');
+    sageNote(t('sgAuth'));
+    return;
+  }
+
+  let signedUrl = null;
+  try {
+    const r = await fetch('/api/sage-token', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({}));
+      SAGE.connecting = false;
+      sageSetState('off');
+      sageNote(
+        r.status === 429 ? t('sgLimit') :
+        r.status === 401 ? t('sgAuth')  : t('sgDown')
+      );
+      return;
+    }
+    const j = await r.json();
+    signedUrl = j.signedUrl;
+  } catch (e) {
+    SAGE.connecting = false;
+    sageSetState('off');
+    sageNote(t('sgDown'));
+    return;
+  }
+
+  let ws;
+  try { ws = new WebSocket(signedUrl); }
+  catch (e) { SAGE.connecting = false; sageSetState('off'); sageNote(t('sgDown')); return; }
+
+  SAGE.ws = ws;
+
+  ws.onopen = () => {
+    SAGE.connecting = false;
+    SAGE.ready = true;
+    sageSetState('on');
+    sageCanSend(true);
+    sageNote('');
+    ws.send(JSON.stringify({
+      type: 'conversation_initiation_client_data',
+      conversation_config_override: {
+        conversation: { text_only: true },
+        agent: { language: document.body.classList.contains('es') ? 'es' : 'en' }
+      }
+    }));
+    clearInterval(SAGE.idleTimer);
+    SAGE.idleTimer = setInterval(() => {
+      if (SAGE.ready && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: 'user_activity' }));
+      }
+    }, 40000);
+  };
+
+  ws.onmessage = (ev) => {
+    let d;
+    try { d = JSON.parse(ev.data); } catch (e) { return; }
+
+    if (d.type === 'ping' && d.ping_event) {
+      setTimeout(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'pong', event_id: d.ping_event.event_id }));
+        }
+      }, d.ping_event.ping_ms || 0);
+      return;
+    }
+
+    // Streaming text, chunk by chunk.
+    if (d.type === 'agent_chat_response_part' && d.text_response_part) {
+      const part = d.text_response_part;
+      if (part.type === 'start') {
+        sageDots(false);
+        SAGE.streamEl = sageAdd('agent', '', false);
+      } else if (part.type === 'delta' && SAGE.streamEl) {
+        SAGE.streamEl.textContent += (part.text || '');
+        const log = sageEl('sageLog');
+        if (log) log.scrollTop = log.scrollHeight;
+      } else if (part.type === 'stop' && SAGE.streamEl) {
+        SAGE.history.push({ who: 'agent', text: SAGE.streamEl.textContent });
+        SAGE.streamEl = null;
+        sageSetState('on');
+      }
+      return;
+    }
+
+    // Whole-message fallback when streaming parts are not sent.
+    if (d.type === 'agent_response' && d.agent_response_event) {
+      sageDots(false);
+      if (!SAGE.streamEl) {
+        const txt = (d.agent_response_event.agent_response || '').trim();
+        if (txt) sageAdd('agent', txt);
+      }
+      sageSetState('on');
+      return;
+    }
+
+    if (d.type === 'error' || d.type === 'conversation_error') {
+      sageDots(false);
+      sageSetState('off');
+      sageNote(t('sgDown'));
+    }
+    // 'audio' and other events are ignored — this is a text-only channel.
+  };
+
+  ws.onclose = () => {
+    SAGE.ready = false;
+    SAGE.connecting = false;
+    clearInterval(SAGE.idleTimer);
+    sageDots(false);
+    sageCanSend(false);
+    sageSetState('off');
+    if (!sageEl('sagePanel').hidden) sageNote(t('sgEnded'));
+  };
+
+  ws.onerror = () => { sageDots(false); };
+}
+
+function sageSend(text) {
+  const msg = (text || '').trim();
+  if (!msg) return;
+  if (!SAGE.ready || !SAGE.ws || SAGE.ws.readyState !== WebSocket.OPEN) {
+    sageNote(t('sgDown'));
+    return;
+  }
+  sageAdd('user', msg);
+  sageSetState('busy');
+  sageDots(true);
+  try { SAGE.ws.send(JSON.stringify({ type: 'user_message', text: msg })); }
+  catch (e) { sageDots(false); sageSetState('off'); sageNote(t('sgDown')); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const f = sageEl('sageForm');
+  const i = sageEl('sageIn');
+  const x = sageEl('sageClose');
+  if (f) f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!i) return;
+    sageSend(i.value);
+    i.value = '';
+  });
+  if (x) x.addEventListener('click', closeSage);
+  document.addEventListener('keydown', (e) => {
+    const p = sageEl('sagePanel');
+    if (e.key === 'Escape' && p && !p.hidden) closeSage();
+  });
+  sageSetState('off');
+  sageCanSend(false);
+});
 
 /* ── simulated live feed (demo only) ────────────────────────── */
 function tick() {
@@ -2161,6 +2430,12 @@ const db = getFirestore(app);
 
 window._bridgLogin = (email, pass) => signInWithEmailAndPassword(auth, email, pass);
 window._bridgLogout = async () => { try{ await signOut(auth); }catch(e){} window.leaveDemo(); };
+
+/* Short-lived ID token for /api/sage-token. Firebase refreshes it on its own. */
+window._bridgIdToken = async () => {
+  try { return auth.currentUser ? await auth.currentUser.getIdToken() : null; }
+  catch(e){ return null; }
+};
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) { if (!window.S.demo) window.leaveDemo(); return; }
