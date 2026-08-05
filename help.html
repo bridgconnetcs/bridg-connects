@@ -239,6 +239,46 @@ footer{border-top:1px solid var(--hairline);background:#fff}
   end-call-text="End chat"
   avatar-image-url="https://www.bridgconnects.com/sage-avatar.png"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+  <script>
+(function () {
+  var MSGS = {
+    en: { title: "Sage is taking a short break.",
+          body: "Please start a new conversation in a moment, or book a call with us. Have a great day!" },
+    es: { title: "Sage está tomando un descanso.",
+          body: "Inicia una conversación nueva en un momento, o agenda una llamada con nosotros. ¡Que tengas buen día!" }
+  };
+  function lang(){ return document.body.classList.contains('es') ? 'es' : 'en'; }
+
+  function roots(node, out) {
+    out = out || [];
+    if (node.shadowRoot) out.push(node.shadowRoot);
+    var scope = node.shadowRoot || node;
+    var kids = scope.querySelectorAll ? scope.querySelectorAll('*') : [];
+    for (var i = 0; i < kids.length; i++) if (kids[i].shadowRoot) roots(kids[i], out);
+    return out;
+  }
+
+  function scrub(root) {
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null), n, m = MSGS[lang()];
+    while ((n = w.nextNode())) {
+      var t = n.nodeValue || '';
+      if (/An error occurred/i.test(t))        n.nodeValue = m.title;
+      else if (/quota limit/i.test(t))         n.nodeValue = m.body;
+      else if (/^\s*ID:\s*conv_/i.test(t))     n.nodeValue = '';
+    }
+  }
+
+  var tries = 0, timer = setInterval(function () {
+    var host = document.querySelector('elevenlabs-convai');
+    if (host && host.shadowRoot) {
+      clearInterval(timer);
+      roots(host).forEach(scrub);
+      new MutationObserver(function(){ roots(host).forEach(scrub); })
+        .observe(host.shadowRoot, { childList:true, subtree:true, characterData:true });
+    } else if (++tries > 60) clearInterval(timer);
+  }, 500);
+})();
+</script>
 
 <script>
 function setLang(l){
