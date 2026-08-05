@@ -1896,14 +1896,47 @@ function renderTk() {
 
 /* ── Sage (ElevenLabs) ──────────────────────────────────────── */
 function startSage() {
-  const w = el('sage');
-  const go = () => { try { if (w && typeof w.startConversation === 'function') { w.startConversation(); return true; } } catch (e) {} return false; };
+  const host = el('sage');
+  if (!host) { toast('Sage', t('sageWait')); return; }
+
+  // 1) If the widget ever exposes a real API, prefer it.
+  const viaApi = () => {
+    try {
+      if (typeof host.startConversation === 'function') { host.startConversation(); return true; }
+    } catch (e) {}
+    return false;
+  };
+
+  // 2) Otherwise click the widget's own trigger button inside its Shadow DOM.
+  const viaClick = () => {
+    try {
+      const stack = [host], roots = [];
+      while (stack.length) {
+        const n = stack.pop();
+        if (n && n.shadowRoot) {
+          roots.push(n.shadowRoot);
+          const kids = n.shadowRoot.querySelectorAll('*');
+          for (let i = 0; i < kids.length; i++) stack.push(kids[i]);
+        }
+      }
+      for (let r = 0; r < roots.length; r++) {
+        const btn = roots[r].querySelector('button, [role="button"]');
+        if (btn) { btn.click(); return true; }
+      }
+    } catch (e) {}
+    return false;
+  };
+
+  const go = () => viaApi() || viaClick();
   if (go()) return;
-  // Widget script is async — it may not be upgraded yet. Wait for it, then start.
-  if (window.customElements && customElements.whenDefined) {
-    customElements.whenDefined('elevenlabs-convai').then(() => { setTimeout(() => { go(); }, 400); });
-  }
-  toast('Sage', t('sageWait'));
+
+  // Widget script is async — it may not be upgraded yet. Retry briefly, then give up.
+  let tries = 0;
+  const timer = setInterval(() => {
+    if (go() || ++tries > 12) clearInterval(timer);
+  }, 250);
+
+  setTimeout(() => { if (tries > 12) toast('Sage', t('sageWait')); }, 3400);
 }
 
 /* ── simulated live feed (demo only) ────────────────────────── */
