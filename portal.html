@@ -433,7 +433,8 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 /* Sage bubble — pinned to corner so it doesn't cover portal content */
-elevenlabs-convai{position:fixed;right:18px;bottom:18px;z-index:45;--elevenlabs-convai-widget-width:380px;--elevenlabs-convai-widget-height:min(560px, calc(100vh - 120px))}
+elevenlabs-convai{position:fixed;right:18px;bottom:18px;z-index:45;--elevenlabs-convai-widget-width:380px;--elevenlabs-convai-widget-height:min(560px, calc(100vh - 120px));visibility:hidden}
+elevenlabs-convai.sage-open{visibility:visible}
 @media(max-width:600px){elevenlabs-convai{right:10px;bottom:10px}}
 @media print{nav,.rail,.toasts,.demo-bar,elevenlabs-convai{display:none!important}.shell{grid-template-columns:1fr}}
 </style>
@@ -1897,9 +1898,15 @@ function renderTk() {
 }
 
 /* ── Sage (ElevenLabs) ──────────────────────────────────────── */
+let SAGE_OPENED_AT = 0;
+
 function startSage() {
   const host = el('sage');
   if (!host) { toast('Sage', t('sageWait')); return; }
+
+  // Reveal the widget (kept mounted at all times so the conversation survives).
+  host.classList.add('sage-open');
+  SAGE_OPENED_AT = Date.now();
 
   // 1) If the widget ever exposes a real API, prefer it.
   const viaApi = () => {
@@ -1930,15 +1937,48 @@ function startSage() {
   };
 
   const go = () => viaApi() || viaClick();
-  if (go()) return;
+  if (go()) { sageWatch(); return; }
 
   // Widget script is async — it may not be upgraded yet. Retry briefly, then give up.
   let tries = 0;
   const timer = setInterval(() => {
-    if (go() || ++tries > 12) clearInterval(timer);
+    if (go()) { clearInterval(timer); sageWatch(); return; }
+    if (++tries > 12) { clearInterval(timer); host.classList.remove('sage-open'); toast('Sage', t('sageWait')); }
   }, 250);
+}
 
-  setTimeout(() => { if (tries > 12) toast('Sage', t('sageWait')); }, 3400);
+/* Hide the widget again once the customer collapses the panel.
+   The element stays in the DOM the whole time, so the conversation is never lost. */
+let SAGE_WATCHING = false;
+function sageWatch() {
+  if (SAGE_WATCHING) return;
+  SAGE_WATCHING = true;
+  const host = el('sage');
+  if (!host) return;
+
+  setInterval(() => {
+    if (!host.classList.contains('sage-open')) return;
+    if (Date.now() - SAGE_OPENED_AT < 1800) return; // grace period while it renders
+
+    let tallest = 0;
+    try {
+      const stack = [host];
+      while (stack.length) {
+        const n = stack.pop();
+        if (n && n.shadowRoot) {
+          const kids = n.shadowRoot.querySelectorAll('*');
+          for (let i = 0; i < kids.length; i++) {
+            const b = kids[i].getBoundingClientRect ? kids[i].getBoundingClientRect() : null;
+            if (b && b.height > tallest) tallest = b.height;
+            stack.push(kids[i]);
+          }
+        }
+      }
+    } catch (e) { return; }
+
+    // Panel open ≈ 400px+. Collapsed launcher ≈ 60px.
+    if (tallest > 0 && tallest < 170) host.classList.remove('sage-open');
+  }, 600);
 }
 
 /* ── simulated live feed (demo only) ────────────────────────── */
