@@ -431,7 +431,7 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 /* Sage bubble — pinned to corner so it doesn't cover portal content */
-elevenlabs-convai{position:fixed;right:18px;bottom:18px;z-index:45;--elevenlabs-convai-widget-width:380px;--elevenlabs-convai-widget-height:560px}
+elevenlabs-convai{position:fixed;right:18px;bottom:18px;z-index:45;--elevenlabs-convai-widget-width:380px;--elevenlabs-convai-widget-height:min(560px, calc(100vh - 120px))}
 @media(max-width:600px){elevenlabs-convai{right:10px;bottom:10px}}
 @media print{nav,.rail,.toasts,.demo-bar,elevenlabs-convai{display:none!important}.shell{grid-template-columns:1fr}}
 </style>
