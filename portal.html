@@ -433,6 +433,16 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 /* Sage bubble — pinned to corner so it doesn't cover portal content */
+/* Cuenta en revision */
+#pending{min-height:100vh;display:grid;place-items:center;padding:2rem 1.2rem}
+.pend-chip{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--FM);font-size:.54rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--steel);
+  border:1px solid var(--hairline);border-radius:999px;padding:.3rem .6rem}
+.pend-chip::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.pend-who{font-family:var(--FM);font-size:.62rem;letter-spacing:.08em;color:var(--steel);
+  border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);
+  padding:.7rem 0;margin:0 0 1.1rem;line-height:1.7}
+
 /* ── Sage panel ─────────────────────────────────────────────── */
 .sagep{position:fixed;right:20px;bottom:20px;z-index:60;width:min(384px, calc(100vw - 40px));
   max-height:min(600px, calc(100vh - 110px));display:flex;flex-direction:column;
@@ -531,6 +541,43 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
           <span data-lang="es">Ver el portal con datos de ejemplo</span>
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CUENTA EN REVISION ═════════════════════ -->
+<div id="pending" hidden>
+  <div class="gate-box">
+    <span class="logo">BRIDG<b>.</b><br><small>CONNECTS</small></span>
+    <div class="gate-card">
+      <span class="pend-chip">
+        <span data-lang="en">Under review</span>
+        <span data-lang="es">En revisión</span>
+      </span>
+      <h1 style="margin-top:.9rem">
+        <span data-lang="en">Your account is being reviewed</span>
+        <span data-lang="es">Tu cuenta está en revisión</span>
+      </h1>
+      <p class="sub">
+        <span data-lang="en">Bridg Connects works with a selected set of accounts. Our team reviews every request before activating portal access — usually within the same business day.</span>
+        <span data-lang="es">Bridg Connects trabaja con un grupo seleccionado de cuentas. Nuestro equipo revisa cada solicitud antes de activar el acceso al portal — normalmente el mismo día hábil.</span>
+      </p>
+      <p class="pend-who" id="pendWho"></p>
+      <p class="sub" style="margin-bottom:1.2rem">
+        <span data-lang="en">Want to move faster? Book a 15-minute call and we will activate you on the spot.</span>
+        <span data-lang="es">¿Quieres agilizarlo? Agenda una llamada de 15 minutos y te activamos en el momento.</span>
+      </p>
+      <a class="btn" style="display:block;text-align:center"
+         href="https://calendly.com/bridgconnects" target="_blank" rel="noopener">
+        <span data-lang="en">Book a call →</span>
+        <span data-lang="es">Agendar llamada →</span>
+      </a>
+      <p class="gate-alt">
+        <button onclick="_bridgLogout()">
+          <span data-lang="en">Sign out</span>
+          <span data-lang="es">Cerrar sesión</span>
+        </button>
+      </p>
     </div>
   </div>
 </div>
@@ -2091,6 +2138,9 @@ function sageCanSend(on) {
 
 /* Open the panel. Reuses the live socket when there is one. */
 function startSage() {
+  // Sin cuenta aprobada no se abre. El servidor tambien limita el uso.
+  if (!S.demo && (!S.profile || S.profile.status !== 'approved')) return;
+
   const p = sageEl('sagePanel');
   if (!p) return;
   p.hidden = false;
@@ -2351,6 +2401,7 @@ function renderAll() {
 /* ── session ────────────────────────────────────────────────── */
 function showApp() {
   el('gate').hidden = true;
+  if (el('pending')) el('pending').hidden = true;
   el('app').hidden = false;
   el('demoBar').hidden = !S.demo;
   fillFilters();
@@ -2376,6 +2427,7 @@ function leaveDemo() {
   stopLive();
   S.demo = false; SHIPMENTS = []; NOTES = []; FEED = []; TICKETS = [];
   el('app').hidden = true;
+  if (el('pending')) el('pending').hidden = true;
   el('gate').hidden = false;
 }
 
@@ -2384,10 +2436,34 @@ function onSession(user, profile, bookings) {
   S.demo = false;
   S.email = user.email;
   S.profile = profile || { company: user.email, email: user.email };
+
+  /* Cuenta no aprobada: nunca se monta el dashboard. Decision de negocio —
+     el portal se gana. La seguridad real la aplican las reglas de Firestore. */
+  if (!profile || profile.status !== 'approved') {
+    showPending(user, profile);
+    return;
+  }
+
   SHIPMENTS = (bookings || []).map(mapBooking).filter(Boolean);
   SHIPMENTS.sort((a, b) => b.pickAt - a.pickAt);
   TICKETS = [];
   showApp();
+}
+
+function showPending(user, profile) {
+  stopLive();
+  SHIPMENTS = []; NOTES = []; FEED = []; TICKETS = [];
+  el('gate').hidden = true;
+  el('app').hidden = true;
+  el('pending').hidden = false;
+
+  const who = el('pendWho');
+  if (who) {
+    const co = (profile && profile.company) || '';
+    who.textContent = (co ? co + '  ·  ' : '') + (user.email || '');
+  }
+  const p = el('sagePanel');
+  if (p) p.hidden = true;
 }
 /* bookings/{doc} → portal row. Server fields win; anything the booking
    form never captured is left explicitly blank rather than invented. */
