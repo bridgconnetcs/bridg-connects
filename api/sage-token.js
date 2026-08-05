@@ -53,6 +53,7 @@ export default async function handler(req, res) {
   const auth = req.headers.authorization || '';
   const idToken = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
   if (!idToken) {
+    console.error('sage-token: request arrived with no Authorization header');
     return res.status(401).json({ error: 'auth_required' });
   }
 
@@ -79,14 +80,28 @@ export default async function handler(req, res) {
         body: JSON.stringify({ idToken })
       }
     );
-    if (!vr.ok) return res.status(401).json({ error: 'auth_invalid' });
+
+    if (!vr.ok) {
+      // Surface Google's own reason. These are error codes, never secrets.
+      let why = '';
+      try {
+        const eb = await vr.json();
+        why = (eb && eb.error && (eb.error.message || eb.error.status)) || '';
+      } catch (e) {}
+      console.error('sage-token: firebase lookup rejected. http=' + vr.status + ' reason=' + why);
+      return res.status(401).json({ error: 'auth_invalid' });
+    }
+
     const vj = await vr.json();
     const user = vj && vj.users && vj.users[0];
-    if (!user || !user.localId) return res.status(401).json({ error: 'auth_invalid' });
+    if (!user || !user.localId) {
+      console.error('sage-token: firebase returned no user for a valid-looking token');
+      return res.status(401).json({ error: 'auth_invalid' });
+    }
     if (user.disabled) return res.status(403).json({ error: 'account_disabled' });
     uid = user.localId;
   } catch (e) {
-    console.error('sage-token: verification failed');
+    console.error('sage-token: verification threw: ' + (e && e.message));
     return res.status(401).json({ error: 'auth_invalid' });
   }
 
