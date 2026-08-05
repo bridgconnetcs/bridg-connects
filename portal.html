@@ -2038,6 +2038,18 @@ function sageNote(msg) {
   n.hidden = false;
 }
 
+/* The same reply can arrive twice — streamed in parts and again whole —
+   and the greeting repeats on every reconnect. Show it once. */
+function sageIsRepeat(text) {
+  const clean = (text || '').trim();
+  if (!clean) return true;
+  for (let i = SAGE.history.length - 1; i >= 0 && i >= SAGE.history.length - 4; i--) {
+    const h = SAGE.history[i];
+    if (h.who === 'agent' && h.text.trim() === clean) return true;
+  }
+  return false;
+}
+
 function sageAdd(who, text, remember) {
   const log = sageEl('sageLog');
   if (!log) return null;
@@ -2085,9 +2097,7 @@ function startSage() {
   const i = sageEl('sageIn');
   if (i) i.placeholder = t('sgPlaceholder');
 
-  if (SAGE.history.length === 0 && sageEl('sageLog').childElementCount === 0) {
-    sageAdd('agent', t('sgHello'));
-  }
+  // No local greeting — the agent sends its own first message.
   if (!SAGE.ready && !SAGE.connecting) sageConnect();
   if (i) setTimeout(() => i.focus(), 60);
 }
@@ -2204,7 +2214,12 @@ async function sageConnect() {
         const log = sageEl('sageLog');
         if (log) log.scrollTop = log.scrollHeight;
       } else if (part.type === 'stop' && SAGE.streamEl) {
-        SAGE.history.push({ who: 'agent', text: SAGE.streamEl.textContent });
+        const txt = SAGE.streamEl.textContent;
+        if (sageIsRepeat(txt)) {
+          SAGE.streamEl.remove();               // already on screen
+        } else {
+          SAGE.history.push({ who: 'agent', text: txt });
+        }
         SAGE.streamEl = null;
         sageSetState('on');
       }
@@ -2216,7 +2231,7 @@ async function sageConnect() {
       sageDots(false);
       if (!SAGE.streamEl) {
         const txt = (d.agent_response_event.agent_response || '').trim();
-        if (txt) sageAdd('agent', txt);
+        if (txt && !sageIsRepeat(txt)) sageAdd('agent', txt);
       }
       sageSetState('on');
       return;
