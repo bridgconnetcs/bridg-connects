@@ -1460,15 +1460,10 @@ function renderView() {
 }
 
 /* ── Account review (admin only) ─────────────────────────────
-   Firestore rules decide who can read this collection and who can
-   change a status. This view is the operator surface, not the lock. */
-const ADMIN_EMAILS = ['admin@bridgconnects.com','k.vargas@novarholding.com'];
+   No hay lista de correos aqui a proposito: este archivo es publico.
+   El acceso lo decide Firestore. Intentamos leer la coleccion; si las
+   reglas lo permiten, eres admin. Si no, la seccion no existe. */
 let ACCTS = [], ACCT_TAB = 'pending';
-
-function isAdminUser() {
-  const e = ((S.profile && S.profile.email) || S.email || '').toLowerCase();
-  return ADMIN_EMAILS.indexOf(e) > -1;
-}
 
 function acctStatus(d) {
   const s = (d && d.status) || 'pending';
@@ -2648,13 +2643,24 @@ function onSession(user, profile, bookings) {
   SHIPMENTS.sort((a, b) => b.pickAt - a.pickAt);
   TICKETS = [];
   showApp();
+  probeAdmin();
+}
 
-  // Seccion de admin: solo visible para los correos autorizados.
-  if (isAdminUser()) {
+/* Preguntamos al servidor, no al navegador. Un cliente normal recibe
+   permission-denied y la seccion Admin nunca se monta. */
+async function probeAdmin() {
+  if (!window._bridgListClients) return;
+  try {
+    const rows = await window._bridgListClients();
+    ACCTS = rows || [];
+    ACCTS.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
     const sec = el('adminSec'), tab = el('adminTab');
     if (sec) sec.hidden = false;
     if (tab) tab.hidden = false;
-    loadAccounts();
+    renderAccts();
+  } catch (e) {
+    // No es admin. Silencio: ni seccion, ni pista de que exista.
+    ACCTS = [];
   }
 }
 
