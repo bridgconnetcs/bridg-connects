@@ -239,41 +239,7 @@ footer{border-top:1px solid var(--hairline);background:#fff}
   end-call-text="End chat"
   avatar-image-url="https://www.bridgconnects.com/sage-avatar.png"></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-  <script>
-(function () {
-  var M = {
-    en: "Sage is taking a short break. Please start a new conversation in a moment, or book a call with us. Have a great day!",
-    es: "Sage está tomando un descanso. Inicia una conversación nueva en un momento, o agenda una llamada con nosotros. ¡Que tengas buen día!"
-  };
-  function msg(){ return document.body.classList.contains('es') ? M.es : M.en; }
-
-  function allRoots(node, out) {
-    out = out || [];
-    var scope = node.shadowRoot || node;
-    if (node.shadowRoot) out.push(node.shadowRoot);
-    var kids = scope.querySelectorAll ? scope.querySelectorAll('*') : [];
-    for (var i = 0; i < kids.length; i++) {
-      if (kids[i].shadowRoot) allRoots(kids[i], out);
-    }
-    return out;
-  }
-
-  function fix() {
-    var host = document.querySelector('elevenlabs-convai');
-    if (!host) return;
-    allRoots(host).forEach(function (r) {
-      r.querySelectorAll('.text-base-error').forEach(function (el) {
-        if (el.dataset.bcFixed === '1') return;
-        el.dataset.bcFixed = '1';
-        el.textContent = msg();
-      });
-    });
-  }
-
-  setInterval(fix, 400);
-})();
-</script>
-
+  
 <script>
 function setLang(l){
   document.body.classList.toggle('es', l==='es');
