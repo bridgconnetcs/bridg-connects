@@ -878,6 +878,7 @@ function startCountdown(){
 window.qBook = async function(btn){
   var es = document.body.classList.contains('es');
   if(!window.CURRENT_USER){ window._pendingBook = true; window.openAuth(); return; }
+
   var d = VEHICLES[curV];
   var lbl = es ? 'Reservar esta entrega' : 'Book this delivery';
   btn.textContent = es ? 'Enviando\u2026' : 'Sending\u2026';
@@ -894,8 +895,11 @@ window.qBook = async function(btn){
     estimate: document.getElementById('eTot').textContent
   };
 
-  /* 1. Firestore es la fuente de verdad — se espera y se verifica */
+  /* 1. Firestore es la fuente de verdad. No preguntamos al navegador si la
+        cuenta esta aprobada — lo intentamos y el servidor decide. Un
+        'permission-denied' significa cuenta no aprobada. */
   var saved = false;
+  var notApproved = false;
   try{
     if(window._fb){
       await window._fb.addDoc(window._fb.collection(window._fb.db,'bookings'), {
@@ -916,7 +920,9 @@ window.qBook = async function(btn){
       saved = true;
     }
   }catch(err){
-    console.error('Booking save failed:', err && (err.code || err.message));
+    var code = (err && err.code) || '';
+    notApproved = (code === 'permission-denied' || code === 'firestore/permission-denied');
+    console.error('Booking save failed:', code || (err && err.message));
   }
 
   /* 2. El email es solo notificacion — nunca decide el resultado */
@@ -924,12 +930,17 @@ window.qBook = async function(btn){
     emailjs.send("service_24ys0gu","template_7yer4c7",{
       from_name: payload.name, phone: payload.phone,
       pickup: payload.pickup, dropoff: payload.dropoff,
-      load_type: (es?d.es:d.en)+' \u00B7 '+payload.weight,
-      window: payload.win, notes: payload.notes,
+      load_type: notApproved
+        ? 'CUENTA PENDIENTE DE APROBACION \u2014 ' + (es?d.es:d.en) + ' \u00B7 ' + payload.weight
+        : (es?d.es:d.en)+' \u00B7 '+payload.weight,
+      window: payload.win,
+      notes: notApproved
+        ? 'Este cliente intento reservar pero su cuenta no esta aprobada. Email: ' + ((window.CURRENT_USER && window.CURRENT_USER.email) || '') + ' \u2014 ' + payload.notes
+        : payload.notes,
       estimate: payload.estimate+' (promo applied)',
       reply_to:'noreply@bridgconnects.com'
     }).catch(function(err){
-      console.warn('EmailJS notify failed (booking still saved):', err && (err.text || err.status || err.message));
+      console.warn('EmailJS notify failed:', err && (err.text || err.status || err.message));
     });
   }
 
@@ -940,6 +951,11 @@ window.qBook = async function(btn){
     alert(es
       ? '\u00A1Solicitud recibida! Qued\u00F3 registrada en tu cuenta. Te contactamos en menos de 15 minutos.'
       : 'Request received! It is saved to your account. We will contact you within 15 minutes.');
+    closeQuote();
+  }else if(notApproved){
+    alert(es
+      ? 'Tu cuenta esta en revision. En cuanto nuestro equipo la active podras reservar entregas. Ya recibimos tus datos y te contactamos hoy mismo.'
+      : 'Your account is under review. As soon as our team activates it you will be able to book deliveries. We have your details and will contact you today.');
     closeQuote();
   }else{
     alert(es
@@ -985,9 +1001,12 @@ onAuthStateChanged(auth, async (user)=>{
       const snap = await getDoc(doc(db,'clients',user.uid));
       CURRENT_PROFILE = snap.exists() ? snap.data() : {company:user.email}; window.CURRENT_PROFILE = CURRENT_PROFILE;
     }catch(e){ CURRENT_PROFILE = {company:user.email}; window.CURRENT_PROFILE = CURRENT_PROFILE; }
+    // Approval is decided by Firestore rules. This flag only drives the UI copy.
+    window.CLIENT_APPROVED = (CURRENT_PROFILE && CURRENT_PROFILE.status === 'approved');
     txt.textContent = (CURRENT_PROFILE.company||'My account');
   } else {
     CURRENT_PROFILE = null; window.CURRENT_PROFILE = null;
+    window.CLIENT_APPROVED = false;
     txt.textContent = es?'Entrar':'Log in';
   }
 });
@@ -1024,16 +1043,22 @@ window.doSignup = async function(btn){
     var nowIso = new Date().toISOString();
     await setDoc(doc(db,'clients',cred.user.uid), {
       company:co, name:nm, phone:ph, email:em, createdAt:nowIso,
+      status:'pending',
       termsAcceptedAt: nowIso,
       marketingOptIn: promoOptIn,
       marketingOptInAt: promoOptIn ? nowIso : null,
       marketingOptInSource: promoOptIn ? 'web signup checkbox' : null
     });
-    CURRENT_PROFILE = {company:co,name:nm,phone:ph,email:em}; window.CURRENT_PROFILE = CURRENT_PROFILE;
+    CURRENT_PROFILE = {company:co,name:nm,phone:ph,email:em,status:'pending'}; window.CURRENT_PROFILE = CURRENT_PROFILE;
+    window.CLIENT_APPROVED = false;
     document.getElementById('qName').value = nm;
     document.getElementById('qPhone').value = ph;
     closeAuth();
-    if(window._pendingBook) { window._pendingBook=false; } else { window.location.href='/portal'; }
+    window._pendingBook = false;
+    alert(es
+      ? 'Cuenta creada. Nuestro equipo la revisa y la activa — normalmente el mismo día hábil. Te avisamos por email en cuanto quede lista.'
+      : 'Account created. Our team reviews and activates it — usually the same business day. We will email you as soon as it is ready.');
+    window.location.href='/portal';
   }catch(e){
     err.textContent = e.code==='auth/email-already-in-use' ? (es?'Ese email ya tiene cuenta — usa Entrar.':'That email already has an account — use Log in.') : (es?'Error: ':'Error: ')+e.message;
     err.style.display='block';
