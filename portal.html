@@ -538,8 +538,7 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
   .sagep{right:10px;left:10px;bottom:10px;width:auto;max-height:calc(100vh - 90px)}
 }
 @media print{nav,.rail,.toasts,.demo-bar,.sagep{display:none!important}.shell{grid-template-columns:1fr}}
-
-  .doc-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--hairline);transition:background .15s}
+.doc-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--hairline);transition:background .15s}
 .doc-row:last-child{border-bottom:0}
 .doc-row:hover{background:#fafafa}
 .doc-row:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
@@ -548,6 +547,11 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 .doc-id .sub-mono{margin:0}
 .doc-dl{font-family:var(--FM);font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);border:1px solid rgba(255,100,13,.35);border-radius:999px;padding:.3rem .6rem;flex-shrink:0}
 .doc-row:hover .doc-dl{background:var(--orange);color:#fff}
+.doc-notice{padding:1.1rem;display:flex;flex-direction:column;gap:.5rem;align-items:flex-start}
+.doc-notice p{margin:0;font-size:.85rem;line-height:1.5;color:var(--ink)}
+.doc-notice .doc-notice-h{font-family:var(--FM);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.doc-notice button{font-family:var(--FM);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:.5rem .9rem;cursor:pointer}
+.doc-notice button:disabled{opacity:.5;cursor:default}
 </style>
 </head>
 <body>
@@ -2188,8 +2192,7 @@ function renderExc() {
 
 /* ── docs ───────────────────────────────────────────────────── */
 function renderDocs() {
-if (!S.demo) { if (window.loadClientDocs) window.loadClientDocs(S.email); return; }
-
+  if (!S.demo) { if (window.loadClientDocs) window.loadClientDocs(S.email); return; }
   const done = SHIPMENTS.filter(s => s.status === 'delivered');
   const invs = [];
   for (let i = 0; i < done.length; i += 2) {
@@ -2803,97 +2806,112 @@ try{
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-  /* ══════════════════════════════════════════════════════════════
-   BRIDG CONNECTS · Client document delivery
-   Reads docs/{email}/ from Firebase Storage and paints the
-   Invoices and Documents panels that already exist in the portal.
+    import { getStorage, ref as sRef, listAll, getDownloadURL, getMetadata }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-   WHERE THIS GOES: inside the existing <script type="module"> block
-   in portal.html, right after  const db = getFirestore(app);
-   ══════════════════════════════════════════════════════════════ */
+    const storage = getStorage(app);
 
-import { getStorage, ref as sRef, listAll, getDownloadURL, getMetadata }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+    const escDoc = s => String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
 
-const storage = getStorage(app);
+    const DOC_NAME = /^BC-(INV|BOL)-[A-Za-z0-9._-]{1,40}\.pdf$/;
 
-/* Filenames arrive from Storage rather than from a form, but they are
-   still untrusted input: escaped before they touch innerHTML. */
-const escDoc = s => String(s).replace(/[&<>"']/g, c => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-}[c]));
+    const fmtSize = b => b < 1048576
+      ? Math.max(1, Math.round(b/1024)) + ' KB'
+      : (b/1048576).toFixed(1) + ' MB';
 
-/* Strict allowlist. Only our own naming pattern, only PDFs.
-   Anything else in the folder is ignored rather than rendered. */
-const DOC_NAME = /^BC-(INV|BOL)-[A-Za-z0-9._-]{1,40}\.pdf$/;
+    async function readClientFolder(email) {
+      const clean = String(email || '').trim().toLowerCase();
+      if (!clean || clean.includes('/')) return [];
+      const res = await listAll(sRef(storage, 'docs/' + clean));
+      const files = await Promise.all(
+        res.items.filter(i => DOC_NAME.test(i.name)).map(async i => {
+          const [url, meta] = await Promise.all([getDownloadURL(i), getMetadata(i)]);
+          return { name: i.name.replace(/\.pdf$/i,''), url,
+                   size: Number(meta.size)||0, at: meta.updated || meta.timeCreated || null };
+        })
+      );
+      return files.sort((a,b) => new Date(b.at||0) - new Date(a.at||0));
+    }
 
-const fmtSize = b => b < 1048576
-  ? Math.max(1, Math.round(b / 1024)) + ' KB'
-  : (b / 1048576).toFixed(1) + ' MB';
+    function docRow(d) {
+      const when = d.at ? new Date(d.at).toLocaleDateString() : '\u2014';
+      return '<a class="doc-row" href="' + escDoc(d.url) + '" target="_blank" rel="noopener noreferrer">'
+        + '<span class="doc-id"><code>' + escDoc(d.name) + '</code>'
+        + '<span class="sub-mono">' + escDoc(when) + ' \u00b7 ' + fmtSize(d.size) + '</span></span>'
+        + '<span class="doc-dl">PDF</span></a>';
+    }
 
-async function readClientFolder(email) {
-  const clean = String(email || '').trim().toLowerCase();
-  if (!clean || clean.includes('/')) return [];
+    function paintDocs(mountId, list, emptyLine) {
+      const mount = document.getElementById(mountId);
+      if (!mount) return;
+      mount.innerHTML = list.length ? list.map(docRow).join('')
+        : '<div class="empty"><p>' + escDoc(emptyLine) + '</p></div>';
+    }
 
-  const res = await listAll(sRef(storage, 'docs/' + clean));
+    /* El correo sin verificar es la causa mas comun de paneles vacios:
+       las reglas de Storage exigen email_verified. Se lo decimos y le
+       damos el boton para reenviar, en vez de dejarlo adivinando. */
+    function paintVerifyNotice() {
+      const es = document.body.classList.contains('es');
+      const head = es ? 'Verifica tu correo' : 'Verify your email';
+      const body = es
+        ? 'Tus facturas y conocimientos de embarque aparecen aqu\u00ed en cuanto confirmes tu direcci\u00f3n de correo. Revisa tu bandeja \u2014 y la carpeta de spam \u2014 y haz clic en el enlace que te enviamos.'
+        : 'Your invoices and bills of lading appear here once you confirm your email address. Check your inbox \u2014 and your spam folder \u2014 and click the link we sent you.';
+      const btn = es ? 'Reenviar correo' : 'Resend email';
+      const html = '<div class="doc-notice"><span class="doc-notice-h">' + escDoc(head) + '</span>'
+        + '<p>' + escDoc(body) + '</p>'
+        + '<button type="button" onclick="window.resendVerification(this)">' + escDoc(btn) + '</button></div>';
+      ['invMount','podMount'].forEach(id => {
+        const m = document.getElementById(id);
+        if (m) m.innerHTML = html;
+      });
+    }
 
-  const files = await Promise.all(
-    res.items
-      .filter(item => DOC_NAME.test(item.name))
-      .map(async item => {
-        const [url, meta] = await Promise.all([
-          getDownloadURL(item),
-          getMetadata(item)
-        ]);
-        return {
-          name: item.name.replace(/\.pdf$/i, ''),
-          url,
-          size: Number(meta.size) || 0,
-          at: meta.updated || meta.timeCreated || null
-        };
-      })
-  );
+    window.resendVerification = async (btn) => {
+      const es = document.body.classList.contains('es');
+      const u = auth.currentUser;
+      if (!u) return;
+      if (btn) { btn.disabled = true; btn.textContent = es ? 'Enviando\u2026' : 'Sending\u2026'; }
+      try {
+        const { sendEmailVerification } =
+          await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+        await sendEmailVerification(u);
+        if (btn) btn.textContent = es ? 'Enviado \u2014 revisa tu correo' : 'Sent \u2014 check your inbox';
+      } catch (e) {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = (e && e.code === 'auth/too-many-requests')
+            ? (es ? 'Espera un momento' : 'Wait a moment')
+            : (es ? 'No se pudo enviar' : 'Could not send');
+        }
+      }
+    };
 
-  return files.sort((a, b) => new Date(b.at || 0) - new Date(a.at || 0));
-}
-
-function docRow(d) {
-  const when = d.at ? new Date(d.at).toLocaleDateString() : '—';
-  return '<a class="doc-row" href="' + escDoc(d.url) + '"'
-    + ' target="_blank" rel="noopener noreferrer">'
-    + '<span class="doc-id"><code>' + escDoc(d.name) + '</code>'
-    + '<span class="sub-mono">' + escDoc(when) + ' · ' + fmtSize(d.size) + '</span></span>'
-    + '<span class="doc-dl">PDF</span></a>';
-}
-
-function paintDocs(mountId, list, emptyLine) {
-  const mount = document.getElementById(mountId);
-  if (!mount) return;
-  mount.innerHTML = list.length
-    ? list.map(docRow).join('')
-    : '<div class="empty"><p>' + escDoc(emptyLine) + '</p></div>';
-}
-
-/* Called once a real session resolves. Demo mode never touches this. */
-window.loadClientDocs = async (email) => {
-  const es = document.body.classList.contains('es');
-  try {
-    const all = await readClientFolder(email);
-    paintDocs('invMount', all.filter(d => d.name.startsWith('BC-INV')),
-      es ? 'Aún sin facturas. Aparecen aquí al completar un viaje.'
-         : 'No invoices yet. Billing appears here once a run is completed.');
-    paintDocs('podMount', all.filter(d => d.name.startsWith('BC-BOL')),
-      es ? 'Aún sin conocimientos de embarque.'
-         : 'No bills of lading yet.');
-  } catch (e) {
-    const line = es
-      ? 'No se pudieron cargar los documentos. Vuelve a entrar o agenda una llamada.'
-      : 'Documents could not be loaded. Sign in again or book a call.';
-    paintDocs('invMount', [], line);
-    paintDocs('podMount', [], line);
-    console.warn('doc load failed:', e && e.code);
-  }
-};
+    window.loadClientDocs = async (email) => {
+      const es = document.body.classList.contains('es');
+      const u = auth.currentUser;
+      if (u && u.emailVerified === false) { paintVerifyNotice(); return; }
+      try {
+        const all = await readClientFolder(email);
+        paintDocs('invMount', all.filter(d => d.name.startsWith('BC-INV')),
+          es ? 'A\u00fan sin facturas. Aparecen aqu\u00ed al completar un viaje.'
+             : 'No invoices yet. Billing appears here once a run is completed.');
+        paintDocs('podMount', all.filter(d => d.name.startsWith('BC-BOL')),
+          es ? 'A\u00fan sin conocimientos de embarque.'
+             : 'No bills of lading yet.');
+      } catch (e) {
+        if (e && (e.code === 'storage/unauthorized' || e.code === 'storage/unauthenticated')) {
+          paintVerifyNotice(); return;
+        }
+        const line = es ? 'No se pudieron cargar los documentos. Vuelve a entrar o agenda una llamada.'
+                        : 'Documents could not be loaded. Sign in again or book a call.';
+        paintDocs('invMount', [], line);
+        paintDocs('podMount', [], line);
+        console.warn('doc load failed:', e && e.code);
+      }
+    };
 
 window._bridgLogin = (email, pass) => signInWithEmailAndPassword(auth, email, pass);
 window._bridgReset = (email) => sendPasswordResetEmail(auth, email);
@@ -2932,7 +2950,7 @@ onAuthStateChanged(auth, async (user) => {
     qs.forEach(d => rows.push(Object.assign({ id: d.id }, d.data())));
   } catch(e){}
   window.onSession(user, profile, rows);
-if (window.loadClientDocs) window.loadClientDocs(user.email);
+      if (window.loadClientDocs) window.loadClientDocs(user.email);
 });
 
 /* Persist a new pickup request to the same collection the site writes to. */
