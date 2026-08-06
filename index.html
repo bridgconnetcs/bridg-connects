@@ -967,7 +967,7 @@ window.qBook = async function(btn){
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
 
@@ -1038,6 +1038,8 @@ window.doSignup = async function(btn){
   btn.disabled=true; btn.textContent=es?'Creando…':'Creating…';
   try{
     const cred = await createUserWithEmailAndPassword(auth, em, pw);
+    try { await sendEmailVerification(cred.user); }
+    catch(ve){ console.warn('verification email failed:', ve && ve.code); }
     var promoEl = document.getElementById('aPromo');
     var promoOptIn = !!(promoEl && promoEl.checked);
     var nowIso = new Date().toISOString();
@@ -1056,8 +1058,8 @@ window.doSignup = async function(btn){
     closeAuth();
     window._pendingBook = false;
     alert(es
-      ? 'Cuenta creada. Nuestro equipo la revisa y la activa — normalmente el mismo día hábil. Te avisamos por email en cuanto quede lista.'
-      : 'Account created. Our team reviews and activates it — usually the same business day. We will email you as soon as it is ready.');
+      ? 'Cuenta creada. Te enviamos un correo para verificar tu dirección — ábrelo y haz clic en el enlace. Nuestro equipo revisa y activa la cuenta, normalmente el mismo día hábil.'
+      : 'Account created. We sent you an email to verify your address — open it and click the link. Our team reviews and activates the account, usually the same business day.');
     window.location.href='/portal';
   }catch(e){
     err.textContent = e.code==='auth/email-already-in-use' ? (es?'Ese email ya tiene cuenta — usa Entrar.':'That email already has an account — use Log in.') : (es?'Error: ':'Error: ')+e.message;
