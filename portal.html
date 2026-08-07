@@ -1223,6 +1223,11 @@ const T = {
   run:['run','viaje'], runs:['runs','viajes'],
   stop:['stop','parada'], stops:['stops','paradas'],
   signedBy:['Received by','Recibido por'], site:['Site','Obra'],
+  podFrom:['Captured in the driver app','Capturado en la app del conductor'],
+  podWait:['Proof of delivery pending','Prueba de entrega pendiente'],
+  podWaitP:['The driver has not closed this stop yet. Signature and photos appear here the moment it is closed.',
+            'El conductor aún no cierra esta parada. La firma y las fotos aparecen aquí en cuanto la cierre.'],
+  liveNow:['Live','En vivo'],
   sigCap:['Signature captured on delivery','Firma capturada en la entrega'],
   photosAt:['Cargo photos at drop-off','Fotos de la carga en la entrega'],
   photoOf:['Photo','Foto'],
@@ -1642,14 +1647,32 @@ function renderKpis() {
 }
 
 /* ── map ────────────────────────────────────────────────────── */
+/* Marco geografico del panel: SoCal, de Ventura a Riverside. */
+const MBOX = { w: -119.30, e: -117.20, s: 33.30, n: 34.62 };
+const mx = lng => 6 + ((lng - MBOX.w) / (MBOX.e - MBOX.w)) * 88;
+const my = lat => 8 + ((MBOX.n - lat) / (MBOX.n - MBOX.s)) * 82;
+const mclamp = v => Math.max(3, Math.min(96, v));
+const MAPPOS = {};
+let DRAWID = null;
+
 function renderMap() {
   const m = el('map');
   m.querySelectorAll('.node').forEach(n => n.remove());
   const live = SHIPMENTS.filter(x => x.status !== 'scheduled').slice(0, 14);
   let lines = '';
   live.forEach(s => {
-    if (!s._p) s._p = { ox: 12 + rnd() * 26, oy: 18 + rnd() * 62, dx: 52 + rnd() * 34, dy: 14 + rnd() * 70 };
-    const p = s._p, k = s.progress / 100;
+    /* Coordenadas reales del webhook proyectadas sobre el marco del sur
+       de California. Sin lat/lng se cae al esquema abstracto, cacheado
+       por ID para que los nodos no salten en cada onSnapshot. */
+    let p = null;
+    if (s.plat && s.plng && s.dlat && s.dlng) {
+      p = { ox: mclamp(mx(s.plng)), oy: mclamp(my(s.plat)),
+            dx: mclamp(mx(s.dlng)), dy: mclamp(my(s.dlat)) };
+    } else {
+      if (!MAPPOS[s.id]) MAPPOS[s.id] = { ox: 12 + rnd() * 26, oy: 18 + rnd() * 62, dx: 52 + rnd() * 34, dy: 14 + rnd() * 70 };
+      p = MAPPOS[s.id];
+    }
+    const k = s.progress / 100;
     const hot = s.status === 'transit' || s.status === 'out';
     lines += '<line class="rl' + (hot ? ' hot' : '') + '" x1="' + p.ox + '" y1="' + p.oy + '" x2="' + p.dx + '" y2="' + p.dy + '"/>';
     const n = document.createElement('button');
@@ -2013,6 +2036,7 @@ function bulkPods() {
 /* ── drawer ─────────────────────────────────────────────────── */
 function openDrawer(id) {
   const s = byId(id); if (!s) return;
+  DRAWID = id;
   el('dKind').textContent = s.fragile ? t('fragile') : t('standard');
   el('dTitle').textContent = s.city;
   el('dSub').textContent = s.id + ' · ' + s.ref;
@@ -2030,7 +2054,8 @@ function openDrawer(id) {
       '<span class="pill ' + SCLS[s.status] + '"><i class="' + (s.status === 'transit' || s.status === 'out' ? 'beat' : '') + '"></i>' + t(s.status) + '</span>' +
       (s.fragile ? ' ' + fragTag() : '') +
       '<div class="bar' + (s.status === 'delivered' ? ' ok' : s.status === 'exception' ? ' bad' : '') + '" style="margin-top:.8rem"><i style="width:' + s.progress + '%"></i></div>' +
-      '<div class="sub-mono" style="margin-top:.4rem">' + s.progress + '% · ' + s.miles + ' mi</div>' +
+      '<div class="sub-mono" style="margin-top:.4rem">' + s.progress + '% · ' + s.miles + ' mi' +
+        (s.sdAt ? ' · ' + t('liveNow') + ' ' + fmtTime(s.sdAt) : '') + '</div>' +
       (s.hold ? '<div class="note" style="margin-top:.85rem;border-left-color:var(--red)"><b>' + t('exception') + '</b> — ' + esc(holdTxt(s)) + '</div>' : '') +
     '</div>' +
     '<div class="dsec"><span class="lbl">' + t('route') + '</span><div class="dgrid">' +
@@ -2158,17 +2183,54 @@ function openPod(id) {
       '<div class="dcell"><span class="lbl">' + t('driver') + '</span><b>' + esc(s.driver) + '</b></div>' +
       '<div class="dcell"><span class="lbl">' + t('site') + '</span><b>' + esc(s.city) + '</b></div>' +
     '</div>' +
-    '<div style="margin-top:1.2rem"><span class="lbl">' + t('sigCap') + '</span>' +
-      '<div class="pod-sig"><svg viewBox="0 0 210 66" role="img" aria-label="' + t('sigCap') + '">' +
-      '<path d="M8 46c10-24 16-8 22 2s10-30 18-24 4 30 12 26 8-30 16-26 6 26 14 22 10-24 18-20 6 20 14 18 12-16 20-14 16 6 24 4"/></svg></div></div>' +
-    '<div style="margin-top:1.2rem"><span class="lbl">' + t('photosAt') + '</span>' +
-      '<div class="shots">' + [1, 2].map(n =>
-        '<div class="shot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.4-2h5.2L16 6"/></svg>' +
-        '<span>' + t('photoOf') + ' ' + n + '/2</span><span class="stamp">' + fmtTime(s.dropAt) + '</span></div>').join('') +
-      '</div><p class="hint">' + t('podNote') + '</p></div>';
+    podEvidence(s);
   closeAll(true);
   openModal('mPod');
 }
+/* Prueba de entrega. En sesion real solo se pinta lo que existe: si el
+   conductor todavia no cerro la parada NO se dibuja una firma de adorno
+   — un cliente no debe ver evidencia que no se capturo. El trazo
+   decorativo queda solo para el modo demostracion. */
+function podEvidence(s) {
+  const stamp = s.sdAt || s.dropAt;
+  let out = '';
+
+  if (s.sig) {
+    out += '<div style="margin-top:1.2rem"><span class="lbl">' + t('sigCap') + '</span>' +
+      '<div class="pod-sig"><img src="' + esc(s.sig) + '" alt="' + t('sigCap') + '"' +
+      ' loading="lazy" referrerpolicy="no-referrer"' +
+      ' style="width:100%;height:100%;object-fit:contain"/></div>' +
+      '<p class="hint">' + t('podFrom') + ' · ' + fmtTime(stamp) + '</p></div>';
+  } else if (S.demo) {
+    out += '<div style="margin-top:1.2rem"><span class="lbl">' + t('sigCap') + '</span>' +
+      '<div class="pod-sig"><svg viewBox="0 0 210 66" role="img" aria-label="' + t('sigCap') + '">' +
+      '<path d="M8 46c10-24 16-8 22 2s10-30 18-24 4 30 12 26 8-30 16-26 6 26 14 22 10-24 18-20 6 20 14 18 12-16 20-14 16 6 24 4"/></svg></div></div>';
+  }
+
+  if (s.shots.length) {
+    out += '<div style="margin-top:1.2rem"><span class="lbl">' + t('photosAt') + '</span><div class="shots">' +
+      s.shots.map((u, i) =>
+        '<a class="shot" href="' + esc(u) + '" target="_blank" rel="noopener noreferrer"' +
+        ' style="overflow:hidden;padding:0">' +
+        '<img src="' + esc(u) + '" alt="' + t('photoOf') + ' ' + (i + 1) + '"' +
+        ' loading="lazy" referrerpolicy="no-referrer"' +
+        ' style="width:100%;height:100%;object-fit:cover"/>' +
+        '<span class="stamp">' + fmtTime(stamp) + '</span></a>').join('') +
+      '</div><p class="hint">' + t('podNote') + '</p></div>';
+  } else if (S.demo) {
+    out += '<div style="margin-top:1.2rem"><span class="lbl">' + t('photosAt') + '</span><div class="shots">' +
+      [1, 2].map(n =>
+        '<div class="shot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.4-2h5.2L16 6"/></svg>' +
+        '<span>' + t('photoOf') + ' ' + n + '/2</span><span class="stamp">' + fmtTime(s.dropAt) + '</span></div>').join('') +
+      '</div><p class="hint">' + t('podNote') + '</p></div>';
+  }
+
+  if (!out) {
+    out = '<div class="note" style="margin-top:1.2rem"><b>' + t('podWait') + '</b><p>' + t('podWaitP') + '</p></div>';
+  }
+  return out;
+}
+
 function downloadPod() {
   const s = byId(PODID);
   toast(t('tPodDl'), (s ? s.id + ' — ' : '') + t('tPodDlP'), 'ok');
@@ -2694,15 +2756,88 @@ function showPending(user, profile) {
   const p = el('sagePanel');
   if (p) p.hidden = true;
 }
+/* ── Shipday → estado del portal ──────────────────────────────
+   Lista blanca estricta. Un evento desconocido NO mueve el estado:
+   preferimos mostrar el ultimo estado bueno que inventar uno. Se lee con
+   hasOwnProperty para que nombres como "constructor" o "__proto__" no
+   resuelvan contra el prototipo de Object. */
+const SHIPDAY = {
+  ORDER_INSERTED:             ['scheduled',   0],
+  NOT_ASSIGNED:               ['scheduled',   0],
+  ORDER_ASSIGNED:             ['scheduled',   5],
+  NOT_ACCEPTED:               ['scheduled',   5],
+  ORDER_ACCEPTED:             ['transit',    15],
+  ACCEPTED:                   ['transit',    15],
+  ORDER_ACCEPTED_AND_STARTED: ['transit',    30],
+  STARTED:                    ['transit',    30],
+  PICKED_UP:                  ['out',        55],
+  ORDER_ONTHEWAY:             ['out',        70],
+  READY_TO_DELIVER:           ['out',        70],
+  ORDER_COMPLETED:            ['delivered', 100],
+  ALREADY_DELIVERED:          ['delivered', 100],
+  ORDER_FAILED:               ['exception',   0],
+  FAILED_DELIVERY:            ['exception',   0],
+  INCOMPLETE:                 ['exception',   0]
+};
+function shipdayState(ev) {
+  const k = String(ev == null ? '' : ev).trim().toUpperCase().replace(/[^A-Z_]/g, '');
+  return Object.prototype.hasOwnProperty.call(SHIPDAY, k) ? SHIPDAY[k] : null;
+}
+
+/* Evidencia: cerradura doble. No basta el dominio — un bucket S3 cualquiera
+   no sirve. Exigimos host S3 de AWS (cualquier region, por si la plataforma
+   migra) Y que la ruta empiece con el bucket real de la plataforma de
+   despacho. Se acepta tambien nuestro propio Storage para evidencia que
+   lleguemos a alojar nosotros. Cualquier otra cosa se descarta callada:
+   javascript:, data:, http:, o un dominio ajeno nunca llegan al DOM. */
+const S3_HOST = /^s3(?:[.-][a-z0-9-]{1,20})?\.amazonaws\.com$/i;
+const S3_PATH = /^\/qt\.com\.dashboard\.order\.[a-z]{1,20}\//i;
+const OWN_HOST = /^[a-z0-9-]{1,63}\.(firebasestorage\.app|appspot\.com)$|^firebasestorage\.googleapis\.com$/i;
+function safeShot(u) {
+  if (typeof u !== 'string' || u.length > 600) return null;
+  try {
+    const x = new URL(u);
+    if (x.protocol !== 'https:') return null;
+    if (x.username || x.password) return null;
+    const ok = (S3_HOST.test(x.hostname) && S3_PATH.test(x.pathname)) || OWN_HOST.test(x.hostname);
+    return ok ? x.href : null;
+  } catch (e) { return null; }
+}
+/* La plataforma mete firma y fotos en el mismo arreglo y las separa por el
+   nombre del bucket en la ruta. Reconocemos la firma ahi. */
+const isSig = u => /\/qt\.com\.dashboard\.order\.signature\//i.test(String(u));
+/* Firestore puede mandar Timestamp o string ISO. Aceptamos ambos y
+   descartamos fechas invalidas en vez de propagar NaN a la UI. */
+function toDate(v) {
+  if (!v) return null;
+  const d = (typeof v.toDate === 'function') ? v.toDate() : new Date(v);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 /* bookings/{doc} → portal row. Server fields win; anything the booking
    form never captured is left explicitly blank rather than invented. */
 function mapBooking(b) {
   if (!b) return null;
-  const created = b.createdAt ? new Date(b.createdAt) : new Date();
-  const pickAt = b.pickupAt ? new Date(b.pickupAt) : created;
-  const dropAt = b.deliveredAt ? new Date(b.deliveredAt) : new Date(pickAt.getTime() + 3 * 36e5);
+  const created = toDate(b.createdAt) || new Date();
+  const pickAt = toDate(b.pickupAt) || created;
+  const dropAt = toDate(b.deliveredAt) || new Date(pickAt.getTime() + 3 * 36e5);
   const rate = typeof b.rate === 'number' ? b.rate : parseFloat(String(b.estimate || '').replace(/[^0-9.]/g, '')) || 0;
-  const st = ['scheduled', 'transit', 'out', 'delivered', 'exception'].includes(b.status) ? b.status : 'scheduled';
+
+  /* El evento de Shipday manda sobre el campo status del documento. */
+  const sd = shipdayState(b.shipdayEvent);
+  const raw = sd ? sd[0] : b.status;
+  const st = ['scheduled', 'transit', 'out', 'delivered', 'exception'].includes(raw) ? raw : 'scheduled';
+  const prog = (typeof b.progress === 'number' && isFinite(b.progress))
+    ? Math.max(0, Math.min(100, Math.round(b.progress)))
+    : (sd ? sd[1] : (st === 'delivered' ? 100 : 0));
+
+  /* Coordenadas reales del webhook. null explicito, nunca 0: (0,0) es un
+     punto valido en el Atlantico y pintaria el nodo fuera de California. */
+  const num = v => (typeof v === 'number' && isFinite(v) && Math.abs(v) > 0.01) ? v : null;
+  const pod = Array.isArray(b.podUrls) ? b.podUrls.map(safeShot).filter(Boolean) : [];
+  const shots = pod.filter(u => !isSig(u)).slice(0, 8);
+  const sigUrl = safeShot(b.signatureUrl || b.podSignature) || pod.find(isSig) || null;
+
   return {
     id: b.trackingId || b.id || ('BRG-' + String(created.getTime()).slice(-5)),
     ref: b.po || b.ref || '—',
@@ -2711,14 +2846,52 @@ function mapBooking(b) {
     cargo: [b.cargo || '—', b.cargo || '—'], fragile: !!b.fragile,
     service: b.service || 'ground', weight: +b.weight || 0,
     pallets: +b.pallets || 0, longest: +b.longest || 0,
-    status: st, progress: typeof b.progress === 'number' ? b.progress : (st === 'delivered' ? 100 : 0),
+    status: st, progress: prog,
     pickAt, dropAt,
-    driver: b.driver || '—', vehicle: b.vehicle || 'pickup',
+    driver: b.driverName || b.driver || '—', vehicle: b.vehicle || 'pickup',
     phone: b.driverPhone || '', hold: b.hold ? [b.hold, b.hold] : null,
     rate, surcharge: +b.surcharge || 0, miles: +b.miles || 0,
-    signedBy: b.signedBy || null, notes: b.notes || ''
+    signedBy: b.signedBy || null, notes: b.notes || '',
+    /* Shipday */
+    plat: num(b.pickupLat), plng: num(b.pickupLng),
+    dlat: num(b.dropoffLat), dlng: num(b.dropoffLng),
+    shots, sig: sigUrl,
+    sdEvent: typeof b.shipdayEvent === 'string' ? b.shipdayEvent.slice(0, 40) : '',
+    sdAt: toDate(b.shipdayUpdatedAt)
   };
 }
+/* Empuje en vivo desde Firestore (onSnapshot). Reconstruye las filas sin
+   tocar la vista actual: la seleccion sobrevive, el cajon abierto se
+   repinta, y cada cambio real de estado entra al feed una sola vez. */
+window.onBookingsUpdate = function (bookings) {
+  if (S.demo) return;
+  const was = {};
+  SHIPMENTS.forEach(s => { was[s.id] = s.status + '|' + s.progress; });
+
+  SHIPMENTS = (bookings || []).map(mapBooking).filter(Boolean);
+  SHIPMENTS.sort((a, b) => b.pickAt - a.pickAt);
+
+  const alive = new Set(SHIPMENTS.map(s => s.id));
+  S.picked = new Set(Array.from(S.picked).filter(id => alive.has(id)));
+
+  SHIPMENTS.forEach(s => {
+    const prev = was[s.id];
+    if (prev === undefined || prev === s.status + '|' + s.progress) return;
+    const key = s.status === 'delivered' ? 'done'
+              : s.status === 'out' ? 'out'
+              : s.status === 'transit' ? 'loaded' : 'pos';
+    const arg = s.status === 'delivered' ? (s.signedBy || s.consignee)
+              : key === 'pos' ? s.progress : s.city;
+    pushFeed(s.id, key, arg, SCOL[s.status], s.sdAt || new Date());
+  });
+
+  fillFilters();
+  renderKpis(); renderMap(); renderNotes(); renderBadges();
+  renderCal(); renderTable(); renderExc(); renderTk();
+  if (S.view === 'docs') renderDocs();
+  if (DRAWID && el('drawer').classList.contains('open') && byId(DRAWID)) openDrawer(DRAWID);
+};
+
 /* Overridden by the Firebase module when a live session exists. */
 window.saveBooking = window.saveBooking || function () {};
 function doLogout() {
@@ -2785,7 +2958,7 @@ document.querySelectorAll('.tab').forEach(x =>
 /* Firebase — same project and config as the public site. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
 
 const app = initializeApp({
@@ -2938,19 +3111,53 @@ window._bridgIdToken = async () => {
   catch(e){ return null; }
 };
 
+/* Canal de datos en vivo. Se abre solo para cuentas aprobadas y se cierra
+   en cada cambio de sesion: un listener huerfano seguiria cobrando lecturas
+   y filtrando datos del cliente anterior a la pantalla del siguiente. */
+let stopBookings = null;
+function killBookings() {
+  if (stopBookings) { try { stopBookings(); } catch(e){} stopBookings = null; }
+}
+
 onAuthStateChanged(auth, async (user) => {
+  killBookings();
   if (!user) { if (!window.S.demo) window.leaveDemo(); return; }
-  let profile = null, rows = [];
+
+  let profile = null;
   try {
     const snap = await getDoc(doc(db, 'clients', user.uid));
     if (snap.exists()) profile = snap.data();
   } catch(e){}
-  try {
-    const qs = await getDocs(query(collection(db, 'bookings'), where('uid', '==', user.uid)));
-    qs.forEach(d => rows.push(Object.assign({ id: d.id }, d.data())));
-  } catch(e){}
-  window.onSession(user, profile, rows);
-      if (window.loadClientDocs) window.loadClientDocs(user.email);
+
+  /* Cuenta no aprobada: ni dashboard ni canal de datos. */
+  if (!profile || profile.status !== 'approved') {
+    window.onSession(user, profile, []);
+    return;
+  }
+
+  const uid = user.uid;
+  let first = true;
+  const boot = (rows) => {
+    first = false;
+    window.onSession(user, profile, rows);
+    if (window.loadClientDocs) window.loadClientDocs(user.email);
+  };
+
+  stopBookings = onSnapshot(
+    query(collection(db, 'bookings'), where('uid', '==', uid)),
+    (snap) => {
+      /* La sesion pudo cambiar mientras el snapshot venia en vuelo. */
+      if (!auth.currentUser || auth.currentUser.uid !== uid) { killBookings(); return; }
+      const rows = [];
+      snap.forEach(d => rows.push(Object.assign({ id: d.id }, d.data())));
+      if (first) boot(rows);
+      else if (window.onBookingsUpdate) window.onBookingsUpdate(rows);
+    },
+    (err) => {
+      console.warn('bookings stream:', err && err.code);
+      if (first) boot([]);
+    }
+  );
 });
 
 /* Persist a new pickup request to the same collection the site writes to. */
