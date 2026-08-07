@@ -375,10 +375,10 @@ input[type=checkbox]:checked::after{content:'';width:7px;height:4px;border-left:
 /* POD */
 .pod-sig{background:#fff;border:1px solid var(--hairline);border-radius:10px;height:112px;display:grid;place-items:center;margin-top:.5rem}
 .pod-sig svg{width:210px;height:66px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round}
-/* La plataforma de despacho entrega la firma como JPG de fondo negro con
-   trazo blanco. Se invierte para leerla como firma normal, tinta sobre
-   papel. Solo se aplica a ese origen, por si algun dia llega otra fuente
-   ya en positivo. */
+/* No se invierte nada por regla de URL: la plataforma guarda firma y fotos
+   en el mismo bucket, asi que la ruta NO distingue una de otra. Invertir a
+   ciegas convierte una foto de entrega en un negativo. Clase .inv queda
+   disponible pero no se aplica automaticamente. */
 .pod-sig img{width:100%;height:100%;object-fit:contain}
 .pod-sig img.inv{filter:invert(1)}
 .shots{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.5rem}
@@ -2211,8 +2211,7 @@ function podEvidence(s) {
 
   if (s.sig) {
     out += '<div style="margin-top:1.2rem"><span class="lbl">' + t('sigCap') + '</span>' +
-      '<div class="pod-sig"><img class="' + (isSig(s.sig) ? 'inv' : '') + '"' +
-      ' src="' + esc(s.sig) + '" alt="' + t('sigCap') + '"' +
+      '<div class="pod-sig"><img src="' + esc(s.sig) + '" alt="' + t('sigCap') + '"' +
       ' loading="lazy" referrerpolicy="no-referrer"/></div>' +
       '<p class="hint">' + t('podFrom') + ' · ' + fmtTime(stamp) + '</p></div>';
   } else if (S.demo) {
