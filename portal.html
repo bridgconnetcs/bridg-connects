@@ -1707,6 +1707,14 @@ function mapCard(id) {
 function closeMapCard() { el('mapCard').classList.remove('open'); }
 
 /* ── feed ───────────────────────────────────────────────────── */
+/* Quien recibio. Si la plataforma no capturo nombre, jamas se imprime
+   "null" en pantalla: cae al consignatario y, si tampoco existe, a una
+   frase neutra. Un cliente no debe leer errores de programador. */
+function recv(s) {
+  if (s.signedBy) return s.signedBy;
+  if (s.consignee && s.consignee !== '\u2014') return s.consignee;
+  return L() === 'es' ? 'el receptor en sitio' : 'the recipient on site';
+}
 function pushFeed(id, key, arg, color, when) {
   FEED.unshift({ id, key, arg, color, when: when || new Date() });
   FEED = FEED.slice(0, 30);
@@ -1733,7 +1741,7 @@ function seedFeed() {
   SHIPMENTS.filter(x => x.status !== 'scheduled').slice(0, 8).forEach((s, i) => FEED.push({
     id: s.id, color: SCOL[s.status],
     key: s.status === 'delivered' ? 'done' : s.status === 'exception' ? 'raw' : s.status === 'out' ? 'out' : 'loaded',
-    arg: s.status === 'delivered' ? s.signedBy : s.status === 'exception' ? holdTxt(s) : s.city,
+    arg: s.status === 'delivered' ? recv(s) : s.status === 'exception' ? holdTxt(s) : s.city,
     when: new Date(Date.now() - i * 6e4 * int(8, 40))
   }));
   renderFeed();
@@ -1760,8 +1768,8 @@ function seedNotes() {
   SHIPMENTS.filter(x => x.status === 'delivered').slice(0, 2).forEach(s => NOTES.push({
     read: false, color: SCOL.delivered, ship: s.id,
     title: [s.id + ' delivered', s.id + ' entregado'],
-    body: ['Signed by ' + s.signedBy + ' in ' + s.city + '. POD is ready.',
-           'Firmado por ' + s.signedBy + ' en ' + s.city + '. El POD está listo.'],
+    body: ['Signed by ' + recv(s) + ' in ' + s.city + '. POD is ready.',
+           'Firmado por ' + recv(s) + ' en ' + s.city + '. El POD está listo.'],
     when: new Date(Date.now() - 9e6)
   }));
   renderNotes();
@@ -2179,7 +2187,7 @@ function openPod(id) {
   el('podBody').innerHTML =
     '<div class="dgrid" style="margin-top:0">' +
       '<div class="dcell"><span class="lbl">' + t('deliveredAt') + '</span><b>' + fmtDay(s.dropAt) + ', ' + fmtTime(s.dropAt) + '</b></div>' +
-      '<div class="dcell"><span class="lbl">' + t('signedBy') + '</span><b>' + esc(s.signedBy || s.consignee) + '</b></div>' +
+      '<div class="dcell"><span class="lbl">' + t('signedBy') + '</span><b>' + esc(recv(s)) + '</b></div>' +
       '<div class="dcell"><span class="lbl">' + t('driver') + '</span><b>' + esc(s.driver) + '</b></div>' +
       '<div class="dcell"><span class="lbl">' + t('site') + '</span><b>' + esc(s.city) + '</b></div>' +
     '</div>' +
@@ -2281,7 +2289,7 @@ function renderDocs() {
     '<span class="doc-ic" style="color:var(--green);border-color:rgba(11,138,75,.3)">' +
       '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></span>' +
     '<span class="meta"><b>' + s.id + ' · ' + esc(s.city) + '</b>' +
-      '<small>' + t('signedBy') + ' ' + esc(s.signedBy) + ' · ' + fmtDay(s.dropAt) + '</small></span>' +
+      '<small>' + t('signedBy') + ' ' + esc(recv(s)) + ' · ' + fmtDay(s.dropAt) + '</small></span>' +
     (s.fragile ? fragTag() : '') +
     '<button class="btn-o sm" onclick="openPod(\'' + s.id + '\')">' + t('open') + '</button></div>').join('')
     : emptyBox('eNoPod', 'eNoPodP');
@@ -2880,7 +2888,7 @@ window.onBookingsUpdate = function (bookings) {
     const key = s.status === 'delivered' ? 'done'
               : s.status === 'out' ? 'out'
               : s.status === 'transit' ? 'loaded' : 'pos';
-    const arg = s.status === 'delivered' ? (s.signedBy || s.consignee)
+    const arg = s.status === 'delivered' ? recv(s)
               : key === 'pos' ? s.progress : s.city;
     pushFeed(s.id, key, arg, SCOL[s.status], s.sdAt || new Date());
   });
