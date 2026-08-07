@@ -2786,6 +2786,7 @@ const SHIPDAY = {
   PICKED_UP:                  ['out',        55],
   ORDER_ONTHEWAY:             ['out',        70],
   READY_TO_DELIVER:           ['out',        70],
+  ORDER_POD_UPLOAD:           ['delivered', 100],
   ORDER_COMPLETED:            ['delivered', 100],
   ALREADY_DELIVERED:          ['delivered', 100],
   ORDER_FAILED:               ['exception',   0],
@@ -2816,9 +2817,11 @@ function safeShot(u) {
     return ok ? x.href : null;
   } catch (e) { return null; }
 }
-/* La plataforma mete firma y fotos en el mismo arreglo y las separa por el
-   nombre del bucket en la ruta. Reconocemos la firma ahi. */
-const isSig = u => /\/qt\.com\.dashboard\.order\.signature\//i.test(String(u));
+/* VERIFICADO 7 ago 2026 con datos reales: el bucket llamado
+   "...order.signature" contiene las FOTOS de entrega, no las firmas. El
+   nombre miente. No se clasifica nada por la ruta. Todo lo que llegue en
+   podUrls se trata como foto; la firma solo se muestra si llega en un
+   campo propio y explicito. */
 /* Firestore puede mandar Timestamp o string ISO. Aceptamos ambos y
    descartamos fechas invalidas en vez de propagar NaN a la UI. */
 function toDate(v) {
@@ -2847,9 +2850,10 @@ function mapBooking(b) {
   /* Coordenadas reales del webhook. null explicito, nunca 0: (0,0) es un
      punto valido en el Atlantico y pintaria el nodo fuera de California. */
   const num = v => (typeof v === 'number' && isFinite(v) && Math.abs(v) > 0.01) ? v : null;
-  const pod = Array.isArray(b.podUrls) ? b.podUrls.map(safeShot).filter(Boolean) : [];
-  const shots = pod.filter(u => !isSig(u)).slice(0, 8);
-  const sigUrl = safeShot(b.signatureUrl || b.podSignature) || pod.find(isSig) || null;
+  const shots = Array.isArray(b.podUrls)
+    ? b.podUrls.map(safeShot).filter(Boolean).slice(0, 8)
+    : [];
+  const sigUrl = safeShot(b.signatureUrl || b.podSignature);
 
   return {
     id: b.trackingId || b.id || ('BRG-' + String(created.getTime()).slice(-5)),
