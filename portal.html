@@ -2738,7 +2738,29 @@ function onSession(user, profile, bookings) {
 
 /* Preguntamos al servidor, no al navegador. Un cliente normal recibe
    permission-denied y la seccion Admin nunca se monta. */
+/* Esconde la seccion Admin y borra cualquier rastro en pantalla.
+   Se llama ANTES de cada sonda y en cada cambio de sesion. Antes esto
+   no existia: probeAdmin solo sabia mostrar, nunca esconder, asi que la
+   seccion sobrevivia a un cierre de sesion y aparecia en la sesion del
+   cliente siguiente. Los datos nunca se filtraron (las reglas los
+   negaron) pero el cliente veia que existe un panel de administracion. */
+function hideAdminUI() {
+  ACCTS = [];
+  const sec = el('adminSec'), tab = el('adminTab');
+  if (sec) sec.hidden = true;
+  if (tab) tab.hidden = true;
+  const mount = el('acctMount');
+  if (mount) mount.textContent = '';
+  const b = el('bAcct');
+  if (b) { b.textContent = '0'; b.classList.remove('on'); }
+  // Si estaba viendo el panel, sacarlo de ahi.
+  try { if (window.S && S.view === 'accounts') go('live'); } catch (e) {}
+}
+window.hideAdminUI = hideAdminUI;
+
 async function probeAdmin() {
+  // Partimos de oculto SIEMPRE. Solo un permiso real lo abre.
+  hideAdminUI();
   if (!window._bridgListClients) return;
   try {
     const rows = await window._bridgListClients();
@@ -2750,7 +2772,7 @@ async function probeAdmin() {
     renderAccts();
   } catch (e) {
     // No es admin. Silencio: ni seccion, ni pista de que exista.
-    ACCTS = [];
+    hideAdminUI();
   }
 }
 
@@ -3138,6 +3160,10 @@ function killBookings() {
 
 onAuthStateChanged(auth, async (user) => {
   killBookings();
+  // Cada cambio de sesion borra el estado de admin de la pantalla. Sin
+  // esto, la seccion Admin sobrevivia al logout y la veia el cliente
+  // que entrara despues en la misma pestaña.
+  try { if (window.hideAdminUI) window.hideAdminUI(); } catch (e) {}
   if (!user) { if (!window.S.demo) window.leaveDemo(); return; }
 
   let profile = null;
