@@ -752,6 +752,11 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
         <span data-lang="en">Tickets</span><span data-lang="es">Reportes</span>
       </a>
       <div class="rail-sec" id="adminSec" hidden>Admin</div>
+      <a href="#" class="tab" data-view="dispatch" id="dispTab" hidden>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17h2l2-9h9l2 5h3v4h-2"/><circle cx="7.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/></svg></span>
+        <span data-lang="en">Send to dispatch</span><span data-lang="es">Enviar a despacho</span>
+        <span class="bdg hot" id="bDisp">0</span>
+      </a>
       <a href="#" class="tab" data-view="accounts" id="adminTab" hidden>
         <span class="ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span>
         <span data-lang="en">Account review</span><span data-lang="es">Revisar cuentas</span>
@@ -975,6 +980,21 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
       </div>
 
       <div id="acctMount"></div>
+    </section>
+
+    <section class="view" id="v-dispatch">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Send to dispatch</h1>
+          <h1 data-lang="es">Enviar a despacho</h1>
+          <p class="sub" data-lang="en">Requests you have already priced and agreed with the client. Sending verifies both addresses and creates the delivery. Nothing here has been dispatched yet.</p>
+          <p class="sub" data-lang="es">Solicitudes que ya cotizaste y acordaste con el cliente. Al enviar se verifican las dos direcciones y se crea la entrega. Nada de aquí se ha despachado todavía.</p>
+        </div>
+        <button class="btn" onclick="loadDispatch()">
+          <span data-lang="en">Refresh</span><span data-lang="es">Actualizar</span>
+        </button>
+      </div>
+      <div id="dispMount"></div>
     </section>
 
   </main>
@@ -1509,6 +1529,7 @@ function renderView() {
   else if (S.view === 'docs') renderDocs();
   else if (S.view === 'support') renderTk();
   else if (S.view === 'accounts') { if (!ACCTS.length) loadAccounts(); else renderAccts(); }
+  else if (S.view === 'dispatch') { if (!DISP.length) loadDispatch(); else renderDisp(); }
 }
 
 /* ── Account review (admin only) ─────────────────────────────
@@ -1516,6 +1537,117 @@ function renderView() {
    El acceso lo decide Firestore. Intentamos leer la coleccion; si las
    reglas lo permiten, eres admin. Si no, la seccion no existe. */
 let ACCTS = [], ACCT_TAB = 'pending';
+let DISP = [];
+
+/* ── Enviar a despacho (solo admin) ─────────────────────────────
+   Kerry negocia primero y despacha despues. El boton llama a una
+   Cloud Function que verifica las dos direcciones y crea la
+   entrega. Si una direccion no resuelve a un punto real, la
+   funcion se niega y aqui se muestra el motivo: es mejor saberlo
+   antes de que haya un conductor asignado.
+   Nada de esto es un control de seguridad: quien quiera puede
+   revelar este panel con las herramientas del navegador. Lo que
+   protege de verdad es que la funcion exige el correo de admin y
+   las reglas niegan los datos. Esto solo evita mostrar de mas.  */
+
+async function loadDispatch() {
+  const mount = el('dispMount');
+  if (!window._bridgListPending) { if (mount) mount.textContent = ''; return; }
+  if (mount) mount.innerHTML = '<div class="empty">' +
+    (L() === 'es' ? 'Cargando…' : 'Loading…') + '</div>';
+  try {
+    DISP = (await window._bridgListPending()) || [];
+  } catch (e) {
+    DISP = [];
+    if (mount) mount.innerHTML = '<div class="empty">' +
+      (L() === 'es' ? 'No se pudo cargar.' : 'Could not load.') + '</div>';
+    return;
+  }
+  DISP.sort((a, b) => String(a.pickupAt || '').localeCompare(String(b.pickupAt || '')));
+  renderDisp();
+  renderBadges();
+}
+
+function renderDisp() {
+  const mount = el('dispMount');
+  if (!mount) return;
+  const es = L() === 'es';
+  mount.textContent = '';
+
+  if (!DISP.length) {
+    mount.innerHTML = '<div class="empty">' +
+      (es ? 'Nada esperando despacho.' : 'Nothing waiting for dispatch.') + '</div>';
+    return;
+  }
+
+  DISP.forEach(r => {
+    const row = document.createElement('div'); row.className = 'acct-row';
+
+    const grow = document.createElement('div'); grow.className = 'grow';
+    const co = document.createElement('div'); co.className = 'co';
+    co.textContent = r.trackingId + (r.po ? '  ·  ' + r.po : '');
+    const meta = document.createElement('div'); meta.className = 'meta';
+    let when = '';
+    if (r.pickupAt) { const dt = new Date(r.pickupAt); if (!isNaN(dt)) when = dt.toLocaleString(); }
+    meta.textContent =
+      (r.pickupName ? r.pickupName + ' — ' : '') + (r.pickup || '') + '\n' +
+      '→ ' + (r.dropoff || '') + '\n' +
+      (r.siteContact || '') + (r.sitePhone ? '  ·  ' + r.sitePhone : '') +
+      (when ? '  ·  ' + when : '') +
+      (r.fragile ? (es ? '  ·  FRAGIL' : '  ·  FRAGILE') : '');
+    grow.appendChild(co); grow.appendChild(meta);
+
+    const acts = document.createElement('div'); acts.className = 'acts';
+    const btn = document.createElement('button');
+    btn.className = 'acct-mini ok';
+    btn.textContent = es ? 'Enviar' : 'Send';
+    btn.onclick = () => doDispatch(r, btn, meta);
+    acts.appendChild(btn);
+
+    row.appendChild(grow); row.appendChild(acts);
+    mount.appendChild(row);
+  });
+}
+
+async function doDispatch(r, btn, meta) {
+  const es = L() === 'es';
+  if (!window._bridgDispatch) return;
+
+  const ok = window.confirm(es
+    ? 'Crear la entrega de ' + r.trackingId + ' en la plataforma de despacho?\n\n' +
+      'Se verifican las direcciones y se crea la orden. Esto no se puede deshacer desde aqui.'
+    : 'Create the delivery for ' + r.trackingId + ' in the dispatch platform?\n\n' +
+      'Both addresses get verified and the order is created. This cannot be undone from here.');
+  if (!ok) return;
+
+  btn.disabled = true;
+  btn.textContent = es ? 'Enviando…' : 'Sending…';
+
+  try {
+    const res = await window._bridgDispatch(r.id);
+    toast(es ? 'Despachada' : 'Dispatched',
+          r.trackingId + ' — ' + (es ? 'orden ' : 'order ') + (res && res.orderId ? res.orderId : ''),
+          'ok');
+    DISP = DISP.filter(x => x.id !== r.id);
+    renderDisp(); renderBadges();
+  } catch (e) {
+    // El mensaje viene de la funcion y explica QUE fallo: una
+    // direccion que solo resuelve a la ciudad, un campo faltante,
+    // o la plataforma caida. Se muestra tal cual.
+    const msg = (e && e.message) ? String(e.message) : (es ? 'Fallo el envio.' : 'Send failed.');
+    toast(es ? 'No se despacho' : 'Not dispatched', msg, 'bad');
+    if (meta) {
+      const w = document.createElement('div');
+      w.className = 'meta';
+      w.style.color = '#c0392b';
+      w.textContent = msg;
+      meta.appendChild(w);
+    }
+    btn.disabled = false;
+    btn.textContent = es ? 'Reintentar' : 'Retry';
+  }
+}
+window.loadDispatch = loadDispatch;
 
 function acctStatus(d) {
   const s = (d && d.status) || 'pending';
@@ -1648,6 +1780,8 @@ function renderBadges() {
   const done = SHIPMENTS.filter(x => x.status === 'delivered').length;
   const set = (id, n) => { const e = el(id); e.textContent = n; e.style.display = n ? 'grid' : 'none'; };
   set('bCal', tdy); set('bShip', active); set('bExc', exc); set('bDocs', done);
+  const bd = el('bDisp');
+  if (bd) { const n2 = DISP.length; bd.textContent = n2; bd.style.display = n2 ? 'grid' : 'none'; }
   const un = NOTES.filter(n => !n.read).length;
   el('noteCt').textContent = un;
   el('noteCt').style.display = un ? 'grid' : 'none';
@@ -2844,6 +2978,10 @@ function hideAdminUI() {
   const sec = el('adminSec'), tab = el('adminTab');
   if (sec) sec.hidden = true;
   if (tab) tab.hidden = true;
+  DISP = [];
+  const dtab = el('dispTab'); if (dtab) dtab.hidden = true;
+  const dmount = el('dispMount'); if (dmount) dmount.textContent = '';
+  const dbdg = el('bDisp'); if (dbdg) { dbdg.textContent = '0'; dbdg.classList.remove('on'); }
   const mount = el('acctMount');
   if (mount) mount.textContent = '';
   const b = el('bAcct');
@@ -2863,6 +3001,8 @@ async function probeAdmin() {
     ACCTS.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
     const sec = el('adminSec'), tab = el('adminTab');
     if (sec) sec.hidden = false;
+    const dt = el('dispTab'); if (dt) dt.hidden = false;
+    loadDispatch();
     if (tab) tab.hidden = false;
     renderAccts();
   } catch (e) {
@@ -3094,6 +3234,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-functions.js";
 
 const app = initializeApp({
   apiKey:"AIzaSyDu7ZC8OOWR6H3EnnNcumFp9aYHf9Wf2e4",
@@ -3233,6 +3374,47 @@ window._bridgListClients = async () => {
   qs.forEach(d => out.push(Object.assign({ id: d.id }, d.data())));
   return out;
 };
+/* Reservas listas para despachar: el cliente ya las pidio, Kerry ya
+   negocio, y todavia no existen en la plataforma de despacho.
+   Solo el admin puede listar bookings; para un cliente esta consulta
+   la niegan las reglas y el panel queda vacio. */
+window._bridgListPending = async () => {
+  if (!auth.currentUser) return [];
+  const q = query(collection(db, 'bookings'), where('status', '==', 'scheduled'));
+  const snap = await getDocs(q);
+  const out = [];
+  snap.forEach(d => {
+    const v = d.data() || {};
+    // Ya despachada: fuera. Es la misma proteccion que tiene la
+    // funcion, repetida aqui solo para no ofrecer el boton.
+    if (v.shipdayOrderId) return;
+    out.push({
+      id: d.id,
+      trackingId: v.trackingId || '',
+      po: v.po || '',
+      pickup: v.pickup || '',
+      pickupName: v.pickupName || '',
+      dropoff: v.dropoff || '',
+      siteContact: v.siteContact || '',
+      sitePhone: v.sitePhone || '',
+      pickupAt: v.pickupAt || '',
+      fragile: !!v.fragile,
+      weight: v.weight || 0
+    });
+  });
+  return out;
+};
+
+/* Llama a la Cloud Function. Devuelve el resultado o lanza el
+   mensaje de la funcion tal cual, que es el que explica el motivo. */
+const _fns = getFunctions(app, 'us-central1');
+const _dispatchCall = httpsCallable(_fns, 'dispatchBooking');
+
+window._bridgDispatch = async (bookingId) => {
+  const r = await _dispatchCall({ bookingId: bookingId });
+  return r && r.data;
+};
+
 window._bridgSetClientStatus = async (uid, status) => {
   await updateDoc(doc(db, 'clients', uid), {
     status: status,
