@@ -1025,12 +1025,28 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
         </div>
       </div>
       <div class="field">
+        <label for="sFromName" data-lang="en">Pickup location name</label><label for="sFromName" data-lang="es">Nombre del lugar de recogida</label>
+        <input type="text" id="sFromName" maxlength="120" data-ph-en="Store, supply house or yard" data-ph-es="Tienda, proveedor o depósito"/>
+      </div>
+      <div class="field">
         <label for="sFrom" data-lang="en">Pickup address</label><label for="sFrom" data-lang="es">Dirección de recogida</label>
-        <input type="text" id="sFrom" data-ph-en="Store, supply house or yard" data-ph-es="Tienda, proveedor o depósito"/>
+        <input type="text" id="sFrom" maxlength="200" data-ph-en="Street number and street, city, state ZIP" data-ph-es="Número y calle, ciudad, estado ZIP"/>
       </div>
       <div class="field">
         <label for="sTo" data-lang="en">Delivery address</label><label for="sTo" data-lang="es">Dirección de entrega</label>
-        <input type="text" id="sTo" data-ph-en="Job site" data-ph-es="Obra"/>
+        <input type="text" id="sTo" maxlength="200" data-ph-en="Street number and street, city, state ZIP" data-ph-es="Número y calle, ciudad, estado ZIP"/>
+        <p class="hint" data-lang="en">A full street address. A city name alone cannot be delivered to.</p>
+        <p class="hint" data-lang="es">Dirección completa con número. A una ciudad sola no se puede entregar.</p>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="sSiteName" data-lang="en">Who receives on site</label><label for="sSiteName" data-lang="es">Quién recibe en la obra</label>
+          <input type="text" id="sSiteName" maxlength="120" data-ph-en="Foreman or superintendent" data-ph-es="Capataz o residente"/>
+        </div>
+        <div class="field">
+          <label for="sSitePhone" data-lang="en">Site phone</label><label for="sSitePhone" data-lang="es">Teléfono en la obra</label>
+          <input type="tel" id="sSitePhone" maxlength="20" data-ph-en="(818) 555-0100" data-ph-es="(818) 555-0100"/>
+        </div>
       </div>
 
       <div class="field">
@@ -1281,6 +1297,17 @@ const T = {
   tBundle:['Bundling PODs','Agrupando PODs'],
   tBundleP:['signed delivery records queued as one PDF.','registros firmados en un solo PDF.'],
   tAddr:['Two addresses needed','Faltan dos direcciones'],
+  tStreet:['Street address needed','Falta la dirección exacta'],
+  tStreetP:['Include the street number and street name, not just the city. A driver cannot deliver to a city.',
+            'Incluye el número y el nombre de la calle, no solo la ciudad. Un conductor no puede entregar a una ciudad.'],
+  tContact:['Site contact needed','Falta el contacto de la obra'],
+  tContactP:['We need the name and phone of whoever receives the load on site.',
+             'Necesitamos el nombre y teléfono de quien recibe la carga en la obra.'],
+  tPhoneBad:['Check the phone number','Revisa el teléfono'],
+  tPhoneBadP:['Enter a 10-digit US phone number.','Ingresa un teléfono de 10 dígitos.'],
+  tSaveFail:['Request not saved','La solicitud no se guardó'],
+  tSaveFailP:['Nothing was recorded. Check your connection and try again.',
+              'No se registró nada. Revisa tu conexión e intenta de nuevo.'],
   tAddrP:['Add both the pickup and the delivery address.','Agrega la dirección de recogida y la de entrega.'],
   tReq:['Pickup requested','Recogida solicitada'],
   tReqP:['A person reviews it and confirms the price before dispatch.','Una persona la revisa y confirma el precio antes de despachar.'],
@@ -2134,15 +2161,76 @@ function closeAll(keepScrim) {
   closePops();
 }
 function openSchedule(dstr) { el('sDate').value = dstr || iso(TODAY); openModal('mSched'); }
-function submitSchedule() {
+/* Una direccion utilizable empieza con un numero y trae al menos un
+   nombre de calle. "Santa Clarita" no pasa: un conductor no puede
+   entregar a una ciudad, y una entrega sin direccion verificable es una
+   disputa de reembolso esperando a pasar. Esta es la primera capa; la
+   segunda es la geocodificacion en el servidor al despachar. */
+function looksLikeStreet(v) {
+  const s = String(v || '').trim();
+  if (s.length < 8) return false;
+  if (!/\d/.test(s)) return false;              // sin ningun numero, no
+  if (!/^\s*\d+[\wÀ-ÿ\-\/]*\s+\S+/.test(s)) return false; // numero + algo
+  return /[A-Za-zÀ-ÿ]{3}/.test(s);              // y letras de verdad
+}
+
+/* Telefono de EE.UU. a 10 digitos. Devuelve formato E.164 o null. */
+function normPhone(v) {
+  const d = String(v || '').replace(/\D/g, '');
+  if (d.length === 10) return '+1' + d;
+  if (d.length === 11 && d[0] === '1') return '+' + d;
+  return null;
+}
+
+/* ID de rastreo sin colisiones.
+   Antes: 'BRG-' + azar entre 24900 y 24999 = cien valores posibles. Con
+   order_number == trackingId en la plataforma de despacho, dos reservas
+   con el mismo numero significan que la prueba de entrega de una aparece
+   en la otra. Ya ocurrio en la reserva numero cuatro (BRG-24991 repetida).
+   Ahora: base36 del reloj en milisegundos + 3 caracteres aleatorios.
+   El tiempo lo hace creciente y unico por milisegundo; el sufijo cubre
+   dos reservas en el mismo milisegundo. */
+function newTrackingId() {
+  const t36 = Date.now().toString(36).toUpperCase();
+  let r = '';
+  const AB = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sin O/0/I/1, se confunden
+  try {
+    const b = new Uint8Array(4);
+    crypto.getRandomValues(b);
+    for (const x of b) r += AB[x % AB.length];
+  } catch (e) {
+    for (let i = 0; i < 4; i++) r += AB[Math.floor(Math.random() * AB.length)];
+  }
+  return 'BRG-' + t36.slice(-6) + r;
+}
+
+async function submitSchedule() {
+  const fromName = el('sFromName').value.trim();
   const from = el('sFrom').value.trim(), to = el('sTo').value.trim();
+  const siteName = el('sSiteName').value.trim();
+  const sitePhoneRaw = el('sSitePhone').value.trim();
+
   if (!from || !to) return toast(t('tAddr'), t('tAddrP'), 'bad');
+  if (!looksLikeStreet(from) || !looksLikeStreet(to))
+    return toast(t('tStreet'), t('tStreetP'), 'bad');
+  if (!fromName || !siteName || !sitePhoneRaw)
+    return toast(t('tContact'), t('tContactP'), 'bad');
+  const sitePhone = normPhone(sitePhoneRaw);
+  if (!sitePhone) return toast(t('tPhoneBad'), t('tPhoneBadP'), 'bad');
+
   const frag = el('sCargo').value === 'fragile';
   const at = new Date(el('sDate').value + 'T' + (el('sTime').value || '09:00'));
   const miles = int(8, 40), base = 48 + miles * 2.35, sur = frag ? Math.round(base * 0.34) : 0;
   const s = {
-    id: 'BRG-' + int(24900, 24999), ref: 'PO-' + int(1000, 9999),
-    origin: from, city: to.split(',')[0] || to,
+    id: newTrackingId(), ref: 'PO-' + int(1000, 9999),
+    fromName: fromName, siteName: siteName, sitePhone: sitePhone,
+    origin: from,
+    // La direccion de entrega completa. Antes se guardaba
+    // to.split(',')[0], asi que "1234 Main St, Simi Valley, CA 93065"
+    // se convertia en "1234 Main St" y se perdian ciudad, estado y ZIP:
+    // inservible para enrutar un conductor o para geocodificar.
+    dest: to,
+    city: (to.split(',')[1] || to.split(',')[0] || to).trim(),
     consignee: L() === 'es' ? 'Por confirmar' : 'To be confirmed',
     cargo: frag ? ['Fragile materials, to be verified', 'Materiales frágiles, por verificar']
                 : ['Building materials, to be verified', 'Materiales de construcción, por verificar'],
@@ -2154,6 +2242,14 @@ function submitSchedule() {
     rate: Math.round(base + sur), surcharge: sur, signedBy: null,
     notes: el('sNotes').value.trim()
   };
+  /* Guardar PRIMERO, confirmar despues. Antes se mostraba la reserva en
+     la lista y se decia "Pickup requested" antes de saber si la escritura
+     habia pasado; si Firestore la rechazaba, el error solo iba a la
+     consola. El cliente veia su solicitud, se iba tranquilo, y esa
+     recogida no existia en ningun lado. */
+  const saved = await window.saveBooking(s);
+  if (!saved) return toast(t('tSaveFail'), t('tSaveFailP'), 'bad');
+
   SHIPMENTS.unshift(s);
   closeAll();
   toast(t('tReq'), s.id + ' — ' + t('tReqP'), 'ok');
@@ -2161,9 +2257,8 @@ function submitSchedule() {
   NOTES.unshift({ read: false, color: SCOL.scheduled, ship: s.id,
     title: [s.id + ' requested', s.id + ' solicitado'],
     body: ['Waiting on driver assignment.', 'Esperando asignación de conductor.'], when: new Date() });
-  ['sFrom', 'sTo', 'sNotes', 'sWeight'].forEach(i => el(i).value = '');
+  ['sFromName','sFrom','sTo','sSiteName','sSitePhone','sNotes','sWeight'].forEach(i => el(i).value = '');
   renderNotes(); renderKpis(); renderMap(); renderCal(); renderTable(); renderBadges();
-  window.saveBooking(s);
 }
 function openTicket(shipId) {
   el('tkShip').innerHTML = SHIPMENTS.slice(0, 20).map(s =>
@@ -3204,13 +3299,20 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 /* Persist a new pickup request to the same collection the site writes to. */
+/* Devuelve true solo si Firestore acepto la escritura. Quien llama
+   decide si confirmar al cliente. */
 window.saveBooking = async (s) => {
-  if (!auth.currentUser) return;
+  if (!auth.currentUser) return false;
   try {
     await addDoc(collection(db, 'bookings'), {
       uid: auth.currentUser.uid,
       trackingId: s.id, po: s.ref,
-      pickup: s.origin, dropoff: s.city,
+      pickup: s.origin,
+      pickupName: s.fromName || '',
+      dropoff: s.dest || s.city,
+      dropoffCity: s.city || '',
+      siteContact: s.siteName || '',
+      sitePhone: s.sitePhone || '',
       vehicle: s.vehicle, weight: s.weight,
       fragile: s.fragile, notes: s.notes,
       pickupAt: s.pickAt.toISOString(),
@@ -3218,7 +3320,11 @@ window.saveBooking = async (s) => {
       source: 'client portal',
       createdAt: new Date().toISOString()
     });
-  } catch(e){ console.warn('booking save failed:', e && e.message); }
+    return true;
+  } catch(e){
+    console.warn('booking save failed:', (e && e.code) || (e && e.message));
+    return false;
+  }
 };
 </script>
 </body>
