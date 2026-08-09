@@ -432,6 +432,112 @@ window._bridgSaveDriver = (data) => addDoc(collection(db,'driverApplications'), 
           <option value="other">Other / Otro</option>
         </select>
       </div>
+            <div class="fg" style="margin-top:1.4rem">
+        <label data-lang="en">Safety gear you already own</label><label data-lang="es">Equipo de seguridad que ya tienes</label>
+        <p style="font-size:.76rem;color:#686868;margin-top:.3rem;line-height:1.5" data-lang="en">Mark everything you own. Many job sites require specific gear before a driver is allowed on the property — this tells us which deliveries you can take.</p>
+        <p style="font-size:.76rem;color:#686868;margin-top:.3rem;line-height:1.5" data-lang="es">Marca todo lo que tengas. Muchas obras exigen equipo especifico para dejar entrar a un conductor — esto nos dice cuales entregas puedes tomar.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem" id="gearGroup">
+          <label class="avail-chip" onclick="toggleChip(this,'hi_vis')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Hi-vis vest</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Chaleco reflectivo</span>
+            <input type="checkbox" name="gear" value="hi_vis" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'safety_toe_boots')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Safety-toe boots</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Botas con casquillo</span>
+            <input type="checkbox" name="gear" value="safety_toe_boots" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'work_boots')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Work boots</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Botas de trabajo</span>
+            <input type="checkbox" name="gear" value="work_boots" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'gloves')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Work gloves</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Guantes de trabajo</span>
+            <input type="checkbox" name="gear" value="gloves" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'safety_glasses')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Safety glasses</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Lentes de seguridad</span>
+            <input type="checkbox" name="gear" value="safety_glasses" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'hard_hat')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Hard hat</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Casco</span>
+            <input type="checkbox" name="gear" value="hard_hat" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'mask')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Dust mask / respirator</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Mascarilla / respirador</span>
+            <input type="checkbox" name="gear" value="mask" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'ear_protection')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Ear protection</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Proteccion auditiva</span>
+            <input type="checkbox" name="gear" value="ear_protection" style="display:none"/>
+          </label>
+        </div>
+        <label style="margin-top:1.1rem;display:block" data-lang="en">Load-securing equipment you own</label><label style="margin-top:1.1rem;display:block" data-lang="es">Equipo para asegurar la carga que ya tienes</label>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem">
+          <label class="avail-chip" onclick="toggleChip(this,'cones')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Traffic cones</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Conos</span>
+            <input type="checkbox" name="gear" value="cones" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'flags')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Safety flags</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Banderas de seguridad</span>
+            <input type="checkbox" name="gear" value="flags" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'straps')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Ratchet straps / tie-downs</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Amarres / cinchos</span>
+            <input type="checkbox" name="gear" value="straps" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'blankets')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Moving blankets / pads</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Cobijas de mudanza</span>
+            <input type="checkbox" name="gear" value="blankets" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'dolly')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Hand truck / dolly</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Diablito</span>
+            <input type="checkbox" name="gear" value="dolly" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'tarp')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Tarp</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Lona</span>
+            <input type="checkbox" name="gear" value="tarp" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'bungee')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Bungee cords</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Ligas de amarre</span>
+            <input type="checkbox" name="gear" value="bungee" style="display:none"/>
+          </label>
+          <label class="avail-chip" onclick="toggleChip(this,'ramp')" style="display:flex;align-items:center;gap:.6rem;cursor:pointer;padding:.7rem 1.1rem;border:1px solid #3a3a3a;transition:all .2s;user-select:none">
+            <span class="chip-dot" style="display:inline-block;width:14px;height:14px;border-radius:0;border:2px solid #686868;flex-shrink:0;transition:all .2s"></span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="en">Loading ramp</span>
+            <span style="font-size:.8rem;color:#a5a5a5" data-lang="es">Rampa de carga</span>
+            <input type="checkbox" name="gear" value="ramp" style="display:none"/>
+          </label>
+        </div>
+      </div>
       <div class="fg">
         <label data-lang="en">Anything else you want us to know?</label><label data-lang="es">Algo mas que quieras que sepamos?</label>
         <textarea id="extraNotes" placeholder="Optional / Opcional..." style="min-height:80px"></textarea>
@@ -563,6 +669,9 @@ function submitApp(){
   btn.disabled=true;
 
   const avail=[...document.querySelectorAll("input[name=avail]:checked")].map(i=>i.value).join(", ")||"N/A";
+  /* Equipo que el conductor ya tiene. Acotado a 400 para no pasar el
+     limite que imponen las reglas: si se pasa, la escritura se rechaza. */
+  const gear=[...document.querySelectorAll("input[name=gear]:checked")].map(i=>i.value).join(", ").slice(0,400)||"none";
   const violations=document.querySelector("input[name=violations]:checked")?.value||"N/A";
   const prior=document.querySelector("input[name=frayt]:checked")?.value||"no";
 
@@ -589,6 +698,7 @@ function submitApp(){
     availability: avail,
     experience:   document.getElementById("experience").value,
     priorPlatform: prior,
+    gear:         gear,
     hearAbout:    document.getElementById("hearAbout").value,
     notes:        document.getElementById("extraNotes").value.trim() || "N/A",
     status:       "new",
