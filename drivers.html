@@ -98,8 +98,36 @@ body.es [data-lang="en"]{display:none}
 .legal-row a:hover{color:#FF640D}
 .fcred{font-family:'DM Sans',sans-serif;font-size:.58rem;letter-spacing:.1em;color:#4A4A50;line-height:1.9}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>try{ if(window.emailjs) emailjs.init("y_YEy-1NESu9cr3wt"); }catch(e){ console.warn("emailjs unavailable"); }</script>
+<script type="module">
+/* La aplicacion se guarda en Firestore y el servidor avisa por correo al
+   ver el documento nuevo. No hay servicio de correo en el navegador ni
+   llave de correo expuesta en esta pagina.
+
+   App Check es obligatorio: esta el unico formulario de todo el sitio que
+   escribe SIN cuenta, y App Check es lo que exige que la escritura venga
+   de un navegador real en el dominio de Bridg. */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
+
+const fbApp = initializeApp({
+  apiKey:"AIzaSyDu7ZC8OOWR6H3EnnNcumFp9aYHf9Wf2e4",
+  authDomain:"bridg-connects.firebaseapp.com",
+  projectId:"bridg-connects",
+  storageBucket:"bridg-connects.firebasestorage.app",
+  messagingSenderId:"369949143389",
+  appId:"1:369949143389:web:a2098909557e15e69178b4"
+});
+try{
+  initializeAppCheck(fbApp, {
+    provider: new ReCaptchaV3Provider("6Lfjz2YtAAAAAHnuivJ87A0p_BD0_-3AzjJaOYXN"),
+    isTokenAutoRefreshEnabled: true
+  });
+}catch(e){ console.warn("App Check init skipped:", e && e.message); }
+
+const db = getFirestore(fbApp);
+window._bridgSaveDriver = (data) => addDoc(collection(db,'driverApplications'), data);
+</script>
 </head>
 <body>
 
@@ -360,7 +388,7 @@ body.es [data-lang="en"]{display:none}
         </div>
       </div>
       <div class="fg">
-        <label data-lang="en">Worked with FRAYT, Curri, or similar?</label><label data-lang="es">Trabajaste con FRAYT, Curri o similares?</label>
+        <label data-lang="en">Driven for another delivery platform before?</label><label data-lang="es">Has manejado para otra plataforma de entregas?</label>
         <div class="radio-group horizontal">
           <label class="radio-opt" style="cursor:pointer;padding:.5rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadio('frayt','yes',this)">
             <input type="radio" name="frayt" id="frayt_yes" value="yes" style="display:none"/>
@@ -536,41 +564,54 @@ function submitApp(){
 
   const avail=[...document.querySelectorAll("input[name=avail]:checked")].map(i=>i.value).join(", ")||"N/A";
   const violations=document.querySelector("input[name=violations]:checked")?.value||"N/A";
-  const frayt=document.querySelector("input[name=frayt]:checked")?.value||"no";
-  const name=document.getElementById("firstName").value+" "+document.getElementById("lastName").value;
-  const phone=document.getElementById("driverPhone").value;
-  const email=document.getElementById("driverEmail").value;
-  const city=document.getElementById("driverCity").value;
-  const vtype=document.getElementById("vehicleType").value;
-  const vyear=document.getElementById("vehicleYear").value;
-  const vmodel=document.getElementById("vehicleModel").value||"N/A";
-  const payload=document.getElementById("payload").value;
-  const licState=document.getElementById("licenseState").value;
-  const ins=document.getElementById("insurance").value;
-  const hrs=document.getElementById("hoursWeek").value;
-  const exp=document.getElementById("experience").value;
-  const hear=document.getElementById("hearAbout").value;
-  const notes=document.getElementById("extraNotes").value||"N/A";
+  const prior=document.querySelector("input[name=frayt]:checked")?.value||"no";
 
-  if(!window.emailjs){ alert("Form service temporarily unavailable. Please try again shortly or book a call."); return false; }
-  emailjs.send("service_24ys0gu", "template_7yer4c7", {
-    from_name: name,
-    phone:     phone,
-    pickup:    "DRIVER APPLICATION",
-    dropoff:   city,
-    load_type: vtype+" "+vyear+" "+vmodel+" | Payload: "+payload,
-    window:    hrs+" hrs/week | Availability: "+avail,
-    notes:     "License: "+licState+" | Insurance: "+ins+" | Violations: "+violations+" | Exp: "+exp+" | FRAYT: "+frayt+" | Notes: "+notes,
-    estimate:  "Heard via: "+hear,
-    reply_to:  email
-  }).then(() => {
+  /* Un campo por dato. Antes todo iba apretado dentro del campo de notas
+     de una plantilla de cotizaciones, asi que licencia, seguro y
+     antecedentes llegaban revueltos en un solo parrafo y no se podia
+     buscar ni filtrar nada. Los nombres coinciden exactamente con la
+     lista que permiten las reglas: cualquier otro nombre se rechaza. */
+  const data = {
+    firstName:    document.getElementById("firstName").value.trim(),
+    lastName:     document.getElementById("lastName").value.trim(),
+    phone:        document.getElementById("driverPhone").value.trim(),
+    email:        document.getElementById("driverEmail").value.trim(),
+    city:         document.getElementById("driverCity").value.trim(),
+    vehicleType:  document.getElementById("vehicleType").value,
+    vehicleYear:  document.getElementById("vehicleYear").value,
+    vehicleModel: document.getElementById("vehicleModel").value.trim() || "N/A",
+    payload:      document.getElementById("payload").value,
+    licenseState: document.getElementById("licenseState").value,
+    insurance:    document.getElementById("insurance").value,
+    violations:   violations,
+    bgConsent:    "yes",
+    hoursWeek:    document.getElementById("hoursWeek").value,
+    availability: avail,
+    experience:   document.getElementById("experience").value,
+    priorPlatform: prior,
+    hearAbout:    document.getElementById("hearAbout").value,
+    notes:        document.getElementById("extraNotes").value.trim() || "N/A",
+    status:       "new",
+    createdAt:    new Date().toISOString()
+  };
+
+  if(!window._bridgSaveDriver){
+    alert(es?"El formulario aun esta cargando. Espera unos segundos y vuelve a intentar."
+            :"The form is still loading. Wait a few seconds and try again.");
+    btn.textContent=es?"Enviar Aplicacion":"Submit Application";
+    btn.disabled=false;
+    return false;
+  }
+
+  window._bridgSaveDriver(data).then(() => {
     document.getElementById("successScreen").classList.add("show");
     document.getElementById("successScreen").scrollIntoView({behavior:"smooth"});
     document.getElementById("progress").style.width="100%";
     btn.innerHTML=es?"<span>Enviado!</span>":"<span>Submitted!</span>";
   }).catch(err => {
-    console.error("EmailJS error:", err);
-    alert(es?"Error al enviar. Por favor llama al (661) 507-3816.":"Error sending. Please call (661) 507-3816.");
+    console.error("driverApplications save failed:", err && (err.code || err.message));
+    alert(es?"No se pudo enviar. Escribenos a support@bridgconnects.com o llama al (323) 596-5896."
+            :"Could not send. Email support@bridgconnects.com or call (323) 596-5896.");
     btn.textContent=es?"Enviar Aplicacion":"Submit Application";
     btn.disabled=false;
   });
