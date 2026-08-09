@@ -13,7 +13,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet"/>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root{
   color-scheme: light only;
@@ -591,8 +590,8 @@ footer a:hover{color:var(--orange)}
         <p data-lang="es">El descuento aplica a entregas dentro de 30 millas y solo sobre el cargo de transporte. No aplica a sobrecargos — servicio urgente, espera prolongada, segundo ayudante, rampa hidráulica, ni equipo especial que tu carga requiera. Esos se cobran completos. Esto es un estimado: una persona en Bridg confirma el precio final antes de despachar.</p>
       </div>
       <div class="q-actions">
-        <button class="btn" onclick="qBook(this)" data-lang="en">Book this delivery</button>
-        <button class="btn" onclick="qBook(this)" data-lang="es">Reservar esta entrega</button>
+        <button class="btn" onclick="qBook(this)" data-lang="en">Request this delivery</button>
+        <button class="btn" onclick="qBook(this)" data-lang="es">Solicitar esta entrega</button>
         <a class="btn-o" href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" data-lang="en">Schedule a call</a>
         <a class="btn-o" href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" data-lang="es">Agendar llamada</a>
       </div>
@@ -741,7 +740,6 @@ window.authTab = window.authTab || function(t){
   document.getElementById('aSignup').style.display = t==='signup'?'block':'none';
   document.getElementById('aLogin').style.display = t==='login'?'block':'none';
 };
-try{ if(window.emailjs) emailjs.init({publicKey:"WauOr9Ir9YJ0AwOvJ"}); }catch(e){ console.warn("emailjs init skipped",e); }
 
 window.toggleServe = function(e){
   if(e){ e.stopPropagation(); }
@@ -939,7 +937,7 @@ window.qBook = async function(btn){
   if(!window.CURRENT_USER){ window._pendingBook = true; window.openAuth(); return; }
 
   var d = VEHICLES[curV];
-  var lbl = es ? 'Reservar esta entrega' : 'Book this delivery';
+  var lbl = es ? 'Solicitar esta entrega' : 'Request this delivery';
   btn.textContent = es ? 'Enviando\u2026' : 'Sending\u2026';
   btn.disabled = true;
 
@@ -961,11 +959,16 @@ window.qBook = async function(btn){
   var notApproved = false;
   try{
     if(window._fb){
-      await window._fb.addDoc(window._fb.collection(window._fb.db,'bookings'), {
+      /* Va a quoteRequests, NO a bookings. Una solicitud de precio no es
+         una entrega: la reserva nace en el portal, con direccion de calle
+         verificada y contacto en obra, porque de ahi sale un despacho
+         real. El servidor avisa por correo al ver este documento. */
+      await window._fb.addDoc(window._fb.collection(window._fb.db,'quoteRequests'), {
         uid: window.CURRENT_USER.uid,
         company: (window.CURRENT_PROFILE && window.CURRENT_PROFILE.company) || '',
         contactName: payload.name,
         phone: payload.phone,
+        email: (window.CURRENT_USER && window.CURRENT_USER.email) || '',
         vehicle: es ? d.es : d.en,
         pickup: payload.pickup,
         dropoff: payload.dropoff,
@@ -973,6 +976,7 @@ window.qBook = async function(btn){
         timing: payload.win,
         notes: payload.notes,
         estimate: payload.estimate,
+        source: 'homepage',
         status: 'new',
         createdAt: new Date().toISOString()
       });
@@ -984,32 +988,16 @@ window.qBook = async function(btn){
     console.error('Booking save failed:', code || (err && err.message));
   }
 
-  /* 2. El email es solo notificacion — nunca decide el resultado */
-  if(window.emailjs){
-    emailjs.send("service_24ys0gu","template_7yer4c7",{
-      from_name: payload.name, phone: payload.phone,
-      pickup: payload.pickup, dropoff: payload.dropoff,
-      load_type: notApproved
-        ? 'CUENTA PENDIENTE DE APROBACION \u2014 ' + (es?d.es:d.en) + ' \u00B7 ' + payload.weight
-        : (es?d.es:d.en)+' \u00B7 '+payload.weight,
-      window: payload.win,
-      notes: notApproved
-        ? 'Este cliente intento reservar pero su cuenta no esta aprobada. Email: ' + ((window.CURRENT_USER && window.CURRENT_USER.email) || '') + ' \u2014 ' + payload.notes
-        : payload.notes,
-      estimate: payload.estimate,
-      reply_to:'noreply@bridgconnects.com'
-    }).catch(function(err){
-      console.warn('EmailJS notify failed:', err && (err.text || err.status || err.message));
-    });
-  }
+  /* El aviso por correo lo manda el servidor al ver el documento.
+     Ya no se llama a ningun servicio de correo desde el navegador. */
 
   btn.disabled = false;
   btn.textContent = lbl;
 
   if(saved){
     alert(es
-      ? '\u00A1Solicitud recibida! Qued\u00F3 registrada en tu cuenta. Te contactamos en menos de 15 minutos.'
-      : 'Request received! It is saved to your account. We will contact you within 15 minutes.');
+      ? '\u00A1Solicitud de cotizaci\u00F3n recibida! Te contactamos para confirmar el precio final y agendar la entrega.'
+      : 'Quote request received! We will contact you to confirm the final price and schedule the delivery.');
     closeQuote();
   }else if(notApproved){
     alert(es
