@@ -406,11 +406,11 @@ footer a:hover{color:var(--orange)}
       <div class="v-specs">
         <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 8,000 lbs</b></div>
         <div><span data-lang="en">Extras</span><span data-lang="es">Extras</span><b>Liftgate available</b></div>
-        <div><span data-lang="en">From</span><span data-lang="es">Desde</span><b style="color:var(--orange)">Starting at $225</b></div>
+        <div><span data-lang="en">Pricing</span><span data-lang="es">Precio</span><b style="color:var(--orange)" data-lang="en">Quoted per load</b><b style="color:var(--orange)" data-lang="es">Cotizado por carga</b></div>
       </div>
       <p class="v-fit" data-lang="en">Full pallets, condensers, pipe bundles, bulk orders your fleet can't break away for.</p>
       <p class="v-fit" data-lang="es">Pallets completos, condensadores, tubería, pedidos grandes que tu flota no alcanza a cubrir.</p>
-      <div class="v-go" data-lang="en">Quote this truck →</div><div class="v-go" data-lang="es">Cotizar este camión →</div>
+      <div class="v-go" data-lang="en">Request a quote →</div><div class="v-go" data-lang="es">Pedir cotización →</div>
     </button>
   </div>
   </div>
@@ -560,8 +560,25 @@ footer a:hover{color:var(--orange)}
     </div>
     <div class="fg"><label data-lang="en">What's the cargo?</label><label data-lang="es">¿Qué es la carga?</label><textarea id="qDesc" placeholder="e.g. 30 boxes of flooring, 2 condensers, pipe bundle…"></textarea></div>
 
-    <button class="btn" style="width:100%;margin-top:1.2rem" id="qCalcBtn" onclick="qCalc()" data-lang="en">Calculate my price →</button>
-    <button class="btn" style="width:100%;margin-top:1.2rem" onclick="qCalc()" data-lang="es">Calcular mi precio →</button>
+    <div id="qCalcWrap">
+      <button class="btn" style="width:100%;margin-top:1.2rem" id="qCalcBtn" onclick="qCalc()" data-lang="en">Calculate my price →</button>
+      <button class="btn" style="width:100%;margin-top:1.2rem" onclick="qCalc()" data-lang="es">Calcular mi precio →</button>
+    </div>
+
+    <!-- BOX TRUCK: sin precio automatico. Cada carga se negocia con un
+         transportista con autoridad propia antes de dar un numero. -->
+    <div id="qBoxNote" style="display:none;margin-top:1.3rem;border:1px solid var(--hairline);padding:1.2rem">
+      <div style="font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;margin-bottom:.6rem" data-lang="en">Quoted per load</div>
+      <div style="font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;margin-bottom:.6rem" data-lang="es">Cotizado por carga</div>
+      <p style="font-size:.9rem;color:var(--steel);font-weight:300" data-lang="en">Box truck moves are priced per load — pallet count, liftgate, dock access, and on-site time all change the number. Send us the details and we come back with a firm price, or book a call and we price it with you on the spot.</p>
+      <p style="font-size:.9rem;color:var(--steel);font-weight:300" data-lang="es">Las cargas en box truck se cotizan por carga — el número de paletas, la rampa hidráulica, el acceso al muelle y el tiempo en sitio cambian el precio. Mándanos los detalles y te damos un precio firme, o agenda una llamada y lo cotizamos contigo en el momento.</p>
+      <div class="q-actions">
+        <a class="btn" href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener" data-lang="en">Book a call →</a>
+        <a class="btn" href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" rel="noopener" data-lang="es">Agendar llamada →</a>
+        <button class="btn-o" onclick="qBook(this)" data-lang="en">Send these details</button>
+        <button class="btn-o" onclick="qBook(this)" data-lang="es">Enviar estos datos</button>
+      </div>
+    </div>
 
     <div class="q-est" id="qEst">
       <div class="qe-line"><span data-lang="en">Service base</span><span data-lang="es">Base del servicio</span><b id="eBase">—</b></div>
@@ -570,8 +587,8 @@ footer a:hover{color:var(--orange)}
       <div class="qe-line promo" id="ePromoRow"><span data-lang="en">Launch discount</span><span data-lang="es">Descuento de lanzamiento</span><b id="ePromo">—</b></div>
       <div class="qe-tot"><span data-lang="en">Your estimate</span><span data-lang="es">Tu estimado</span><span class="val" id="eTot">—</span></div>
       <div class="q-fine" id="qFine">
-        <p data-lang="en">Discount applies to deliveries within 30 miles. This is an estimate — a person at Bridg confirms the final price before anything is dispatched.</p>
-        <p data-lang="es">El descuento aplica a entregas dentro de 30 millas. Esto es un estimado — una persona en Bridg confirma el precio final antes de despachar.</p>
+        <p data-lang="en">Discount applies to deliveries within 30 miles and to the transport charge only. It does not apply to surcharges — rush service, extended wait time, a second helper, liftgate, or any special equipment your load requires. Those are billed in full. This is an estimate: a person at Bridg confirms the final price before anything is dispatched.</p>
+        <p data-lang="es">El descuento aplica a entregas dentro de 30 millas y solo sobre el cargo de transporte. No aplica a sobrecargos — servicio urgente, espera prolongada, segundo ayudante, rampa hidráulica, ni equipo especial que tu carga requiera. Esos se cobran completos. Esto es un estimado: una persona en Bridg confirma el precio final antes de despachar.</p>
       </div>
       <div class="q-actions">
         <button class="btn" onclick="qBook(this)" data-lang="en">Book this delivery</button>
@@ -779,7 +796,20 @@ window.openQuote = function(v){
     var art = document.getElementById('qArt');
     if(art) art.innerHTML = '<img src="'+d.art+'" alt="" style="max-width:100%;max-height:60px;object-fit:contain"/>';
     setTxt('qTitle', document.body.className.indexOf('es')>-1 ? d.es : d.en);
-    setTxt('qRates', 'STARTING AT $'+d.start+' \u00B7 '+d.cap);
+
+    /* El box truck no lleva precio de arranque: cada carga se negocia
+       con el transportista antes de dar un numero. Poner "desde $X" en
+       un servicio que se negocia es prometer un piso que no existe. */
+    var esNow = document.body.className.indexOf('es')>-1;
+    if (v === 'box') {
+      setTxt('qRates', (esNow ? 'COTIZADO POR CARGA \u00B7 ' : 'QUOTED PER LOAD \u00B7 ') + d.cap);
+    } else {
+      setTxt('qRates', 'STARTING AT $'+d.start+' \u00B7 '+d.cap);
+    }
+    var calcWrap = document.getElementById('qCalcWrap');
+    var boxNote  = document.getElementById('qBoxNote');
+    if (calcWrap) calcWrap.style.display = (v === 'box') ? 'none' : 'block';
+    if (boxNote)  boxNote.style.display  = (v === 'box') ? 'block' : 'none';
     setTxt('qNameEN', d.nameEN);
     setTxt('qNameES', d.nameES);
     var est = document.getElementById('qEst');
@@ -817,6 +847,18 @@ async function geocode(q){
 }
 window.qCalc = async function(){
   const es = document.body.classList.contains('es');
+
+  /* Segundo candado. El boton ya esta escondido para el box truck, pero
+     si alguien llama esta funcion de otra forma, no debe salir ningun
+     numero: seria un precio que Bridg no puede sostener. */
+  if (curV === 'box') {
+    const bn = document.getElementById('qBoxNote');
+    if (bn) bn.style.display = 'block';
+    const ce = document.getElementById('qEst');
+    if (ce) ce.classList.remove('show');
+    return;
+  }
+
   const name = document.getElementById('qName').value.trim();
   const phone = document.getElementById('qPhone').value.trim();
   const pick = document.getElementById('qPick').value.trim();
@@ -851,15 +893,23 @@ window.qCalc = async function(){
   const rush = document.getElementById('qWin').value==='rush'?35:0;
   const subtotal = base+mileage+loadFee+eco+rush;
 
+  /* Los sobrecargos NO entran en la base del descuento. El rush es un
+     costo real de mover la entrega al frente de la fila; descontarlo
+     seria regalar el costo, no el margen. Lo mismo aplicara a espera
+     prolongada, segundo ayudante y equipo especial cuando existan. */
+  const descuentable = subtotal - rush;
+
   /* DESCUENTO DE LANZAMIENTO.
      Tope por vehiculo: el box truck es carga mayor y se negocia con
      el operador, asi que tiene su propio tope.
      Limite de 30 millas: fuera de ese radio no hay descuento, y la
      linea desaparece del estimado. No se anuncia un descuento que el
      cliente no califica — eso es lo que crea el reclamo. */
-  const promoCap = (curV === 'box') ? 150 : 59.99;
+  /* El descuento solo existe en los vehiculos con tarifa propia y
+     conocida. El box truck se cotiza a mano, asi que ahi no hay
+     descuento automatico que aplicar. */
   const promoRaw = (distMiles <= 30)
-    ? Math.min(promoCap, Math.round(subtotal*0.15*100)/100)
+    ? Math.min(59.99, Math.round(descuentable*0.15*100)/100)
     : 0;
 
   const total = Math.max(d.start, subtotal-promoRaw);
