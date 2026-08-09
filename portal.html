@@ -1226,7 +1226,7 @@ const L = () => document.body.classList.contains('es') ? 'es' : 'en';
 const T = {
   scheduled:['Scheduled','Programado'], transit:['In transit','En tránsito'],
   out:['Out for delivery','En reparto'], delivered:['Delivered','Entregado'],
-  exception:['Needs action','Requiere acción'],
+  exception:['Needs action','Requiere acción'], canceled:['Canceled','Cancelada'],
   allStatus:['All statuses','Todos los estados'], allSvc:['All services','Todos los servicios'],
   allCargo:['All cargo','Toda la carga'], fragileOnly:['Fragile only','Solo frágil'],
   stdOnly:['Standard only','Solo estándar'],
@@ -1400,8 +1400,8 @@ const money = n => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, m
 const esc = x => String(x == null ? '' : x).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const el = id => document.getElementById(id);
 
-const SCLS = { scheduled: 'scheduled', transit: 'transit', out: 'out', delivered: 'delivered', exception: 'exception' };
-const SCOL = { scheduled: '#2563EB', transit: '#A15C07', out: '#FF640D', delivered: '#0B8A4B', exception: '#C4261A' };
+const SCLS = { scheduled: 'scheduled', transit: 'transit', out: 'out', delivered: 'delivered', exception: 'exception', canceled: 'exception' };
+const SCOL = { scheduled: '#2563EB', transit: '#A15C07', out: '#FF640D', delivered: '#0B8A4B', exception: '#C4261A', canceled: '#4A4A50' };
 const KCOL = { pickup: '#2563EB', delivery: '#0B8A4B', hold: '#C4261A' };
 const FLEET = [
   ['suv', 'Large SUV', 'vehicle-suv.png', ['Up to 800 lbs', 'Hasta 800 lbs']],
@@ -1596,14 +1596,50 @@ function renderDisp() {
        y la empresa los escribio el cliente y no deben poder inyectar
        nada en tu panel. */
     const quien = document.createElement('div'); quien.className = 'meta';
-    const contacto = [r.cliName, r.cliPhone, r.cliEmail].filter(Boolean).join('  ·  ');
-    quien.textContent =
-      (contacto || (es ? 'Sin datos de contacto en el perfil'
-                       : 'No contact details on profile')) +
-      (r.cliStatus && r.cliStatus !== 'approved'
-        ? (es ? '\nCUENTA ' + String(r.cliStatus).toUpperCase() + ' — no esta aprobada'
-              : '\nACCOUNT ' + String(r.cliStatus).toUpperCase() + ' — not approved')
-        : '');
+    if (r.cliName) quien.appendChild(document.createTextNode(r.cliName));
+
+    /* Telefono y correo clicables. El href se arma con los caracteres
+       permitidos unicamente: un telefono se reduce a digitos y +, y un
+       correo tiene que pasar la forma de correo. Asi ningun texto del
+       perfil puede convertirse en un enlace que no sea tel: o mailto:. */
+    const telLimpio = String(r.cliPhone || '').replace(/[^0-9+]/g, '');
+    if (telLimpio.length >= 7) {
+      if (r.cliName) quien.appendChild(document.createTextNode('  ·  '));
+      const a1 = document.createElement('a');
+      a1.href = 'tel:' + telLimpio;
+      a1.textContent = r.cliPhone;
+      a1.style.color = 'var(--orange)';
+      quien.appendChild(a1);
+    } else if (r.cliPhone) {
+      quien.appendChild(document.createTextNode('  ·  ' + r.cliPhone));
+    }
+
+    const correo = String(r.cliEmail || '').trim();
+    if (/^[^\s@,;<>"]+@[^\s@,;<>"]+\.[A-Za-z]{2,}$/.test(correo)) {
+      quien.appendChild(document.createTextNode('  ·  '));
+      const a2 = document.createElement('a');
+      a2.href = 'mailto:' + correo;
+      a2.textContent = correo;
+      a2.style.color = 'var(--orange)';
+      quien.appendChild(a2);
+    } else if (correo) {
+      quien.appendChild(document.createTextNode('  ·  ' + correo));
+    }
+
+    if (!r.cliName && !r.cliPhone && !correo) {
+      quien.appendChild(document.createTextNode(es
+        ? 'Sin datos de contacto en el perfil'
+        : 'No contact details on profile'));
+    }
+
+    if (r.cliStatus && r.cliStatus !== 'approved') {
+      const w = document.createElement('div');
+      w.style.color = 'var(--red)';
+      w.textContent = es
+        ? 'CUENTA ' + String(r.cliStatus).toUpperCase() + ' — no esta aprobada'
+        : 'ACCOUNT ' + String(r.cliStatus).toUpperCase() + ' — not approved';
+      quien.appendChild(w);
+    }
 
     const meta = document.createElement('div'); meta.className = 'meta';
     let when = '';
@@ -1622,11 +1658,49 @@ function renderDisp() {
     btn.className = 'acct-mini ok';
     btn.textContent = es ? 'Enviar' : 'Send';
     btn.onclick = () => doDispatch(r, btn, meta);
-    acts.appendChild(btn);
+
+    const rej = document.createElement('button');
+    rej.className = 'acct-mini no';
+    rej.textContent = es ? 'Rechazar' : 'Reject';
+    rej.onclick = () => doReject(r, rej, btn, meta);
+
+    acts.appendChild(btn); acts.appendChild(rej);
 
     row.appendChild(grow); row.appendChild(acts);
     mount.appendChild(row);
   });
+}
+
+/* Rechazar. Confirmacion doble a proposito: el cliente VA A VER que su
+   orden quedo cancelada, asi que no debe pasar por un clic accidental. */
+async function doReject(r, rej, btn, meta) {
+  const es = L() === 'es';
+  if (!window._bridgRejectBooking) return;
+
+  const quien = r.cliCompany || r.cliName || (es ? 'este cliente' : 'this client');
+  const ok = window.confirm(es
+    ? 'Rechazar la orden ' + r.trackingId + ' de ' + quien + '?\n\n' +
+      'El cliente va a ver en su portal que quedo CANCELADA.\n' +
+      'La orden no se borra: queda el registro de lo que pidio.'
+    : 'Reject order ' + r.trackingId + ' from ' + quien + '?\n\n' +
+      'The client will see it marked CANCELED in their portal.\n' +
+      'The order is not deleted: the record of what they asked for stays.');
+  if (!ok) return;
+
+  rej.disabled = true; btn.disabled = true;
+  rej.textContent = es ? 'Rechazando…' : 'Rejecting…';
+
+  try {
+    await window._bridgRejectBooking(r.id);
+    DISP = DISP.filter(x => x.id !== r.id);
+    renderDisp();
+    renderBadges();
+  } catch (e) {
+    rej.disabled = false; btn.disabled = false;
+    rej.textContent = es ? 'Rechazar' : 'Reject';
+    meta.textContent = (es ? 'No se pudo rechazar: ' : 'Could not reject: ') +
+      ((e && (e.code || e.message)) || 'error') + '\n' + meta.textContent;
+  }
 }
 
 async function doDispatch(r, btn, meta) {
@@ -1845,7 +1919,7 @@ let DRAWID = null;
 function renderMap() {
   const m = el('map');
   m.querySelectorAll('.node').forEach(n => n.remove());
-  const live = SHIPMENTS.filter(x => x.status !== 'scheduled').slice(0, 14);
+  const live = SHIPMENTS.filter(x => x.status !== 'scheduled' && x.status !== 'canceled').slice(0, 14);
   let lines = '';
   live.forEach(s => {
     /* Coordenadas reales del webhook proyectadas sobre el marco del sur
@@ -1925,7 +1999,7 @@ function renderFeed() {
 }
 function seedFeed() {
   FEED = [];
-  SHIPMENTS.filter(x => x.status !== 'scheduled').slice(0, 8).forEach((s, i) => FEED.push({
+  SHIPMENTS.filter(x => x.status !== 'scheduled' && x.status !== 'canceled').slice(0, 8).forEach((s, i) => FEED.push({
     id: s.id, color: SCOL[s.status],
     key: s.status === 'delivered' ? 'done' : s.status === 'exception' ? 'raw' : s.status === 'out' ? 'out' : 'loaded',
     arg: s.status === 'delivered' ? recv(s) : s.status === 'exception' ? holdTxt(s) : s.city,
@@ -2109,7 +2183,7 @@ function fillFilters() {
     if (keep) s.value = keep;
   };
   opts('fStatus', [['all', 'allStatus'], ['scheduled', 'scheduled'], ['transit', 'transit'],
-    ['out', 'out'], ['delivered', 'delivered'], ['exception', 'exception']]);
+    ['out', 'out'], ['delivered', 'delivered'], ['exception', 'exception'], ['canceled', 'canceled']]);
   opts('fType', [['all', 'allSvc'], ['ground', 'ground'], ['express', 'express'], ['freight', 'freight']]);
   opts('fCargo', [['all', 'allCargo'], ['fragile', 'fragileOnly'], ['standard', 'stdOnly']]);
   opts('fDays', [['7', 'd7'], ['30', 'd30'], ['90', 'd90'], ['999', 'dAll']]);
@@ -2156,7 +2230,8 @@ function renderTable() {
   el('tableCt').textContent = rs.length + ' ' + t('ofShip') + ' ' + SHIPMENTS.length + ' ' + t('shipments');
   el('tbody').innerHTML = rs.map(s => {
     const barCls = s.status === 'delivered' ? ' ok' : s.status === 'exception' ? ' bad' : '';
-    const etaTxt = s.status === 'delivered' ? t('deliveredAt') + ' ' + fmtTime(s.dropAt)
+    const etaTxt = s.status === 'canceled' ? t('canceled')
+      : s.status === 'delivered' ? t('deliveredAt') + ' ' + fmtTime(s.dropAt)
       : s.status === 'exception' ? t('heldOn') + ' ' + fmtDay(s.dropAt)
       : s.status === 'scheduled' ? t('pickup') + ' ' + fmtDay(s.pickAt)
       : t('eta') + ' ' + fmtTime(s.dropAt);
@@ -3119,7 +3194,7 @@ function mapBooking(b) {
   /* El evento de Shipday manda sobre el campo status del documento. */
   const sd = shipdayState(b.shipdayEvent);
   const raw = sd ? sd[0] : b.status;
-  const st = ['scheduled', 'transit', 'out', 'delivered', 'exception'].includes(raw) ? raw : 'scheduled';
+  const st = ['scheduled', 'transit', 'out', 'delivered', 'exception', 'canceled'].includes(raw) ? raw : 'scheduled';
   const prog = (typeof b.progress === 'number' && isFinite(b.progress))
     ? Math.max(0, Math.min(100, Math.round(b.progress)))
     : (sd ? sd[1] : (st === 'delivered' ? 100 : 0));
@@ -3476,6 +3551,27 @@ const _dispatchCall = httpsCallable(_fns, 'dispatchBooking');
 window._bridgDispatch = async (bookingId) => {
   const r = await _dispatchCall({ bookingId: bookingId });
   return r && r.data;
+};
+
+/* RECHAZAR UNA RESERVA.
+   No borra: marca. Antes, la unica forma de sacar una orden de la cola
+   era despacharla de verdad en la plataforma y cancelarla alla, lo que
+   creaba una entrega real y le mandaba notificaciones al cliente.
+
+   Se marca en lugar de borrar porque el registro es la defensa: si el
+   cliente reclama que si pidio esa entrega, el documento dice que pidio
+   y cuando. Borrarlo seria tirar la propia prueba.
+
+   Solo el admin llega aqui: las reglas permiten update a isAdmin(), y a
+   un cliente le niegan cambiar status en su propia reserva. */
+window._bridgRejectBooking = async (bookingId) => {
+  const email = auth.currentUser ? (auth.currentUser.email || '') : '';
+  await updateDoc(doc(db, 'bookings', bookingId), {
+    status: 'canceled',
+    progress: 0,
+    canceledAt: new Date().toISOString(),
+    canceledBy: email
+  });
 };
 
 window._bridgSetClientStatus = async (uid, status) => {
