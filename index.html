@@ -211,6 +211,8 @@ h2{font-family:var(--FD);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.5rem);li
 .qe-tot .val{color:var(--orange)}
 .q-count{margin-top:1rem;background:var(--orange-soft);border:1px dashed var(--orange);border-radius:0;padding:.9rem 1.1rem;display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
 .q-count p{font-size:.8rem;font-weight:500}
+.q-fine{margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--hairline)}
+.q-fine p{font-size:.74rem;color:var(--steel);font-weight:300;line-height:1.5}
 .q-count .cd{font-family:var(--FM);font-weight:500;font-size:.95rem;color:var(--orange)}
 .q-actions{display:flex;gap:.8rem;margin-top:1.3rem;flex-wrap:wrap}
 .q-actions .btn,.q-actions .btn-o{flex:1;text-align:center;min-width:170px}
@@ -565,12 +567,11 @@ footer a:hover{color:var(--orange)}
       <div class="qe-line"><span data-lang="en">Service base</span><span data-lang="es">Base del servicio</span><b id="eBase">—</b></div>
       <div class="qe-line"><span data-lang="en">Distance</span><span data-lang="es">Distancia</span><b id="eMiles">—</b></div>
       <div class="qe-line"><span data-lang="en">Load &amp; compliance</span><span data-lang="es">Carga y cumplimiento</span><b id="eFees">—</b></div>
-      <div class="qe-line promo"><span data-lang="en">🎉 New client promo</span><span data-lang="es">🎉 Promo cliente nuevo</span><b id="ePromo">—</b></div>
+      <div class="qe-line promo" id="ePromoRow"><span data-lang="en">Launch discount</span><span data-lang="es">Descuento de lanzamiento</span><b id="ePromo">—</b></div>
       <div class="qe-tot"><span data-lang="en">Your estimate</span><span data-lang="es">Tu estimado</span><span class="val" id="eTot">—</span></div>
-      <div class="q-count">
-        <p data-lang="en"><b>This promo price is locked for you.</b> Book a call before it expires:</p>
-        <p data-lang="es"><b>Este precio promo está reservado para ti.</b> Agenda antes de que expire:</p>
-        <span class="cd" id="qCd">72:00:00</span>
+      <div class="q-fine" id="qFine">
+        <p data-lang="en">Discount applies to deliveries within 30 miles. This is an estimate — a person at Bridg confirms the final price before anything is dispatched.</p>
+        <p data-lang="es">El descuento aplica a entregas dentro de 30 millas. Esto es un estimado — una persona en Bridg confirma el precio final antes de despachar.</p>
       </div>
       <div class="q-actions">
         <button class="btn" onclick="qBook(this)" data-lang="en">Book this delivery</button>
@@ -849,29 +850,37 @@ window.qCalc = async function(){
   let eco = distMiles<=15?7:(distMiles<=25?13:15);
   const rush = document.getElementById('qWin').value==='rush'?35:0;
   const subtotal = base+mileage+loadFee+eco+rush;
-  const promo = Math.min(59.99, Math.round(subtotal*0.15*100)/100);
-  const total = Math.max(d.start, subtotal-promo);
+
+  /* DESCUENTO DE LANZAMIENTO.
+     Tope por vehiculo: el box truck es carga mayor y se negocia con
+     el operador, asi que tiene su propio tope.
+     Limite de 30 millas: fuera de ese radio no hay descuento, y la
+     linea desaparece del estimado. No se anuncia un descuento que el
+     cliente no califica — eso es lo que crea el reclamo. */
+  const promoCap = (curV === 'box') ? 150 : 59.99;
+  const promoRaw = (distMiles <= 30)
+    ? Math.min(promoCap, Math.round(subtotal*0.15*100)/100)
+    : 0;
+
+  const total = Math.max(d.start, subtotal-promoRaw);
+
+  /* Lo que se muestra es la rebaja REAL. El total tiene piso en el
+     precio de arranque del vehiculo, asi que en trabajos chicos la
+     rebaja completa no cabe: anunciar el numero grande cuando el total
+     bajo menos seria mentir en el mismo renglon. */
+  const promo = Math.max(0, Math.round((subtotal - total)*100)/100);
 
   document.getElementById('eBase').textContent = '$'+base;
   document.getElementById('eMiles').textContent = distMiles+' mi · $'+mileage;
   document.getElementById('eFees').textContent = '$'+(loadFee+eco+rush);
-  document.getElementById('ePromo').textContent = '−$'+promo.toFixed(2);
+  const promoRow = document.getElementById('ePromoRow');
+  if (promo > 0) {
+    document.getElementById('ePromo').textContent = '−$'+promo.toFixed(2);
+    promoRow.style.display = 'flex';
+  } else {
+    promoRow.style.display = 'none';
+  }
   document.getElementById('eTot').textContent = '$'+Math.round(total*0.95)+' – $'+Math.round(total*1.12);
-  startCountdown();
-}
-
-/* ── COUNTDOWN 72H ── */
-let cdTimer=null;
-function startCountdown(){
-  let end = localStorage.getItem('bc_promo_end');
-  if(!end || +end < Date.now()){ end = Date.now()+72*3600*1000; localStorage.setItem('bc_promo_end', end); }
-  clearInterval(cdTimer);
-  cdTimer = setInterval(()=>{
-    const left = +end - Date.now();
-    if(left<=0){ document.getElementById('qCd').textContent='EXPIRED'; clearInterval(cdTimer); return; }
-    const h=Math.floor(left/3600000), m=Math.floor(left%3600000/60000), s=Math.floor(left%60000/1000);
-    document.getElementById('qCd').textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  }, 1000);
 }
 
 /* ── BOOK ── */
@@ -937,7 +946,7 @@ window.qBook = async function(btn){
       notes: notApproved
         ? 'Este cliente intento reservar pero su cuenta no esta aprobada. Email: ' + ((window.CURRENT_USER && window.CURRENT_USER.email) || '') + ' \u2014 ' + payload.notes
         : payload.notes,
-      estimate: payload.estimate+' (promo applied)',
+      estimate: payload.estimate,
       reply_to:'noreply@bridgconnects.com'
     }).catch(function(err){
       console.warn('EmailJS notify failed:', err && (err.text || err.status || err.message));
