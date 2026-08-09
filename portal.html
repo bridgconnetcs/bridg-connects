@@ -1584,18 +1584,38 @@ function renderDisp() {
     const row = document.createElement('div'); row.className = 'acct-row';
 
     const grow = document.createElement('div'); grow.className = 'grow';
+
+    /* QUIEN PIDIO va primero. Antes esta linea mostraba el numero de
+       rastreo, que no sirve para levantar el telefono: no dice a quien
+       llamar ni con quien se esta hablando. */
     const co = document.createElement('div'); co.className = 'co';
-    co.textContent = r.trackingId + (r.po ? '  ·  ' + r.po : '');
+    co.textContent = r.cliCompany || r.cliName ||
+      (es ? 'CLIENTE SIN NOMBRE' : 'UNNAMED CLIENT');
+
+    /* Con quien hablar. Se usa textContent, nunca innerHTML: el nombre
+       y la empresa los escribio el cliente y no deben poder inyectar
+       nada en tu panel. */
+    const quien = document.createElement('div'); quien.className = 'meta';
+    const contacto = [r.cliName, r.cliPhone, r.cliEmail].filter(Boolean).join('  ·  ');
+    quien.textContent =
+      (contacto || (es ? 'Sin datos de contacto en el perfil'
+                       : 'No contact details on profile')) +
+      (r.cliStatus && r.cliStatus !== 'approved'
+        ? (es ? '\nCUENTA ' + String(r.cliStatus).toUpperCase() + ' — no esta aprobada'
+              : '\nACCOUNT ' + String(r.cliStatus).toUpperCase() + ' — not approved')
+        : '');
+
     const meta = document.createElement('div'); meta.className = 'meta';
     let when = '';
     if (r.pickupAt) { const dt = new Date(r.pickupAt); if (!isNaN(dt)) when = dt.toLocaleString(); }
     meta.textContent =
+      r.trackingId + (r.po ? '  ·  ' + r.po : '') + '\n' +
       (r.pickupName ? r.pickupName + ' — ' : '') + (r.pickup || '') + '\n' +
       '→ ' + (r.dropoff || '') + '\n' +
       (r.siteContact || '') + (r.sitePhone ? '  ·  ' + r.sitePhone : '') +
       (when ? '  ·  ' + when : '') +
       (r.fragile ? (es ? '  ·  FRAGIL' : '  ·  FRAGILE') : '');
-    grow.appendChild(co); grow.appendChild(meta);
+    grow.appendChild(co); grow.appendChild(quien); grow.appendChild(meta);
 
     const acts = document.createElement('div'); acts.className = 'acts';
     const btn = document.createElement('button');
@@ -3390,6 +3410,7 @@ window._bridgListPending = async () => {
     if (v.shipdayOrderId) return;
     out.push({
       id: d.id,
+      uid: v.uid || '',
       trackingId: v.trackingId || '',
       po: v.po || '',
       pickup: v.pickup || '',
@@ -3399,9 +3420,51 @@ window._bridgListPending = async () => {
       sitePhone: v.sitePhone || '',
       pickupAt: v.pickupAt || '',
       fragile: !!v.fragile,
-      weight: v.weight || 0
+      weight: v.weight || 0,
+      // Se llenan abajo desde el perfil real del cliente.
+      cliCompany: '',
+      cliName: '',
+      cliPhone: '',
+      cliEmail: '',
+      cliStatus: ''
     });
   });
+
+  /* QUIEN PIDIO LA ORDEN.
+     La reserva guarda el uid del cliente, no su empresa ni su
+     telefono, asi que antes el panel no podia decir a quien llamar.
+     Se leen los perfiles con el uid como llave. Se lee del perfil y
+     NO de la reserva a proposito: el perfil lo controla el sistema
+     (status no lo puede cambiar el cliente), mientras que cualquier
+     campo copiado dentro de la reserva lo escribe el navegador del
+     cliente y podria declarar una empresa que no es la suya.
+     Un perfil por uid, aunque el mismo cliente tenga varias
+     reservas en la lista. */
+  const uids = [...new Set(out.map(r => r.uid).filter(Boolean))];
+  const perfiles = new Map();
+  await Promise.all(uids.map(async (u) => {
+    try {
+      const p = await getDoc(doc(db, 'clients', u));
+      if (p.exists()) perfiles.set(u, p.data() || {});
+    } catch (e) {
+      // Un perfil ilegible no puede tumbar la lista de despacho.
+      console.warn('perfil no leido para ' + u, e && e.code);
+    }
+  }));
+
+  out.forEach(r => {
+    const p = perfiles.get(r.uid);
+    if (!p) {
+      r.cliCompany = r.uid ? 'PERFIL NO ENCONTRADO' : 'SIN CLIENTE';
+      return;
+    }
+    r.cliCompany = p.company || '';
+    r.cliName    = p.name || p.contactName || '';
+    r.cliPhone   = p.phone || '';
+    r.cliEmail   = p.email || '';
+    r.cliStatus  = p.status || '';
+  });
+
   return out;
 };
 
