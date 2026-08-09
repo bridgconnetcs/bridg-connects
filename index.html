@@ -934,7 +934,31 @@ window.qCalc = async function(){
 /* ── BOOK ── */
 window.qBook = async function(btn){
   var es = document.body.classList.contains('es');
-  if(!window.CURRENT_USER){ window._pendingBook = true; window.openAuth(); return; }
+  /* PROSPECTO SIN CUENTA. Se guarda lo que ya escribio ANTES de pedirle
+     cuenta. Si se va sin registrarse, la venta no se pierde: Kerry lo
+     llama al telefono. El correo va sin verificar y marcado como tal. */
+  if(!window.CURRENT_USER){
+    try{
+      if(window._fb){
+        await window._fb.addDoc(window._fb.collection(window._fb.db,'quoteRequests'), {
+          contactName: document.getElementById('qName').value.trim(),
+          phone: document.getElementById('qPhone').value.trim(),
+          email: '',
+          vehicle: es ? VEHICLES[curV].es : VEHICLES[curV].en,
+          pickup: document.getElementById('qPick').value.trim(),
+          dropoff: document.getElementById('qDrop').value.trim(),
+          weight: document.getElementById('qWeight').options[document.getElementById('qWeight').selectedIndex].text,
+          timing: document.getElementById('qWin').options[document.getElementById('qWin').selectedIndex].text,
+          notes: document.getElementById('qDesc').value.trim() || 'N/A',
+          estimate: document.getElementById('eTot').textContent,
+          source: 'homepage-anon',
+          status: 'new',
+          createdAt: new Date().toISOString()
+        });
+      }
+    }catch(err){ console.warn('lead no guardado:', err && err.code); }
+    window._pendingBook = true; window.openAuth(); return;
+  }
 
   var d = VEHICLES[curV];
   var lbl = es ? 'Solicitar esta entrega' : 'Request this delivery';
