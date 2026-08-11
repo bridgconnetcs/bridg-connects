@@ -315,8 +315,8 @@ window._bridgSaveDriver = (data) => addDoc(collection(db,'driverApplications'), 
         <label data-lang="en">DUI, suspensions, or major violations in last 3 years? <span class="req">*</span></label>
         <label data-lang="es">DUI, suspensiones o infracciones mayores en los ultimos 3 anos? <span class="req">*</span></label>
         <div style="display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem">
-          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #FF640D;background:rgba(255,100,13,0.1);transition:all .2s" onclick="selectRadioViol('no',this)">
-            <input type="radio" name="violations" id="viol_no" value="no" checked style="accent-color:#FF640D;width:18px;height:18px"/>
+          <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.6rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadioViol('no',this)">
+            <input type="radio" name="violations" id="viol_no" value="no" style="accent-color:#FF640D;width:18px;height:18px"/>
             <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">No — Clean record</span>
             <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">No — Historial limpio</span>
           </label>
@@ -395,9 +395,9 @@ window._bridgSaveDriver = (data) => addDoc(collection(db,'driverApplications'), 
             <span id="frayt_yes_dot" style="display:inline-block;width:12px;height:12px;border-radius:0;border:2px solid #686868;margin-right:.5rem;vertical-align:middle"></span>
             <span>Yes / Sí</span>
           </label>
-          <label class="radio-opt" style="cursor:pointer;padding:.5rem 1rem;border:1px solid #FF640D;background:rgba(255,100,13,.1);transition:all .2s" onclick="selectRadio('frayt','no',this)">
-            <input type="radio" name="frayt" id="frayt_no" value="no" checked style="display:none"/>
-            <span id="frayt_no_dot" style="display:inline-block;width:12px;height:12px;border-radius:0;border:2px solid #FF640D;background:#FF640D;margin-right:.5rem;vertical-align:middle"></span>
+          <label class="radio-opt" style="cursor:pointer;padding:.5rem 1rem;border:1px solid #3a3a3a;transition:all .2s" onclick="selectRadio('frayt','no',this)">
+            <input type="radio" name="frayt" id="frayt_no" value="no" style="display:none"/>
+            <span id="frayt_no_dot" style="display:inline-block;width:12px;height:12px;border-radius:0;border:2px solid #686868;margin-right:.5rem;vertical-align:middle"></span>
             <span>No</span>
           </label>
         </div>
@@ -623,36 +623,39 @@ function toggleChip(label, val){
     dot.style.background = 'transparent';
   }
 }
-function selectRadio(name, val, el){
+/* SELECCION DE OPCIONES — una sola funcion para los tres grupos.
+   Antes habia tres versiones distintas y ninguna sincronizaba todo:
+   movian el borde y el fondo pero NUNCA el punto de adentro, asi que
+   el punto se quedaba pegado en la opcion anterior y la pantalla se
+   contradecia sola — el conductor no sabia que habia elegido. */
+function pintarGrupo(name, idPrefijo, val, el){
   document.querySelectorAll('[name="'+name+'"]').forEach(r=>{
     r.checked = false;
-    r.closest('label').style.borderColor='#3a3a3a';
-    r.closest('label').style.background='transparent';
+    const lbl = r.closest('label');
+    if(!lbl) return;
+    lbl.style.borderColor = '#3a3a3a';
+    lbl.style.background  = 'transparent';
+    // El punto: es lo que se quedaba atras.
+    const d = lbl.querySelector('[id$="_dot"], .chip-dot');
+    if(d){ d.style.borderColor = '#686868'; d.style.background = 'transparent'; }
   });
-  document.getElementById(name+'_'+val).checked = true;
-  el.style.borderColor='#FF640D';
-  el.style.background='rgba(255,100,13,.1)';
+  const input = document.getElementById(idPrefijo+'_'+val);
+  if(input) input.checked = true;
+  el.style.borderColor = '#FF640D';
+  el.style.background  = 'rgba(255,100,13,.1)';
+  const dSel = el.querySelector('[id$="_dot"], .chip-dot');
+  if(dSel){ dSel.style.borderColor = '#FF640D'; dSel.style.background = '#FF640D'; }
+}
+function selectRadio(name, val, el){
+  pintarGrupo(name, name, val, el);
 }
 function selectRadioViol(val, el){
-  document.querySelectorAll('[name="violations"]').forEach(r=>{
-    r.checked=false;
-    const lbl = r.closest('label');
-    lbl.style.borderColor='#3a3a3a';
-    lbl.style.background='transparent';
-  });
-  document.getElementById('viol_'+val).checked=true;
-  el.style.borderColor='#FF640D';
-  el.style.background='rgba(255,100,13,0.1)';
+  pintarGrupo('violations', 'viol', val, el);
   if(val==='yes') checkViolations({value:'yes'});
   else document.getElementById('violWarn').style.display='none';
 }
 function selectRadioBG(val, el){
-  document.querySelectorAll('[name="bgcheck"]').forEach(r=>{
-    r.checked=false;
-    r.closest('label').style.borderColor='#3a3a3a';
-  });
-  document.getElementById('bg_'+val).checked=true;
-  el.style.borderColor='#FF640D';
+  pintarGrupo('bgcheck', 'bg', val, el);
   if(val==='no') checkBG({value:'no'});
   else document.getElementById('bgWarn').style.display='none';
 }
@@ -663,6 +666,13 @@ function submitApp(){
     const el=document.getElementById(id);
     if(!el||!el.value.trim()){alert((es?"Campo requerido: ":"Required field: ")+label);el&&el.focus();return;}
   }
+  /* Estas dos preguntas venian con respuesta puesta de fabrica, asi que
+     la validacion nunca las revisaba: si el conductor no las tocaba, se
+     guardaba una respuesta que el no dio. Ahora nacen vacias y hay que
+     exigirlas. La de infracciones ya estaba marcada con * en pantalla. */
+  const viol=document.querySelector("input[name=violations]:checked");
+  if(!viol){alert(es?"Contesta la pregunta de infracciones o DUI.":"Please answer the violations / DUI question.");return;}
+
   const bg=document.querySelector("input[name=bgcheck]:checked");
   if(!bg||bg.value==="no"){alert(es?"La verificacion de antecedentes es parte del proceso de aprobacion.":"A background check is part of the approval process.");return;}
 
@@ -674,8 +684,8 @@ function submitApp(){
   /* Equipo que el conductor ya tiene. Acotado a 400 para no pasar el
      limite que imponen las reglas: si se pasa, la escritura se rechaza. */
   const gear=[...document.querySelectorAll("input[name=gear]:checked")].map(i=>i.value).join(", ").slice(0,400)||"none";
-  const violations=document.querySelector("input[name=violations]:checked")?.value||"N/A";
-  const prior=document.querySelector("input[name=frayt]:checked")?.value||"no";
+  const violations=document.querySelector("input[name=violations]:checked")?.value||"sin responder";
+  const prior=document.querySelector("input[name=frayt]:checked")?.value||"sin responder";
   /* Esto NO es la autorizacion legal para correr la verificacion. Esa se
      firma aparte, en el flujo del proveedor. Aqui solo queda constancia
      de que el conductor quedo enterado. */
