@@ -407,20 +407,22 @@ window._bridgSaveDriver = (data) => addDoc(collection(db,'driverApplications'), 
     <div class="form-block">
       <div class="block-title"><span class="block-num">05</span><span data-lang="en">Final Questions</span><span data-lang="es">Preguntas Finales</span></div>
       <div class="fg">
-        <label data-lang="en">Do you consent to a background check? <span class="req">*</span></label>
-        <label data-lang="es">Consientes a una verificacion de antecedentes? <span class="req">*</span></label>
+        <label data-lang="en">Are you willing to complete a background check? <span class="req">*</span></label>
+        <label data-lang="es">Estas dispuesto a completar una verificacion de antecedentes? <span class="req">*</span></label>
+        <p style="font-size:.76rem;color:#686868;margin-top:.3rem;line-height:1.5" data-lang="en">This question is not the authorization. If we move forward, you will receive a separate written disclosure and authorization form to review and sign before any check is run.</p>
+        <p style="font-size:.76rem;color:#686868;margin-top:.3rem;line-height:1.5" data-lang="es">Esta pregunta no es la autorizacion. Si seguimos adelante, recibiras un formulario de divulgacion y autorizacion por separado para revisar y firmar antes de correr cualquier verificacion.</p>
         <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.5rem">
           <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.7rem 1.2rem;border:1px solid #3a3a3a;transition:all .2s;flex:1" onclick="selectRadioBG('yes',this)">
             <input type="radio" name="bgcheck" id="bg_yes" value="yes" style="accent-color:#FF640D;width:18px;height:18px"/>
-            <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">Yes, I consent</span>
-            <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">Sí, consiento</span>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="en">Yes, I am willing</span>
+            <span style="font-size:.84rem;color:#a5a5a5" data-lang="es">Sí, estoy dispuesto</span>
           </label>
           <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;padding:.7rem 1.2rem;border:1px solid #3a3a3a;transition:all .2s;flex:1" onclick="selectRadioBG('no',this)">
             <input type="radio" name="bgcheck" id="bg_no" value="no" style="accent-color:#FF640D;width:18px;height:18px" onchange="checkBG(this)"/>
             <span style="font-size:.84rem;color:#a5a5a5">No</span>
           </label>
         </div>
-        <div class="disq-warn" id="bgWarn"><p data-lang="en">Background check consent is required to drive with Bridg Connects.</p><p data-lang="es">El consentimiento para la verificacion de antecedentes es requerido.</p></div>
+        <div class="disq-warn" id="bgWarn"><p data-lang="en">Completing a background check is required to drive with Bridg Connects.</p><p data-lang="es">Completar la verificacion de antecedentes es requerido para manejar con Bridg Connects.</p></div>
       </div>
       <div class="fg">
         <label data-lang="en">How did you hear about us?</label><label data-lang="es">Como supiste de nosotros?</label>
@@ -662,7 +664,7 @@ function submitApp(){
     if(!el||!el.value.trim()){alert((es?"Campo requerido: ":"Required field: ")+label);el&&el.focus();return;}
   }
   const bg=document.querySelector("input[name=bgcheck]:checked");
-  if(!bg||bg.value==="no"){alert(es?"Debes consentir a la verificacion de antecedentes.":"You must consent to the background check.");return;}
+  if(!bg||bg.value==="no"){alert(es?"La verificacion de antecedentes es parte del proceso de aprobacion.":"A background check is part of the approval process.");return;}
 
   const btn=document.getElementById("submitBtn");
   btn.textContent=es?"Enviando...":"Sending...";
@@ -674,6 +676,12 @@ function submitApp(){
   const gear=[...document.querySelectorAll("input[name=gear]:checked")].map(i=>i.value).join(", ").slice(0,400)||"none";
   const violations=document.querySelector("input[name=violations]:checked")?.value||"N/A";
   const prior=document.querySelector("input[name=frayt]:checked")?.value||"no";
+  /* Esto NO es la autorizacion legal para correr la verificacion. Esa se
+     firma aparte, en el flujo del proveedor. Aqui solo queda constancia
+     de que el conductor quedo enterado. */
+  const bgAck=document.querySelector("input[name=bgcheck]:checked")?.value==="yes"
+    ? "enterado, pendiente autorizacion escrita"
+    : "no";
 
   /* Un campo por dato. Antes todo iba apretado dentro del campo de notas
      de una plantilla de cotizaciones, asi que licencia, seguro y
@@ -693,7 +701,10 @@ function submitApp(){
     licenseState: document.getElementById("licenseState").value,
     insurance:    document.getElementById("insurance").value,
     violations:   violations,
-    bgConsent:    "yes",
+    /* Se LEE el control del formulario. La primera version que entregue
+       tenia "yes" fijo aqui: el registro afirmaba un consentimiento que
+       el conductor nunca dio. */
+    bgConsent:    bgAck,
     hoursWeek:    document.getElementById("hoursWeek").value,
     availability: avail,
     experience:   document.getElementById("experience").value,
