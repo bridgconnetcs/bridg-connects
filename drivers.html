@@ -48,6 +48,7 @@ h1 em{font-style:normal;color:var(--orange)}
 .req-badge.required{background:var(--oglow);border:1px solid rgba(255,100,13,.3);color:var(--orange)}
 .req-badge.preferred{background:rgba(255,255,255,.05);border:1px solid var(--wire);color:var(--ash)}
 .form-section{padding:4rem;background:#0f0f0f}
+.form-section .h2sec{color:#FFFFFF}
 .form-wrap{max-width:720px;margin:0 auto}
 .form-block{background:var(--dark);border:1px solid var(--wire);padding:2.5rem;margin-bottom:1px}
 .block-title{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;color:#0B0B0C;letter-spacing:.05em;margin-bottom:1.8rem;display:flex;align-items:center;gap:1rem;padding-bottom:1rem;border-bottom:1px solid var(--wire)}
@@ -79,6 +80,20 @@ select option{background:var(--iron);color:#0B0B0C}
 .success-sub{font-size:.9rem;font-weight:300;color:var(--silver);line-height:1.8}
 footer{background:var(--dark);border-top:1px solid var(--wire);padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center}
 .fcopy{font-family:"DM Sans",sans-serif;font-size:.55rem;letter-spacing:.12em;color:var(--ash)}
+.why-section{padding:4rem;background:#FFFFFF;border-bottom:1px solid var(--wire)}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--wire);margin-top:2.5rem}
+.why-card{background:#FFFFFF;padding:2rem 1.8rem}
+.why-num{font-family:"DM Sans",sans-serif;font-size:.6rem;letter-spacing:.14em;color:#8A8A92;margin-bottom:.7rem}
+.why-card h3{font-family:"Bebas Neue",sans-serif;font-size:1.5rem;color:#0B0B0C;letter-spacing:.02em;margin-bottom:.6rem;line-height:1.1}
+.why-card p{font-size:.88rem;font-weight:300;color:#4A4A50;line-height:1.7}
+.steps-section{padding:4rem;background:var(--dark);border-bottom:1px solid var(--wire)}
+.steps-section .h2sec{color:#0B0B0C}
+.step-row{display:flex;gap:1.4rem;align-items:flex-start;margin-bottom:2rem;max-width:640px}
+.step-row:last-child{margin-bottom:0}
+.step-no{flex-shrink:0;width:2.4rem;height:2.4rem;border:2px solid #0B0B0C;display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:1.2rem;color:#0B0B0C}
+.step-body h3{font-family:"Bebas Neue",sans-serif;font-size:1.4rem;color:#0B0B0C;letter-spacing:.02em;margin-bottom:.35rem}
+.step-body p{font-size:.88rem;font-weight:300;color:#4A4A50;line-height:1.7}
+@media(max-width:700px){.why-section,.steps-section{padding:3rem 1.5rem}.why-grid{grid-template-columns:1fr}}
 .h2sec{font-family:"Bebas Neue",sans-serif;font-size:2.5rem;color:#0B0B0C;letter-spacing:.02em;margin-bottom:2rem}
 .h2sec em{font-style:normal;color:var(--orange)}
 @media(max-width:700px){
@@ -147,13 +162,115 @@ window._bridgSaveDriver = (data) => addDoc(collection(db,'driverApplications'), 
   <p class="stag" data-lang="es">Aplicacion de Conductor</p>
   <h1 data-lang="en">DRIVE WITH<br><em>BRIDG.</em><br>EARN MORE.</h1>
   <h1 data-lang="es">MANEJA CON<br><em>BRIDG.</em><br>GANA MAS.</h1>
-  <p class="hero-sub" data-lang="en">Join Southern California's fastest-growing industrial delivery network. Better pay, better loads, flexible schedule.</p>
-  <p class="hero-sub" data-lang="es">Unete a la red de entrega industrial de mas rapido crecimiento en el Sur de California. Mejor paga, mejores cargas, horario flexible.</p>
+  <p class="hero-sub" data-lang="en">Move building materials, not burritos. Bridg connects hardware stores and supply houses with drivers who already own a pickup, van, or large SUV — across Southern California.</p>
+  <p class="hero-sub" data-lang="es">Mueve materiales de construccion, no burritos. Bridg conecta ferreterias y proveedores con conductores que ya tienen camioneta, van o SUV grande — en todo el Sur de California.</p>
   <div class="perks-row">
-    <div class="perk-chip">&#128181; <span data-lang="en">See your pay before you accept</span><span data-lang="es">Ves tu pago antes de aceptar</span></div>
+    <div class="perk-chip">&#128181; <span data-lang="en">Pick up, deliver, get paid</span><span data-lang="es">Recoge, entrega, cobra</span></div>
     <div class="perk-chip">&#128197; <span data-lang="en">Own your schedule</span><span data-lang="es">Escoge tu propio horario</span></div>
     <div class="perk-chip">&#128666; <span data-lang="en">No food delivery</span><span data-lang="es">Sin entrega de comida</span></div>
     <div class="perk-chip">&#127758; EN/ES</div>
+  </div>
+</div>
+
+<!-- ESTO ES DIFERENTE — el argumento que antes vivia solo en /recruit.
+     Un conductor que llegaba directo aqui veia el formulario de entrada
+     y nada que lo convenciera. Ojo con la redaccion: no hay comparaciones
+     de ganancias ("paga mas por milla", "2x a 3x mas") porque son
+     afirmaciones que habria que poder probar, ni frases tipo "este es tu
+     negocio" que afirman la clasificacion del conductor. -->
+<div class="why-section">
+  <div class="eyebrow" data-lang="en">Why drivers stay</div>
+  <div class="eyebrow" data-lang="es">Por que se quedan los conductores</div>
+  <h2 class="h2sec" data-lang="en">THIS IS <em>DIFFERENT.</em></h2>
+  <h2 class="h2sec" data-lang="es">ESTO ES <em>DIFERENTE.</em></h2>
+  <div class="why-grid">
+
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <h3 data-lang="en">INDUSTRIAL LOADS. NOT FOOD.</h3>
+      <h3 data-lang="es">CARGAS INDUSTRIALES. NO COMIDA.</h3>
+      <p data-lang="en">We don't deliver dinner. Bridg moves construction materials, tile and flooring, plumbing and electrical supply, landscaping and heavy freight — from a hardware store counter to a job site.</p>
+      <p data-lang="es">No entregamos cena. Bridg mueve materiales de construccion, azulejo y pisos, suministro de plomeria y electrico, jardineria y carga pesada — del mostrador de la ferreteria a la obra.</p>
+    </div>
+
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <h3 data-lang="en">YOU SEE IT, YOU DECIDE.</h3>
+      <h3 data-lang="es">LO VES, TU DECIDES.</h3>
+      <p data-lang="en">Every load comes with the pickup, the drop, what it is, and what it pays — before you say yes. No mystery pings. Turn one down and nothing happens to you.</p>
+      <p data-lang="es">Cada carga te llega con la recogida, la entrega, que es y cuanto paga — antes de que digas si. Sin pings misteriosos. Rechaza una y no te pasa nada.</p>
+    </div>
+
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <h3 data-lang="en">NO SPECIAL VEHICLE NEEDED.</h3>
+      <h3 data-lang="es">NO NECESITAS VEHICULO ESPECIAL.</h3>
+      <p data-lang="en">Large SUV, pickup, or cargo van — if you already own it, you already qualify. No wraps, no leases, no equipment to buy from us.</p>
+      <p data-lang="es">SUV grande, camioneta o cargo van — si ya lo tienes, ya calificas. Sin calcomanias, sin renta de vehiculo, sin equipo que comprarnos.</p>
+    </div>
+
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <h3 data-lang="en">NO SHIFTS. NO BLOCKS. NO QUOTAS.</h3>
+      <h3 data-lang="es">SIN TURNOS. SIN BLOQUES. SIN CUOTAS.</h3>
+      <p data-lang="en">Nothing to reserve at midnight. No minimum hours, no penalty for taking a day off, no rating that decides whether you get work tomorrow.</p>
+      <p data-lang="es">Nada que reservar a medianoche. Sin horas minimas, sin castigo por tomarte el dia, sin una calificacion que decida si manana tienes trabajo.</p>
+    </div>
+
+    <div class="why-card">
+      <div class="why-num">05</div>
+      <h3 data-lang="en">A REAL PERSON, IN YOUR LANGUAGE.</h3>
+      <h3 data-lang="es">UNA PERSONA DE VERDAD, EN TU IDIOMA.</h3>
+      <p data-lang="en">English or Spanish, you reach a human — not a chat box that closes your case. Every delivery is confirmed by a person before a driver is sent.</p>
+      <p data-lang="es">En ingles o espanol, hablas con una persona — no con un chat que te cierra el caso. Cada entrega la confirma una persona antes de mandar a un conductor.</p>
+    </div>
+
+    <div class="why-card">
+      <div class="why-num">06</div>
+      <h3 data-lang="en">PAPERWORK HANDLED.</h3>
+      <h3 data-lang="es">EL PAPELEO, RESUELTO.</h3>
+      <p data-lang="en">Direct deposit to your account and your 1099 at the end of the year without asking for it. Proof of delivery is a photo and a signature in the app — no receipts to chase.</p>
+      <p data-lang="es">Deposito directo a tu cuenta y tu 1099 al final del ano sin tener que pedirlo. La prueba de entrega es una foto y una firma en la app — sin recibos que perseguir.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMO FUNCIONA. Tres pasos, en el orden real. -->
+<div class="steps-section">
+  <div class="eyebrow" data-lang="en">How it works</div>
+  <div class="eyebrow" data-lang="es">Como funciona</div>
+  <h2 class="h2sec" data-lang="en">START IN <em>3 STEPS.</em></h2>
+  <h2 class="h2sec" data-lang="es">EMPIEZA EN <em>3 PASOS.</em></h2>
+
+  <div class="step-row">
+    <div class="step-no">1</div>
+    <div class="step-body">
+      <h3 data-lang="en">FILL OUT THE APPLICATION</h3>
+      <h3 data-lang="es">LLENA LA APLICACION</h3>
+      <p data-lang="en">Under five minutes, right on this page. Tell us about you and your vehicle. No fee to apply, and nothing you sign today.</p>
+      <p data-lang="es">Menos de cinco minutos, en esta misma pagina. Cuentanos de ti y de tu vehiculo. Sin cargo por aplicar, y no firmas nada hoy.</p>
+    </div>
+  </div>
+
+  <div class="step-row">
+    <div class="step-no">2</div>
+    <div class="step-body">
+      <h3 data-lang="en">WE REVIEW IT</h3>
+      <h3 data-lang="es">LA REVISAMOS</h3>
+      <p data-lang="en">A person reads your application and calls or emails you. If we move forward, you'll get a separate authorization form to sign before any background check is run — our clients let us into their stores and their job sites, so this step is not optional.</p>
+      <p data-lang="es">Una persona lee tu aplicacion y te llama o te escribe. Si seguimos adelante, recibiras un formulario de autorizacion aparte para firmar antes de correr cualquier verificacion de antecedentes — nuestros clientes nos dejan entrar a sus tiendas y a sus obras, asi que este paso no es opcional.</p>
+    </div>
+  </div>
+
+  <div class="step-row">
+    <div class="step-no">3</div>
+    <div class="step-body">
+      <h3 data-lang="en">TAKE YOUR FIRST LOAD</h3>
+      <h3 data-lang="es">TOMA TU PRIMERA CARGA</h3>
+      <p data-lang="en">Once you're cleared, loads start coming to you. Look at it, take it or leave it. Pick up, deliver, get paid.</p>
+      <p data-lang="es">Una vez aprobado, las cargas empiezan a llegarte. La miras, la tomas o la dejas. Recoge, entrega, cobra.</p>
+    </div>
   </div>
 </div>
 
