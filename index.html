@@ -250,6 +250,59 @@ footer a:hover{color:var(--orange)}
 .legal-row a{font-family:'Inter',sans-serif;font-size:.76rem;font-weight:400;color:#0B0B0C;text-decoration:none}
 .legal-row a:hover{color:#FF640D}
 .foot-base{border-top:1px solid var(--hairline);padding:1.2rem 1.5rem;text-align:center;font-family:var(--FM);font-size:.6rem;letter-spacing:.1em;color:var(--steel)}
+  /* ═══════════════════════════════════════════════════════════════
+   LOGO DE IMAGEN — Bridg Connects
+
+   PEGAR AL FINAL del bloque <style> de cada pagina, en la linea
+   justo ANTES de </style>.
+
+   NO HAY QUE TOCAR EL HTML de ninguna pagina. El texto que ya
+   existe (BRIDG . CONNECTS) se oculta y en su lugar se dibuja la
+   imagen. Por eso funciona igual en las 20 paginas aunque cada
+   una tenga el logo escrito distinto.
+
+   POR QUE ASI Y NO CON <img>: cambiar el HTML obligaria a editar
+   cada archivo a mano y a que todos quedaran identicos. Esto es
+   un solo pegado por archivo.
+
+   REQUISITO: los archivos bridg-logo.png y bridg-logo-light.png
+   tienen que estar en la RAIZ del repositorio publico, al lado de
+   index.html. Si estan en una carpeta, hay que cambiar la ruta.
+   ═══════════════════════════════════════════════════════════════ */
+
+.logo{
+  display:inline-block !important;
+  width:104px;
+  height:44px;
+  background-image:url('/bridg-logo.png') !important;
+  background-repeat:no-repeat !important;
+  background-position:left center !important;
+  background-size:contain !important;
+  /* El texto sigue en el HTML para que Google y los lectores de
+     pantalla lo lean, pero no se ve. */
+  font-size:0 !important;
+  color:transparent !important;
+  line-height:0 !important;
+  letter-spacing:0 !important;
+}
+.logo span,
+.logo small{
+  display:none !important;
+}
+
+/* Sobre fondo oscuro va la version en blanco. Sin esto, el logo
+   negro se vuelve una mancha invisible en el pie de pagina. */
+footer .logo,
+.wc .logo,
+.foot-in .logo,
+.dark .logo{
+  background-image:url('/bridg-logo-light.png') !important;
+}
+
+/* En pantallas chicas el encabezado tiene menos aire. */
+@media(max-width:560px){
+  .logo{ width:88px; height:38px; }
+}
 </style>
 </head>
 <body>
