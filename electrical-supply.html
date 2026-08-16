@@ -6,6 +6,9 @@
 <meta name="color-scheme" content="light only"/>
 <meta name="supported-color-schemes" content="light"/>
 <title>Same-Day Electrical Supply Delivery | Wire, Panels, Conduit | Bridg</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
 <meta name="description" content="Same-day delivery for electrical supply houses and contractors in Southern California. Wire spools, panels, conduit, and gear that must stay dry."/>
 <link rel="canonical" href="https://www.bridgconnects.com/electrical-supply"/>
 <meta property="og:title" content="Same-Day Electrical Supply Delivery | Wire, Panels, Conduit | Bridg"/>
@@ -146,6 +149,33 @@ footer .lic{font-family:var(--FM);font-size:.68rem;letter-spacing:.08em;color:#6
   .hero{padding:3rem 0 2.6rem}.sec,.wc{padding:2.8rem 0}
   .trow{flex-direction:column;gap:.3rem}.trow .k{width:auto}
   .btn,.btn-o{width:100%;text-align:center}
+}
+
+/* LOGO DE IMAGEN - Bridg Connects
+   El texto del logo se oculta y en su lugar se dibuja la imagen, asi
+   que no hace falta tocar el HTML de ninguna pagina. El texto sigue
+   presente para Google y para los lectores de pantalla.
+   Los archivos png viven en la raiz del repositorio publico. */
+.logo,
+.nav-logo{
+  display:inline-block !important;
+  width:104px !important;
+  height:44px !important;
+  background-image:url('/bridg-logo.png') !important;
+  background-repeat:no-repeat !important;
+  background-size:contain !important;
+  font-size:0 !important;
+  color:transparent !important;
+  line-height:0 !important;
+  letter-spacing:0 !important;
+  text-align:left !important;
+}
+.logo{ background-position:left center !important; }
+.nav-logo{ background-position:center center !important; }
+.logo span, .logo small,
+.nav-logo span, .nav-logo small{ display:none !important; }
+@media(max-width:560px){
+  .logo, .nav-logo{ width:88px !important; height:38px !important; }
 }
 </style>
 </head>
