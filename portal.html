@@ -588,6 +588,31 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 @media(max-width:560px){
   .logo, .nav-logo{ width:88px !important; height:38px !important; }
 }
+/* ── CHAT DE LA ORDEN ────────────────────────────────────────────
+   Vive dentro del cajon de cada entrega, no en un widget flotante.
+   Asi cada conversacion queda amarrada a SU orden: un mensaje nunca
+   puede aparecer en el hilo de otro cliente.
+   No hay ningun script de terceros — corre sobre el mismo Firestore
+   que ya usa el portal, asi que no se abre la CSP ni se le da a nadie
+   acceso al almacenamiento donde vive la sesion. */
+.bc-msgs{max-height:230px;overflow-y:auto;display:flex;flex-direction:column;
+  gap:.5rem;margin-top:.65rem;padding-right:.2rem}
+.bc-m{max-width:86%;padding:.5rem .7rem;font-size:.83rem;line-height:1.45;border-radius:10px}
+.bc-m.cli{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:3px}
+.bc-m.bri{align-self:flex-start;background:var(--band);color:var(--ink);
+  border-left:3px solid var(--orange);border-bottom-left-radius:3px}
+.bc-m .w{display:block;font-family:var(--FM);font-size:.5rem;letter-spacing:.1em;
+  text-transform:uppercase;opacity:.6;margin-top:.3rem}
+.bc-empty{font-size:.8rem;color:var(--steel);font-weight:300;padding:.9rem .2rem;line-height:1.5}
+.bc-form{display:flex;gap:.5rem;margin-top:.7rem}
+.bc-form input{flex:1;min-width:0;background:#fff;border:1px solid var(--hairline);
+  border-radius:8px;padding:.55rem .7rem;font-size:.85rem;outline:none}
+.bc-form input:focus{border-color:var(--ink)}
+.bc-form button{background:var(--ink);color:#fff;border-radius:8px;padding:.55rem 1rem;
+  font-family:var(--FD);font-weight:600;font-size:.8rem;flex-shrink:0}
+.bc-form button:disabled{opacity:.4;cursor:default}
+.bc-err{font-size:.76rem;color:var(--red);margin-top:.4rem;display:none}
+
 </style>
 </head>
 <body>
@@ -1410,7 +1435,15 @@ const T = {
   gFill:['Enter your email and password.','Ingresa tu correo y contraseña.'],
   gOffline:['Sign-in is unavailable right now. Try again in a moment.','El acceso no está disponible ahora. Intenta en un momento.'],
   gLoading:['Logging in…','Entrando…'],
-  demoCo:['Sample Contractor','Contratista de Ejemplo']
+  demoCo:['Sample Contractor','Contratista de Ejemplo'],
+  chTitle:['Messages','Mensajes'],
+  chEmpty:['Write to us about this delivery. We reply during dispatch hours.',
+           'Escríbenos sobre esta entrega. Respondemos en horario de despacho.'],
+  chPh:['Write a message…','Escribe un mensaje…'],
+  chSend:['Send','Enviar'],
+  chYou:['You','Tú'],
+  chFail:['Could not send. Try again.','No se pudo enviar. Intenta otra vez.'],
+  chLoad:['Messages could not be loaded.','No se pudieron cargar los mensajes.']
 };
 const t = k => (T[k] || ['',''])[L() === 'es' ? 1 : 0];
 
@@ -2383,7 +2416,20 @@ function openDrawer(id) {
       cell(t('fragHandling'), s.surcharge ? money(s.surcharge) : '—') +
     '</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--hairline)">' +
       '<span class="lbl">' + t('total') + '</span>' +
-      '<span class="mono" style="font-size:1.05rem;font-weight:500;color:var(--orange)">' + money(s.rate) + '</span></div></div>';
+      '<span class="mono" style="font-size:1.05rem;font-weight:500;color:var(--orange)">' + money(s.rate) + '</span></div></div>' +
+    /* CHAT DE ESTA ORDEN.
+       Solo en sesion real y solo si conocemos el id del documento. En
+       modo demostracion no se monta: no hay a donde escribir y un chat
+       de adorno haria creer al visitante que alguien lo va a leer. */
+    ((!S.demo && s.docId) ?
+      '<div class="dsec"><span class="lbl">' + t('chTitle') + '</span>' +
+      '<div class="bc-msgs" id="bcMsgs"></div>' +
+      '<div class="bc-err" id="bcErr"></div>' +
+      '<div class="bc-form">' +
+        '<input id="bcIn" type="text" maxlength="2000" placeholder="' + t('chPh') + '"/>' +
+        '<button id="bcSend" type="button">' + t('chSend') + '</button>' +
+      '</div></div>'
+      : '');
   el('dFoot').innerHTML =
     (s.status === 'delivered'
       ? '<button class="btn" onclick="openPod(\'' + s.id + '\')">' + t('viewPod') + '</button>'
@@ -2391,7 +2437,83 @@ function openDrawer(id) {
     '<button class="btn-o" onclick="openTicket(\'' + s.id + '\')">' + t('reportIssue') + '</button>';
   el('drawer').classList.add('open');
   el('scrim').classList.add('open');
+  if (!S.demo && s.docId) montarChat(s.docId);
   try { el('drawer').focus(); } catch (e) {}
+}
+
+/* ── CHAT DE LA ORDEN ──────────────────────────────────────────────
+   El cliente escribe aqui; a Bridg le llega al hilo de Slack de ESTA
+   orden. La respuesta vuelve por Firestore y aparece sin recargar.
+
+   Un solo escucha a la vez: el cajon se vuelve a pintar en cada
+   actualizacion en vivo, y sin cerrar el anterior se acumularian
+   escuchas duplicadas — cada mensaje se pintaria dos, tres, cuatro
+   veces, y cada uno seguiria cobrando lecturas. */
+let CHAT_STOP = null;
+function pararChat() {
+  if (CHAT_STOP) { try { CHAT_STOP(); } catch (e) {} CHAT_STOP = null; }
+}
+function montarChat(docId) {
+  pararChat();
+  const lista = el('bcMsgs'), campo = el('bcIn'),
+        boton = el('bcSend'), err = el('bcErr');
+  if (!lista || !campo || !boton) return;
+  if (!window._bridgChatListen) return;
+
+  function hora(d) {
+    if (!d) return '';
+    return (d.toDateString() === new Date().toDateString())
+      ? fmtTime(d)
+      : fmtDay(d) + ' · ' + fmtTime(d);
+  }
+
+  CHAT_STOP = window._bridgChatListen(docId, (msgs) => {
+    lista.textContent = '';
+    if (!msgs || !msgs.length) {
+      const e2 = document.createElement('div');
+      e2.className = 'bc-empty';
+      e2.textContent = t('chEmpty');
+      lista.appendChild(e2);
+      return;
+    }
+    msgs.forEach(m => {
+      const d = document.createElement('div');
+      d.className = 'bc-m ' + (m.from === 'client' ? 'cli' : 'bri');
+      /* textContent, NUNCA innerHTML: el texto viene de Firestore y
+         meterlo como HTML seria una via de inyeccion en la pagina
+         donde vive la sesion del cliente. */
+      d.textContent = m.text || '';
+      const w = document.createElement('span');
+      w.className = 'w';
+      w.textContent = (m.from === 'client' ? t('chYou') : 'Bridg') + ' · ' + hora(m.at);
+      d.appendChild(w);
+      lista.appendChild(d);
+    });
+    lista.scrollTop = lista.scrollHeight;
+  }, () => {
+    err.style.display = 'block';
+    err.textContent = t('chLoad');
+  });
+
+  async function enviar() {
+    const txt = campo.value.trim();
+    if (!txt) return;
+    boton.disabled = true;
+    err.style.display = 'none';
+    try {
+      await window._bridgChatSend(docId, txt);
+      campo.value = '';
+    } catch (e) {
+      err.style.display = 'block';
+      err.textContent = t('chFail');
+      console.warn('chat:', (e && e.code) || (e && e.message));
+    } finally {
+      boton.disabled = false;
+      campo.focus();
+    }
+  }
+  boton.onclick = enviar;
+  campo.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); enviar(); } };
 }
 function dayDrawer(dstr) {
   const d = new Date(dstr + 'T12:00:00'), evs = evOn(d);
@@ -2413,6 +2535,7 @@ function dayDrawer(dstr) {
 function openModal(id) { el(id).classList.add('open'); el('scrim').classList.add('open'); closePops(); }
 function closeAll(keepScrim) {
   document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  pararChat();
   el('drawer').classList.remove('open');
   if (!keepScrim) el('scrim').classList.remove('open');
   el('rail').classList.remove('open');
@@ -3239,6 +3362,10 @@ function mapBooking(b) {
 
   return {
     id: b.trackingId || b.id || ('BRG-' + String(created.getTime()).slice(-5)),
+    /* El id REAL del documento. 'id' de arriba es el numero de rastreo,
+       que se muestra; este es el que se necesita para escribir en la
+       subcoleccion de mensajes. Antes se perdia aqui. */
+    docId: b.id || null,
     ref: b.po || b.ref || '—',
     origin: b.pickup || '—', city: (b.dropoff || '—').split(',')[0],
     consignee: b.consignee || '—',
@@ -3357,7 +3484,7 @@ document.querySelectorAll('.tab').forEach(x =>
 /* Firebase — same project and config as the public site. */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnapshot, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, onSnapshot, query, where, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-functions.js";
 
@@ -3608,6 +3735,57 @@ window._bridgSetClientStatus = async (uid, status) => {
   await updateDoc(doc(db, 'clients', uid), {
     status: status,
     statusChangedAt: new Date().toISOString()
+  });
+};
+
+/* ── MENSAJES DE UNA ORDEN ──────────────────────────────────────
+   Subcoleccion bookings/{doc}/messages. Las reglas ya exigen que la
+   orden sea del cliente y que 'from' sea 'client': si un cliente
+   pudiera escribir from:'bridg' podria fabricar en su propio hilo un
+   mensaje que parezca de Bridg — "acepto $80 por esta entrega" — y
+   usarlo despues en una disputa.
+
+   El escucha devuelve su propia funcion para cerrarlo. Quien lo abre
+   es responsable de cerrarlo: un escucha huerfano sigue cobrando
+   lecturas y pintando datos de una orden que ya no esta en pantalla. */
+window._bridgChatListen = (bookingId, onRows, onErr) => {
+  if (!auth.currentUser) return null;
+  const q = query(
+    collection(db, 'bookings', bookingId, 'messages'),
+    orderBy('createdAt', 'asc'),
+    limit(200)
+  );
+  return onSnapshot(q, (snap) => {
+    const rows = [];
+    snap.forEach(d => {
+      const v = d.data() || {};
+      let at = null;
+      try { at = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null; } catch (e) {}
+      rows.push({
+        from: v.from === 'bridg' ? 'bridg' : 'client',
+        text: typeof v.text === 'string' ? v.text.slice(0, 2000) : '',
+        at: at
+      });
+    });
+    onRows(rows);
+  }, (e) => {
+    console.warn('chat stream:', e && e.code);
+    if (onErr) onErr(e);
+  });
+};
+
+/* createdAt lo pone el SERVIDOR. Las reglas exigen que sea igual a
+   request.time, asi que un cliente no puede fechar un mensaje en el
+   pasado para que aparezca antes de lo que de verdad se dijo. */
+window._bridgChatSend = async (bookingId, text) => {
+  if (!auth.currentUser) throw new Error('sin sesion');
+  const limpio = String(text || '').trim().slice(0, 2000);
+  if (!limpio) return;
+  await addDoc(collection(db, 'bookings', bookingId, 'messages'), {
+    from: 'client',
+    uid: auth.currentUser.uid,
+    text: limpio,
+    createdAt: serverTimestamp()
   });
 };
 
