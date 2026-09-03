@@ -1443,7 +1443,9 @@ const T = {
   chSend:['Send','Enviar'],
   chYou:['You','Tú'],
   chFail:['Could not send. Try again.','No se pudo enviar. Intenta otra vez.'],
-  chLoad:['Messages could not be loaded.','No se pudieron cargar los mensajes.']
+  chLoad:['Messages could not be loaded.','No se pudieron cargar los mensajes.'],
+  noPrice:['Not priced yet. We confirm the final price with you before anything is dispatched.',
+           'Sin precio todavía. Confirmamos el precio final contigo antes de despachar nada.']
 };
 const t = k => (T[k] || ['',''])[L() === 'es' ? 1 : 0];
 
@@ -1727,9 +1729,35 @@ function renderDisp() {
     rej.textContent = es ? 'Rechazar' : 'Reject';
     rej.onclick = () => doReject(r, rej, btn, meta);
 
-    acts.appendChild(btn); acts.appendChild(rej);
+    /* CHAT ANTES DE DESPACHAR.
+       Aqui es donde Kerry negocia el precio: la orden ya existe pero
+       todavia no se ha despachado nada. Sin esto habia que despachar
+       primero para poder hablar, que es exactamente al reves. */
+    const chatBtn = document.createElement('button');
+    chatBtn.className = 'acct-mini';
+    chatBtn.textContent = es ? 'Mensajes' : 'Messages';
+    acts.appendChild(btn); acts.appendChild(rej); acts.appendChild(chatBtn);
 
     row.appendChild(grow); row.appendChild(acts);
+
+    const caja = document.createElement('div');
+    caja.style.cssText = 'flex-basis:100%;display:none;border-top:1px solid var(--hairline);margin-top:.8rem;padding-top:.8rem';
+    caja.innerHTML = '<div class="bc-msgs"></div><div class="bc-err"></div>' +
+      '<div class="bc-form"><input type="text" maxlength="2000" placeholder="' +
+      (es ? 'Escribe al cliente…' : 'Write to the client…') + '"/>' +
+      '<button type="button">' + (es ? 'Enviar' : 'Send') + '</button></div>';
+    row.appendChild(caja);
+
+    chatBtn.onclick = () => {
+      const abierto = caja.style.display !== 'none';
+      // Solo un chat abierto a la vez: dos escuchas vivos duplican
+      // mensajes y siguen cobrando lecturas.
+      mount.querySelectorAll('.acct-row > div[style*="flex-basis"]').forEach(c => { c.style.display = 'none'; });
+      if (abierto) { pararChat(); return; }
+      caja.style.display = 'block';
+      montarChat(r.id, caja, true);
+    };
+
     mount.appendChild(row);
   });
 }
@@ -2372,7 +2400,7 @@ function openDrawer(id) {
   DRAWID = id;
   el('dKind').textContent = s.fragile ? t('fragile') : t('standard');
   el('dTitle').textContent = s.city;
-  el('dSub').textContent = s.id + ' · ' + s.ref;
+  el('dSub').textContent = s.id + (s.ref && s.ref !== '—' ? ' · ' + s.ref : '');
   const cell = (l, v) => '<div class="dcell"><span class="lbl">' + l + '</span><b>' + v + '</b></div>';
   const steps = [
     [t('stReceived'), s.pickAt, true],
@@ -2411,23 +2439,30 @@ function openDrawer(id) {
       steps.map((x, i) => '<div class="tl-row ' + (x[2] ? (i === last ? 'now' : 'done') : 'pend') + '">' +
         '<b>' + x[0] + '</b><time>' + (x[2] ? fmtDay(x[1]) + ', ' + fmtTime(x[1]) : t('pending')) + '</time></div>').join('') +
     '</div></div>' +
-    '<div class="dsec"><span class="lbl">' + t('charges') + '</span><div class="dgrid">' +
-      cell(t('baseRun'), money(s.rate - s.surcharge)) +
-      cell(t('fragHandling'), s.surcharge ? money(s.surcharge) : '—') +
-    '</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--hairline)">' +
-      '<span class="lbl">' + t('total') + '</span>' +
-      '<span class="mono" style="font-size:1.05rem;font-weight:500;color:var(--orange)">' + money(s.rate) + '</span></div></div>' +
+    /* Sin precio acordado NO se muestra ninguna cifra. Un "$0.00" o un
+       numero de relleno son igual de daninos que uno inventado: el
+       cliente se lleva una cantidad en la cabeza que Bridg nunca dijo. */
+    '<div class="dsec"><span class="lbl">' + t('charges') + '</span>' +
+      (s.rate > 0
+        ? '<div class="dgrid">' +
+            cell(t('baseRun'), money(s.rate - s.surcharge)) +
+            cell(t('fragHandling'), s.surcharge ? money(s.surcharge) : '—') +
+          '</div><div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:.9rem;padding-top:.8rem;border-top:1px solid var(--hairline)">' +
+            '<span class="lbl">' + t('total') + '</span>' +
+            '<span class="mono" style="font-size:1.05rem;font-weight:500;color:var(--orange)">' + money(s.rate) + '</span></div>'
+        : '<p class="hint" style="margin-top:.5rem">' + t('noPrice') + '</p>') +
+    '</div>' +
     /* CHAT DE ESTA ORDEN.
        Solo en sesion real y solo si conocemos el id del documento. En
        modo demostracion no se monta: no hay a donde escribir y un chat
        de adorno haria creer al visitante que alguien lo va a leer. */
     ((!S.demo && s.docId) ?
       '<div class="dsec"><span class="lbl">' + t('chTitle') + '</span>' +
-      '<div class="bc-msgs" id="bcMsgs"></div>' +
-      '<div class="bc-err" id="bcErr"></div>' +
+      '<div class="bc-msgs"></div>' +
+      '<div class="bc-err"></div>' +
       '<div class="bc-form">' +
-        '<input id="bcIn" type="text" maxlength="2000" placeholder="' + t('chPh') + '"/>' +
-        '<button id="bcSend" type="button">' + t('chSend') + '</button>' +
+        '<input type="text" maxlength="2000" placeholder="' + t('chPh') + '"/>' +
+        '<button type="button">' + t('chSend') + '</button>' +
       '</div></div>'
       : '');
   el('dFoot').innerHTML =
@@ -2437,7 +2472,7 @@ function openDrawer(id) {
     '<button class="btn-o" onclick="openTicket(\'' + s.id + '\')">' + t('reportIssue') + '</button>';
   el('drawer').classList.add('open');
   el('scrim').classList.add('open');
-  if (!S.demo && s.docId) montarChat(s.docId);
+  if (!S.demo && s.docId) montarChat(s.docId, el('dBody'), false);
   try { el('drawer').focus(); } catch (e) {}
 }
 
@@ -2453,10 +2488,13 @@ let CHAT_STOP = null;
 function pararChat() {
   if (CHAT_STOP) { try { CHAT_STOP(); } catch (e) {} CHAT_STOP = null; }
 }
-function montarChat(docId) {
+function montarChat(docId, caja, comoBridg) {
   pararChat();
-  const lista = el('bcMsgs'), campo = el('bcIn'),
-        boton = el('bcSend'), err = el('bcErr');
+  const raiz = caja || document;
+  const lista = raiz.querySelector('.bc-msgs'),
+        campo = raiz.querySelector('.bc-form input'),
+        boton = raiz.querySelector('.bc-form button'),
+        err   = raiz.querySelector('.bc-err');
   if (!lista || !campo || !boton) return;
   if (!window._bridgChatListen) return;
 
@@ -2501,7 +2539,7 @@ function montarChat(docId) {
     boton.disabled = true;
     err.style.display = 'none';
     try {
-      await window._bridgChatSend(docId, txt);
+      await window._bridgChatSend(docId, txt, comoBridg ? 'bridg' : 'client');
       campo.value = '';
     } catch (e) {
       err.style.display = 'block';
@@ -2602,9 +2640,19 @@ async function submitSchedule() {
 
   const frag = el('sCargo').value === 'fragile';
   const at = new Date(el('sDate').value + 'T' + (el('sTime').value || '09:00'));
-  const miles = int(8, 40), base = 48 + miles * 2.35, sur = frag ? Math.round(base * 0.34) : 0;
+  /* NADA DE PRECIOS INVENTADOS.
+     Antes esta linea hacia int(8,40) — un numero AL AZAR — para las
+     millas, calculaba una tarifa con eso, y se la mostraba al cliente
+     como si Bridg la hubiera cotizado. El cliente veia "$76.00 TOTAL"
+     de una entrega que nadie habia cotizado todavia. Si despues Kerry
+     cobraba $180, el cliente tenia en su propio portal un numero mas
+     bajo con que discutir.
+     El numero de orden de compra tambien se inventaba ('PO-' + azar).
+     Ese dato es del CLIENTE; fabricarlo es peor que dejarlo vacio.
+     Ahora todo nace en cero y el precio lo pone Kerry al negociar. */
+  const miles = 0, sur = 0;
   const s = {
-    id: newTrackingId(), ref: 'PO-' + int(1000, 9999),
+    id: newTrackingId(), ref: '',
     fromName: fromName, siteName: siteName, sitePhone: sitePhone,
     origin: from,
     // La direccion de entrega completa. Antes se guardaba
@@ -2620,8 +2668,8 @@ async function submitSchedule() {
     pallets: 1, longest: 0, status: 'scheduled', progress: 0,
     pickAt: at, dropAt: new Date(at.getTime() + 3 * 36e5),
     driver: L() === 'es' ? 'Asignando' : 'Assigning', vehicle: S.veh,
-    phone: '(818) 000-0000', hold: null, miles,
-    rate: Math.round(base + sur), surcharge: sur, signedBy: null,
+    phone: '', hold: null, miles,
+    rate: 0, surcharge: sur, signedBy: null,
     notes: el('sNotes').value.trim()
   };
   /* Guardar PRIMERO, confirmar despues. Antes se mostraba la reserva en
@@ -3167,7 +3215,14 @@ function showApp() {
   el('app').hidden = false;
   el('demoBar').hidden = !S.demo;
   fillFilters();
-  seedFeed(); seedNotes();
+  /* seedFeed y seedNotes FABRICAN horas: 'hace 40 minutos', 'hace 4000
+     segundos'. En demostracion esta bien — es data de ejemplo. En una
+     sesion real le ponian horas inventadas a entregas de verdad, que es
+     el mismo problema del precio al azar: el cliente lee un dato que
+     nadie genero. En sesion real el feed se llena solo, con las horas
+     que reporta el conductor. */
+  if (S.demo) { seedFeed(); seedNotes(); }
+  else { FEED = []; NOTES = []; renderFeed(); renderNotes(); }
   renderAll();
   go('overview');
   startLive();
@@ -3777,12 +3832,17 @@ window._bridgChatListen = (bookingId, onRows, onErr) => {
 /* createdAt lo pone el SERVIDOR. Las reglas exigen que sea igual a
    request.time, asi que un cliente no puede fechar un mensaje en el
    pasado para que aparezca antes de lo que de verdad se dijo. */
-window._bridgChatSend = async (bookingId, text) => {
+window._bridgChatSend = async (bookingId, text, quien) => {
   if (!auth.currentUser) throw new Error('sin sesion');
   const limpio = String(text || '').trim().slice(0, 2000);
   if (!limpio) return;
+  /* 'bridg' solo lo acepta Firestore si quien escribe es admin: las
+     reglas exigen from == 'client' para todos los demas. Si un cliente
+     manipulara este parametro, la escritura se rechaza en el servidor.
+     Los mensajes de Kerry desde aqui NO se reenvian a Slack — ya esta
+     en el portal, y reenviarlos crearia un eco. */
   await addDoc(collection(db, 'bookings', bookingId, 'messages'), {
-    from: 'client',
+    from: quien === 'bridg' ? 'bridg' : 'client',
     uid: auth.currentUser.uid,
     text: limpio,
     createdAt: serverTimestamp()
