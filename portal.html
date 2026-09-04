@@ -478,6 +478,26 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 .acct-chip.approved::before{background:var(--green)}
 .acct-chip.rejected{color:var(--red)}
 .acct-chip.rejected::before{background:var(--red)}
+
+/* Order History */
+.hist-group{margin-bottom:2rem}
+.hist-group-title{font-family:var(--FD);font-size:.82rem;font-weight:600;letter-spacing:.02em;
+  padding:.75rem 0 .5rem;border-bottom:2px solid var(--orange);margin-bottom:.8rem;color:var(--ink)}
+.hist-row{border:1px solid var(--hairline);border-radius:10px;padding:.9rem 1rem;margin-bottom:.6rem;
+  display:flex;align-items:flex-start;gap:1rem;background:#fff;transition:all .2s}
+.hist-row:hover{border-color:var(--ink);box-shadow:0 2px 8px rgba(11,11,12,.08)}
+.hist-row .hc{flex:1;min-width:200px}
+.hist-row .hc-title{font-family:var(--FD);font-size:.88rem;font-weight:600;letter-spacing:-.01em;
+  margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+.hist-row .hc-meta{font-family:var(--FM);font-size:.65rem;letter-spacing:.04em;color:var(--steel);
+  line-height:1.6;margin-top:.4rem}
+.hist-badge{font-family:var(--FM);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:.3rem .7rem;border-radius:999px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.hist-badge.sent{background:var(--green-soft);color:var(--green);border:1px solid rgba(11,138,75,.3)}
+.hist-badge.rejected{background:var(--red-soft);color:var(--red);border:1px solid rgba(196,38,26,.3)}
+.hist-badge.active{background:var(--blue-soft);color:var(--blue);border:1px solid rgba(37,99,235,.3)}
+.hist-empty{text-align:center;padding:2.5rem 1rem;color:var(--steel);font-size:.85rem}
+
 .acct-empty{border:1px dashed var(--hairline);border-radius:14px;padding:2.4rem 1.2rem;
   text-align:center;color:var(--steel);font-size:.85rem;font-weight:300}
 
@@ -820,6 +840,10 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
         <span data-lang="en">Account review</span><span data-lang="es">Revisar cuentas</span>
         <span class="bdg hot" id="bAcct">0</span>
       </a>
+      <a href="#" class="tab" data-view="history" id="historyTab" hidden>
+        <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg></span>
+        <span data-lang="en">Order history</span><span data-lang="es">Historial de órdenes</span>
+      </a>
     </nav>
 
     <div class="rail-foot">
@@ -1053,6 +1077,31 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
         </button>
       </div>
       <div id="dispMount"></div>
+    </section>
+
+    <!-- ORDER HISTORY (ADMIN ONLY) -->
+    <section class="view" id="v-history">
+      <div class="view-hd">
+        <div>
+          <h1 data-lang="en">Order history</h1>
+          <h1 data-lang="es">Historial de órdenes</h1>
+          <p class="sub" data-lang="en">All orders across all time. Search by client name, tracking ID, or PO number. Each order shows its current status.</p>
+          <p class="sub" data-lang="es">Todas las órdenes de todo tiempo. Busca por nombre de cliente, número de rastreo o PO. Cada orden muestra su estado actual.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div style="padding:1.25rem;border-bottom:1px solid var(--hairline);display:flex;gap:.8rem;align-items:center;flex-wrap:wrap">
+          <div class="omni" style="margin:0;flex:1;min-width:240px">
+            <div class="omni-in">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="historySearch" data-ph-en="Client, tracking ID or PO" data-ph-es="Cliente, rastreo o PO" maxlength="100" style="font-size:.82rem"/>
+            </div>
+          </div>
+          <button class="btn sm" onclick="loadOrderHistory()" data-lang="en">Search</button>
+          <button class="btn sm" onclick="loadOrderHistory()" data-lang="es">Buscar</button>
+        </div>
+        <div id="historyMount" style="min-height:200px;padding:1.25rem"></div>
+      </div>
     </section>
 
   </main>
@@ -1797,6 +1846,157 @@ async function doReject(r, rej, btn, meta) {
       ((e && (e.code || e.message)) || 'error') + '\n' + meta.textContent;
   }
 }
+
+/* ── ORDER HISTORY ─────────────────────────────────── */
+let ALL_HISTORY = [];
+
+async function loadOrderHistory() {
+  const mount = el('historyMount');
+  const searchInput = el('historySearch');
+  if (!mount) return;
+  
+  mount.innerHTML = '<div class="hist-empty">' +
+    (L() === 'es' ? 'Cargando…' : 'Loading…') + '</div>';
+  
+  try {
+    if (!window._bridgListAll) { 
+      mount.innerHTML = '<div class="hist-empty">' +
+        (L() === 'es' ? 'No se pudo cargar.' : 'Could not load.') + '</div>';
+      return;
+    }
+    ALL_HISTORY = (await window._bridgListAll()) || [];
+  } catch (e) {
+    ALL_HISTORY = [];
+    mount.innerHTML = '<div class="hist-empty">' +
+      (L() === 'es' ? 'No se pudo cargar.' : 'Could not load.') + '</div>';
+    return;
+  }
+  
+  renderOrderHistory();
+}
+
+function renderOrderHistory() {
+  const mount = el('historyMount');
+  const searchVal = el('historySearch') ? el('historySearch').value.toLowerCase().trim() : '';
+  if (!mount) return;
+  const es = L() === 'es';
+  
+  let filtered = ALL_HISTORY;
+  if (searchVal) {
+    filtered = ALL_HISTORY.filter(o => {
+      const search = searchVal;
+      return (o.trackingId && o.trackingId.toLowerCase().includes(search)) ||
+             (o.po && o.po.toLowerCase().includes(search)) ||
+             (o.cliName && o.cliName.toLowerCase().includes(search)) ||
+             (o.cliCompany && o.cliCompany.toLowerCase().includes(search));
+    });
+  }
+  
+  if (!filtered.length) {
+    mount.innerHTML = '<div class="hist-empty">' +
+      (searchVal ? (es ? 'No se encontró nada.' : 'No results found.') :
+       (es ? 'Sin órdenes guardadas.' : 'No orders yet.')) + '</div>';
+    return;
+  }
+  
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+  
+  const groups = {
+    today: [],
+    week: [],
+    month: [],
+    older: []
+  };
+  
+  filtered.forEach(o => {
+    if (!o.createdAt) { groups.older.push(o); return; }
+    const oDate = new Date(o.createdAt);
+    const oDay = new Date(oDate.getFullYear(), oDate.getMonth(), oDate.getDate());
+    
+    if (oDay.getTime() === today.getTime()) groups.today.push(o);
+    else if (oDay >= weekAgo) groups.week.push(o);
+    else if (oDay >= monthAgo) groups.month.push(o);
+    else groups.older.push(o);
+  });
+  
+  mount.textContent = '';
+  
+  const groupLabels = {
+    today: es ? 'Hoy' : 'Today',
+    week: es ? 'Últimos 7 días' : 'Last 7 days',
+    month: es ? 'Últimos 30 días' : 'Last 30 days',
+    older: es ? 'Más antiguo' : 'Older'
+  };
+  
+  Object.keys(groups).forEach(key => {
+    const group = groups[key];
+    if (!group.length) return;
+    
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'hist-group';
+    
+    const title = document.createElement('div');
+    title.className = 'hist-group-title';
+    title.textContent = groupLabels[key];
+    groupDiv.appendChild(title);
+    
+    group.forEach(o => {
+      const row = document.createElement('div');
+      row.className = 'hist-row';
+      
+      const hc = document.createElement('div');
+      hc.className = 'hc';
+      
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'hc-title';
+      
+      const trackingSpan = document.createElement('span');
+      trackingSpan.textContent = o.trackingId || 'N/A';
+      trackingSpan.style.fontFamily = 'var(--FM)';
+      trackingSpan.style.fontWeight = '600';
+      titleDiv.appendChild(trackingSpan);
+      
+      hc.appendChild(titleDiv);
+      
+      const meta = document.createElement('div');
+      meta.className = 'hc-meta';
+      const metaText = (o.cliCompany ? o.cliCompany + ' · ' : '') +
+        (o.cliName || 'N/A') +
+        (o.po ? ' · PO: ' + o.po : '') +
+        (o.cargo ? ' · ' + o.cargo : '');
+      meta.textContent = metaText;
+      hc.appendChild(meta);
+      
+      row.appendChild(hc);
+      
+      const badge = document.createElement('div');
+      badge.className = 'hist-badge';
+      const status = o.status || 'active';
+      
+      if (status === 'canceled') {
+        badge.className += ' rejected';
+        badge.textContent = es ? 'Rechazada' : 'Rejected';
+      } else if (status === 'delivered') {
+        badge.className += ' sent';
+        badge.textContent = es ? 'Entregada' : 'Sent';
+      } else {
+        badge.className += ' active';
+        badge.textContent = es ? 'Activa' : 'Active';
+      }
+      
+      row.appendChild(badge);
+      groupDiv.appendChild(row);
+    });
+    
+    mount.appendChild(groupDiv);
+  });
+}
+
+// Attach search listener
+el('historySearch')?.addEventListener('input', renderOrderHistory);
 
 async function doDispatch(r, btn, meta) {
   const es = L() === 'es';
@@ -3377,12 +3577,15 @@ function hideAdminUI() {
   const dtab = el('dispTab'); if (dtab) dtab.hidden = true;
   const dmount = el('dispMount'); if (dmount) dmount.textContent = '';
   const dbdg = el('bDisp'); if (dbdg) { dbdg.textContent = '0'; dbdg.classList.remove('on'); }
+  const htab = el('historyTab'); if (htab) htab.hidden = true;
+  const hmount = el('historyMount'); if (hmount) hmount.textContent = '';
+  ALL_HISTORY = [];
   const mount = el('acctMount');
   if (mount) mount.textContent = '';
   const b = el('bAcct');
   if (b) { b.textContent = '0'; b.classList.remove('on'); }
   // Si estaba viendo el panel, sacarlo de ahi.
-  try { if (window.S && S.view === 'accounts') go('live'); } catch (e) {}
+  try { if (window.S && S.view === 'accounts' || S.view === 'history') go('live'); } catch (e) {}
 }
 window.hideAdminUI = hideAdminUI;
 
@@ -3397,6 +3600,7 @@ async function probeAdmin() {
     const sec = el('adminSec'), tab = el('adminTab');
     if (sec) sec.hidden = false;
     const dt = el('dispTab'); if (dt) dt.hidden = false;
+    const ht = el('historyTab'); if (ht) ht.hidden = false;
     loadDispatch();
     if (tab) tab.hidden = false;
     renderAccts();
