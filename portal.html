@@ -290,6 +290,9 @@ tbody tr:hover{background:var(--band)}
 tbody tr.picked{background:var(--orange-soft)}
 .tid{display:flex;align-items:center;gap:.35rem}
 .tid code{font-family:var(--FM);font-size:.72rem;font-weight:500}
+/* Punto de mensaje sin leer. Cuadrado como el resto del sistema
+   (border-radius 0 en todo el portal), naranja de marca. */
+.msg-dot{width:7px;height:7px;background:var(--orange);flex-shrink:0;display:inline-block}
 .copy{width:20px;height:20px;display:grid;place-items:center;color:var(--steel);border-radius:4px;flex-shrink:0}
 .copy:hover{color:var(--orange);background:var(--hairline)}
 .copy svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.8}
@@ -1444,6 +1447,7 @@ const T = {
   chYou:['You','Tú'],
   chFail:['Could not send. Try again.','No se pudo enviar. Intenta otra vez.'],
   chLoad:['Messages could not be loaded.','No se pudieron cargar los mensajes.'],
+  newMsg:['New message from Bridg','Mensaje nuevo de Bridg'],
   noPrice:['Not priced yet. We confirm the final price with you before anything is dispatched.',
            'Sin precio todavía. Confirmamos el precio final contigo antes de despachar nada.']
 };
@@ -2126,7 +2130,85 @@ function seedNotes() {
   }));
   renderNotes();
 }
-function clearNotes() { NOTES.forEach(n => n.read = true); renderNotes(); }
+function clearNotes() {
+  /* Marcar todo como leido tiene que PERSISTIR. Si solo se tocara el
+     objeto en memoria, el proximo repintado —que ocurre con cada
+     cambio que llega de Firestore— volveria a encender el aviso y
+     parecerian mensajes nuevos que no lo son. */
+  NOTES.forEach(n => { n.read = true; if (n.ship) marcarLeido(n.ship); });
+  renderNotes();
+}
+
+/* ── AVISO DE MENSAJE NUEVO ──────────────────────────────────────
+   De donde sale: la reserva trae lastBridgMessageAt, que escribe el
+   servidor cuando Kerry responde. El portal YA escucha bookings en
+   vivo, asi que esto no abre ningun escucha nuevo ni cobra lecturas
+   nuevas: viaja en un dato que de todos modos ya llegaba.
+
+   Que se guarda aqui: solo la HORA EN QUE EL CLIENTE ABRIO cada
+   orden, en localStorage. Es preferencia de pantalla, no dato de
+   negocio: si el cliente cambia de navegador vuelve a ver el aviso
+   una vez, y eso es preferible a escribirlo en Firestore, que seria
+   superficie nueva y reglas nuevas para resolver una comodidad.
+
+   Por que no se marca leido con solo mirar la lista: un punto que se
+   apaga sin que nadie lea el mensaje es peor que no tener punto. Se
+   apaga cuando la orden se ABRE, que es cuando el chat esta en
+   pantalla. */
+const LEIDO_KEY = 'bc_msg_seen_v1';
+
+function leidos() {
+  try {
+    const raw = localStorage.getItem(LEIDO_KEY);
+    const o = raw ? JSON.parse(raw) : {};
+    return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {};
+  } catch (e) { return {}; }
+}
+
+function marcarLeido(id) {
+  if (!id) return;
+  try {
+    const o = leidos();
+    o[id] = Date.now();
+    /* Tope: sin esto el objeto crece sin limite en el navegador de un
+       cliente con años de ordenes. Se quedan las 300 mas recientes. */
+    const claves = Object.keys(o);
+    if (claves.length > 300) {
+      claves.sort((a, b) => o[b] - o[a]).slice(300).forEach(k => { delete o[k]; });
+    }
+    localStorage.setItem(LEIDO_KEY, JSON.stringify(o));
+  } catch (e) {}
+}
+
+/* true si Bridg escribio DESPUES de la ultima vez que el cliente abrio
+   esa orden. Una orden que nunca se abrio y que tiene mensaje cuenta
+   como no leida. */
+function tieneMensajeNuevo(s) {
+  if (!s || !s.msgAt) return false;
+  const visto = leidos()[s.id];
+  return !visto || s.msgAt.getTime() > visto;
+}
+
+/* Reconstruye la campanita desde las ordenes. Se llama en cada
+   repintado, asi que no acumula: NOTES se arma de cero cada vez y no
+   puede duplicar un aviso. */
+function notasDeMensajes() {
+  if (S.demo) return;
+  NOTES = SHIPMENTS
+    .filter(s => s.msgAt && s.status !== 'canceled')
+    .sort((a, b) => b.msgAt - a.msgAt)
+    .slice(0, 20)
+    .map(s => ({
+      read: !tieneMensajeNuevo(s),
+      color: SCOL.transit || '#FF640D',
+      ship: s.id,
+      title: ['Message about ' + s.id, 'Mensaje sobre ' + s.id],
+      body: ['Bridg replied on this order. Open it to read and answer.',
+             'Bridg respondió en esta orden. Ábrela para leer y contestar.'],
+      when: s.msgAt
+    }));
+  renderNotes();
+}
 
 /* ── search ─────────────────────────────────────────────────── */
 const HELP = [
@@ -2330,6 +2412,7 @@ function renderTable() {
       '<td><input type="checkbox"' + (S.picked.has(s.id) ? ' checked' : '') +
         ' onchange="pickRow(\'' + s.id + '\',this.checked)" aria-label="' + s.id + '"/></td>' +
       '<td><span class="tid"><code>' + s.id + '</code>' +
+        (tieneMensajeNuevo(s) ? '<span class="msg-dot" title="' + t('newMsg') + '" aria-label="' + t('newMsg') + '"></span>' : '') +
         '<button class="copy" onclick="copyId(\'' + s.id + '\')" aria-label="Copy">' +
         '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="1.5"/><path d="M5 15V5a1.5 1.5 0 011.5-1.5H15"/></svg></button></span>' +
         '<div class="sub-mono">' + s.ref + ' · ' + t(s.service) + '</div></td>' +
@@ -2398,6 +2481,15 @@ function bulkPods() {
 function openDrawer(id) {
   const s = byId(id); if (!s) return;
   DRAWID = id;
+  /* Aqui abajo se monta el chat de esta orden, asi que el mensaje
+     queda en pantalla: es el momento honesto para apagar el aviso.
+     Se apaga ANTES de pintar para que el punto no parpadee, y solo
+     se repintan la campanita y la tabla —no todo el portal— porque
+     esto ocurre en cada apertura de cajon. */
+  if (!S.demo && tieneMensajeNuevo(s)) {
+    marcarLeido(id);
+    setTimeout(() => { notasDeMensajes(); renderTable(); }, 0);
+  }
   el('dKind').textContent = s.fragile ? t('fragile') : t('standard');
   el('dTitle').textContent = s.city;
   el('dSub').textContent = s.id + (s.ref && s.ref !== '—' ? ' · ' + s.ref : '');
@@ -3438,7 +3530,11 @@ function mapBooking(b) {
     dlat: num(b.dropoffLat), dlng: num(b.dropoffLng),
     shots, sig: sigUrl,
     sdEvent: typeof b.shipdayEvent === 'string' ? b.shipdayEvent.slice(0, 40) : '',
-    sdAt: toDate(b.shipdayUpdatedAt)
+    sdAt: toDate(b.shipdayUpdatedAt),
+    /* Cuando Bridg le escribio por ultima vez. Lo pone el SERVIDOR
+       (esta en fnOnly() en las reglas). De aqui salen el numero rojo de
+       la campanita y el punto naranja de la fila. */
+    msgAt: toDate(b.lastBridgMessageAt)
   };
 }
 /* Empuje en vivo desde Firestore (onSnapshot). Reconstruye las filas sin
@@ -3467,6 +3563,10 @@ window.onBookingsUpdate = function (bookings) {
   });
 
   fillFilters();
+  /* Va ANTES de renderNotes: arma la lista de avisos desde las ordenes
+     que acaban de llegar, y renderNotes la pinta. Al reves pintaria la
+     lista anterior. */
+  notasDeMensajes();
   renderKpis(); renderMap(); renderNotes(); renderBadges();
   renderCal(); renderTable(); renderExc(); renderTk();
   if (S.view === 'docs') renderDocs();
@@ -3847,6 +3947,27 @@ window._bridgChatSend = async (bookingId, text, quien) => {
     text: limpio,
     createdAt: serverTimestamp()
   });
+
+  /* MARCA DEL AVISO. Solo cuando escribe Bridg: de eso vive el punto
+     naranja y el numero de la campanita del CLIENTE.
+
+     Si lo intenta un cliente, Firestore lo rechaza —el campo esta en
+     fnOnly()— y por eso el fallo se traga: el mensaje YA se guardo y
+     no hay que asustar a nadie con un error por una marca que ese
+     cliente no deberia poder escribir de todos modos.
+
+     Cuando Kerry responde desde Slack la marca la pone el servidor
+     (slackEvents). Este camino cubre el otro: cuando responde desde
+     el panel de despacho. */
+  if (quien === 'bridg') {
+    try {
+      await updateDoc(doc(db, 'bookings', bookingId), {
+        lastBridgMessageAt: new Date().toISOString()
+      });
+    } catch (e) {
+      console.warn('marca de aviso no escrita:', e && e.code);
+    }
+  }
 };
 
 window._bridgIdToken = async () => {
