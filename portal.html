@@ -1648,6 +1648,7 @@ function renderView() {
   else if (S.view === 'support') renderTk();
   else if (S.view === 'accounts') { if (!ACCTS.length) loadAccounts(); else renderAccts(); }
   else if (S.view === 'dispatch') { if (!DISP.length) loadDispatch(); else renderDisp(); }
+  else if (S.view === 'history') { if (!ALL_HISTORY.length) loadOrderHistory(); else renderOrderHistory(); }
 }
 
 /* ── Account review (admin only) ─────────────────────────────
@@ -1839,6 +1840,9 @@ async function doReject(r, rej, btn, meta) {
     DISP = DISP.filter(x => x.id !== r.id);
     renderDisp();
     renderBadges();
+    // Refrescar historial para que la orden rechazada aparezca de inmediato
+    ALL_HISTORY = [];
+    if (S.view === 'history') loadOrderHistory();
   } catch (e) {
     rej.disabled = false; btn.disabled = false;
     rej.textContent = es ? 'Rechazar' : 'Reject';
@@ -1854,6 +1858,7 @@ async function loadOrderHistory() {
   const mount = el('historyMount');
   const searchInput = el('historySearch');
   if (!mount) return;
+  _attachHistorySearch();
   
   mount.innerHTML = '<div class="hist-empty">' +
     (L() === 'es' ? 'Cargando…' : 'Loading…') + '</div>';
@@ -1888,7 +1893,13 @@ function renderOrderHistory() {
       return (o.trackingId && o.trackingId.toLowerCase().includes(search)) ||
              (o.po && o.po.toLowerCase().includes(search)) ||
              (o.cliName && o.cliName.toLowerCase().includes(search)) ||
-             (o.cliCompany && o.cliCompany.toLowerCase().includes(search));
+             (o.cliCompany && o.cliCompany.toLowerCase().includes(search)) ||
+             (o.cliPhone && o.cliPhone.toLowerCase().includes(search)) ||
+             (o.cliEmail && o.cliEmail.toLowerCase().includes(search)) ||
+             (o.pickup && o.pickup.toLowerCase().includes(search)) ||
+             (o.pickupName && o.pickupName.toLowerCase().includes(search)) ||
+             (o.dropoff && o.dropoff.toLowerCase().includes(search)) ||
+             (o.siteContact && o.siteContact.toLowerCase().includes(search));
     });
   }
   
@@ -1946,6 +1957,8 @@ function renderOrderHistory() {
     group.forEach(o => {
       const row = document.createElement('div');
       row.className = 'hist-row';
+      row.style.cursor = 'pointer';
+      row.style.flexWrap = 'wrap';
       
       const hc = document.createElement('div');
       hc.className = 'hc';
@@ -1961,33 +1974,83 @@ function renderOrderHistory() {
       
       hc.appendChild(titleDiv);
       
+      /* Linea 1: quien pidio */
       const meta = document.createElement('div');
       meta.className = 'hc-meta';
-      const metaText = (o.cliCompany ? o.cliCompany + ' · ' : '') +
-        (o.cliName || 'N/A') +
-        (o.po ? ' · PO: ' + o.po : '') +
-        (o.cargo ? ' · ' + o.cargo : '');
-      meta.textContent = metaText;
+      meta.textContent = (o.cliCompany || (es ? 'SIN EMPRESA' : 'NO COMPANY')) +
+        (o.cliName ? '  ·  ' + o.cliName : '') +
+        (o.cliPhone ? '  ·  ' + o.cliPhone : '');
       hc.appendChild(meta);
+
+      /* Linea 2: la ruta y la fecha. Esto es lo que se busca cuando
+         alguien reclama meses despues: de donde a donde y cuando. */
+      const ruta = document.createElement('div');
+      ruta.className = 'hc-meta';
+      let cuando = '';
+      if (o.createdAt) { const d1 = new Date(o.createdAt); if (!isNaN(d1)) cuando = d1.toLocaleString(); }
+      ruta.textContent =
+        (o.pickupName ? o.pickupName + ' — ' : '') + (o.pickup || (es ? 'sin recogida' : 'no pickup')) +
+        '  →  ' + (o.dropoff || (es ? 'sin entrega' : 'no dropoff')) +
+        (cuando ? '  ·  ' + cuando : '') +
+        (o.po ? '  ·  PO ' + o.po : '') +
+        (o.estimate ? '  ·  ' + o.estimate : '');
+      hc.appendChild(ruta);
       
       row.appendChild(hc);
       
       const badge = document.createElement('div');
       badge.className = 'hist-badge';
-      const status = o.status || 'active';
+      const status = o.status || 'scheduled';
       
       if (status === 'canceled') {
         badge.className += ' rejected';
         badge.textContent = es ? 'Rechazada' : 'Rejected';
       } else if (status === 'delivered') {
         badge.className += ' sent';
-        badge.textContent = es ? 'Entregada' : 'Sent';
+        badge.textContent = es ? 'Entregada' : 'Delivered';
+      } else if (o.shipdayOrderId) {
+        badge.className += ' active';
+        badge.textContent = es ? 'Enviada' : 'Sent';
       } else {
         badge.className += ' active';
-        badge.textContent = es ? 'Activa' : 'Active';
+        badge.textContent = es ? 'Pendiente' : 'Pending';
       }
       
       row.appendChild(badge);
+
+      /* DETALLE COMPLETO AL HACER CLIC.
+         Se arma con textContent, nunca innerHTML: estos campos los
+         escribio el cliente y no deben poder inyectar nada aqui. */
+      const det = document.createElement('div');
+      det.style.cssText = 'flex-basis:100%;display:none;border-top:1px solid var(--hairline);' +
+        'margin-top:.7rem;padding-top:.7rem;font-family:var(--FM);font-size:.63rem;' +
+        'line-height:1.9;color:var(--steel);white-space:pre-line;word-break:break-word';
+      let pickAt = '';
+      if (o.pickupAt) { const d2 = new Date(o.pickupAt); if (!isNaN(d2)) pickAt = d2.toLocaleString(); }
+      det.textContent = [
+        (es ? 'RASTREO: ' : 'TRACKING: ') + (o.trackingId || '—'),
+        (es ? 'ESTADO: ' : 'STATUS: ') + status,
+        (es ? 'CREADA: ' : 'CREATED: ') + (cuando || '—'),
+        (es ? 'RECOGIDA PROGRAMADA: ' : 'PICKUP SCHEDULED: ') + (pickAt || '—'),
+        (es ? 'EMPRESA: ' : 'COMPANY: ') + (o.cliCompany || '—'),
+        (es ? 'CONTACTO: ' : 'CONTACT: ') + (o.cliName || '—') +
+          (o.cliPhone ? '  ·  ' + o.cliPhone : '') + (o.cliEmail ? '  ·  ' + o.cliEmail : ''),
+        (es ? 'RECOGE EN: ' : 'PICKUP: ') + (o.pickupName ? o.pickupName + ' — ' : '') + (o.pickup || '—'),
+        (es ? 'ENTREGA EN: ' : 'DROPOFF: ') + (o.dropoff || '—'),
+        (es ? 'RECIBE EN OBRA: ' : 'SITE CONTACT: ') + (o.siteContact || '—') +
+          (o.sitePhone ? '  ·  ' + o.sitePhone : ''),
+        (es ? 'CARGA: ' : 'CARGO: ') + (o.cargo || '—') +
+          (o.weight ? '  ·  ' + o.weight + ' lbs' : '') +
+          (o.fragile ? (es ? '  ·  FRAGIL' : '  ·  FRAGILE') : ''),
+        (es ? 'PO: ' : 'PO: ') + (o.po || '—'),
+        (es ? 'ESTIMADO: ' : 'ESTIMATE: ') + (o.estimate || '—')
+      ].join('\n');
+      row.appendChild(det);
+
+      row.onclick = () => {
+        det.style.display = (det.style.display === 'none') ? 'block' : 'none';
+      };
+
       groupDiv.appendChild(row);
     });
     
@@ -1996,7 +2059,14 @@ function renderOrderHistory() {
 }
 
 // Attach search listener
-el('historySearch')?.addEventListener('input', renderOrderHistory);
+function _attachHistorySearch() {
+  const inp = el('historySearch');
+  if (!inp || inp._wired) return;
+  inp._wired = true;
+  inp.addEventListener('input', renderOrderHistory);
+}
+document.addEventListener('DOMContentLoaded', _attachHistorySearch);
+_attachHistorySearch();
 
 async function doDispatch(r, btn, meta) {
   const es = L() === 'es';
@@ -3585,7 +3655,7 @@ function hideAdminUI() {
   const b = el('bAcct');
   if (b) { b.textContent = '0'; b.classList.remove('on'); }
   // Si estaba viendo el panel, sacarlo de ahi.
-  try { if (window.S && S.view === 'accounts' || S.view === 'history') go('live'); } catch (e) {}
+  try { if (window.S && (S.view === 'accounts' || S.view === 'history' || S.view === 'dispatch')) go('live'); } catch (e) {}
 }
 window.hideAdminUI = hideAdminUI;
 
@@ -4085,6 +4155,7 @@ window._bridgListAll = async () => {
       cargo: v.cargo || '',
       estimate: v.estimate || '',
       status: v.status || 'scheduled',
+      shipdayOrderId: v.shipdayOrderId || '',
       createdAt: v.createdAt || '',
       // Cliente
       cliCompany: '',
