@@ -4059,6 +4059,73 @@ window._bridgListPending = async () => {
   return out;
 };
 
+/* HISTORIAL DE TODAS LAS ÓRDENES.
+   Carga TODAS las órdenes: scheduled, dispatched, delivered, canceled.
+   Agrega los datos del cliente desde su perfil (empresa, nombre, teléfono, email, status).
+   Solo admin puede verlas; para un cliente la consulta la niegan las reglas. */
+window._bridgListAll = async () => {
+  if (!auth.currentUser) return [];
+  const snap = await getDocs(collection(db, 'bookings'));
+  const out = [];
+  snap.forEach(d => {
+    const v = d.data() || {};
+    out.push({
+      id: d.id,
+      uid: v.uid || '',
+      trackingId: v.trackingId || '',
+      po: v.po || '',
+      pickup: v.pickup || '',
+      pickupName: v.pickupName || '',
+      dropoff: v.dropoff || '',
+      siteContact: v.siteContact || '',
+      sitePhone: v.sitePhone || '',
+      pickupAt: v.pickupAt || '',
+      fragile: !!v.fragile,
+      weight: v.weight || 0,
+      cargo: v.cargo || '',
+      estimate: v.estimate || '',
+      status: v.status || 'scheduled',
+      createdAt: v.createdAt || '',
+      // Cliente
+      cliCompany: '',
+      cliName: '',
+      cliPhone: '',
+      cliEmail: '',
+      cliStatus: ''
+    });
+  });
+
+  /* Cargar perfiles de clientes. Igual que en _bridgListPending. */
+  const uids = [...new Set(out.map(r => r.uid).filter(Boolean))];
+  const perfiles = new Map();
+  await Promise.all(uids.map(async (u) => {
+    try {
+      const p = await getDoc(doc(db, 'clients', u));
+      if (p.exists()) perfiles.set(u, p.data() || {});
+    } catch (e) {
+      console.warn('perfil no leido para ' + u, e && e.code);
+    }
+  }));
+
+  out.forEach(r => {
+    const p = perfiles.get(r.uid);
+    if (!p) {
+      r.cliCompany = r.uid ? 'PERFIL NO ENCONTRADO' : 'SIN CLIENTE';
+      return;
+    }
+    r.cliCompany = p.company || '';
+    r.cliName    = p.name || p.contactName || '';
+    r.cliPhone   = p.phone || '';
+    r.cliEmail   = p.email || '';
+    r.cliStatus  = p.status || '';
+  });
+
+  /* Ordenar por fecha descendente (nuevas primero) */
+  out.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+
+  return out;
+};
+
 /* Llama a la Cloud Function. Devuelve el resultado o lanza el
    mensaje de la funcion tal cual, que es el que explica el motivo. */
 const _fns = getFunctions(app, 'us-central1');
