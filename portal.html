@@ -636,6 +636,29 @@ footer{border-top:1px solid var(--hairline);background:#fff;grid-column:1/-1}
 .bc-form button:disabled{opacity:.4;cursor:default}
 .bc-err{font-size:.76rem;color:var(--red);margin-top:.4rem;display:none}
 
+/* Oferta con botones Accept/Reject */
+.offer-msg{border:1px solid var(--orange);border-radius:10px;padding:.75rem;
+  background:var(--orange-soft);margin-top:.5rem}
+.offer-msg .price{font-family:var(--FD);font-weight:600;color:var(--orange);
+  font-size:.95rem;margin-top:.4rem}
+.offer-btns{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.offer-btn{flex:1;min-width:120px;padding:.45rem .8rem;border-radius:6px;
+  font-family:var(--FD);font-weight:600;font-size:.78rem;border:0;cursor:pointer;
+  transition:all .2s}
+.offer-accept{background:var(--green);color:#fff}
+.offer-accept:hover{opacity:.9;transform:translateY(-1px)}
+.offer-accept:disabled{opacity:.4;cursor:default}
+.offer-reject{background:var(--red);color:#fff}
+.offer-reject:hover{opacity:.9;transform:translateY(-1px)}
+.offer-reject:disabled{opacity:.4;cursor:default}
+
+/* Badge de estado de oferta */
+.offer-badge{display:inline-flex;align-items:center;gap:.4rem;
+  font-family:var(--FM);font-size:.65rem;letter-spacing:.06em;
+  padding:.3rem .6rem;border-radius:6px;margin-top:.4rem}
+.offer-badge.accepted{background:var(--green-soft);color:var(--green)}
+.offer-badge.rejected{background:var(--red-soft);color:var(--red)}
+
 </style>
 </head>
 <body>
@@ -2879,15 +2902,44 @@ function montarChat(docId, caja, comoBridg) {
     msgs.forEach(m => {
       const d = document.createElement('div');
       d.className = 'bc-m ' + (m.from === 'client' ? 'cli' : 'bri');
-      /* textContent, NUNCA innerHTML: el texto viene de Firestore y
-         meterlo como HTML seria una via de inyeccion en la pagina
-         donde vive la sesion del cliente. */
       d.textContent = m.text || '';
       const w = document.createElement('span');
       w.className = 'w';
       w.textContent = (m.from === 'client' ? t('chYou') : 'Bridg') + ' · ' + hora(m.at);
       d.appendChild(w);
       lista.appendChild(d);
+
+      /* DETECTAR OFERTA: mensaje de Bridg con precio ($XXX) */
+      if (m.from === 'bridg' && m.text && m.text.includes('$')) {
+        const precioMatch = m.text.match(/\$\s*(\d+(?:,\d{3})*(?:\.\d{2})?)/);
+        if (precioMatch && !m.offerDecided) {
+          const precio = precioMatch[1];
+          
+          /* Contenedor de oferta */
+          const offerDiv = document.createElement('div');
+          offerDiv.className = 'offer-msg';
+          offerDiv.innerHTML = '<div class="price">Precio propuesto: $' + precio + '</div>';
+          
+          /* Botones */
+          const btnsDiv = document.createElement('div');
+          btnsDiv.className = 'offer-btns';
+          
+          const btnAccept = document.createElement('button');
+          btnAccept.className = 'offer-btn offer-accept';
+          btnAccept.textContent = 'Accept $' + precio;
+          btnAccept.onclick = () => handleOfferDecision(docId, 'accept', precio, m.id);
+          
+          const btnReject = document.createElement('button');
+          btnReject.className = 'offer-btn offer-reject';
+          btnReject.textContent = 'Reject';
+          btnReject.onclick = () => handleOfferDecision(docId, 'reject', precio, m.id);
+          
+          btnsDiv.appendChild(btnAccept);
+          btnsDiv.appendChild(btnReject);
+          offerDiv.appendChild(btnsDiv);
+          lista.appendChild(offerDiv);
+        }
+      }
     });
     lista.scrollTop = lista.scrollHeight;
   }, () => {
@@ -2915,6 +2967,48 @@ function montarChat(docId, caja, comoBridg) {
   boton.onclick = enviar;
   campo.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); enviar(); } };
 }
+
+/* MANEJO DE DECISIONES DE OFERTA */
+async function handleOfferDecision(docId, decision, precio, messageId) {
+  try {
+    /* Guardar en la orden: qué decidió el cliente */
+    if (window._bridgUpdateOffer) {
+      await window._bridgUpdateOffer(docId, {
+        offerDecided: decision,
+        offerPrice: precio,
+        offerDecidedAt: new Date().toISOString(),
+        offerMessageId: messageId
+      });
+    }
+
+    /* Enviar mensaje automático a Slack notificando la decisión */
+    if (window._bridgNotifyOfferDecision) {
+      const msg = decision === 'accept'
+        ? 'Cliente aceptó la oferta de $' + precio
+        : 'Cliente rechazó la oferta de $' + precio;
+      await window._bridgNotifyOfferDecision(docId, decision, precio, msg);
+    }
+
+    /* Mostrar confirmación visual */
+    const btns = document.querySelectorAll('.offer-btn');
+    btns.forEach(btn => btn.disabled = true);
+
+    const badge = document.createElement('div');
+    badge.className = 'offer-badge ' + (decision === 'accept' ? 'accepted' : 'rejected');
+    badge.textContent = decision === 'accept'
+      ? '✓ Offer accepted for $' + precio
+      : '✗ Offer rejected';
+    
+    const parent = document.querySelector('.offer-msg');
+    if (parent) {
+      parent.appendChild(badge);
+    }
+  } catch (e) {
+    console.error('handleOfferDecision:', e && e.message);
+    alert('Error al guardar tu decisión. Por favor intenta de nuevo.');
+  }
+}
+
 function dayDrawer(dstr) {
   const d = new Date(dstr + 'T12:00:00'), evs = evOn(d);
   el('dKind').textContent = t('daySched');
@@ -4309,6 +4403,47 @@ window._bridgChatSend = async (bookingId, text, quien) => {
     } catch (e) {
       console.warn('marca de aviso no escrita:', e && e.code);
     }
+  }
+};
+
+/* GUARDAR DECISIÓN DE OFERTA DEL CLIENTE */
+window._bridgUpdateOffer = async (bookingId, data) => {
+  if (!auth.currentUser) throw new Error('sin sesion');
+  try {
+    await updateDoc(doc(db, 'bookings', bookingId), {
+      offerDecided: data.offerDecided || null,
+      offerPrice: data.offerPrice || null,
+      offerDecidedAt: data.offerDecidedAt || null,
+      offerMessageId: data.offerMessageId || null
+    });
+  } catch (e) {
+    console.error('updateOffer:', e && e.message);
+    throw e;
+  }
+};
+
+/* NOTIFICAR A SLACK QUE EL CLIENTE ACEPTÓ O RECHAZÓ */
+window._bridgNotifyOfferDecision = async (bookingId, decision, precio, mensaje) => {
+  if (!auth.currentUser) throw new Error('sin sesion');
+  try {
+    /* Llamar a una Cloud Function que:
+       1. Lee la orden
+       2. Lee el hilo de Slack (slackThreadTs)
+       3. Envía un mensaje al hilo con la decisión
+       
+       Por ahora es un placeholder; la función real va en index.js */
+    console.log('Notificar a Slack:', bookingId, decision, precio, mensaje);
+    
+    /* Guardar en Firestore como referencia también */
+    await addDoc(collection(db, 'bookings', bookingId, 'messages'), {
+      from: 'system',
+      uid: 'system',
+      text: '[AUTOMATICO] ' + mensaje,
+      createdAt: serverTimestamp()
+    });
+  } catch (e) {
+    console.error('notifyOfferDecision:', e && e.message);
+    throw e;
   }
 };
 
