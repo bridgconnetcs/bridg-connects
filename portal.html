@@ -3005,7 +3005,7 @@ async function handleOfferDecision(docId, decision, precio, messageId) {
     }
   } catch (e) {
     console.error('handleOfferDecision:', e && e.message);
-    alert('Error al guardar tu decisión. Por favor intenta de nuevo.');
+    alert('Error saving your decision. Please try again.');
   }
 }
 
@@ -4406,45 +4406,41 @@ window._bridgChatSend = async (bookingId, text, quien) => {
   }
 };
 
-/* GUARDAR DECISIÓN DE OFERTA DEL CLIENTE */
+/* GUARDAR DECISIÓN DE OFERTA DEL CLIENTE — via HTTP endpoint */
 window._bridgUpdateOffer = async (bookingId, data) => {
-  if (!auth.currentUser) throw new Error('sin sesion');
+  if (!auth.currentUser) throw new Error('no session');
   try {
-    await updateDoc(doc(db, 'bookings', bookingId), {
-      offerDecided: data.offerDecided || null,
-      offerPrice: data.offerPrice || null,
-      offerDecidedAt: data.offerDecidedAt || null,
-      offerMessageId: data.offerMessageId || null
-    });
+    const token = await auth.currentUser.getIdToken();
+    const resp = await fetch(
+      'https://us-central1-bridg-connects.cloudfunctions.net/saveOfferDecision',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookingId: bookingId,
+          decision: data.offerDecided,
+          price: data.offerPrice,
+          messageId: data.offerMessageId,
+          token: token
+        })
+      }
+    );
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.error || 'save failed');
+    }
+    return await resp.json();
   } catch (e) {
     console.error('updateOffer:', e && e.message);
     throw e;
   }
 };
 
-/* NOTIFICAR A SLACK QUE EL CLIENTE ACEPTÓ O RECHAZÓ */
+/* NOTIFICAR A SLACK — YA LO HACE saveOfferDecision HTTP, así que esto es no-op */
 window._bridgNotifyOfferDecision = async (bookingId, decision, precio, mensaje) => {
-  if (!auth.currentUser) throw new Error('sin sesion');
-  try {
-    /* Llamar a una Cloud Function que:
-       1. Lee la orden
-       2. Lee el hilo de Slack (slackThreadTs)
-       3. Envía un mensaje al hilo con la decisión
-       
-       Por ahora es un placeholder; la función real va en index.js */
-    console.log('Notificar a Slack:', bookingId, decision, precio, mensaje);
-    
-    /* Guardar en Firestore como referencia también */
-    await addDoc(collection(db, 'bookings', bookingId, 'messages'), {
-      from: 'system',
-      uid: 'system',
-      text: '[AUTOMATICO] ' + mensaje,
-      createdAt: serverTimestamp()
-    });
-  } catch (e) {
-    console.error('notifyOfferDecision:', e && e.message);
-    throw e;
-  }
+  // La notificación ya se envió en el endpoint HTTP saveOfferDecision
+  // Este placeholder queda por compatibilidad con handleOfferDecision
+  console.log('Offer decision already notified via HTTP endpoint');
 };
 
 window._bridgIdToken = async () => {
