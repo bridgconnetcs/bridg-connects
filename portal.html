@@ -4195,8 +4195,9 @@ const db = getFirestore(app);
       const es = document.body.classList.contains('es');
       if (btn) { btn.disabled = true; btn.textContent = es ? 'Comprobando\u2026' : 'Checking\u2026'; }
       const u = await refrescarSesion();
-      if (u && u.emailVerified) {
-        if (window.loadClientDocs) window.loadClientDocs(u.email);
+      /* Se reintenta la lectura de verdad, no se consulta el cache. */
+      if (u && u.email && window.loadClientDocs) {
+        window.loadClientDocs(u.email);
         return;
       }
       if (btn) {
@@ -4207,8 +4208,12 @@ const db = getFirestore(app);
 
     window.loadClientDocs = async (email) => {
       const es = document.body.classList.contains('es');
-      const u = await refrescarSesion();
-      if (u && u.emailVerified === false) { paintVerifyNotice(); return; }
+      /* No se adivina lo que Storage va a contestar. Antes el portal
+         miraba emailVerified y, si decia false, ni lo intentaba: eso
+         dejaba paneles vacios aunque las reglas si permitieran leer.
+         Ahora se intenta y manda la respuesta de Storage, que es la
+         unica autoridad real sobre quien puede ver que. */
+      await refrescarSesion();
       try {
         const all = await readClientFolder(email);
         paintDocs('invMount', all.filter(d => d.name.startsWith('BC-INV')),
