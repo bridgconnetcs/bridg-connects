@@ -4142,8 +4142,10 @@ const db = getFirestore(app);
         ? 'Tus facturas y conocimientos de embarque aparecen aqu\u00ed en cuanto confirmes tu direcci\u00f3n de correo. Revisa tu bandeja \u2014 y la carpeta de spam \u2014 y haz clic en el enlace que te enviamos.'
         : 'Your invoices and bills of lading appear here once you confirm your email address. Check your inbox \u2014 and your spam folder \u2014 and click the link we sent you.';
       const btn = es ? 'Reenviar correo' : 'Resend email';
+      const btn2 = es ? 'Ya verifiqu\u00e9' : 'I already verified';
       const html = '<div class="doc-notice"><span class="doc-notice-h">' + escDoc(head) + '</span>'
         + '<p>' + escDoc(body) + '</p>'
+        + '<button type="button" onclick="window.recheckVerification(this)">' + escDoc(btn2) + '</button> '
         + '<button type="button" onclick="window.resendVerification(this)">' + escDoc(btn) + '</button></div>';
       ['invMount','podMount'].forEach(id => {
         const m = document.getElementById(id);
@@ -4171,9 +4173,41 @@ const db = getFirestore(app);
       }
     };
 
+    /* La marca "correo verificado" NO se consulta en vivo: viaja dentro
+       del token de sesion, y ese token se guarda hasta una hora. Si el
+       cliente verifica su correo en otra pestana o en el telefono, la
+       sesion que tiene abierta aqui sigue diciendo "sin verificar", y
+       Storage le niega los documentos aunque el correo ya este bueno.
+       Por eso hay que pedir un token nuevo antes de mirar. */
+    async function refrescarSesion() {
+      const u = auth.currentUser;
+      if (!u) return null;
+      try {
+        await u.reload();
+        await u.getIdToken(true);
+      } catch (e) {
+        console.warn('refresco de sesion:', e && e.code);
+      }
+      return auth.currentUser;
+    }
+
+    window.recheckVerification = async (btn) => {
+      const es = document.body.classList.contains('es');
+      if (btn) { btn.disabled = true; btn.textContent = es ? 'Comprobando\u2026' : 'Checking\u2026'; }
+      const u = await refrescarSesion();
+      if (u && u.emailVerified) {
+        if (window.loadClientDocs) window.loadClientDocs(u.email);
+        return;
+      }
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = es ? 'A\u00fan no aparece \u2014 reintentar' : 'Not showing yet \u2014 try again';
+      }
+    };
+
     window.loadClientDocs = async (email) => {
       const es = document.body.classList.contains('es');
-      const u = auth.currentUser;
+      const u = await refrescarSesion();
       if (u && u.emailVerified === false) { paintVerifyNotice(); return; }
       try {
         const all = await readClientFolder(email);
