@@ -2899,7 +2899,19 @@ function montarChat(docId, caja, comoBridg) {
       lista.appendChild(e2);
       return;
     }
-    msgs.forEach(m => {
+    /* Solo la ULTIMA oferta puede tener botones. Las ofertas viejas
+       (contraofertas ya superadas) quedan como texto, sin botones. */
+    let idxUltimaOferta = -1;
+    msgs.forEach((m, i) => {
+      if (m.from === 'bridg' && m.text && /\$\s*\d/.test(m.text)) idxUltimaOferta = i;
+    });
+
+    /* La decision vive en el booking, no en el mensaje. */
+    const _bk = (typeof SHIPMENTS !== 'undefined' && Array.isArray(SHIPMENTS))
+      ? SHIPMENTS.find(x => x && x.docId === docId) : null;
+    const soloNum = v => String(v == null ? '' : v).replace(/[^0-9.]/g, '');
+
+    msgs.forEach((m, idx) => {
       const d = document.createElement('div');
       d.className = 'bc-m ' + (m.from === 'client' ? 'cli' : 'bri');
       d.textContent = m.text || '';
@@ -2912,31 +2924,50 @@ function montarChat(docId, caja, comoBridg) {
       /* DETECTAR OFERTA: mensaje de Bridg con precio ($XXX) */
       if (m.from === 'bridg' && m.text && m.text.includes('$')) {
         const precioMatch = m.text.match(/\$\s*(\d+(?:,\d{3})*(?:\.\d{2})?)/);
-        if (precioMatch && !m.offerDecided) {
+        if (precioMatch && idx === idxUltimaOferta) {
           const precio = precioMatch[1];
-          
+
+          /* Ya decidida si el booking trae decision Y el precio decidido
+             coincide con el de este mensaje. Si Bridg manda una contra-
+             oferta con OTRO precio, los botones vuelven a habilitarse. */
+          const decision = (_bk && _bk.offerDecided) || null;
+          const mismoPrecio = _bk && _bk.offerPrice != null &&
+            soloNum(_bk.offerPrice) === soloNum(precio);
+          const yaDecidida = decision && mismoPrecio ? decision : null;
+
           /* Contenedor de oferta */
           const offerDiv = document.createElement('div');
           offerDiv.className = 'offer-msg';
           offerDiv.innerHTML = '<div class="price">Precio propuesto: $' + precio + '</div>';
-          
-          /* Botones */
-          const btnsDiv = document.createElement('div');
-          btnsDiv.className = 'offer-btns';
-          
-          const btnAccept = document.createElement('button');
-          btnAccept.className = 'offer-btn offer-accept';
-          btnAccept.textContent = 'Accept $' + precio;
-          btnAccept.onclick = () => handleOfferDecision(docId, 'accept', precio, m.id);
-          
-          const btnReject = document.createElement('button');
-          btnReject.className = 'offer-btn offer-reject';
-          btnReject.textContent = 'Reject';
-          btnReject.onclick = () => handleOfferDecision(docId, 'reject', precio, m.id);
-          
-          btnsDiv.appendChild(btnAccept);
-          btnsDiv.appendChild(btnReject);
-          offerDiv.appendChild(btnsDiv);
+
+          if (yaDecidida) {
+            /* Decision ya tomada: sello permanente, sin botones. */
+            const badge = document.createElement('div');
+            badge.className = 'offer-badge ' +
+              (yaDecidida === 'accept' ? 'accepted' : 'rejected');
+            badge.textContent = yaDecidida === 'accept'
+              ? '\u2713 Offer accepted for $' + precio
+              : '\u2717 Offer rejected';
+            offerDiv.appendChild(badge);
+          } else {
+            /* Botones */
+            const btnsDiv = document.createElement('div');
+            btnsDiv.className = 'offer-btns';
+
+            const btnAccept = document.createElement('button');
+            btnAccept.className = 'offer-btn offer-accept';
+            btnAccept.textContent = 'Accept $' + precio;
+            btnAccept.onclick = () => handleOfferDecision(docId, 'accept', precio, m.id);
+
+            const btnReject = document.createElement('button');
+            btnReject.className = 'offer-btn offer-reject';
+            btnReject.textContent = 'Reject';
+            btnReject.onclick = () => handleOfferDecision(docId, 'reject', precio, m.id);
+
+            btnsDiv.appendChild(btnAccept);
+            btnsDiv.appendChild(btnReject);
+            offerDiv.appendChild(btnsDiv);
+          }
           lista.appendChild(offerDiv);
         }
       }
@@ -3881,6 +3912,11 @@ function mapBooking(b) {
        que se muestra; este es el que se necesita para escribir en la
        subcoleccion de mensajes. Antes se perdia aqui. */
     docId: b.id || null,
+    /* Decision de oferta ya tomada por el cliente. Vive en el booking,
+       no en el mensaje: sin esto los botones reaparecen al refrescar. */
+    offerDecided: (b.offerDecided === 'accept' || b.offerDecided === 'reject')
+      ? b.offerDecided : null,
+    offerPrice: b.offerPrice != null ? String(b.offerPrice) : null,
     ref: b.po || b.ref || '—',
     origin: b.pickup || '—', city: (b.dropoff || '—').split(',')[0],
     consignee: b.consignee || '—',
