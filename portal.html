@@ -2910,6 +2910,8 @@ function montarChat(docId, caja, comoBridg) {
     const _bk = (typeof SHIPMENTS !== 'undefined' && Array.isArray(SHIPMENTS))
       ? SHIPMENTS.find(x => x && x.docId === docId) : null;
     const soloNum = v => String(v == null ? '' : v).replace(/[^0-9.]/g, '');
+    /* Ingles por defecto: la mayoria de los clientes lo prefieren. */
+    const esIdioma = document.body.classList.contains('es');
 
     msgs.forEach((m, idx) => {
       const d = document.createElement('div');
@@ -2938,16 +2940,26 @@ function montarChat(docId, caja, comoBridg) {
           /* Contenedor de oferta */
           const offerDiv = document.createElement('div');
           offerDiv.className = 'offer-msg';
-          offerDiv.innerHTML = '<div class="price">Precio propuesto: $' + precio + '</div>';
+          const tituloPrecio = esIdioma ? 'Precio propuesto: $' : 'Proposed price: $';
+          const pTitulo = document.createElement('div');
+          pTitulo.className = 'price';
+          pTitulo.textContent = tituloPrecio + precio;
+          offerDiv.appendChild(pTitulo);
 
           if (yaDecidida) {
             /* Decision ya tomada: sello permanente, sin botones. */
             const badge = document.createElement('div');
             badge.className = 'offer-badge ' +
               (yaDecidida === 'accept' ? 'accepted' : 'rejected');
-            badge.textContent = yaDecidida === 'accept'
-              ? '\u2713 Offer accepted for $' + precio
-              : '\u2717 Offer rejected';
+            if (yaDecidida === 'accept') {
+              badge.textContent = esIdioma
+                ? '\u2713 Oferta aceptada por $' + precio
+                : '\u2713 Offer accepted for $' + precio;
+            } else {
+              badge.textContent = esIdioma
+                ? '\u2717 Oferta rechazada'
+                : '\u2717 Offer rejected';
+            }
             offerDiv.appendChild(badge);
           } else {
             /* Botones */
@@ -2956,12 +2968,12 @@ function montarChat(docId, caja, comoBridg) {
 
             const btnAccept = document.createElement('button');
             btnAccept.className = 'offer-btn offer-accept';
-            btnAccept.textContent = 'Accept $' + precio;
+            btnAccept.textContent = (esIdioma ? 'Aceptar $' : 'Accept $') + precio;
             btnAccept.onclick = () => handleOfferDecision(docId, 'accept', precio, m.id);
 
             const btnReject = document.createElement('button');
             btnReject.className = 'offer-btn offer-reject';
-            btnReject.textContent = 'Reject';
+            btnReject.textContent = esIdioma ? 'Rechazar' : 'Reject';
             btnReject.onclick = () => handleOfferDecision(docId, 'reject', precio, m.id);
 
             btnsDiv.appendChild(btnAccept);
@@ -3021,22 +3033,33 @@ async function handleOfferDecision(docId, decision, precio, messageId) {
     }
 
     /* Mostrar confirmación visual */
+    const esIdioma = document.body.classList.contains('es');
     const btns = document.querySelectorAll('.offer-btn');
     btns.forEach(btn => btn.disabled = true);
 
     const badge = document.createElement('div');
     badge.className = 'offer-badge ' + (decision === 'accept' ? 'accepted' : 'rejected');
-    badge.textContent = decision === 'accept'
-      ? '✓ Offer accepted for $' + precio
-      : '✗ Offer rejected';
-    
+    if (decision === 'accept') {
+      badge.textContent = esIdioma
+        ? '\u2713 Oferta aceptada por $' + precio
+        : '\u2713 Offer accepted for $' + precio;
+    } else {
+      badge.textContent = esIdioma
+        ? '\u2717 Oferta rechazada'
+        : '\u2717 Offer rejected';
+    }
+
     const parent = document.querySelector('.offer-msg');
     if (parent) {
+      const viejos = parent.querySelector('.offer-btns');
+      if (viejos) viejos.remove();
       parent.appendChild(badge);
     }
   } catch (e) {
     console.error('handleOfferDecision:', e && e.message);
-    alert('Error saving your decision. Please try again.');
+    alert(document.body.classList.contains('es')
+      ? 'No se pudo guardar tu decisión. Inténtalo de nuevo.'
+      : 'Error saving your decision. Please try again.');
   }
 }
 
