@@ -78,6 +78,8 @@ h1 .hl{color:var(--orange)}
 .call-lbl{font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;margin-bottom:.9rem}
 .call a.num{display:block;font-family:var(--FD);font-weight:700;font-size:clamp(2rem,8.4vw,2.6rem);line-height:1.04;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
 .call a.num:active{color:var(--orange)}
+.call a.mail{display:inline-block;margin-top:.95rem;font-family:var(--FM);font-size:.88rem;letter-spacing:.01em;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--orange);padding-bottom:2px;word-break:break-all}
+.call a.mail:active{color:var(--orange)}
 .call p{font-size:.92rem;font-weight:300;color:var(--steel);margin-top:.9rem}
 .call p b{color:var(--ink);font-weight:600}
 
@@ -180,8 +182,8 @@ footer{border-top:1px solid var(--hairline);margin-top:3rem;padding:2.4rem 0 3re
         <div class="stamp">3:12 PM</div>
       </div>
       <div class="msg us">
-        <div class="bub" data-lang="en">You don't need new. You need somebody to answer at 3 PM. Same trucks you already know — the difference is <b>I pick up.</b></div>
-        <div class="bub" data-lang="es">No necesitas algo nuevo. Necesitas que alguien conteste a las 3. Los mismos camiones que ya conoces — la diferencia es que <b>yo contesto.</b></div>
+        <div class="bub" data-lang="en">You don't need new. You need somebody to answer at 3 PM. Same trucks you already know — the difference is <b>somebody picks up</b> — me or one of our drivers.</div>
+        <div class="bub" data-lang="es">No necesitas algo nuevo. Necesitas que alguien conteste a las 3. Los mismos camiones que ya conoces — la diferencia es que <b>alguien responde</b> — yo o uno de nuestros choferes.</div>
         <div class="stamp">3:12 PM</div>
       </div>
 
@@ -265,12 +267,12 @@ footer{border-top:1px solid var(--hairline);margin-top:3rem;padding:2.4rem 0 3re
 
   <!-- EL NÚMERO -->
   <div class="call">
-    <div class="call-lbl" data-lang="en">🚨 Emergency line — call or text</div>
-    <div class="call-lbl" data-lang="es">🚨 Línea de emergencia — llama o escribe</div>
+    <div class="call-lbl" data-lang="en">🚨 Emergency line — or just a question</div>
+    <div class="call-lbl" data-lang="es">🚨 Línea de emergencia — o una simple pregunta</div>
     <a class="num" href="tel:+13235965896">(323) 596-5896</a>
     <a class="mail" href="mailto:k.vargas@bridgconnects.com">k.vargas@bridgconnects.com</a>
-    <p data-lang="en">Kerry answers. <b>Not a dispatch queue.</b></p>
-    <p data-lang="es">Contesta Kerry. <b>No una cola de despacho.</b></p>
+    <p data-lang="en">Kerry answers. <b>Not a dispatch queue.</b> Call, text, or email — even if you just want to ask something.</p>
+    <p data-lang="es">Contesta Kerry. <b>No una cola de despacho.</b> Llama, escribe o manda correo — aunque solo sea una pregunta.</p>
   </div>
 
   <!-- ¿AGUANTA MI CARGA? -->
@@ -295,10 +297,10 @@ footer{border-top:1px solid var(--hairline);margin-top:3rem;padding:2.4rem 0 3re
       <span class="tag" data-lang="en">Active</span>
       <span class="tag" data-lang="es">Activos</span>
     </div>
-    <p class="body" data-lang="en">$1M general liability, $1M auto liability, and per-shipment cargo coverage bound to the declared value of each load.</p>
-    <p class="body" data-lang="es">$1M de responsabilidad general, $1M de auto, y cobertura de carga por envío atada al valor declarado.</p>
-    <p class="body" data-lang="en">Certificates provided on request — before we ever touch a load.</p>
-    <p class="body" data-lang="es">Certificados a solicitud — antes de tocar una sola carga.</p>
+    <p class="body" data-lang="en"><b style="color:var(--ink);font-weight:600">Your load is covered.</b> Cargo coverage is bound to the declared value of each shipment — so it matches what's actually on the truck, not a flat number that may or may not reach.</p>
+    <p class="body" data-lang="es"><b style="color:var(--ink);font-weight:600">Tu carga va cubierta.</b> La cobertura se ata al valor declarado de cada envío — así corresponde a lo que de verdad va en el camión, no a un número fijo que a lo mejor no alcanza.</p>
+    <p class="body" data-lang="en">Authority, insurance, and compliance current. Liability and cargo certificates provided on request — before we ever touch a load.</p>
+    <p class="body" data-lang="es">Autoridad, seguros y cumplimiento al día. Certificados de responsabilidad y carga a solicitud — antes de tocar una sola carga.</p>
   </section>
 
   <!-- ¿QUÉ ME QUEDA? -->
@@ -339,6 +341,7 @@ footer{border-top:1px solid var(--hairline);margin-top:3rem;padding:2.4rem 0 3re
     <a class="f-num" href="tel:+13235965896">(323) 596-5896</a>
     <div class="f-meta">
       Kerry Vargas · Bridg Connects<br/>
+      <a href="mailto:k.vargas@bridgconnects.com">k.vargas@bridgconnects.com</a><br/>
       USDOT 9709109 · MC 88040280<br/>
       <a href="https://bridgconnects.com">bridgconnects.com</a>
     </div>
