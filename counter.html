@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="color-scheme" content="light only"/>
+<meta name="supported-color-schemes" content="light"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Bridg Connects</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  color-scheme: light only;
+  --paper:#FFFFFF; --ink:#0B0B0C; --steel:#4A4A50; --mute:#6E6E76;
+  --hairline:#E8E8EA; --wash:#F6F6F7; --orange:#FF640D; --orange-soft:rgba(255,100,13,.08);
+  --FD:'Plus Jakarta Sans',sans-serif; --FB:'Inter',sans-serif; --FM:'DM Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#FFFFFF;-webkit-text-size-adjust:100%}
+body{background:#FFFFFF !important;color:var(--ink);font-family:var(--FB);font-optical-sizing:auto;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+body.es [data-lang="en"]{display:none!important}
+body:not(.es) [data-lang="es"]{display:none!important}
+.wrap{max-width:600px;margin:0 auto;padding:0 1.5rem}
+
+/* ── MARCA ── */
+.top{padding:2.2rem 0 0;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{
+  display:inline-block !important;width:104px !important;height:44px !important;
+  background-image:url('/bridg-logo.png') !important;background-repeat:no-repeat !important;
+  background-size:contain !important;background-position:left center !important;
+  font-size:0 !important;color:transparent !important;line-height:0 !important;
+  letter-spacing:0 !important;text-align:left !important;text-decoration:none;
+}
+.logo span,.logo small{display:none !important}
+.lang-tg{display:flex;border:1px solid var(--hairline);border-radius:0;overflow:hidden;flex-shrink:0}
+.lang-tg button{border:0;background:transparent;padding:.35rem .65rem;font-family:var(--FM);font-size:.65rem;cursor:pointer;color:var(--steel)}
+.lang-tg button.on{background:var(--ink);color:#fff}
+@media(max-width:560px){.logo{width:88px !important;height:38px !important}}
+
+/* ── ENTRADA ── */
+.open{padding:2.4rem 0 0}
+.eyebrow{font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;margin-bottom:1.2rem;display:inline-flex;align-items:center;gap:.55rem;background:var(--orange-soft);border:1px solid rgba(255,100,13,.25);border-radius:0;padding:.5rem 1rem}
+.eyebrow::before{content:'';width:7px;height:7px;border-radius:0;background:var(--orange)}
+h1{font-family:var(--FD);font-weight:700;font-size:clamp(1.8rem,6.8vw,2.5rem);line-height:1.09;letter-spacing:-.02em}
+h1 .hl{color:var(--orange)}
+.open p{font-size:.98rem;font-weight:300;color:var(--steel);margin-top:1.1rem}
+
+/* ── EL HILO ── */
+.thread{margin-top:2.6rem;border:1px solid var(--ink);border-radius:0;background:#fff;box-shadow:0 18px 44px -22px rgba(11,11,12,.22)}
+.th-head{border-bottom:1px solid var(--hairline);padding:.95rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;background:var(--wash)}
+.th-who{font-family:var(--FD);font-weight:600;font-size:.9rem;line-height:1.2}
+.th-who small{display:block;font-family:var(--FM);font-size:.58rem;letter-spacing:.07em;color:var(--steel);text-transform:uppercase;font-weight:400;margin-top:2px}
+.th-live{font-family:var(--FM);font-size:.56rem;letter-spacing:.07em;color:var(--steel);text-transform:uppercase;display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.th-live::before{content:'';width:6px;height:6px;background:var(--orange)}
+.th-body{padding:1.4rem 1.1rem 1.6rem}
+.daymark{text-align:center;font-family:var(--FM);font-size:.56rem;letter-spacing:.09em;color:var(--mute);text-transform:uppercase;margin-bottom:1.4rem}
+
+.msg{display:flex;flex-direction:column;margin-bottom:1.15rem;max-width:84%}
+.msg.them{align-items:flex-start;margin-right:auto}
+.msg.us{align-items:flex-end;margin-left:auto}
+.bub{border-radius:20px;padding:.82rem 1.05rem;font-size:.94rem;line-height:1.5}
+.them .bub{background:var(--wash);border:1px solid var(--hairline);color:var(--steel);border-bottom-left-radius:6px}
+.us .bub{background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.us .bub b{color:var(--orange);font-weight:600}
+.us .bub.punch{font-family:var(--FD);font-weight:700;font-size:1.05rem;line-height:1.32;letter-spacing:-.01em}
+.stamp{font-family:var(--FM);font-size:.54rem;letter-spacing:.08em;color:var(--mute);margin-top:.35rem;text-transform:uppercase}
+.us .stamp{text-align:right}
+.msg.us + .msg.us{margin-top:-.5rem}
+
+/* ── EL NÚMERO ── */
+.call{border:1px solid var(--ink);border-radius:0;padding:1.8rem 1.4rem;margin-top:2.6rem;text-align:center;box-shadow:0 18px 44px -22px rgba(11,11,12,.22)}
+.call-lbl{font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;margin-bottom:.9rem}
+.call a.num{display:block;font-family:var(--FD);font-weight:700;font-size:clamp(2rem,8.4vw,2.6rem);line-height:1.04;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.call a.num:active{color:var(--orange)}
+.call p{font-size:.92rem;font-weight:300;color:var(--steel);margin-top:.9rem}
+.call p b{color:var(--ink);font-weight:600}
+
+/* ── SECCIONES ── */
+section{margin-top:3rem}
+.sec-label{font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;margin-bottom:1.1rem;display:flex;align-items:center;gap:.6rem}
+.sec-label::before{content:'';width:22px;height:1px;background:var(--orange)}
+.veh{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.v{border:1px solid var(--hairline);border-radius:0;padding:1rem .85rem;background:#fff;box-shadow:0 2px 10px -6px rgba(11,11,12,.08)}
+.v .art{width:100%;height:74px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.v .art img{width:100%;height:100%;object-fit:contain;display:block}
+.v h3{font-family:var(--FD);font-weight:600;font-size:.92rem;margin-top:.55rem;text-align:center}
+.v .cap{font-family:var(--FM);font-size:.56rem;letter-spacing:.07em;color:var(--steel);text-transform:uppercase;text-align:center;margin-top:.2rem}
+.auth{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem}
+.tag{font-family:var(--FM);font-size:.72rem;letter-spacing:.06em;padding:.5rem .85rem;border:1px solid var(--hairline);border-radius:0;background:var(--wash);color:var(--ink)}
+.tag i{font-style:normal;color:var(--orange);font-weight:600;margin-right:.3rem}
+p.body{font-size:.92rem;font-weight:300;color:var(--steel)}
+p.body + p.body{margin-top:.55rem}
+.pain{display:grid;gap:.85rem}
+.pain-row{display:flex;gap:.9rem;align-items:flex-start}
+.pain-row .dot{width:7px;height:7px;border-radius:0;background:var(--orange);margin-top:.55rem;flex-shrink:0}
+.pain-row p{font-size:.92rem;color:var(--steel);font-weight:300}
+.pain-row p b{color:var(--ink);font-weight:600}
+
+/* ── CIERRE ── */
+.close{background:var(--wash);border:1px solid var(--hairline);border-radius:0;padding:1.5rem 1.35rem;margin-top:3rem}
+.close .kicker{font-family:var(--FD);font-weight:700;font-size:1.12rem;line-height:1.3;letter-spacing:-.01em}
+.close p{font-size:.92rem;color:var(--steel);font-weight:300;margin-top:.7rem}
+
+/* ── PIE ── */
+footer{border-top:1px solid var(--hairline);margin-top:3rem;padding:2.4rem 0 3rem;text-align:center}
+.f-num{display:inline-block;font-family:var(--FD);font-weight:700;font-size:1.4rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.f-num:active{color:var(--orange)}
+.f-meta{margin-top:1rem;font-family:var(--FM);font-size:.6rem;letter-spacing:.1em;color:var(--steel);line-height:2;text-transform:uppercase}
+.f-meta a{color:var(--steel);text-decoration:none;border-bottom:1px solid var(--hairline)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="top">
+    <a class="logo" href="/">BRIDG<span>.</span><small>CONNECTS</small></a>
+    <div class="lang-tg">
+      <button id="lgEN" class="on" onclick="setLang('en')">EN</button>
+      <button id="lgES" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+
+  <div class="open">
+    <div class="eyebrow" data-lang="en">You scanned the card. Here's the rest.</div>
+    <div class="eyebrow" data-lang="es">Escaneaste la tarjeta. Aquí está lo demás.</div>
+    <h1 data-lang="en">This conversation<br/>already happened.<br/><span class="hl">Probably in your head.</span></h1>
+    <h1 data-lang="es">Esta conversación<br/>ya pasó.<br/><span class="hl">Seguramente en tu cabeza.</span></h1>
+    <p data-lang="en">Read it. Then decide if the card stays on the monitor or goes in the trash.</p>
+    <p data-lang="es">Léela. Después decides si la tarjeta se queda en el monitor o va al bote.</p>
+  </div>
+
+  <!-- EL HILO -->
+  <div class="thread">
+    <div class="th-head">
+      <div class="th-who">
+        <span data-lang="en">The counter &amp; Bridg</span><span data-lang="es">El mostrador y Bridg</span>
+        <small data-lang="en">Every branch, every week</small><small data-lang="es">Cada sucursal, cada semana</small>
+      </div>
+      <div class="th-live" data-lang="en">Unread</div>
+      <div class="th-live" data-lang="es">Sin leer</div>
+    </div>
+
+    <div class="th-body">
+      <div class="daymark" data-lang="en">Tuesday · 3:10 PM</div>
+      <div class="daymark" data-lang="es">Martes · 3:10 PM</div>
+
+      <div class="msg them">
+        <div class="bub" data-lang="en">So what is Bridg Connects?</div>
+        <div class="bub" data-lang="es">¿Y qué es Bridg Connects?</div>
+        <div class="stamp">3:10 PM</div>
+      </div>
+
+      <div class="msg us">
+        <div class="bub punch" data-lang="en">We're the truck you call when yours is already out.</div>
+        <div class="bub punch" data-lang="es">Somos el camión al que llamas cuando el tuyo ya salió.</div>
+        <div class="stamp">3:10 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">Same-day. We pick up at your counter and take it where it has to go. <b>LA and 150 miles out.</b> That's the whole thing.</div>
+        <div class="bub" data-lang="es">El mismo día. Recogemos en tu mostrador y lo llevamos a donde tiene que ir. <b>LA y 150 millas alrededor.</b> Eso es todo.</div>
+        <div class="stamp">3:11 PM</div>
+      </div>
+
+      <div class="msg them">
+        <div class="bub" data-lang="en">Okay… and what's new about that?</div>
+        <div class="bub" data-lang="es">Okay… ¿y qué tiene eso de nuevo?</div>
+        <div class="stamp">3:12 PM</div>
+      </div>
+
+      <div class="msg us">
+        <div class="bub punch" data-lang="en">Nothing. That's the point.</div>
+        <div class="bub punch" data-lang="es">Nada. Ese es el punto.</div>
+        <div class="stamp">3:12 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">You don't need new. You need somebody to answer at 3 PM. Same trucks you already know — the difference is <b>I pick up.</b></div>
+        <div class="bub" data-lang="es">No necesitas algo nuevo. Necesitas que alguien conteste a las 3. Los mismos camiones que ya conoces — la diferencia es que <b>yo contesto.</b></div>
+        <div class="stamp">3:12 PM</div>
+      </div>
+
+      <div class="msg them">
+        <div class="bub" data-lang="en">How long would you take to get here?</div>
+        <div class="bub" data-lang="es">¿Cuánto te tardarías en llegar?</div>
+        <div class="stamp">3:14 PM</div>
+      </div>
+
+      <div class="msg us">
+        <div class="bub punch" data-lang="en">Depends where you are. Call and I'll tell you before you say yes.</div>
+        <div class="bub punch" data-lang="es">Depende dónde estés. Llama y te digo antes de que digas que sí.</div>
+        <div class="stamp">3:14 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">You get the ETA before the truck moves — <b>not after.</b></div>
+        <div class="bub" data-lang="es">Sabes el tiempo antes de que el camión se mueva — <b>no después.</b></div>
+        <div class="stamp">3:14 PM</div>
+      </div>
+
+      <div class="msg them">
+        <div class="bub" data-lang="en">Look buddy, we already work with somebody.</div>
+        <div class="bub" data-lang="es">Mira, ya trabajamos con alguien.</div>
+        <div class="stamp">3:15 PM</div>
+      </div>
+
+      <div class="msg us">
+        <div class="bub punch" data-lang="en">Good. Keep them.</div>
+        <div class="bub punch" data-lang="es">Bien. Quédate con ellos.</div>
+        <div class="stamp">3:15 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">I'm not here to replace anybody. I'm the number for the day they can't take it. <b>Nothing to sign. Nothing to cancel.</b></div>
+        <div class="bub" data-lang="es">No vengo a reemplazar a nadie. Soy el número para el día que ellos no pueden. <b>Nada que firmar. Nada que cancelar.</b></div>
+        <div class="stamp">3:15 PM</div>
+      </div>
+
+      <div class="msg them">
+        <div class="bub" data-lang="en">We're not that busy anyway. And we have our own trucks — that's why we pay drivers.</div>
+        <div class="bub" data-lang="es">Igual no estamos tan ocupados. Y tenemos camiones propios — por eso pagamos choferes.</div>
+        <div class="stamp">3:17 PM</div>
+      </div>
+
+      <div class="msg us">
+        <div class="bub punch" data-lang="en">Then you already know what a driver costs.</div>
+        <div class="bub punch" data-lang="es">Entonces ya sabes lo que cuesta un chofer.</div>
+        <div class="stamp">3:17 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">I only cost when you use me. No payroll, no insurance, no truck sitting there. <b>Slow week? I cost you nothing.</b></div>
+        <div class="bub" data-lang="es">Yo solo cuesto cuando me usas. Sin nómina, sin seguro, sin camión parado. <b>¿Semana floja? No te cuesto nada.</b></div>
+        <div class="stamp">3:18 PM</div>
+      </div>
+
+      <div class="msg them">
+        <div class="bub" data-lang="en">We're a corporation. We don't make those decisions here.</div>
+        <div class="bub" data-lang="es">Somos una corporación. Aquí no tomamos esas decisiones.</div>
+        <div class="stamp">3:19 PM</div>
+      </div>
+
+      <div class="msg us">
+        <div class="bub punch" data-lang="en">I'm not asking you to decide anything.</div>
+        <div class="bub punch" data-lang="es">No te estoy pidiendo que decidas nada.</div>
+        <div class="stamp">3:19 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">Corporate signs contracts. <b>Corporate doesn't answer at 3 PM when something has to move.</b> You do.</div>
+        <div class="bub" data-lang="es">Corporativo firma contratos. <b>Corporativo no contesta a las 3 cuando algo tiene que salir.</b> Tú sí.</div>
+        <div class="stamp">3:19 PM</div>
+      </div>
+      <div class="msg us">
+        <div class="bub" data-lang="en">Keep the card. That's all.</div>
+        <div class="bub" data-lang="es">Quédate la tarjeta. Nada más.</div>
+        <div class="stamp">3:20 PM</div>
+      </div>
+
+      <div class="daymark" style="margin-top:1.8rem;margin-bottom:0" data-lang="en">— Read —</div>
+      <div class="daymark" style="margin-top:1.8rem;margin-bottom:0" data-lang="es">— Leído —</div>
+    </div>
+  </div>
+
+  <!-- EL NÚMERO -->
+  <div class="call">
+    <div class="call-lbl" data-lang="en">🚨 Emergency line — call or text</div>
+    <div class="call-lbl" data-lang="es">🚨 Línea de emergencia — llama o escribe</div>
+    <a class="num" href="tel:+13235965896">(323) 596-5896</a>
+    <a class="mail" href="mailto:k.vargas@bridgconnects.com">k.vargas@bridgconnects.com</a>
+    <p data-lang="en">Kerry answers. <b>Not a dispatch queue.</b></p>
+    <p data-lang="es">Contesta Kerry. <b>No una cola de despacho.</b></p>
+  </div>
+
+  <!-- ¿AGUANTA MI CARGA? -->
+  <section>
+    <div class="sec-label" data-lang="en">What we run</div>
+    <div class="sec-label" data-lang="es">Lo que movemos</div>
+    <div class="veh">
+      <div class="v"><span class="art"><img src="vehicle-suv.png" alt="Large SUV" loading="lazy"/></span><h3>Large SUV</h3><div class="cap">Up to 800 lbs</div></div>
+      <div class="v"><span class="art"><img src="vehicle-pickup.png" alt="Pickup Truck" loading="lazy"/></span><h3>Pickup Truck</h3><div class="cap">Up to 1,500 lbs</div></div>
+      <div class="v"><span class="art"><img src="vehicle-van.png" alt="Cargo Van" loading="lazy"/></span><h3>Cargo Van</h3><div class="cap">Up to 3,000 lbs</div></div>
+      <div class="v"><span class="art"><img src="vehicle-box.png" alt="Box Truck" loading="lazy"/></span><h3>Box Truck</h3><div class="cap">Up to 8,000 lbs</div></div>
+    </div>
+  </section>
+
+  <!-- ¿SON REALES? -->
+  <section>
+    <div class="sec-label" data-lang="en">And before you ask — yes, we're real</div>
+    <div class="sec-label" data-lang="es">Y antes de que preguntes — sí, somos reales</div>
+    <div class="auth">
+      <span class="tag"><i>USDOT</i>9709109</span>
+      <span class="tag"><i>MC</i>88040280</span>
+      <span class="tag" data-lang="en">Active</span>
+      <span class="tag" data-lang="es">Activos</span>
+    </div>
+    <p class="body" data-lang="en">$1M general liability, $1M auto liability, and per-shipment cargo coverage bound to the declared value of each load.</p>
+    <p class="body" data-lang="es">$1M de responsabilidad general, $1M de auto, y cobertura de carga por envío atada al valor declarado.</p>
+    <p class="body" data-lang="en">Certificates provided on request — before we ever touch a load.</p>
+    <p class="body" data-lang="es">Certificados a solicitud — antes de tocar una sola carga.</p>
+  </section>
+
+  <!-- ¿QUÉ ME QUEDA? -->
+  <section>
+    <div class="sec-label" data-lang="en">What you get back</div>
+    <div class="sec-label" data-lang="es">Lo que te queda</div>
+    <div class="pain">
+      <div class="pain-row"><div class="dot"></div>
+        <p data-lang="en"><b>Signed proof of delivery</b> on every run — photo, signature, timestamp.</p>
+        <p data-lang="es"><b>Prueba de entrega firmada</b> en cada corrida — foto, firma, hora.</p>
+      </div>
+      <div class="pain-row"><div class="dot"></div>
+        <p data-lang="en"><b>Live tracking</b> you can forward straight to your customer.</p>
+        <p data-lang="es"><b>Rastreo en vivo</b> que le reenvías directo a tu cliente.</p>
+      </div>
+      <div class="pain-row"><div class="dot"></div>
+        <p data-lang="en"><b>History and invoices</b> in one portal. Free with the account.</p>
+        <p data-lang="es"><b>Historial y facturas</b> en un portal. Gratis con la cuenta.</p>
+      </div>
+      <div class="pain-row"><div class="dot"></div>
+        <p data-lang="en"><b>Three weeks later</b>, when somebody says it never arrived — you have the paper.</p>
+        <p data-lang="es"><b>Tres semanas después</b>, cuando alguien diga que nunca llegó — tú tienes el papel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <div class="close">
+    <div class="kicker" data-lang="en">No contract. No card on file. Nothing for corporate to approve.</div>
+    <div class="kicker" data-lang="es">Sin contrato. Sin tarjeta en archivo. Nada que aprobar en corporativo.</div>
+    <p data-lang="en">Opening the account costs nothing and keeping it costs nothing. It just sits there until the afternoon you need it.</p>
+    <p data-lang="es">Abrir la cuenta no cuesta nada y mantenerla tampoco. Ahí se queda hasta la tarde que la necesites.</p>
+    <p data-lang="en"><b style="color:var(--ink)">I'm not looking for work. I'm here so you have somebody when it breaks.</b></p>
+    <p data-lang="es"><b style="color:var(--ink)">No ando buscando trabajo. Estoy aquí para que tengas a quién llamar cuando se rompa.</b></p>
+  </div>
+
+  <footer>
+    <a class="f-num" href="tel:+13235965896">(323) 596-5896</a>
+    <div class="f-meta">
+      Kerry Vargas · Bridg Connects<br/>
+      USDOT 9709109 · MC 88040280<br/>
+      <a href="https://bridgconnects.com">bridgconnects.com</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+window.setLang = function(l){
+  document.body.classList.toggle('es', l==='es');
+  document.getElementById('lgEN').classList.toggle('on', l==='en');
+  document.getElementById('lgES').classList.toggle('on', l==='es');
+};
+</script>
+
+</body>
+</html>
