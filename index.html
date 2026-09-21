@@ -603,6 +603,47 @@ html.js :is(#features .kick,#features .h2x,#features .lead,.ft-item,
     opacity:1!important;transform:none!important;transition:none!important;
   }
 }
+
+/* ── Portal: fondo blanco, cuadros con profundidad ── */
+.pt{background:#fff;color:var(--ink);border-top:1px solid var(--hairline)}
+.pt .h2x{color:var(--ink)}
+.pt .lead{color:var(--steel)}
+.pt-points div{color:var(--steel)}
+.pt-foot{border-top:1px solid var(--hairline)}
+.pt-foot div{border-right:1px solid var(--hairline)}
+@media(max-width:760px){.pt-foot div{border-bottom:1px solid var(--hairline)}}
+.pt-foot b{color:var(--ink)}
+.pt-foot p{color:var(--steel)}
+.bento-note{color:#6E6E76}
+.bento{gap:22px}
+@media(max-width:700px){.bento{gap:16px}}
+.bx{border:1px solid var(--hairline);box-shadow:0 1px 2px rgba(11,11,12,.05),0 10px 22px -12px rgba(11,11,12,.16),0 34px 60px -30px rgba(11,11,12,.30)}
+
+.bx-head{grid-column:span 12;display:grid;grid-template-columns:auto 1fr;align-items:stretch}
+.bh-hi{padding:20px 22px;display:flex;flex-direction:column;justify-content:center;gap:4px;border-right:1px solid var(--hairline);min-width:230px}
+.bh-hi h4{font-family:var(--FD);font-weight:700;font-size:20px;letter-spacing:-.01em;line-height:1.15}
+.bh-hi span{font-size:11px;color:var(--steel)}
+.bh-hi .app-new{align-self:flex-start;margin-top:12px}
+.bh-stats{display:grid;grid-template-columns:repeat(4,1fr)}
+.st4{padding:18px 18px;border-right:1px solid var(--hairline);display:flex;flex-direction:column;justify-content:center}
+.st4:last-child{border-right:0}
+.st4 span{font-size:10.5px;color:var(--steel)}
+.st4 b{font-family:var(--FD);font-weight:700;font-size:24px;letter-spacing:-.02em;line-height:1.1;margin-top:3px}
+.st4 i{font-style:normal;font-size:9.5px;color:#0B8A4B;margin-top:2px}
+.st4.hot b{color:var(--orange)}
+@media(max-width:1000px){
+  .bx-head{grid-template-columns:1fr}
+  .bh-hi{border-right:0;border-bottom:1px solid var(--hairline);flex-direction:row;align-items:center;flex-wrap:wrap;column-gap:14px;min-width:0}
+  .bh-hi h4{flex:1 1 auto}
+  .bh-hi span{order:3;flex-basis:100%}
+  .bh-hi .app-new{margin-top:0;order:2}
+}
+@media(max-width:700px){
+  .bh-stats{grid-template-columns:1fr 1fr}
+  .st4:nth-child(2){border-right:0}
+  .st4:nth-child(-n+2){border-bottom:1px solid var(--hairline)}
+  .bh-hi h4{font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -781,14 +822,10 @@ html.js :is(#features .kick,#features .h2x,#features .lead,.ft-item,
     </div>
 
     <div class="bento" aria-label="Portal preview">
-      <div class="bx bx-hi">
-        <div><h4>Good afternoon</h4><span>Tuesday, 3:14 PM</span></div>
-        <div class="app-new">+ New delivery</div>
+      <div class="bx bx-head">
+        <div class="bh-hi"><h4>Good afternoon</h4><span>Tuesday, 3:14 PM</span><div class="app-new">+ New delivery</div></div>
+        <div class="bh-stats"><div class="st4 hot"><span>Moving now</span><b>2</b><i>● live</i></div><div class="st4"><span>This week</span><b>9</b><i>deliveries</i></div><div class="st4"><span>Signed POD</span><b>9 / 9</b><i>on file</i></div><div class="st4"><span>Next pickup</span><b>9:00 AM</b><i style="color:var(--steel)">tomorrow · Encino</i></div></div>
       </div>
-      <div class="bx bx-tile"><div class="tile tile-flat hot"><span>Moving now</span><b>2</b><i>● live</i></div></div>
-      <div class="bx bx-tile"><div class="tile tile-flat"><span>This week</span><b>9</b><i>deliveries</i></div></div>
-      <div class="bx bx-tile"><div class="tile tile-flat"><span>Signed POD</span><b>9 / 9</b><i>on file</i></div></div>
-      <div class="bx bx-tile"><div class="tile tile-flat"><span>Next pickup</span><b>9:00 AM</b><i style="color:var(--steel)">tomorrow · Encino</i></div></div>
       <div class="bx bx-map"><div class="pane pane-flat">
                 <div class="pane-h"><b>BC-1047 · Sun Valley → Valencia</b><span class="live">Live</span></div>
                 <div class="map">
