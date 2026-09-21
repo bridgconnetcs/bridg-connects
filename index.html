@@ -304,9 +304,16 @@ footer a:hover{color:var(--orange)}
 .hx-facts div b{display:block;font-family:var(--FD);font-weight:700;font-size:1.3rem;line-height:1.1}
 .hx-facts div span{font-size:.78rem;color:var(--steel)}
 
-.hx-visual{position:relative;background:#1a1a1c url('/hero-truck.jpg') 60% 30%/cover no-repeat;min-height:520px}
-@media(max-width:900px){.hx-visual{min-height:700px;background-position:62% 22%}}
-.hx-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 45%,rgba(11,11,12,.55) 100%)}
+.hx-visual{position:relative;min-height:520px}
+.hx-photo{position:absolute;inset:0;background:#1a1a1c url('/hero-truck.jpg') 60% 30%/cover no-repeat;clip-path:polygon(17% 0,100% 0,100% 100%,0 100%)}
+.hx-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 50%,rgba(11,11,12,.45) 100%)}
+.hx-stripe{position:absolute;inset:0;background:var(--orange);clip-path:polygon(11.5% 0,14% 0,-3% 100%,-5.5% 100%);pointer-events:none}
+@media(max-width:900px){
+  .hx-visual{min-height:720px}
+  .hx-photo{background-position:62% 22%;clip-path:polygon(0 9%,100% 0,100% 100%,0 100%)}
+  .hx-stripe{clip-path:polygon(0 5.2%,100% -3.8%,100% -1.6%,0 7.4%)}
+}
+
 
 /* La tarjeta de cotizacion flotando sobre la foto */
 .qcard{position:absolute;z-index:2;left:-2.6rem;bottom:1.6rem;width:272px;background:#fff;border:1px solid var(--ink);box-shadow:0 30px 70px -24px rgba(11,11,12,.55)}
@@ -641,7 +648,9 @@ footer a:hover{color:var(--orange)}
       </div>
     </div>
 
-    <div class="hx-visual" role="img" aria-label="Driver at a pickup truck loaded with an HVAC condenser, ready to leave the warehouse">
+    <div class="hx-visual">
+      <div class="hx-photo" role="img" aria-label="Driver at a pickup truck loaded with an HVAC condenser, ready to leave the warehouse"></div>
+      <div class="hx-stripe" aria-hidden="true"></div>
       <div class="qcard">
         <div class="qc-top"><b data-lang="en">New delivery</b><b data-lang="es">Nueva entrega</b><span data-lang="en">Example quote</span><span data-lang="es">Cotización ejemplo</span></div>
         <div class="qc-veh">
