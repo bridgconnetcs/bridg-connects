@@ -281,9 +281,9 @@ footer a:hover{color:var(--orange)}
   .logo, .nav-logo{ width:88px !important; height:38px !important; }
 }
 
-/* ══════════ BRIDG LANDING v3 ══════════ */
-#counter.pb{padding:6rem 0 5rem;background:#fff;border:0;max-width:none}
+/* ══════════ BRIDG LANDING v4 ══════════ */
 #fleet.fx{padding:6rem 0}
+#features.ft{padding:6rem 0;max-width:none}
 .wrapX{max-width:1200px;margin:0 auto;padding:0 1.5rem}
 .kick{font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
 .kick::before{content:'';width:22px;height:1px;background:var(--orange)}
@@ -292,7 +292,7 @@ footer a:hover{color:var(--orange)}
 
 /* ── HERO ── */
 .hx{border-bottom:1px solid var(--hairline)}
-.hx-in{display:grid;grid-template-columns:1.05fr .95fr;min-height:640px}
+.hx-in{display:grid;grid-template-columns:1.05fr .95fr;min-height:620px}
 @media(max-width:900px){.hx-in{grid-template-columns:1fr;min-height:0}}
 .hx-copy{padding:5rem 3.4rem 4rem max(1.5rem,calc((100vw - 1200px)/2 + 1.5rem));display:flex;flex-direction:column;justify-content:center}
 @media(max-width:900px){.hx-copy{padding:3.4rem 1.5rem 2.6rem}}
@@ -304,29 +304,29 @@ footer a:hover{color:var(--orange)}
 .hx-facts div b{display:block;font-family:var(--FD);font-weight:700;font-size:1.3rem;line-height:1.1}
 .hx-facts div span{font-size:.78rem;color:var(--steel)}
 
-.hx-visual{position:relative;background:#1a1a1c url('/hero-truck.jpg') center/cover no-repeat;min-height:520px}
-@media(max-width:900px){.hx-visual{min-height:560px}}
+.hx-visual{position:relative;background:#1a1a1c url('/hero-truck.jpg') 60% 30%/cover no-repeat;min-height:520px}
+@media(max-width:900px){.hx-visual{min-height:700px;background-position:62% 22%}}
 .hx-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 45%,rgba(11,11,12,.55) 100%)}
 
 /* La tarjeta de cotizacion flotando sobre la foto */
-.qcard{position:absolute;z-index:2;left:-2.6rem;top:50%;transform:translateY(-50%);width:292px;background:#fff;border:1px solid var(--ink);box-shadow:0 30px 70px -24px rgba(11,11,12,.55)}
+.qcard{position:absolute;z-index:2;left:-2.6rem;bottom:1.6rem;width:272px;background:#fff;border:1px solid var(--ink);box-shadow:0 30px 70px -24px rgba(11,11,12,.55)}
 @media(max-width:900px){.qcard{left:1.2rem;right:1.2rem;width:auto;top:auto;bottom:1.2rem;transform:none}}
-.qc-top{background:var(--ink);color:#fff;padding:.8rem 1.1rem;display:flex;justify-content:space-between;align-items:center}
+.qc-top{background:var(--ink);color:#fff;padding:.65rem 1.1rem;display:flex;justify-content:space-between;align-items:center}
 .qc-top b{font-family:var(--FD);font-weight:600;font-size:.86rem}
 .qc-top span{font-family:var(--FM);font-size:.58rem;letter-spacing:.07em;color:#B9B9C0;text-transform:uppercase}
-.qc-veh{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem .5rem}
+.qc-veh{display:flex;align-items:center;gap:.8rem;padding:.75rem 1.1rem .3rem}
 .qc-veh img{width:74px;height:42px;object-fit:contain}
 .qc-veh b{font-family:var(--FD);font-weight:700;font-size:1.02rem;display:block;line-height:1.2}
 .qc-veh span{font-size:.72rem;color:var(--steel)}
 .qc-rows{padding:.3rem 1.1rem .4rem}
-.qc-row{display:flex;justify-content:space-between;gap:1rem;padding:.55rem 0;border-bottom:1px solid var(--hairline);font-size:.82rem}
+.qc-row{display:flex;justify-content:space-between;gap:1rem;padding:.45rem 0;border-bottom:1px solid var(--hairline);font-size:.82rem}
 .qc-row span{color:var(--steel)}
 .qc-row b{font-weight:600;text-align:right}
 .qc-row .rush{color:var(--orange)}
-.qc-tot{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem 1.1rem .4rem}
+.qc-tot{display:flex;justify-content:space-between;align-items:baseline;padding:.7rem 1.1rem .2rem}
 .qc-tot span{font-size:.8rem;color:var(--steel)}
-.qc-tot b{font-family:var(--FD);font-weight:700;font-size:2.1rem;letter-spacing:-.03em;line-height:1}
-.qc-btn{display:block;margin:.6rem 1.1rem 1.1rem;background:var(--orange);color:#fff;border:0;width:calc(100% - 2.2rem);padding:.85rem;font-family:var(--FD);font-weight:600;font-size:.88rem;cursor:pointer;transition:background .2s}
+.qc-tot b{font-family:var(--FD);font-weight:700;font-size:1.9rem;letter-spacing:-.03em;line-height:1}
+.qc-btn{display:block;margin:.5rem 1.1rem .9rem;background:var(--orange);color:#fff;border:0;width:calc(100% - 2.2rem);padding:.85rem;font-family:var(--FD);font-weight:600;font-size:.88rem;cursor:pointer;transition:background .2s}
 .qc-btn:hover{background:var(--ink)}
 .qc-note{font-size:.66rem;color:var(--steel);text-align:center;padding:0 1.1rem 1rem;margin-top:-.4rem}
 
@@ -341,18 +341,6 @@ footer a:hover{color:var(--orange)}
 @keyframes mq{to{transform:translateX(-50%)}}
 @media(prefers-reduced-motion:reduce){.mq-track{animation:none}}
 @media(max-width:560px){.mq-in{flex-direction:column;align-items:flex-start;gap:.8rem}.mq-view{width:100%}}
-
-/* ── EL PROBLEMA ── */
-.pb{padding:6rem 0 5rem}
-.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;margin-top:1rem}
-@media(max-width:860px){.pb-grid{grid-template-columns:1fr;gap:2rem}}
-.pb-clock{font-family:var(--FD);font-weight:800;font-size:clamp(4rem,11vw,8rem);line-height:.9;letter-spacing:-.05em;color:var(--ink)}
-.pb-clock small{display:block;font-family:var(--FB);font-weight:400;font-size:.95rem;letter-spacing:0;color:var(--steel);margin-top:1rem;line-height:1.5;max-width:380px}
-.pb-list{display:grid;gap:0;border-top:1px solid var(--ink)}
-.pb-item{padding:1.1rem 0;border-bottom:1px solid var(--hairline);display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}
-.pb-item i{font-style:normal;font-family:var(--FM);font-size:.7rem;color:var(--orange);padding-top:.28rem}
-.pb-item p{font-size:.95rem;color:var(--steel);font-weight:300}
-.pb-item p b{color:var(--ink);font-weight:600}
 
 /* ── PORTAL (la pieza principal) ── */
 .pt{background:var(--ink);color:#fff;padding:6rem 0 0;overflow:hidden}
@@ -526,17 +514,6 @@ footer a:hover{color:var(--orange)}
 .fx-dots button{width:26px;height:4px;border:0;background:var(--hairline);cursor:pointer;padding:0}
 .fx-dots button.on{background:var(--orange)}
 
-/* ── CONFIANZA ── */
-.trust{padding:6rem 0;border-top:1px solid var(--hairline)}
-.tr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:2.6rem;border:1px solid var(--hairline)}
-@media(max-width:860px){.tr-grid{grid-template-columns:1fr}}
-.tr-cell{padding:2rem 1.8rem;border-right:1px solid var(--hairline)}
-.tr-cell:last-child{border-right:0}
-@media(max-width:860px){.tr-cell{border-right:0;border-bottom:1px solid var(--hairline)}.tr-cell:last-child{border-bottom:0}}
-.tr-cell b{font-family:var(--FD);font-weight:700;font-size:1.15rem;display:block}
-.tr-cell p{font-size:.9rem;color:var(--steel);font-weight:300;margin-top:.5rem}
-.tr-cell .num{font-family:var(--FM);font-size:.8rem;color:var(--ink);margin-top:.9rem;display:block}
-
 /* ── CIERRE ── */
 .cx{background:var(--orange);color:#fff;padding:5.5rem 0}
 .cx h2{font-family:var(--FD);font-weight:700;font-size:clamp(2rem,4.6vw,3.4rem);line-height:1.04;letter-spacing:-.025em;max-width:780px}
@@ -546,6 +523,22 @@ footer a:hover{color:var(--orange)}
 .cx .b1:hover{background:#fff;color:var(--ink)}
 .cx .b2{background:transparent;color:#fff;font-family:var(--FD);font-weight:600;font-size:.9rem;padding:.86rem 1.5rem;text-decoration:none;border:1px solid #fff}
 .cx .b2:hover{background:#fff;color:var(--orange)}
+
+/* ── LO QUE ENCUENTRAS ── */
+.ft-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hairline);border-left:1px solid var(--hairline);margin-top:3rem}
+@media(max-width:960px){.ft-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.ft-grid{grid-template-columns:1fr}}
+.ft-item{border-right:1px solid var(--hairline);border-bottom:1px solid var(--hairline);padding:1.7rem 1.5rem 1.9rem;background:#fff}
+.ft-item svg{width:26px;height:26px;stroke:var(--ink);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ft-item svg .o{stroke:var(--orange)}
+.ft-item h3{font-family:var(--FD);font-weight:600;font-size:1.02rem;margin-top:1.1rem}
+.ft-item p{font-size:.86rem;color:var(--steel);font-weight:300;margin-top:.4rem}
+.cx.calm{background:#F6F6F7;color:var(--ink);border-top:1px solid var(--hairline)}
+.cx.calm p{color:var(--steel)}
+.cx.calm .b1{background:var(--ink);color:#fff}
+.cx.calm .b1:hover{background:var(--orange);color:#fff}
+.cx.calm .b2{color:var(--ink);border-color:var(--ink)}
+.cx.calm .b2:hover{background:var(--ink);color:#fff}
 </style>
 </head>
 <body>
@@ -618,7 +611,7 @@ footer a:hover{color:var(--orange)}
     </div>
     <div class="nav-links">
       <a href="#fleet" class="hideM" data-lang="en">Fleet</a><a href="#fleet" class="hideM" data-lang="es">Flota</a>
-      <a href="#counter" class="hideM" data-lang="en">Why Bridg</a><a href="#counter" class="hideM" data-lang="es">Por qué Bridg</a>
+      <a href="#features" class="hideM" data-lang="en">Platform</a><a href="#features" class="hideM" data-lang="es">Plataforma</a>
       <a href="/tracking" class="hideM" data-lang="en">Track</a><a href="/tracking" class="hideM" data-lang="es">Rastrear</a>
       <button class="acct-chip" id="navAcct" onclick="acctClick()"><span id="navAcctTxt">Log in</span></button>
       <div class="lang-tg"><button id="lgEN" class="on" onclick="setLang('en')">EN</button><button id="lgES" onclick="setLang('es')">ES</button></div>
@@ -630,36 +623,35 @@ footer a:hover{color:var(--orange)}
 <header class="hx">
   <div class="hx-in">
     <div class="hx-copy">
-      <div class="kick" data-lang="en">Same-day delivery · Across Southern California</div>
-      <div class="kick" data-lang="es">Entregas el mismo día · Todo el Sur de California</div>
-      <h1 data-lang="en">Your truck's<br/>already out.<br/><span class="hl">Ours isn't.</span></h1>
-      <h1 data-lang="es">Tu camión<br/>ya salió.<br/><span class="hl">El nuestro no.</span></h1>
-      <p class="sub" data-lang="en">Same-day delivery for supply houses, hardware stores, and the trades. Book it in a minute, watch it move, and keep the signed proof when it lands.</p>
-      <p class="sub" data-lang="es">Entregas el mismo día para supply houses, ferreterías y oficios. Resérvala en un minuto, mírala moverse y quédate con la prueba firmada cuando llegue.</p>
+      <div class="kick" data-lang="en">Same-day delivery · Southern California</div>
+      <div class="kick" data-lang="es">Entregas el mismo día · Sur de California</div>
+      <h1 data-lang="en">Book it.<br/>Track it.<br/><span class="hl">Keep the proof.</span></h1>
+      <h1 data-lang="es">Resérvala.<br/>Rastréala.<br/><span class="hl">Guarda la prueba.</span></h1>
+      <p class="sub" data-lang="en">Same-day delivery for supply houses, hardware stores, and contractors. Quote, book, and track every run from one business account.</p>
+      <p class="sub" data-lang="es">Entregas el mismo día para supply houses, ferreterías y contratistas. Cotiza, reserva y rastrea cada corrida desde una sola cuenta.</p>
       <div class="hx-cta">
         <a href="#fleet" class="btn" data-lang="en">Get a quote</a><a href="#fleet" class="btn" data-lang="es">Cotizar</a>
-        <a href="#portal" class="btn-o" data-lang="en">See the portal</a><a href="#portal" class="btn-o" data-lang="es">Ver el portal</a>
+        <button type="button" class="btn-o" onclick="acctClick()" data-lang="en">Create an account</button><button type="button" class="btn-o" onclick="acctClick()" data-lang="es">Crear cuenta</button>
       </div>
       <div class="hx-facts">
-        <div><b>Same-day</b><span data-lang="en">Any hour you call</span><span data-lang="es">A la hora que llames</span></div>
-        <div><b>SoCal-wide</b><span data-lang="en">City to county line</span><span data-lang="es">De la ciudad a los condados</span></div>
+        <div><b>Same-day</b><span data-lang="en">Or scheduled ahead</span><span data-lang="es">O programada</span></div>
+        <div><b>4 sizes</b><span data-lang="en">SUV to box truck</span><span data-lang="es">De SUV a box truck</span></div>
         <div><b>Signed POD</b><span data-lang="en">On every run</span><span data-lang="es">En cada corrida</span></div>
-        <div><b>$0</b><span data-lang="en">To open an account</span><span data-lang="es">Para abrir cuenta</span></div>
+        <div><b>Live</b><span data-lang="en">Tracking link</span><span data-lang="es">Rastreo en vivo</span></div>
       </div>
     </div>
 
-    <div class="hx-visual" role="img" aria-label="Pickup truck carrying a strapped pallet of material">
+    <div class="hx-visual" role="img" aria-label="Driver at a pickup truck loaded with an HVAC condenser, ready to leave the warehouse">
       <div class="qcard">
         <div class="qc-top"><b data-lang="en">New delivery</b><b data-lang="es">Nueva entrega</b><span data-lang="en">Example quote</span><span data-lang="es">Cotización ejemplo</span></div>
         <div class="qc-veh">
           <img src="vehicle-pickup.png" alt=""/>
-          <div><b>Pickup Truck</b><span>Burbank → Valencia</span></div>
+          <div><b>Pickup Truck</b><span>Sun Valley → Valencia</span></div>
         </div>
         <div class="qc-rows">
           <div class="qc-row"><span data-lang="en">Distance</span><span data-lang="es">Distancia</span><b>25 mi</b></div>
           <div class="qc-row"><span data-lang="en">Timing</span><span data-lang="es">Tiempo</span><b class="rush" data-lang="en">Rush · under 2 hrs</b><b class="rush" data-lang="es">Urgente · menos de 2 hrs</b></div>
-          <div class="qc-row"><span data-lang="en">Load</span><span data-lang="es">Carga</span><b data-lang="en">12 boxes · 340 lbs</b><b data-lang="es">12 cajas · 340 lbs</b></div>
-          <div class="qc-row"><span data-lang="en">Proof of delivery</span><span data-lang="es">Prueba de entrega</span><b data-lang="en">Photo + signature</b><b data-lang="es">Foto + firma</b></div>
+          <div class="qc-row"><span data-lang="en">Load</span><span data-lang="es">Carga</span><b data-lang="en">Condenser + line set</b><b data-lang="es">Condensador + line set</b></div>
         </div>
         <div class="qc-tot"><span data-lang="en">Total</span><span data-lang="es">Total</span><b>$135</b></div>
         <button class="qc-btn" type="button" onclick="openQuote('pickup')" data-lang="en">Price my delivery</button>
@@ -685,21 +677,23 @@ footer a:hover{color:var(--orange)}
   </div>
 </div>
 
-<!-- ══════════ EL PROBLEMA ══════════ -->
-<section class="pb" id="counter" style="padding-left:0;padding-right:0">
+<!-- ══════════ LO QUE ENCUENTRAS ══════════ -->
+<section class="ft" id="features" style="padding-left:0;padding-right:0">
   <div class="wrapX">
-    <div class="kick" data-lang="en">Why Bridg</div><div class="kick" data-lang="es">Por qué Bridg</div>
-    <div class="pb-grid">
-      <div class="pb-clock">3:10<span style="color:var(--orange)"> PM</span>
-        <small data-lang="en">Every branch knows this hour. Nobody's built for it. So that's the hour we built for.</small>
-        <small data-lang="es">Toda sucursal conoce esta hora. Nadie está hecho para ella. Por eso nosotros sí.</small>
-      </div>
-      <div class="pb-list">
-        <div class="pb-item"><i>01</i><p data-lang="en"><b>The truck is already committed.</b> Your route left this morning and it's not coming back early.</p><p data-lang="es"><b>El camión ya está comprometido.</b> La ruta salió en la mañana y no regresa temprano.</p></div>
-        <div class="pb-item"><i>02</i><p data-lang="en"><b>A contractor is standing at a jobsite.</b> Crew on the clock, waiting on your material.</p><p data-lang="es"><b>Un contratista está parado en la obra.</b> La cuadrilla cobrando, esperando tu material.</p></div>
-        <div class="pb-item"><i>03</i><p data-lang="en"><b>It has to move now.</b> Tomorrow means they buy it somewhere else next time.</p><p data-lang="es"><b>Tiene que salir ya.</b> Mañana significa que la próxima vez lo compran en otro lado.</p></div>
-        <div class="pb-item"><i>04</i><p data-lang="en"><b>You call Bridg.</b> We take the run you can't, and you keep the customer.</p><p data-lang="es"><b>Llamas a Bridg.</b> Nosotros tomamos la corrida que tú no puedes, y tú te quedas con el cliente.</p></div>
-      </div>
+    <div class="kick" data-lang="en">The platform</div><div class="kick" data-lang="es">La plataforma</div>
+    <h2 class="h2x" data-lang="en">Everything to move material, in one place.</h2>
+    <h2 class="h2x" data-lang="es">Todo para mover material, en un solo lugar.</h2>
+    <p class="lead" data-lang="en">From the quote to the signed delivery, every step lives in your account.</p>
+    <p class="lead" data-lang="es">De la cotización a la entrega firmada, cada paso vive en tu cuenta.</p>
+    <div class="ft-grid">
+      <div class="ft-item"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18"/><path d="M8 8h8M8 12h8" /><path class="o" d="M8 16h4"/></svg><h3 data-lang="en">Instant quotes</h3><h3 data-lang="es">Cotización al instante</h3><p data-lang="en">Pick a vehicle, describe the load, see the price before you book.</p><p data-lang="es">Elige vehículo, describe la carga, mira el precio antes de reservar.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><path d="M2 7h12v10H2zM14 10h4l4 4v3h-8"/><circle cx="6" cy="18" r="1.8"/><circle class="o" cx="18" cy="18" r="1.8"/></svg><h3 data-lang="en">Four vehicle sizes</h3><h3 data-lang="es">Cuatro tamaños</h3><p data-lang="en">Large SUV, pickup, cargo van, or box truck — sized to the load.</p><p data-lang="es">SUV grande, pickup, cargo van o box truck — según la carga.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path class="o" d="M12 7v5l3 2"/></svg><h3 data-lang="en">Same-day or scheduled</h3><h3 data-lang="es">Mismo día o programada</h3><p data-lang="en">Send it now, as a rush, or book it ahead for a set time.</p><p data-lang="es">Mándala ya, urgente, o resérvala para una hora fija.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle class="o" cx="12" cy="10" r="2.4"/></svg><h3 data-lang="en">Live tracking</h3><h3 data-lang="es">Rastreo en vivo</h3><p data-lang="en">Location and arrival time, with a link you can share.</p><p data-lang="es">Ubicación y hora de llegada, con un link que puedes compartir.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><circle cx="9" cy="11" r="2"/><path class="o" d="M13 16c2-3 4-3 6-1"/></svg><h3 data-lang="en">Proof of delivery</h3><h3 data-lang="es">Prueba de entrega</h3><p data-lang="en">Photo, signature, and time stamp on every drop.</p><p data-lang="es">Foto, firma y hora en cada entrega.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/><path class="o" d="M9 13h6M9 17h4"/></svg><h3 data-lang="en">Invoices and records</h3><h3 data-lang="es">Facturas y registros</h3><p data-lang="en">Every invoice and delivery, saved and easy to find.</p><p data-lang="es">Cada factura y entrega, guardada y fácil de encontrar.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path class="o" d="M8 10h8"/></svg><h3 data-lang="en">Direct messages</h3><h3 data-lang="es">Mensajes directos</h3><p data-lang="en">Talk to dispatch about a delivery, right inside your account.</p><p data-lang="es">Habla con despacho sobre una entrega, dentro de tu cuenta.</p></div>
+      <div class="ft-item"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path class="o" d="M8.5 12l2.5 2.5 4.5-5"/></svg><h3 data-lang="en">Covered loads</h3><h3 data-lang="es">Carga cubierta</h3><p data-lang="en">Cargo coverage tied to the declared value of each shipment.</p><p data-lang="es">Cobertura atada al valor declarado de cada envío.</p></div>
     </div>
   </div>
 </section>
@@ -709,11 +703,11 @@ footer a:hover{color:var(--orange)}
   <div class="wrapX">
     <div class="pt-head">
       <div>
-        <div class="kick" data-lang="en">Your portal</div><div class="kick" data-lang="es">Tu portal</div>
-        <h2 class="h2x" data-lang="en">Every delivery, on one screen. Nothing to chase.</h2>
-        <h2 class="h2x" data-lang="es">Cada entrega en una sola pantalla. Nada que perseguir.</h2>
-        <p class="lead" data-lang="en">Every run you book lands here: where it is, who's driving, when it lands, and the signed proof after. Free with your account.</p>
-        <p class="lead" data-lang="es">Cada corrida que reservas llega aquí: dónde va, quién maneja, cuándo llega y la prueba firmada después. Gratis con tu cuenta.</p>
+        <div class="kick" data-lang="en">Your account</div><div class="kick" data-lang="es">Tu cuenta</div>
+        <h2 class="h2x" data-lang="en">This is what your account looks like.</h2>
+        <h2 class="h2x" data-lang="es">Así se ve tu cuenta.</h2>
+        <p class="lead" data-lang="en">One dashboard for every delivery: what's moving, what's scheduled, and everything already delivered. Included with every account.</p>
+        <p class="lead" data-lang="es">Un tablero para cada entrega: lo que va en camino, lo programado y todo lo ya entregado. Incluido en cada cuenta.</p>
       </div>
       <div class="pt-points">
         <div data-lang="en">A live tracking link you can forward to your customer</div><div data-lang="es">Link de rastreo en vivo que le reenvías a tu cliente</div>
@@ -753,7 +747,7 @@ footer a:hover{color:var(--orange)}
 
             <div class="row2">
               <div class="pane">
-                <div class="pane-h"><b>BC-1047 · Burbank → Valencia</b><span class="live">Live</span></div>
+                <div class="pane-h"><b>BC-1047 · Sun Valley → Valencia</b><span class="live">Live</span></div>
                 <div class="map">
                   <svg viewBox="0 0 400 178" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                     <g stroke="#E2E2E6" stroke-width="7" fill="none" stroke-linecap="round">
@@ -773,7 +767,7 @@ footer a:hover{color:var(--orange)}
                 </div>
                 <div class="trk">
                   <div class="trk-l"><span>Vehicle</span><b>Pickup Truck</b></div>
-                  <div class="trk-l"><span>Load</span><b>12 boxes · 340 lbs</b></div>
+                  <div class="trk-l"><span>Load</span><b>Condenser + line set</b></div>
                 </div>
               </div>
 
@@ -782,7 +776,7 @@ footer a:hover{color:var(--orange)}
                 <div class="steps">
                   <div class="st done"><i></i><div><b>Booked</b><span>Rush · $135</span></div><em>2:52 PM</em></div>
                   <div class="st done"><i></i><div><b>Driver assigned</b><span>Pickup Truck</span></div><em>2:55 PM</em></div>
-                  <div class="st done"><i></i><div><b>Picked up at your counter</b><span>Loaded and strapped</span></div><em>3:06 PM</em></div>
+                  <div class="st done"><i></i><div><b>Picked up at your counter</b><span>Loaded at the warehouse</span></div><em>3:06 PM</em></div>
                   <div class="st now"><i></i><div><b>On the way</b><span>Tracking link sent to jobsite</span></div><em>now</em></div>
                   <div class="st"><i></i><div><b>Delivered</b><span>Photo + signature</span></div><em>—</em></div>
                 </div>
@@ -795,7 +789,7 @@ footer a:hover{color:var(--orange)}
                 <table class="tbl">
                   <thead><tr><th>ID</th><th>Route</th><th class="hide-s">Vehicle</th><th>Status</th><th class="hide-s">POD</th></tr></thead>
                   <tbody>
-                    <tr><td class="id">BC-1047</td><td>Burbank → Valencia</td><td class="hide-s">Pickup</td><td><span class="pill go">On the way</span></td><td class="hide-s">—</td></tr>
+                    <tr><td class="id">BC-1047</td><td>Sun Valley → Valencia</td><td class="hide-s">Pickup</td><td><span class="pill go">On the way</span></td><td class="hide-s">—</td></tr>
                     <tr><td class="id">BC-1046</td><td>Burbank → Pasadena</td><td class="hide-s">Cargo Van</td><td><span class="pill ok">Delivered</span></td><td class="hide-s pod">✓ Signed</td></tr>
                     <tr><td class="id">BC-1045</td><td>Sun Valley → Santa Clarita</td><td class="hide-s">Box Truck</td><td><span class="pill ok">Delivered</span></td><td class="hide-s pod">✓ Signed</td></tr>
                     <tr><td class="id">BC-1044</td><td>Burbank → Glendale</td><td class="hide-s">Large SUV</td><td><span class="pill ok">Delivered</span></td><td class="hide-s pod">✓ Signed</td></tr>
@@ -813,9 +807,9 @@ footer a:hover{color:var(--orange)}
 
   <div class="wrapX" style="padding:0">
     <div class="pt-foot">
-      <div><b data-lang="en">Book in a minute</b><b data-lang="es">Reserva en un minuto</b><p data-lang="en">Pick the vehicle, say what it's carrying, see the price before you confirm.</p><p data-lang="es">Elige el vehículo, di qué lleva, mira el precio antes de confirmar.</p></div>
-      <div><b data-lang="en">Watch it move</b><b data-lang="es">Mírala moverse</b><p data-lang="en">Live location and arrival time. Forward the link and stop answering "where is it?"</p><p data-lang="es">Ubicación y hora de llegada en vivo. Reenvía el link y deja de contestar "¿dónde viene?"</p></div>
-      <div><b data-lang="en">Keep the paper</b><b data-lang="es">Quédate con el papel</b><p data-lang="en">Three weeks later, when someone says it never arrived, the proof is already filed.</p><p data-lang="es">Tres semanas después, cuando alguien diga que nunca llegó, la prueba ya está archivada.</p></div>
+      <div><b data-lang="en">Book</b><b data-lang="es">Reserva</b><p data-lang="en">New deliveries in a few fields. Your pickup address is already saved.</p><p data-lang="es">Entregas nuevas en pocos campos. Tu dirección de recogida ya queda guardada.</p></div>
+      <div><b data-lang="en">Track</b><b data-lang="es">Rastrea</b><p data-lang="en">Live location, status, and arrival time for everything on the road.</p><p data-lang="es">Ubicación, estado y hora de llegada de todo lo que va en camino.</p></div>
+      <div><b data-lang="en">Look it up</b><b data-lang="es">Consulta</b><p data-lang="en">Past deliveries, signed proof, and invoices, all searchable.</p><p data-lang="es">Entregas pasadas, pruebas firmadas y facturas, todo a la mano.</p></div>
     </div>
   </div>
 </section>
@@ -824,8 +818,8 @@ footer a:hover{color:var(--orange)}
 <section class="pr" id="how" style="padding-left:0;padding-right:0">
   <div class="wrapX">
     <div class="kick" data-lang="en">How a delivery looks</div><div class="kick" data-lang="es">Cómo se ve una entrega</div>
-    <h2 class="h2x" data-lang="en">From your counter to their jobsite. Here's every step.</h2>
-    <h2 class="h2x" data-lang="es">De tu mostrador a su obra. Así se ve cada paso.</h2>
+    <h2 class="h2x" data-lang="en">What a delivery looks like, step by step.</h2>
+    <h2 class="h2x" data-lang="es">Cómo se ve una entrega, paso a paso.</h2>
     <div class="pr-grid">
       <div class="pr-card">
         <div class="pr-screen">
@@ -843,11 +837,11 @@ footer a:hover{color:var(--orange)}
           <div class="mini"><div class="drv"><div class="av">B</div><div><b>Driver assigned</b><span>Pickup Truck</span></div></div></div>
           <div class="mini">
             <div class="r"><span>To your counter</span><b>12 min</b></div>
-            <div class="r"><span>Pickup</span><b>Burbank</b></div>
+            <div class="r"><span>Pickup</span><b>Sun Valley</b></div>
             <div class="r"><span>Drop</span><b>Valencia</b></div>
           </div>
         </div>
-        <div class="pr-body"><i>02</i><h3 data-lang="en">We're on it</h3><h3 data-lang="es">Vamos en camino</h3><p data-lang="en">A Bridg driver is matched to the load and heads to your counter.</p><p data-lang="es">Un chofer de Bridg se asigna a la carga y va a tu mostrador.</p></div>
+        <div class="pr-body"><i>02</i><h3 data-lang="en">Driver assigned</h3><h3 data-lang="es">Chofer asignado</h3><p data-lang="en">A Bridg driver is matched to the load and heads to your counter.</p><p data-lang="es">Un chofer de Bridg se asigna a la carga y va a tu mostrador.</p></div>
       </div>
       <div class="pr-card">
         <div class="pr-screen" style="padding:0">
@@ -881,15 +875,15 @@ footer a:hover{color:var(--orange)}
 <!-- ══════════ LA CARGA ══════════ -->
 <div class="ld">
   <div class="ld-in">
-    <div class="ld-img" role="img" aria-label="Pallet strapped down in a pickup bed"></div>
+    <div class="ld-img" role="img" aria-label="HVAC condenser, line set, and boxed parts in a pickup bed"></div>
     <div class="ld-copy">
-      <div class="kick" data-lang="en">Your material</div><div class="kick" data-lang="es">Tu material</div>
-      <h2 class="h2x" data-lang="en">It leaves your counter strapped down and covered.</h2>
-      <h2 class="h2x" data-lang="es">Sale de tu mostrador amarrado y asegurado.</h2>
+      <div class="kick" data-lang="en">The pickup</div><div class="kick" data-lang="es">La recogida</div>
+      <h2 class="h2x" data-lang="en">We pick up where your material is.</h2>
+      <h2 class="h2x" data-lang="es">Recogemos donde está tu material.</h2>
       <div class="ld-list">
-        <div><p data-lang="en"><b>Secured before it moves.</b> Straps, not hope.</p><p data-lang="es"><b>Asegurado antes de moverse.</b> Cinchas, no suerte.</p></div>
-        <div><p data-lang="en"><b>Covered for what it's worth.</b> Cargo coverage tied to the declared value of each load.</p><p data-lang="es"><b>Cubierto por lo que vale.</b> Cobertura de carga atada al valor declarado de cada envío.</p></div>
-        <div><p data-lang="en"><b>Signed at the jobsite.</b> Photo and signature, filed in your portal.</p><p data-lang="es"><b>Firmado en la obra.</b> Foto y firma, archivadas en tu portal.</p></div>
+        <div><p data-lang="en"><b>Counter, dock, or yard.</b> Tell us where it's waiting and the driver comes to it.</p><p data-lang="es"><b>Mostrador, muelle o patio.</b> Dinos dónde está y el chofer llega ahí.</p></div>
+        <div><p data-lang="en"><b>Sized to the load.</b> A condenser rides in a pickup; a full pallet goes in a box truck.</p><p data-lang="es"><b>Según la carga.</b> Un condensador va en pickup; un pallet completo, en box truck.</p></div>
+        <div><p data-lang="en"><b>Covered on the way.</b> Cargo coverage tied to the declared value of each shipment.</p><p data-lang="es"><b>Cubierto en el camino.</b> Cobertura atada al valor declarado de cada envío.</p></div>
       </div>
     </div>
   </div>
@@ -1051,15 +1045,16 @@ footer a:hover{color:var(--orange)}
 
 
 <!-- ══════════ CIERRE ══════════ -->
-<section class="cx" style="padding-left:0;padding-right:0">
+<section class="cx calm" style="padding-left:0;padding-right:0">
   <div class="wrapX">
-    <h2 data-lang="en">Keep us in your phone for the afternoon it breaks.</h2>
-    <h2 data-lang="es">Tennos en tu teléfono para la tarde que se cae.</h2>
-    <p data-lang="en">No contract. No card on file. Opening the account costs nothing, and keeping it costs nothing.</p>
-    <p data-lang="es">Sin contrato. Sin tarjeta en archivo. Abrir la cuenta no cuesta nada, y mantenerla tampoco.</p>
+    <h2 data-lang="en">Start with a quote.</h2>
+    <h2 data-lang="es">Empieza con una cotización.</h2>
+    <p data-lang="en">No contract and no card on file. Open an account whenever you're ready.</p>
+    <p data-lang="es">Sin contrato y sin tarjeta en archivo. Abre tu cuenta cuando quieras.</p>
     <div class="cx-cta">
-      <button type="button" class="b1" onclick="acctClick()" data-lang="en">Open an account</button>
-      <button type="button" class="b1" onclick="acctClick()" data-lang="es">Abrir una cuenta</button>
+      <a class="b1" href="#fleet" data-lang="en">Get a quote</a><a class="b1" href="#fleet" data-lang="es">Cotizar</a>
+      <button type="button" class="b2" onclick="acctClick()" data-lang="en">Create an account</button>
+      <button type="button" class="b2" onclick="acctClick()" data-lang="es">Crear cuenta</button>
     </div>
   </div>
 </section>
@@ -1229,7 +1224,7 @@ footer a:hover{color:var(--orange)}
     </div>
     <div>
       <h4 data-lang="en">Company</h4><h4 data-lang="es">Compañía</h4>
-      <a href="#counter" data-lang="en">Why Bridg</a><a href="#counter" data-lang="es">Por qué Bridg</a>
+      <a href="#features" data-lang="en">Platform</a><a href="#features" data-lang="es">Plataforma</a>
      
       <a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" data-lang="en">Book a call</a><a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" data-lang="es">Agendar llamada</a>
     </div>
@@ -1711,7 +1706,6 @@ window.openHistory = async function(){
 };
 window._fb = {db, addDoc, collection};
 </script>
-
 <script>
 /* Carrusel de flota. Cada slide conserva data-vehicle, asi que el clic
    sigue abriendo el cotizador por la delegacion de eventos existente. */
