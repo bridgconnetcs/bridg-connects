@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<script>document.documentElement.classList.add("js")</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="google-site-verification" content="HoCI6a49gV3UdKa0gdxQQM9FKROsQYMmAry1c9MRJUk" />
 <meta name="color-scheme" content="light only"/>
@@ -546,6 +547,62 @@ footer a:hover{color:var(--orange)}
 .cx.calm .b1:hover{background:var(--orange);color:#fff}
 .cx.calm .b2{color:var(--ink);border-color:var(--ink)}
 .cx.calm .b2:hover{background:var(--ink);color:#fff}
+
+/* ── PORTAL EN CUADROS ── */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:3.4rem;color:var(--ink);font-size:12px}
+.bx{background:#fff;border:1px solid #2E2E33;box-shadow:0 24px 50px -28px rgba(0,0,0,.7);min-width:0}
+.bx-hi{grid-column:span 4;display:flex;flex-direction:column;justify-content:space-between;gap:1.1rem;padding:18px 18px 16px}
+.bx-hi h4{font-family:var(--FD);font-weight:700;font-size:20px;letter-spacing:-.01em;line-height:1.15}
+.bx-hi span{font-size:11px;color:var(--steel)}
+.bx-hi .app-new{align-self:flex-start}
+.bx-tile{grid-column:span 2;display:flex}
+.tile-flat{border:0!important;padding:16px 15px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.tile-flat b{font-size:24px}
+.bx-tile:first-of-type{}
+.bx-map{grid-column:span 7}
+.bx-status{grid-column:span 5}
+.bx-recent{grid-column:span 12}
+.pane-flat{border:0!important;height:100%}
+.bx-map .map{height:232px}
+@media(max-width:700px){.bx-map .map{height:172px}}
+.bento-note{font-family:var(--FM);font-size:.72rem;color:#7C7C84;margin-top:1rem;text-align:right}
+@media(max-width:1000px){
+  .bx-hi{grid-column:span 12;flex-direction:row;align-items:center}
+  .bx-tile{grid-column:span 3}
+  .bx-map,.bx-status{grid-column:span 6}
+}
+@media(max-width:700px){
+  .bento{gap:10px}
+  .bx-tile{grid-column:span 6}
+  .bx-map,.bx-status{grid-column:span 12}
+  .bx-hi h4{font-size:17px}
+}
+
+/* ── APARICION AL BAJAR ──
+   Solo se esconden si el JS esta activo (clase .js en <html>), asi que
+   sin JS o con errores el contenido siempre se ve. */
+html.js :is(#features .kick,#features .h2x,#features .lead,.ft-item,
+  #portal .kick,#portal .h2x,#portal .lead,.pt-points,.bx,.pt-foot>div,
+  #how .kick,#how .h2x,.pr-card,.ld-img,.ld-copy>*,
+  #fleet .fx-head,.fx-view,#ai .circuit-card,#ai .core-copy,.cx .wrapX>*){
+  opacity:0;transform:translateY(34px);
+  transition:opacity .75s ease,transform .85s cubic-bezier(.2,.75,.2,1);
+}
+html.js .ld-img{transform:translateX(-40px)}
+html.js :is(#features .kick,#features .h2x,#features .lead,.ft-item,
+  #portal .kick,#portal .h2x,#portal .lead,.pt-points,.bx,.pt-foot>div,
+  #how .kick,#how .h2x,.pr-card,.ld-img,.ld-copy>*,
+  #fleet .fx-head,.fx-view,#ai .circuit-card,#ai .core-copy,.cx .wrapX>*).in{
+  opacity:1;transform:none;
+}
+@media(prefers-reduced-motion:reduce){
+  html.js :is(#features .kick,#features .h2x,#features .lead,.ft-item,
+    #portal .kick,#portal .h2x,#portal .lead,.pt-points,.bx,.pt-foot>div,
+    #how .kick,#how .h2x,.pr-card,.ld-img,.ld-copy>*,
+    #fleet .fx-head,.fx-view,#ai .circuit-card,#ai .core-copy,.cx .wrapX>*){
+    opacity:1!important;transform:none!important;transition:none!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -723,37 +780,16 @@ footer a:hover{color:var(--orange)}
       </div>
     </div>
 
-    <div class="lap" aria-label="Portal preview">
-      <div class="lap-screen">
-        <div class="app">
-          <div class="app-prev" data-lang="en">Portal preview</div><div class="app-prev" data-lang="es">Vista previa</div>
-
-          <aside class="app-side">
-            <img src="/bridg-logo.png" alt="Bridg Connects"/>
-            <div class="nv on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</div>
-            <div class="nv"><svg viewBox="0 0 24 24"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Deliveries<em>2</em></div>
-            <div class="nv"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>Tracking</div>
-            <div class="nv"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></svg>Proof of delivery</div>
-            <div class="nv"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 10h18"/></svg>Invoices</div>
-            <div class="nv"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Messages</div>
-            <div class="who"><b>Your branch</b><span>Business account</span></div>
-          </aside>
-
-          <div class="app-main">
-            <div class="app-top">
-              <h4>Good afternoon<small>Tuesday, 3:14 PM</small></h4>
-              <div class="app-new">+ New delivery</div>
-            </div>
-
-            <div class="tiles">
-              <div class="tile hot"><span>Moving now</span><b>2</b><i>● live</i></div>
-              <div class="tile"><span>This week</span><b>9</b><i>deliveries</i></div>
-              <div class="tile"><span>Signed POD</span><b>9 / 9</b><i>on file</i></div>
-              <div class="tile"><span>Next pickup</span><b>9:00 AM</b><i style="color:var(--steel)">tomorrow · Encino</i></div>
-            </div>
-
-            <div class="row2">
-              <div class="pane">
+    <div class="bento" aria-label="Portal preview">
+      <div class="bx bx-hi">
+        <div><h4>Good afternoon</h4><span>Tuesday, 3:14 PM</span></div>
+        <div class="app-new">+ New delivery</div>
+      </div>
+      <div class="bx bx-tile"><div class="tile tile-flat hot"><span>Moving now</span><b>2</b><i>● live</i></div></div>
+      <div class="bx bx-tile"><div class="tile tile-flat"><span>This week</span><b>9</b><i>deliveries</i></div></div>
+      <div class="bx bx-tile"><div class="tile tile-flat"><span>Signed POD</span><b>9 / 9</b><i>on file</i></div></div>
+      <div class="bx bx-tile"><div class="tile tile-flat"><span>Next pickup</span><b>9:00 AM</b><i style="color:var(--steel)">tomorrow · Encino</i></div></div>
+      <div class="bx bx-map"><div class="pane pane-flat">
                 <div class="pane-h"><b>BC-1047 · Sun Valley → Valencia</b><span class="live">Live</span></div>
                 <div class="map">
                   <svg viewBox="0 0 400 178" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -776,9 +812,8 @@ footer a:hover{color:var(--orange)}
                   <div class="trk-l"><span>Vehicle</span><b>Pickup Truck</b></div>
                   <div class="trk-l"><span>Load</span><b>260 lbs</b></div>
                 </div>
-              </div>
-
-              <div class="pane">
+              </div></div>
+      <div class="bx bx-status"><div class="pane pane-flat">
                 <div class="pane-h"><b>Status</b><span>BC-1047</span></div>
                 <div class="steps">
                   <div class="st done"><i></i><div><b>Booked</b><span>Rush · $135</span></div><em>2:52 PM</em></div>
@@ -787,10 +822,8 @@ footer a:hover{color:var(--orange)}
                   <div class="st now"><i></i><div><b>On the way</b><span>Tracking link sent to jobsite</span></div><em>now</em></div>
                   <div class="st"><i></i><div><b>Delivered</b><span>Photo + signature</span></div><em>—</em></div>
                 </div>
-              </div>
-            </div>
-
-            <div class="pane">
+              </div></div>
+      <div class="bx bx-recent"><div class="pane pane-flat">
               <div class="pane-h"><b>Recent deliveries</b><span>This week</span></div>
               <div class="tbl-wrap">
                 <table class="tbl">
@@ -804,12 +837,10 @@ footer a:hover{color:var(--orange)}
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="lap-base"></div>
+            </div></div>
     </div>
+    <p class="bento-note" data-lang="en">Portal preview with sample deliveries.</p>
+    <p class="bento-note" data-lang="es">Vista previa del portal con entregas de muestra.</p>
   </div>
 
   <div class="wrapX" style="padding:0">
@@ -1737,6 +1768,27 @@ window._fb = {db, addDoc, collection};
   track.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
   track.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>45){ e.preventDefault(); go(dx<0?i+1:i-1);} x0=null; });
   go(0);
+})();
+</script>
+
+<script>
+/* Aparicion al bajar: cada elemento entra cuando llega a la pantalla.
+   Los hermanos entran en cascada (80 ms entre cada uno). */
+(function(){
+  var sel='#features .kick,#features .h2x,#features .lead,.ft-item,#portal .kick,#portal .h2x,#portal .lead,.pt-points,.bx,.pt-foot>div,#how .kick,#how .h2x,.pr-card,.ld-img,.ld-copy>*,#fleet .fx-head,.fx-view,#ai .circuit-card,#ai .core-copy,.cx .wrapX>*';
+  var els=[].slice.call(document.querySelectorAll(sel));
+  els.forEach(function(el){
+    var sib=[].slice.call(el.parentNode.children).filter(function(x){return els.indexOf(x)>-1;});
+    var n=sib.indexOf(el);
+    el.style.transitionDelay=Math.min(n*80,560)+'ms';
+  });
+  if(!('IntersectionObserver' in window)){ els.forEach(function(el){el.classList.add('in');}); return; }
+  var io=new IntersectionObserver(function(ents){
+    ents.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+  els.forEach(function(el){ io.observe(el); });
+  /* Red de seguridad: si algo no se activo en 4 s (pestana en segundo plano, etc.), se muestra. */
+  setTimeout(function(){ els.forEach(function(el){ if(!el.classList.contains('in') && el.getBoundingClientRect().top < innerHeight){ el.classList.add('in'); } }); },4000);
 })();
 </script>
 </body>
