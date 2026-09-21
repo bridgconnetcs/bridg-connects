@@ -304,15 +304,9 @@ footer a:hover{color:var(--orange)}
 .hx-facts div b{display:block;font-family:var(--FD);font-weight:700;font-size:1.3rem;line-height:1.1}
 .hx-facts div span{font-size:.78rem;color:var(--steel)}
 
-.hx-visual{position:relative;min-height:520px}
-.hx-photo{position:absolute;inset:0;background:#1a1a1c url('/hero-truck.jpg') 60% 30%/cover no-repeat;clip-path:polygon(17% 0,100% 0,100% 100%,0 100%)}
-.hx-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 50%,rgba(11,11,12,.45) 100%)}
-.hx-stripe{position:absolute;inset:0;background:var(--orange);clip-path:polygon(11.5% 0,14% 0,-3% 100%,-5.5% 100%);pointer-events:none}
-@media(max-width:900px){
-  .hx-visual{min-height:720px}
-  .hx-photo{background-position:62% 22%;clip-path:polygon(0 9%,100% 0,100% 100%,0 100%)}
-  .hx-stripe{clip-path:polygon(0 5.2%,100% -3.8%,100% -1.6%,0 7.4%)}
-}
+.hx-visual{position:relative;background:#1a1a1c url('/hero-truck.jpg') 60% 30%/cover no-repeat;min-height:520px}
+.hx-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 45%,rgba(11,11,12,.55) 100%)}
+@media(max-width:900px){.hx-visual{min-height:700px;background-position:62% 22%}}
 
 
 /* La tarjeta de cotizacion flotando sobre la foto */
@@ -474,11 +468,17 @@ footer a:hover{color:var(--orange)}
 
 /* ── DETALLE DE CARGA ── */
 .ld{border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);background:#F6F6F7}
-.ld-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr}
+.ld-in{display:grid;grid-template-columns:1fr 1fr}
 @media(max-width:860px){.ld-in{grid-template-columns:1fr}}
-.ld-img{background:#2a2a2e url('/load-detail.jpg') center/cover;min-height:440px}
-@media(max-width:860px){.ld-img{min-height:300px}}
-.ld-copy{padding:5rem 1.5rem 5rem 3.5rem;display:flex;flex-direction:column;justify-content:center}
+.ld-img{position:relative;min-height:440px}
+.ld-photo{position:absolute;inset:0;background:#2a2a2e url('/load-detail.jpg') 30% center/cover;clip-path:polygon(0 0,86% 0,70% 100%,0 100%)}
+.ld-stripe{position:absolute;inset:0;background:var(--orange);clip-path:polygon(89.5% 0,92% 0,76% 100%,73.5% 100%);pointer-events:none}
+@media(max-width:860px){
+  .ld-img{min-height:320px}
+  .ld-photo{background-position:center;clip-path:polygon(0 0,100% 0,100% 80%,0 93%)}
+  .ld-stripe{clip-path:polygon(0 95.5%,100% 82.5%,100% 85%,0 98%)}
+}
+.ld-copy{padding:5rem max(1.5rem,calc((100vw - 1200px)/2 + 1.5rem)) 5rem 1.5rem;display:flex;flex-direction:column;justify-content:center}
 @media(max-width:860px){.ld-copy{padding:3rem 1.5rem}}
 .ld-list{margin-top:1.8rem;display:grid;gap:1rem}
 .ld-list div{display:flex;gap:.9rem;align-items:flex-start}
@@ -648,9 +648,7 @@ footer a:hover{color:var(--orange)}
       </div>
     </div>
 
-    <div class="hx-visual">
-      <div class="hx-photo" role="img" aria-label="Driver at a pickup truck loaded with an HVAC condenser, ready to leave the warehouse"></div>
-      <div class="hx-stripe" aria-hidden="true"></div>
+    <div class="hx-visual" role="img" aria-label="Driver at a pickup truck loaded with an HVAC condenser, ready to leave the warehouse">
       <div class="qcard">
         <div class="qc-top"><b data-lang="en">New delivery</b><b data-lang="es">Nueva entrega</b><span data-lang="en">Example quote</span><span data-lang="es">Cotización ejemplo</span></div>
         <div class="qc-veh">
@@ -884,7 +882,10 @@ footer a:hover{color:var(--orange)}
 <!-- ══════════ LA CARGA ══════════ -->
 <div class="ld">
   <div class="ld-in">
-    <div class="ld-img" role="img" aria-label="HVAC condenser, line set, and boxed parts in a pickup bed"></div>
+    <div class="ld-img">
+      <div class="ld-photo" role="img" aria-label="HVAC condenser, line set, and boxed parts in a pickup bed"></div>
+      <div class="ld-stripe" aria-hidden="true"></div>
+    </div>
     <div class="ld-copy">
       <div class="kick" data-lang="en">The pickup</div><div class="kick" data-lang="es">La recogida</div>
       <h2 class="h2x" data-lang="en">We pick up where your material is.</h2>
