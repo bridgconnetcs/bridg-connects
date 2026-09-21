@@ -280,6 +280,272 @@ footer a:hover{color:var(--orange)}
 @media(max-width:560px){
   .logo, .nav-logo{ width:88px !important; height:38px !important; }
 }
+
+/* ══════════ BRIDG LANDING v3 ══════════ */
+#counter.pb{padding:6rem 0 5rem;background:#fff;border:0;max-width:none}
+#fleet.fx{padding:6rem 0}
+.wrapX{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.kick{font-family:var(--FM);font-size:.6rem;letter-spacing:.07em;color:var(--orange);text-transform:uppercase;display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.kick::before{content:'';width:22px;height:1px;background:var(--orange)}
+.h2x{font-family:var(--FD);font-weight:700;font-size:clamp(1.8rem,3.8vw,2.8rem);line-height:1.06;letter-spacing:-.02em;max-width:720px}
+.lead{color:var(--steel);font-weight:300;font-size:1.02rem;margin-top:1rem;max-width:560px}
+
+/* ── HERO ── */
+.hx{border-bottom:1px solid var(--hairline)}
+.hx-in{display:grid;grid-template-columns:1.05fr .95fr;min-height:640px}
+@media(max-width:900px){.hx-in{grid-template-columns:1fr;min-height:0}}
+.hx-copy{padding:5rem 3.4rem 4rem max(1.5rem,calc((100vw - 1200px)/2 + 1.5rem));display:flex;flex-direction:column;justify-content:center}
+@media(max-width:900px){.hx-copy{padding:3.4rem 1.5rem 2.6rem}}
+.hx h1{font-family:var(--FD);font-weight:700;font-size:clamp(2.4rem,5.6vw,4.3rem);line-height:1.02;letter-spacing:-.03em}
+.hx h1 .hl{color:var(--orange)}
+.hx .sub{font-size:1.06rem;font-weight:300;color:var(--steel);max-width:500px;margin-top:1.4rem}
+.hx-cta{display:flex;gap:.8rem;margin-top:2rem;flex-wrap:wrap}
+.hx-facts{display:flex;gap:2rem;margin-top:2.6rem;flex-wrap:wrap;padding-top:1.4rem;border-top:1px solid var(--hairline)}
+.hx-facts div b{display:block;font-family:var(--FD);font-weight:700;font-size:1.3rem;line-height:1.1}
+.hx-facts div span{font-size:.78rem;color:var(--steel)}
+
+.hx-visual{position:relative;background:#1a1a1c url('/hero-truck.jpg') center/cover no-repeat;min-height:520px}
+@media(max-width:900px){.hx-visual{min-height:560px}}
+.hx-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 45%,rgba(11,11,12,.55) 100%)}
+
+/* La tarjeta de cotizacion flotando sobre la foto */
+.qcard{position:absolute;z-index:2;left:-2.6rem;top:50%;transform:translateY(-50%);width:292px;background:#fff;border:1px solid var(--ink);box-shadow:0 30px 70px -24px rgba(11,11,12,.55)}
+@media(max-width:900px){.qcard{left:1.2rem;right:1.2rem;width:auto;top:auto;bottom:1.2rem;transform:none}}
+.qc-top{background:var(--ink);color:#fff;padding:.8rem 1.1rem;display:flex;justify-content:space-between;align-items:center}
+.qc-top b{font-family:var(--FD);font-weight:600;font-size:.86rem}
+.qc-top span{font-family:var(--FM);font-size:.58rem;letter-spacing:.07em;color:#B9B9C0;text-transform:uppercase}
+.qc-veh{display:flex;align-items:center;gap:.8rem;padding:1rem 1.1rem .5rem}
+.qc-veh img{width:74px;height:42px;object-fit:contain}
+.qc-veh b{font-family:var(--FD);font-weight:700;font-size:1.02rem;display:block;line-height:1.2}
+.qc-veh span{font-size:.72rem;color:var(--steel)}
+.qc-rows{padding:.3rem 1.1rem .4rem}
+.qc-row{display:flex;justify-content:space-between;gap:1rem;padding:.55rem 0;border-bottom:1px solid var(--hairline);font-size:.82rem}
+.qc-row span{color:var(--steel)}
+.qc-row b{font-weight:600;text-align:right}
+.qc-row .rush{color:var(--orange)}
+.qc-tot{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem 1.1rem .4rem}
+.qc-tot span{font-size:.8rem;color:var(--steel)}
+.qc-tot b{font-family:var(--FD);font-weight:700;font-size:2.1rem;letter-spacing:-.03em;line-height:1}
+.qc-btn{display:block;margin:.6rem 1.1rem 1.1rem;background:var(--orange);color:#fff;border:0;width:calc(100% - 2.2rem);padding:.85rem;font-family:var(--FD);font-weight:600;font-size:.88rem;cursor:pointer;transition:background .2s}
+.qc-btn:hover{background:var(--ink)}
+.qc-note{font-size:.66rem;color:var(--steel);text-align:center;padding:0 1.1rem 1rem;margin-top:-.4rem}
+
+/* ── MARQUESINA ── */
+.mq{border-bottom:1px solid var(--hairline);padding:1.5rem 0;overflow:hidden;background:#fff}
+.mq-in{display:flex;align-items:center;gap:2rem}
+.mq-lbl{flex-shrink:0;padding-left:1.5rem;font-size:.78rem;color:var(--steel);font-weight:500;white-space:nowrap}
+.mq-view{overflow:hidden;flex:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mq-track{display:inline-flex;gap:3.2rem;white-space:nowrap;animation:mq 40s linear infinite}
+.mq-track a{font-family:var(--FD);font-weight:700;font-size:1.15rem;letter-spacing:-.01em;color:#B7B7BD;text-decoration:none;transition:color .2s}
+.mq-track a:hover{color:var(--ink)}
+@keyframes mq{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.mq-track{animation:none}}
+@media(max-width:560px){.mq-in{flex-direction:column;align-items:flex-start;gap:.8rem}.mq-view{width:100%}}
+
+/* ── EL PROBLEMA ── */
+.pb{padding:6rem 0 5rem}
+.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;margin-top:1rem}
+@media(max-width:860px){.pb-grid{grid-template-columns:1fr;gap:2rem}}
+.pb-clock{font-family:var(--FD);font-weight:800;font-size:clamp(4rem,11vw,8rem);line-height:.9;letter-spacing:-.05em;color:var(--ink)}
+.pb-clock small{display:block;font-family:var(--FB);font-weight:400;font-size:.95rem;letter-spacing:0;color:var(--steel);margin-top:1rem;line-height:1.5;max-width:380px}
+.pb-list{display:grid;gap:0;border-top:1px solid var(--ink)}
+.pb-item{padding:1.1rem 0;border-bottom:1px solid var(--hairline);display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start}
+.pb-item i{font-style:normal;font-family:var(--FM);font-size:.7rem;color:var(--orange);padding-top:.28rem}
+.pb-item p{font-size:.95rem;color:var(--steel);font-weight:300}
+.pb-item p b{color:var(--ink);font-weight:600}
+
+/* ── PORTAL (la pieza principal) ── */
+.pt{background:var(--ink);color:#fff;padding:6rem 0 0;overflow:hidden}
+.pt .kick{color:var(--orange)}
+.pt .h2x{color:#fff}
+.pt .lead{color:#A9A9B0}
+.pt-head{display:grid;grid-template-columns:1.2fr .8fr;gap:2rem;align-items:end}
+@media(max-width:860px){.pt-head{grid-template-columns:1fr}}
+.pt-points{display:grid;gap:.7rem}
+.pt-points div{display:flex;gap:.7rem;font-size:.9rem;color:#D6D6DB}
+.pt-points div::before{content:'';width:7px;height:7px;background:var(--orange);flex-shrink:0;margin-top:.5rem}
+
+/* Laptop */
+.lap{margin:3.6rem auto 0;max-width:1080px;position:relative}
+.lap-screen{background:#2A2A2E;border:1px solid #3A3A40;border-bottom:0;padding:14px 14px 0;border-radius:14px 14px 0 0}
+.lap-base{height:18px;background:linear-gradient(180deg,#3A3A40,#26262A);border-radius:0 0 10px 10px;margin:0 -3%;position:relative}
+.lap-base::before{content:'';position:absolute;left:50%;top:0;transform:translateX(-50%);width:15%;height:6px;background:#1C1C1F;border-radius:0 0 6px 6px}
+.app{background:#fff;color:var(--ink);display:grid;grid-template-columns:188px 1fr;min-height:560px;font-size:12px;position:relative}
+@media(max-width:760px){.app{grid-template-columns:1fr}.app-side{display:none!important}}
+.app-prev{position:absolute;bottom:10px;right:12px;z-index:3;font-family:var(--FM);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--steel);background:#F6F6F7;border:1px solid var(--hairline);padding:3px 7px}
+
+.app-side{background:#FAFAFB;border-right:1px solid var(--hairline);padding:16px 12px;display:flex;flex-direction:column;gap:3px}
+.app-side img{width:78px;height:auto;margin:2px 6px 16px}
+.nv{display:flex;align-items:center;gap:9px;padding:8px 9px;color:var(--steel);font-weight:500}
+.nv svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.7;fill:none;flex-shrink:0}
+.nv.on{background:#fff;color:var(--ink);box-shadow:inset 3px 0 0 var(--orange);border:1px solid var(--hairline)}
+.nv em{margin-left:auto;font-style:normal;background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:1px 6px}
+.app-side .who{margin-top:auto;border-top:1px solid var(--hairline);padding:12px 8px 2px}
+.app-side .who b{display:block;font-size:12px}
+.app-side .who span{font-size:10px;color:var(--steel)}
+
+.app-main{padding:18px 20px 36px;background:#fff;min-width:0}
+.app-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:14px}
+.app-top h4{font-family:var(--FD);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.app-top h4 small{display:block;font-family:var(--FB);font-weight:400;font-size:10.5px;color:var(--steel);margin-top:1px}
+.app-new{background:var(--ink);color:#fff;font-family:var(--FD);font-weight:600;font-size:11px;padding:8px 12px;white-space:nowrap}
+
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+@media(max-width:760px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{border:1px solid var(--hairline);padding:10px 11px}
+.tile span{font-size:10px;color:var(--steel);display:block}
+.tile b{font-family:var(--FD);font-weight:700;font-size:20px;letter-spacing:-.02em;display:block;margin-top:2px;line-height:1.1}
+.tile i{font-style:normal;font-size:9.5px;color:#0B8A4B}
+.tile.hot{border-color:var(--ink)}
+.tile.hot b{color:var(--orange)}
+
+.row2{display:grid;grid-template-columns:1.25fr 1fr;gap:10px;margin-bottom:12px}
+@media(max-width:760px){.row2{grid-template-columns:1fr}}
+.pane{border:1px solid var(--hairline);min-width:0}
+.pane-h{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;border-bottom:1px solid var(--hairline)}
+.pane-h b{font-size:11.5px;font-weight:600}
+.pane-h span{font-size:9.5px;color:var(--steel)}
+.live{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;color:#0B8A4B;font-weight:600}
+.live::before{content:'';width:6px;height:6px;background:#0B8A4B;border-radius:50%;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){.live::before{animation:none}}
+
+.map{position:relative;height:178px;background:#F1F1F3;overflow:hidden}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map-eta{position:absolute;left:10px;bottom:10px;background:#fff;border:1px solid var(--ink);padding:7px 10px}
+.map-eta b{font-family:var(--FD);font-weight:700;font-size:15px;display:block;line-height:1.1}
+.map-eta span{font-size:9.5px;color:var(--steel)}
+.trk{padding:10px 11px}
+.trk-l{display:flex;justify-content:space-between;font-size:10.5px;padding:3px 0}
+.trk-l span{color:var(--steel)}
+
+.steps{padding:12px 11px}
+.st{display:grid;grid-template-columns:16px 1fr auto;gap:9px;align-items:start;padding-bottom:10px;position:relative}
+.st::before{content:'';position:absolute;left:7px;top:15px;bottom:-1px;width:1px;background:var(--hairline)}
+.st:last-child::before{display:none}
+.st i{width:15px;height:15px;border:1.5px solid var(--hairline);background:#fff;display:block;position:relative;z-index:1}
+.st.done i{background:var(--ink);border-color:var(--ink)}
+.st.now i{border-color:var(--orange);background:var(--orange)}
+.st b{font-size:11px;font-weight:600;display:block;line-height:1.3}
+.st span{font-size:10px;color:var(--steel)}
+.st em{font-style:normal;font-size:9.5px;color:var(--steel);white-space:nowrap}
+
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;font-weight:500;font-size:9.5px;color:var(--steel);padding:8px 11px;border-bottom:1px solid var(--hairline);white-space:nowrap}
+.tbl td{padding:8px 11px;border-bottom:1px solid var(--hairline);font-size:10.5px;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .id{font-family:var(--FM);color:var(--steel)}
+.pill{display:inline-block;font-size:9px;font-weight:600;padding:2px 7px;border:1px solid}
+.pill.ok{color:#0B8A4B;border-color:rgba(11,138,75,.35);background:rgba(11,138,75,.06)}
+.pill.go{color:var(--orange);border-color:rgba(255,100,13,.4);background:var(--orange-soft)}
+.pill.sch{color:var(--steel);border-color:var(--hairline);background:#F6F6F7}
+.pod{color:#0B8A4B;font-weight:700}
+.tbl-wrap{overflow-x:auto}
+@media(max-width:760px){.hide-s{display:none}}
+
+.pt-foot{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #2A2A2E;margin-top:4.5rem}
+@media(max-width:760px){.pt-foot{grid-template-columns:1fr}}
+.pt-foot div{padding:2rem 1.6rem 2.4rem;border-right:1px solid #2A2A2E}
+.pt-foot div:last-child{border-right:0}
+@media(max-width:760px){.pt-foot div{border-right:0;border-bottom:1px solid #2A2A2E}}
+.pt-foot b{font-family:var(--FD);font-weight:600;font-size:1.02rem;display:block;color:#fff}
+.pt-foot p{font-size:.86rem;color:#A9A9B0;margin-top:.45rem;font-weight:300}
+
+/* ── PROCESO ── */
+.pr{padding:6rem 0}
+.pr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem}
+@media(max-width:960px){.pr-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.pr-grid{grid-template-columns:1fr}}
+.pr-card{border:1px solid var(--hairline);background:#fff;display:flex;flex-direction:column}
+.pr-screen{background:#F6F6F7;border-bottom:1px solid var(--hairline);padding:14px;height:190px;position:relative;overflow:hidden}
+.pr-body{padding:1.1rem 1.1rem 1.3rem}
+.pr-body i{font-style:normal;font-family:var(--FM);font-size:.62rem;color:var(--orange);letter-spacing:.07em}
+.pr-body h3{font-family:var(--FD);font-weight:600;font-size:1.05rem;margin-top:.35rem}
+.pr-body p{font-size:.84rem;color:var(--steel);font-weight:300;margin-top:.4rem}
+.mini{background:#fff;border:1px solid var(--hairline);padding:9px 10px;font-size:10.5px}
+.mini + .mini{margin-top:7px}
+.mini .r{display:flex;justify-content:space-between;padding:2px 0}
+.mini .r span{color:var(--steel)}
+.mini .big{font-family:var(--FD);font-weight:700;font-size:17px}
+.mini-btn{margin-top:8px;background:var(--orange);color:#fff;text-align:center;font-family:var(--FD);font-weight:600;font-size:10.5px;padding:7px}
+.drv{display:flex;gap:9px;align-items:center}
+.drv .av{width:30px;height:30px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--FD);font-weight:700;font-size:12px;flex-shrink:0}
+.drv b{display:block;font-size:11px}
+.drv span{font-size:9.5px;color:var(--steel)}
+.sig{height:44px;border:1px dashed var(--hairline);display:flex;align-items:center;justify-content:center;background:#fff;margin-top:7px}
+.sig svg{width:120px;height:32px}
+.photo-pod{height:62px;background:#2a2a2e url('/load-detail.jpg') center/cover;position:relative}
+.photo-pod span{position:absolute;right:5px;bottom:5px;background:rgba(11,11,12,.8);color:#fff;font-family:var(--FM);font-size:8.5px;padding:2px 5px}
+
+/* ── DETALLE DE CARGA ── */
+.ld{border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);background:#F6F6F7}
+.ld-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr}
+@media(max-width:860px){.ld-in{grid-template-columns:1fr}}
+.ld-img{background:#2a2a2e url('/load-detail.jpg') center/cover;min-height:440px}
+@media(max-width:860px){.ld-img{min-height:300px}}
+.ld-copy{padding:5rem 1.5rem 5rem 3.5rem;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:860px){.ld-copy{padding:3rem 1.5rem}}
+.ld-list{margin-top:1.8rem;display:grid;gap:1rem}
+.ld-list div{display:flex;gap:.9rem;align-items:flex-start}
+.ld-list div::before{content:'';width:7px;height:7px;background:var(--orange);margin-top:.55rem;flex-shrink:0}
+.ld-list p{font-size:.94rem;color:var(--steel);font-weight:300}
+.ld-list p b{color:var(--ink);font-weight:600}
+
+/* ── FLOTA: CARRUSEL ── */
+.fx{padding:6rem 0}
+.fx-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap}
+.fx-nav{display:flex;gap:.5rem;align-items:center}
+.fx-nav button{width:52px;height:52px;border:1px solid var(--ink);background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.fx-nav button:hover{background:var(--ink)}
+.fx-nav button:hover svg{stroke:#fff}
+.fx-nav button:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.fx-nav svg{width:20px;height:20px;stroke:var(--ink);stroke-width:2;fill:none}
+.fx-count{font-family:var(--FM);font-size:.8rem;color:var(--steel);min-width:3.2rem;text-align:center}
+.fx-view{overflow:hidden;margin-top:2.4rem;border:1px solid var(--hairline)}
+.fx-track{display:flex;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+@media(prefers-reduced-motion:reduce){.fx-track{transition:none}}
+.fx-slide{flex:0 0 100%;display:grid;grid-template-columns:1.15fr .85fr;background:#fff;cursor:pointer;text-align:left;border:0;padding:0;font:inherit;color:inherit}
+@media(max-width:860px){.fx-slide{grid-template-columns:1fr}}
+.fx-slide:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
+.fx-slide>*{pointer-events:none}
+.fx-art{background:#F6F6F7;display:flex;align-items:center;justify-content:center;padding:3rem 2.5rem;min-height:340px;border-right:1px solid var(--hairline)}
+@media(max-width:860px){.fx-art{border-right:0;border-bottom:1px solid var(--hairline);min-height:240px;padding:2rem}}
+.fx-art img{width:100%;max-width:520px;height:auto;max-height:260px;object-fit:contain}
+.fx-info{padding:2.6rem 2.4rem;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:860px){.fx-info{padding:1.8rem 1.5rem 2rem}}
+.fx-info h3{font-family:var(--FD);font-weight:700;font-size:2rem;letter-spacing:-.02em;line-height:1.05}
+.fx-info .tag{font-size:.9rem;color:var(--orange);font-weight:500;margin-top:.35rem}
+.fx-spec{margin-top:1.4rem;border-top:1px solid var(--hairline)}
+.fx-spec div{display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--hairline);font-size:.88rem}
+.fx-spec span{color:var(--steel)}
+.fx-spec b{font-weight:600}
+.fx-info p{font-size:.9rem;color:var(--steel);font-weight:300;margin-top:1.1rem}
+.fx-go{margin-top:1.5rem;display:inline-flex;align-self:flex-start;background:var(--ink);color:#fff;font-family:var(--FD);font-weight:600;font-size:.88rem;padding:.8rem 1.4rem}
+.fx-slide:hover .fx-go{background:var(--orange)}
+.fx-dots{display:flex;gap:.4rem;justify-content:center;margin-top:1.2rem}
+.fx-dots button{width:26px;height:4px;border:0;background:var(--hairline);cursor:pointer;padding:0}
+.fx-dots button.on{background:var(--orange)}
+
+/* ── CONFIANZA ── */
+.trust{padding:6rem 0;border-top:1px solid var(--hairline)}
+.tr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:2.6rem;border:1px solid var(--hairline)}
+@media(max-width:860px){.tr-grid{grid-template-columns:1fr}}
+.tr-cell{padding:2rem 1.8rem;border-right:1px solid var(--hairline)}
+.tr-cell:last-child{border-right:0}
+@media(max-width:860px){.tr-cell{border-right:0;border-bottom:1px solid var(--hairline)}.tr-cell:last-child{border-bottom:0}}
+.tr-cell b{font-family:var(--FD);font-weight:700;font-size:1.15rem;display:block}
+.tr-cell p{font-size:.9rem;color:var(--steel);font-weight:300;margin-top:.5rem}
+.tr-cell .num{font-family:var(--FM);font-size:.8rem;color:var(--ink);margin-top:.9rem;display:block}
+
+/* ── CIERRE ── */
+.cx{background:var(--orange);color:#fff;padding:5.5rem 0}
+.cx h2{font-family:var(--FD);font-weight:700;font-size:clamp(2rem,4.6vw,3.4rem);line-height:1.04;letter-spacing:-.025em;max-width:780px}
+.cx p{font-size:1.05rem;margin-top:1.1rem;max-width:560px;color:rgba(255,255,255,.88)}
+.cx-cta{display:flex;gap:.8rem;margin-top:2.2rem;flex-wrap:wrap}
+.cx .b1{background:var(--ink);color:#fff;font-family:var(--FD);font-weight:600;font-size:.9rem;padding:.9rem 1.6rem;text-decoration:none;border:0;cursor:pointer}
+.cx .b1:hover{background:#fff;color:var(--ink)}
+.cx .b2{background:transparent;color:#fff;font-family:var(--FD);font-weight:600;font-size:.9rem;padding:.86rem 1.5rem;text-decoration:none;border:1px solid #fff}
+.cx .b2:hover{background:#fff;color:var(--orange)}
 </style>
 </head>
 <body>
@@ -360,130 +626,354 @@ footer a:hover{color:var(--orange)}
   </div>
 </nav>
 
-<div class="hero">
-  <div class="eyebrow" data-lang="en">B2B logistics platform · Hardware &amp; building supply · SoCal</div>
-  <div class="eyebrow" data-lang="es">Plataforma logística B2B · Ferreterías y materiales · SoCal</div>
-  <h1 data-lang="en">Your counter sells it.<br/><span class="hl">We get it to the job site.</span></h1>
-  <h1 data-lang="es">Tu mostrador lo vende.<br/><span class="hl">Nosotros lo llevamos a la obra.</span></h1>
-  <p class="sub" data-lang="en">On-demand pickup trucks, cargo vans, and box trucks for supply houses and contractors — from a single fitting to a full pallet. Same-day, tracked, and priced upfront. Built for business accounts — invoiced, documented, and dispatch-managed.</p>
-  <p class="sub" data-lang="es">Pickup trucks, cargo vans y box trucks bajo demanda para ferreterías y contratistas — desde un solo fitting hasta un pallet completo. El mismo día, con rastreo y precio por adelantado. Hecho para cuentas empresariales — facturado, documentado y gestionado por despacho.</p>
-  <div class="hero-cta">
-    <a href="#fleet" class="btn" data-lang="en">Pick your truck →</a><a href="#fleet" class="btn" data-lang="es">Elige tu camión →</a>
-    <a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" class="btn-o" data-lang="en">Book a call</a><a href="https://calendly.com/k-vargas-novarholding/30min" target="_blank" class="btn-o" data-lang="es">Agenda una llamada</a>
+<!-- ══════════ HERO ══════════ -->
+<header class="hx">
+  <div class="hx-in">
+    <div class="hx-copy">
+      <div class="kick" data-lang="en">Same-day delivery · Across Southern California</div>
+      <div class="kick" data-lang="es">Entregas el mismo día · Todo el Sur de California</div>
+      <h1 data-lang="en">Your truck's<br/>already out.<br/><span class="hl">Ours isn't.</span></h1>
+      <h1 data-lang="es">Tu camión<br/>ya salió.<br/><span class="hl">El nuestro no.</span></h1>
+      <p class="sub" data-lang="en">Same-day delivery for supply houses, hardware stores, and the trades. Book it in a minute, watch it move, and keep the signed proof when it lands.</p>
+      <p class="sub" data-lang="es">Entregas el mismo día para supply houses, ferreterías y oficios. Resérvala en un minuto, mírala moverse y quédate con la prueba firmada cuando llegue.</p>
+      <div class="hx-cta">
+        <a href="#fleet" class="btn" data-lang="en">Get a quote</a><a href="#fleet" class="btn" data-lang="es">Cotizar</a>
+        <a href="#portal" class="btn-o" data-lang="en">See the portal</a><a href="#portal" class="btn-o" data-lang="es">Ver el portal</a>
+      </div>
+      <div class="hx-facts">
+        <div><b>Same-day</b><span data-lang="en">Any hour you call</span><span data-lang="es">A la hora que llames</span></div>
+        <div><b>SoCal-wide</b><span data-lang="en">City to county line</span><span data-lang="es">De la ciudad a los condados</span></div>
+        <div><b>Signed POD</b><span data-lang="en">On every run</span><span data-lang="es">En cada corrida</span></div>
+        <div><b>$0</b><span data-lang="en">To open an account</span><span data-lang="es">Para abrir cuenta</span></div>
+      </div>
+    </div>
+
+    <div class="hx-visual" role="img" aria-label="Pickup truck carrying a strapped pallet of material">
+      <div class="qcard">
+        <div class="qc-top"><b data-lang="en">New delivery</b><b data-lang="es">Nueva entrega</b><span data-lang="en">Example quote</span><span data-lang="es">Cotización ejemplo</span></div>
+        <div class="qc-veh">
+          <img src="vehicle-pickup.png" alt=""/>
+          <div><b>Pickup Truck</b><span>Burbank → Valencia</span></div>
+        </div>
+        <div class="qc-rows">
+          <div class="qc-row"><span data-lang="en">Distance</span><span data-lang="es">Distancia</span><b>25 mi</b></div>
+          <div class="qc-row"><span data-lang="en">Timing</span><span data-lang="es">Tiempo</span><b class="rush" data-lang="en">Rush · under 2 hrs</b><b class="rush" data-lang="es">Urgente · menos de 2 hrs</b></div>
+          <div class="qc-row"><span data-lang="en">Load</span><span data-lang="es">Carga</span><b data-lang="en">12 boxes · 340 lbs</b><b data-lang="es">12 cajas · 340 lbs</b></div>
+          <div class="qc-row"><span data-lang="en">Proof of delivery</span><span data-lang="es">Prueba de entrega</span><b data-lang="en">Photo + signature</b><b data-lang="es">Foto + firma</b></div>
+        </div>
+        <div class="qc-tot"><span data-lang="en">Total</span><span data-lang="es">Total</span><b>$135</b></div>
+        <button class="qc-btn" type="button" onclick="openQuote('pickup')" data-lang="en">Price my delivery</button>
+        <button class="qc-btn" type="button" onclick="openQuote('pickup')" data-lang="es">Cotizar mi entrega</button>
+        <div class="qc-note" data-lang="en">Your price depends on distance, load, and timing.</div>
+        <div class="qc-note" data-lang="es">Tu precio depende de distancia, carga y tiempo.</div>
+      </div>
+    </div>
   </div>
-  <div class="hero-proof">
-    <div class="proof"><b>Same-day</b><span data-lang="en">Dispatch window</span><span data-lang="es">Ventana de despacho</span></div>
-    <div class="proof"><b>50 mi</b><span data-lang="en">SoCal coverage</span><span data-lang="es">Cobertura SoCal</span></div>
-    <div class="proof"><b>Live</b><span data-lang="en">GPS tracking + POD</span><span data-lang="es">Rastreo GPS + POD</span></div>
-    <div class="proof"><b>$0</b><span data-lang="en">Fleet overhead for you</span><span data-lang="es">Costo de flota para ti</span></div>
+</header>
+
+<!-- ══════════ A QUIÉN SERVIMOS ══════════ -->
+<div class="mq" aria-label="Who we serve">
+  <div class="mq-in">
+    <div class="mq-lbl" data-lang="en">Who we serve</div>
+    <div class="mq-lbl" data-lang="es">A quién servimos</div>
+    <div class="mq-view">
+      <div class="mq-track">
+        <a href="/hvac">HVAC</a><a href="/plumbing-supply">Plumbing Supply</a><a href="/electrical-supply">Electrical Supply</a><a href="/building-materials">Building Materials</a><a href="/tile-stone-flooring">Tile, Stone &amp; Flooring</a><a href="/roofing">Roofing</a><a href="/hardware-retail">Hardware &amp; Retail</a><a href="/landscape-nursery">Landscape &amp; Nursery</a><a href="/auto-parts-industrial">Auto Parts &amp; Industrial</a><a href="/specialty-fragile">Specialty &amp; Fragile</a>
+        <a href="/hvac" aria-hidden="true" tabindex="-1">HVAC</a><a href="/plumbing-supply" aria-hidden="true" tabindex="-1">Plumbing Supply</a><a href="/electrical-supply" aria-hidden="true" tabindex="-1">Electrical Supply</a><a href="/building-materials" aria-hidden="true" tabindex="-1">Building Materials</a><a href="/tile-stone-flooring" aria-hidden="true" tabindex="-1">Tile, Stone &amp; Flooring</a><a href="/roofing" aria-hidden="true" tabindex="-1">Roofing</a><a href="/hardware-retail" aria-hidden="true" tabindex="-1">Hardware &amp; Retail</a><a href="/landscape-nursery" aria-hidden="true" tabindex="-1">Landscape &amp; Nursery</a><a href="/auto-parts-industrial" aria-hidden="true" tabindex="-1">Auto Parts &amp; Industrial</a><a href="/specialty-fragile" aria-hidden="true" tabindex="-1">Specialty &amp; Fragile</a>
+      </div>
+    </div>
   </div>
 </div>
 
-<section id="fleet" class="band">
-  <div class="sec-in">
-  <div class="sec-label" data-lang="en">The Fleet</div><div class="sec-label" data-lang="es">La Flota</div>
-  <div class="sec-head">
-    <h2 data-lang="en">Pick the truck. Get the number. Book it.</h2>
-    <h2 data-lang="es">Elige el camión. Mira el precio. Reserva.</h2>
-    <p data-lang="en">Every vehicle has its own rates, pre-loaded. Tap one and tell us what it's carrying — our dispatch engine prices it in seconds.</p>
-    <p data-lang="es">Cada vehículo tiene sus tarifas pre-configuradas. Toca uno y dinos qué lleva — nuestro motor de despacho lo cotiza en segundos.</p>
-  </div>
-  <div class="fleet-grid">
-    <button type="button" class="v-card" data-vehicle="suv">
-      <span class="v-art"><img src="vehicle-suv.png" alt="White large SUV" loading="lazy"/></span>
-      <h3>Large SUV</h3>
-      <div class="v-tag" data-lang="en">The enclosed quick run</div><div class="v-tag" data-lang="es">El viaje r&aacute;pido y cerrado</div>
-      <div class="v-specs">
-        <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 800 lbs</b></div>
-        <div><span data-lang="en">Cargo</span><span data-lang="es">Espacio</span><b>Enclosed, weather-safe</b></div>
-        <div><span data-lang="en">From</span><span data-lang="es">Desde</span><b style="color:var(--orange)">Starting at $95</b></div>
+<!-- ══════════ EL PROBLEMA ══════════ -->
+<section class="pb" id="counter" style="padding-left:0;padding-right:0">
+  <div class="wrapX">
+    <div class="kick" data-lang="en">Why Bridg</div><div class="kick" data-lang="es">Por qué Bridg</div>
+    <div class="pb-grid">
+      <div class="pb-clock">3:10<span style="color:var(--orange)"> PM</span>
+        <small data-lang="en">Every branch knows this hour. Nobody's built for it. So that's the hour we built for.</small>
+        <small data-lang="es">Toda sucursal conoce esta hora. Nadie está hecho para ella. Por eso nosotros sí.</small>
       </div>
-      <p class="v-fit" data-lang="en">Boxes, fittings, panels, tankless heaters, fragile finishes &mdash; lighter loads that need to stay dry and out of sight.</p>
-      <p class="v-fit" data-lang="es">Cajas, fittings, paneles, calentadores, acabados fr&aacute;giles &mdash; cargas ligeras que deben ir secas y fuera de vista.</p>
-      <div class="v-go" data-lang="en">Quote this SUV &rarr;</div><div class="v-go" data-lang="es">Cotizar esta SUV &rarr;</div>
-    </button>
-    <button type="button" class="v-card" data-vehicle="pickup">
-      <span class="v-art"><img src="vehicle-pickup.png" alt="White pickup truck" loading="lazy"/></span>
-      <h3>Pickup Truck</h3>
-      <div class="v-tag" data-lang="en">The counter runner</div><div class="v-tag" data-lang="es">El corredor del mostrador</div>
-      <div class="v-specs">
-        <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 1,500 lbs</b></div>
-        <div><span data-lang="en">Bed</span><span data-lang="es">Caja</span><b>6–8 ft open bed</b></div>
-        <div><span data-lang="en">From</span><span data-lang="es">Desde</span><b style="color:var(--orange)">Starting at $95</b></div>
+      <div class="pb-list">
+        <div class="pb-item"><i>01</i><p data-lang="en"><b>The truck is already committed.</b> Your route left this morning and it's not coming back early.</p><p data-lang="es"><b>El camión ya está comprometido.</b> La ruta salió en la mañana y no regresa temprano.</p></div>
+        <div class="pb-item"><i>02</i><p data-lang="en"><b>A contractor is standing at a jobsite.</b> Crew on the clock, waiting on your material.</p><p data-lang="es"><b>Un contratista está parado en la obra.</b> La cuadrilla cobrando, esperando tu material.</p></div>
+        <div class="pb-item"><i>03</i><p data-lang="en"><b>It has to move now.</b> Tomorrow means they buy it somewhere else next time.</p><p data-lang="es"><b>Tiene que salir ya.</b> Mañana significa que la próxima vez lo compran en otro lado.</p></div>
+        <div class="pb-item"><i>04</i><p data-lang="en"><b>You call Bridg.</b> We take the run you can't, and you keep the customer.</p><p data-lang="es"><b>Llamas a Bridg.</b> Nosotros tomamos la corrida que tú no puedes, y tú te quedas con el cliente.</p></div>
       </div>
-      <p class="v-fit" data-lang="en">Fittings, tile, lumber runs, will-call rescues, bagged goods, small equipment.</p>
-      <p class="v-fit" data-lang="es">Fittings, tile, madera, rescates de will-call, sacos, equipo pequeño.</p>
-      <div class="v-go" data-lang="en">Quote this truck →</div><div class="v-go" data-lang="es">Cotizar este camión →</div>
-    </button>
-    <button type="button" class="v-card" data-vehicle="van">
-      <span class="v-art"><img src="vehicle-van.png" alt="White cargo van" loading="lazy"/></span>
-      <h3>Cargo Van</h3>
-      <div class="v-tag" data-lang="en">The weather-proof workhorse</div><div class="v-tag" data-lang="es">El caballo de batalla cerrado</div>
-      <div class="v-specs">
-        <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 3,000 lbs</b></div>
-        <div><span data-lang="en">Cargo</span><span data-lang="es">Espacio</span><b>Enclosed, secure</b></div>
-        <div><span data-lang="en">From</span><span data-lang="es">Desde</span><b style="color:var(--orange)">Starting at $150</b></div>
-      </div>
-      <p class="v-fit" data-lang="en">Flooring boxes, fixtures, fragile finishes, electrical, anything that can't ride open.</p>
-      <p class="v-fit" data-lang="es">Cajas de piso, fixtures, acabados frágiles, eléctrico, lo que no puede ir descubierto.</p>
-      <div class="v-go" data-lang="en">Quote this van →</div><div class="v-go" data-lang="es">Cotizar esta van →</div>
-    </button>
-    <button type="button" class="v-card" data-vehicle="box">
-      <span class="v-art"><img src="vehicle-box.png" alt="White box truck" loading="lazy"/></span>
-      <h3>Box Truck</h3>
-      <div class="v-tag" data-lang="en">The pallet mover</div><div class="v-tag" data-lang="es">El movedor de pallets</div>
-      <div class="v-specs">
-        <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 8,000 lbs</b></div>
-        <div><span data-lang="en">Extras</span><span data-lang="es">Extras</span><b>Liftgate available</b></div>
-        <div><span data-lang="en">Pricing</span><span data-lang="es">Precio</span><b style="color:var(--orange)" data-lang="en">Quoted per load</b><b style="color:var(--orange)" data-lang="es">Cotizado por carga</b></div>
-      </div>
-      <p class="v-fit" data-lang="en">Full pallets, condensers, pipe bundles, bulk orders your fleet can't break away for.</p>
-      <p class="v-fit" data-lang="es">Pallets completos, condensadores, tubería, pedidos grandes que tu flota no alcanza a cubrir.</p>
-      <div class="v-go" data-lang="en">Request a quote →</div><div class="v-go" data-lang="es">Pedir cotización →</div>
-    </button>
-  </div>
+    </div>
   </div>
 </section>
 
-<div id="counter">
-  <div class="counter-in">
-    <div>
-      <div class="sec-label" data-lang="en">Why Bridg</div><div class="sec-label" data-lang="es">Por qué Bridg</div>
-      <h2 data-lang="en">Built around how a supply house actually runs.</h2>
-      <h2 data-lang="es">Hecho para cómo funciona una ferretería de verdad.</h2>
-      <p class="lede" data-lang="en">We've stood at the counter. We know where deliveries break down — and we built Bridg to catch every one of them.</p>
-      <p class="lede" data-lang="es">Hemos estado en el mostrador. Sabemos dónde se caen las entregas — y construimos Bridg para atrapar cada una.</p>
-      <div class="pain">
-        <div class="pain-row"><div class="dot"></div><p data-lang="en"><b>The order too small for your truck.</b> A contractor needs three fittings across town. Your driver can't break away — we can.</p><p data-lang="es"><b>El pedido muy chico para tu camión.</b> Un contratista necesita tres fittings al otro lado de la ciudad. Tu chofer no puede salir — nosotros sí.</p></div>
-        <div class="pain-row"><div class="dot"></div><p data-lang="en"><b>The overflow day.</b> Your trucks are full, the counter keeps selling. Bridg is the release valve — no fleet, no payroll, no insurance on your books.</p><p data-lang="es"><b>El día de overflow.</b> Tus camiones llenos y el mostrador sigue vendiendo. Bridg es la válvula de escape — sin flota, sin nómina, sin seguro en tus libros.</p></div>
-        <div class="pain-row"><div class="dot"></div><p data-lang="en"><b>The will-call that never gets picked up.</b> Turn it into a delivered order — and a happier account.</p><p data-lang="es"><b>El will-call que nunca recogen.</b> Conviértelo en una orden entregada — y una cuenta más contenta.</p></div>
-        <div class="pain-row"><div class="dot"></div><p data-lang="en"><b>The rush your customer swears is life-or-death.</b> Same-day dispatch with a live tracking link you can forward straight to them.</p><p data-lang="es"><b>El rush que tu cliente jura que es de vida o muerte.</b> Despacho el mismo día con link de rastreo que le puedes reenviar directo.</p></div>
+<!-- ══════════ EL PORTAL ══════════ -->
+<section class="pt" id="portal" style="padding-left:0;padding-right:0">
+  <div class="wrapX">
+    <div class="pt-head">
+      <div>
+        <div class="kick" data-lang="en">Your portal</div><div class="kick" data-lang="es">Tu portal</div>
+        <h2 class="h2x" data-lang="en">Every delivery, on one screen. Nothing to chase.</h2>
+        <h2 class="h2x" data-lang="es">Cada entrega en una sola pantalla. Nada que perseguir.</h2>
+        <p class="lead" data-lang="en">Every run you book lands here: where it is, who's driving, when it lands, and the signed proof after. Free with your account.</p>
+        <p class="lead" data-lang="es">Cada corrida que reservas llega aquí: dónde va, quién maneja, cuándo llega y la prueba firmada después. Gratis con tu cuenta.</p>
+      </div>
+      <div class="pt-points">
+        <div data-lang="en">A live tracking link you can forward to your customer</div><div data-lang="es">Link de rastreo en vivo que le reenvías a tu cliente</div>
+        <div data-lang="en">Photo and signature on every drop</div><div data-lang="es">Foto y firma en cada entrega</div>
+        <div data-lang="en">Invoices and history, all in one place</div><div data-lang="es">Facturas e historial, todo en un lugar</div>
       </div>
     </div>
-    <div class="counter-panel">
-      <div class="cp-head">LIVE JOB · BC-1042</div>
-      <div class="cp-line"><span>PICKUP</span><b>Supply house · Burbank</b></div>
-      <div class="cp-line"><span>DROP</span><b>Job site · Glendale</b></div>
-      <div class="cp-line"><span>CARGO</span><b>30 boxes flooring · 1,140 lbs</b></div>
-      <div class="cp-line"><span>MATCH</span><b>Cargo van · auto-selected</b></div>
-      <div class="cp-line"><span>ETA</span><b class="ok">28 min · on time</b></div>
-      <div class="cp-line"><span>POD</span><b>Photo + signature on drop</b></div>
+
+    <div class="lap" aria-label="Portal preview">
+      <div class="lap-screen">
+        <div class="app">
+          <div class="app-prev" data-lang="en">Portal preview</div><div class="app-prev" data-lang="es">Vista previa</div>
+
+          <aside class="app-side">
+            <img src="/bridg-logo.png" alt="Bridg Connects"/>
+            <div class="nv on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</div>
+            <div class="nv"><svg viewBox="0 0 24 24"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Deliveries<em>2</em></div>
+            <div class="nv"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>Tracking</div>
+            <div class="nv"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></svg>Proof of delivery</div>
+            <div class="nv"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 10h18"/></svg>Invoices</div>
+            <div class="nv"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Messages</div>
+            <div class="who"><b>Your branch</b><span>Business account</span></div>
+          </aside>
+
+          <div class="app-main">
+            <div class="app-top">
+              <h4>Good afternoon<small>Tuesday, 3:14 PM</small></h4>
+              <div class="app-new">+ New delivery</div>
+            </div>
+
+            <div class="tiles">
+              <div class="tile hot"><span>Moving now</span><b>2</b><i>● live</i></div>
+              <div class="tile"><span>This week</span><b>9</b><i>deliveries</i></div>
+              <div class="tile"><span>Signed POD</span><b>9 / 9</b><i>on file</i></div>
+              <div class="tile"><span>Next pickup</span><b>9:00 AM</b><i style="color:var(--steel)">tomorrow · Encino</i></div>
+            </div>
+
+            <div class="row2">
+              <div class="pane">
+                <div class="pane-h"><b>BC-1047 · Burbank → Valencia</b><span class="live">Live</span></div>
+                <div class="map">
+                  <svg viewBox="0 0 400 178" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <g stroke="#E2E2E6" stroke-width="7" fill="none" stroke-linecap="round">
+                      <path d="M-10 150 L120 118 L210 92 L300 48 L420 20"/>
+                      <path d="M40 -10 L70 200"/><path d="M180 -10 L230 200"/><path d="M320 -10 L350 200"/>
+                      <path d="M-10 60 L420 88"/>
+                    </g>
+                    <g stroke="#EBEBEE" stroke-width="3" fill="none"><path d="M-10 30 L420 40"/><path d="M-10 115 L420 140"/><path d="M110 -10 L140 200"/><path d="M260 -10 L285 200"/></g>
+                    <path d="M58 142 L120 118 L210 92 L300 48 L352 30" stroke="#0B0B0C" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="1 0"/>
+                    <path d="M58 142 L120 118 L210 92" stroke="#FF640D" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <rect x="52" y="136" width="12" height="12" fill="#0B0B0C"/>
+                    <rect x="346" y="24" width="12" height="12" fill="#fff" stroke="#0B0B0C" stroke-width="2.5"/>
+                    <circle cx="210" cy="92" r="11" fill="#FF640D" opacity=".22"/>
+                    <circle cx="210" cy="92" r="6.5" fill="#FF640D" stroke="#fff" stroke-width="2"/>
+                  </svg>
+                  <div class="map-eta"><b>18 min</b><span>Arriving 3:32 PM</span></div>
+                </div>
+                <div class="trk">
+                  <div class="trk-l"><span>Vehicle</span><b>Pickup Truck</b></div>
+                  <div class="trk-l"><span>Load</span><b>12 boxes · 340 lbs</b></div>
+                </div>
+              </div>
+
+              <div class="pane">
+                <div class="pane-h"><b>Status</b><span>BC-1047</span></div>
+                <div class="steps">
+                  <div class="st done"><i></i><div><b>Booked</b><span>Rush · $135</span></div><em>2:52 PM</em></div>
+                  <div class="st done"><i></i><div><b>Driver assigned</b><span>Pickup Truck</span></div><em>2:55 PM</em></div>
+                  <div class="st done"><i></i><div><b>Picked up at your counter</b><span>Loaded and strapped</span></div><em>3:06 PM</em></div>
+                  <div class="st now"><i></i><div><b>On the way</b><span>Tracking link sent to jobsite</span></div><em>now</em></div>
+                  <div class="st"><i></i><div><b>Delivered</b><span>Photo + signature</span></div><em>—</em></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pane">
+              <div class="pane-h"><b>Recent deliveries</b><span>This week</span></div>
+              <div class="tbl-wrap">
+                <table class="tbl">
+                  <thead><tr><th>ID</th><th>Route</th><th class="hide-s">Vehicle</th><th>Status</th><th class="hide-s">POD</th></tr></thead>
+                  <tbody>
+                    <tr><td class="id">BC-1047</td><td>Burbank → Valencia</td><td class="hide-s">Pickup</td><td><span class="pill go">On the way</span></td><td class="hide-s">—</td></tr>
+                    <tr><td class="id">BC-1046</td><td>Burbank → Pasadena</td><td class="hide-s">Cargo Van</td><td><span class="pill ok">Delivered</span></td><td class="hide-s pod">✓ Signed</td></tr>
+                    <tr><td class="id">BC-1045</td><td>Sun Valley → Santa Clarita</td><td class="hide-s">Box Truck</td><td><span class="pill ok">Delivered</span></td><td class="hide-s pod">✓ Signed</td></tr>
+                    <tr><td class="id">BC-1044</td><td>Burbank → Glendale</td><td class="hide-s">Large SUV</td><td><span class="pill ok">Delivered</span></td><td class="hide-s pod">✓ Signed</td></tr>
+                    <tr><td class="id">BC-1048</td><td>Burbank → Encino</td><td class="hide-s">Pickup</td><td><span class="pill sch">Tomorrow 9 AM</span></td><td class="hide-s">—</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lap-base"></div>
+    </div>
+  </div>
+
+  <div class="wrapX" style="padding:0">
+    <div class="pt-foot">
+      <div><b data-lang="en">Book in a minute</b><b data-lang="es">Reserva en un minuto</b><p data-lang="en">Pick the vehicle, say what it's carrying, see the price before you confirm.</p><p data-lang="es">Elige el vehículo, di qué lleva, mira el precio antes de confirmar.</p></div>
+      <div><b data-lang="en">Watch it move</b><b data-lang="es">Mírala moverse</b><p data-lang="en">Live location and arrival time. Forward the link and stop answering "where is it?"</p><p data-lang="es">Ubicación y hora de llegada en vivo. Reenvía el link y deja de contestar "¿dónde viene?"</p></div>
+      <div><b data-lang="en">Keep the paper</b><b data-lang="es">Quédate con el papel</b><p data-lang="en">Three weeks later, when someone says it never arrived, the proof is already filed.</p><p data-lang="es">Tres semanas después, cuando alguien diga que nunca llegó, la prueba ya está archivada.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ EL PROCESO ══════════ -->
+<section class="pr" id="how" style="padding-left:0;padding-right:0">
+  <div class="wrapX">
+    <div class="kick" data-lang="en">How a delivery looks</div><div class="kick" data-lang="es">Cómo se ve una entrega</div>
+    <h2 class="h2x" data-lang="en">From your counter to their jobsite. Here's every step.</h2>
+    <h2 class="h2x" data-lang="es">De tu mostrador a su obra. Así se ve cada paso.</h2>
+    <div class="pr-grid">
+      <div class="pr-card">
+        <div class="pr-screen">
+          <div class="mini">
+            <div class="r"><span>Vehicle</span><b>Pickup Truck</b></div>
+            <div class="r"><span>Distance</span><b>25 mi</b></div>
+            <div class="r"><span>Timing</span><b style="color:var(--orange)">Rush</b></div>
+          </div>
+          <div class="mini"><div class="r" style="align-items:baseline"><span>Total</span><span class="big" style="color:var(--ink)">$135</span></div><div class="mini-btn">Book delivery</div></div>
+        </div>
+        <div class="pr-body"><i>01</i><h3 data-lang="en">Book it</h3><h3 data-lang="es">Reserva</h3><p data-lang="en">Pick the vehicle, describe the load. You see the price before you say yes.</p><p data-lang="es">Elige el vehículo, describe la carga. Ves el precio antes de decir que sí.</p></div>
+      </div>
+      <div class="pr-card">
+        <div class="pr-screen">
+          <div class="mini"><div class="drv"><div class="av">B</div><div><b>Driver assigned</b><span>Pickup Truck</span></div></div></div>
+          <div class="mini">
+            <div class="r"><span>To your counter</span><b>12 min</b></div>
+            <div class="r"><span>Pickup</span><b>Burbank</b></div>
+            <div class="r"><span>Drop</span><b>Valencia</b></div>
+          </div>
+        </div>
+        <div class="pr-body"><i>02</i><h3 data-lang="en">We're on it</h3><h3 data-lang="es">Vamos en camino</h3><p data-lang="en">A Bridg driver is matched to the load and heads to your counter.</p><p data-lang="es">Un chofer de Bridg se asigna a la carga y va a tu mostrador.</p></div>
+      </div>
+      <div class="pr-card">
+        <div class="pr-screen" style="padding:0">
+          <svg viewBox="0 0 260 190" style="width:100%;height:100%;display:block" aria-hidden="true">
+            <rect width="260" height="190" fill="#F1F1F3"/>
+            <g stroke="#E2E2E6" stroke-width="6" fill="none"><path d="M-5 150 L90 120 L160 80 L265 30"/><path d="M50 -5 L70 195"/><path d="M190 -5 L215 195"/></g>
+            <path d="M34 158 L90 120 L160 80 L222 44" stroke="#0B0B0C" stroke-width="3" fill="none"/>
+            <path d="M34 158 L90 120 L140 92" stroke="#FF640D" stroke-width="3" fill="none"/>
+            <rect x="29" y="153" width="10" height="10" fill="#0B0B0C"/>
+            <rect x="217" y="39" width="10" height="10" fill="#fff" stroke="#0B0B0C" stroke-width="2"/>
+            <circle cx="140" cy="92" r="9" fill="#FF640D" opacity=".22"/><circle cx="140" cy="92" r="5.5" fill="#FF640D" stroke="#fff" stroke-width="2"/>
+            <rect x="12" y="12" width="104" height="36" fill="#fff" stroke="#0B0B0C"/>
+            <text x="20" y="28" style="font:700 12px 'Plus Jakarta Sans',sans-serif" fill="#0B0B0C">18 min</text>
+            <text x="20" y="41" style="font:9px Inter,sans-serif" fill="#4A4A50">Arriving 3:32 PM</text>
+          </svg>
+        </div>
+        <div class="pr-body"><i>03</i><h3 data-lang="en">Watch it move</h3><h3 data-lang="es">Mírala moverse</h3><p data-lang="en">Live tracking in your portal. Send the link straight to the jobsite.</p><p data-lang="es">Rastreo en vivo en tu portal. Manda el link directo a la obra.</p></div>
+      </div>
+      <div class="pr-card">
+        <div class="pr-screen">
+          <div class="photo-pod"><span>3:31 PM</span></div>
+          <div class="sig"><svg viewBox="0 0 120 32" aria-hidden="true"><path d="M4 22 C14 6, 20 28, 30 16 S 44 4, 50 20 S 64 28, 72 12 S 90 8, 96 22 L 116 18" stroke="#0B0B0C" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></div>
+          <div class="mini" style="margin-top:7px"><div class="r"><span>Delivered</span><b style="color:#0B8A4B">✓ Signed</b></div></div>
+        </div>
+        <div class="pr-body"><i>04</i><h3 data-lang="en">Signed and filed</h3><h3 data-lang="es">Firmado y archivado</h3><p data-lang="en">Photo, signature, and time stamp land in your portal the moment it's dropped.</p><p data-lang="es">Foto, firma y hora llegan a tu portal en el momento de la entrega.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LA CARGA ══════════ -->
+<div class="ld">
+  <div class="ld-in">
+    <div class="ld-img" role="img" aria-label="Pallet strapped down in a pickup bed"></div>
+    <div class="ld-copy">
+      <div class="kick" data-lang="en">Your material</div><div class="kick" data-lang="es">Tu material</div>
+      <h2 class="h2x" data-lang="en">It leaves your counter strapped down and covered.</h2>
+      <h2 class="h2x" data-lang="es">Sale de tu mostrador amarrado y asegurado.</h2>
+      <div class="ld-list">
+        <div><p data-lang="en"><b>Secured before it moves.</b> Straps, not hope.</p><p data-lang="es"><b>Asegurado antes de moverse.</b> Cinchas, no suerte.</p></div>
+        <div><p data-lang="en"><b>Covered for what it's worth.</b> Cargo coverage tied to the declared value of each load.</p><p data-lang="es"><b>Cubierto por lo que vale.</b> Cobertura de carga atada al valor declarado de cada envío.</p></div>
+        <div><p data-lang="en"><b>Signed at the jobsite.</b> Photo and signature, filed in your portal.</p><p data-lang="es"><b>Firmado en la obra.</b> Foto y firma, archivadas en tu portal.</p></div>
+      </div>
     </div>
   </div>
 </div>
 
-<section id="how">
-  <div class="sec-in">
-  <div class="sec-label" data-lang="en">How it works</div><div class="sec-label" data-lang="es">Cómo funciona</div>
-  <div class="sec-head">
-    <h2 data-lang="en">Three steps. No account required to start.</h2>
-    <h2 data-lang="es">Tres pasos. Sin cuenta para empezar.</h2>
-  </div>
-  <div class="how-grid">
-    <div class="how-card"><div class="n">01</div><h3 data-lang="en">Pick the vehicle</h3><h3 data-lang="es">Elige el vehículo</h3><p data-lang="en">Pickup, cargo van, or box truck — each with its own pre-loaded rates.</p><p data-lang="es">Pickup, cargo van o box truck — cada uno con tarifas pre-configuradas.</p></div>
-    <div class="how-card"><div class="n">02</div><h3 data-lang="en">Describe the load</h3><h3 data-lang="es">Describe la carga</h3><p data-lang="en">Weight, what it is, where it's going. Our engine prices it with real drive-time data.</p><p data-lang="es">Peso, qué es, a dónde va. Nuestro motor lo cotiza con datos reales de manejo.</p></div>
-    <div class="how-card"><div class="n">03</div><h3 data-lang="en">Book &amp; track</h3><h3 data-lang="es">Reserva y rastrea</h3><p data-lang="en">Confirm, get a live tracking link, and proof of delivery the moment it lands.</p><p data-lang="es">Confirma, recibe link de rastreo en vivo y prueba de entrega al momento.</p></div>
-  </div>
+<!-- ══════════ LA FLOTA ══════════ -->
+<section class="fx" id="fleet" style="padding-left:0;padding-right:0">
+  <div class="wrapX">
+    <div class="fx-head">
+      <div>
+        <div class="kick" data-lang="en">The fleet</div><div class="kick" data-lang="es">La flota</div>
+        <h2 class="h2x" data-lang="en">The right truck for the load.</h2>
+        <h2 class="h2x" data-lang="es">El camión correcto para la carga.</h2>
+        <p class="lead" data-lang="en">You pay for the vehicle your load needs, not the biggest one we have. Tap a vehicle to price your delivery.</p>
+        <p class="lead" data-lang="es">Pagas por el vehículo que tu carga necesita, no por el más grande que tenemos. Toca uno para cotizar.</p>
+      </div>
+      <div class="fx-nav">
+        <button type="button" id="fxPrev" aria-label="Previous vehicle"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <span class="fx-count" id="fxCount">1 / 4</span>
+        <button type="button" id="fxNext" aria-label="Next vehicle"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="fx-view">
+      <div class="fx-track" id="fxTrack">
+        <button type="button" class="fx-slide" data-vehicle="pickup">
+          <div class="fx-art"><img src="vehicle-pickup.png" alt="Pickup truck" loading="lazy"/></div>
+          <div class="fx-info">
+            <h3>Pickup Truck</h3>
+            <div class="tag" data-lang="en">The counter runner</div><div class="tag" data-lang="es">El corredor del mostrador</div>
+            <div class="fx-spec">
+              <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 1,500 lbs</b></div>
+              <div><span data-lang="en">Bed</span><span data-lang="es">Caja</span><b>6–8 ft open bed</b></div>
+            </div>
+            <p data-lang="en">Fittings, tile, lumber runs, will-call rescues, bagged goods, small equipment.</p>
+            <p data-lang="es">Fittings, tile, madera, rescates de will-call, sacos, equipo pequeño.</p>
+            <span class="fx-go" data-lang="en">Price this truck</span><span class="fx-go" data-lang="es">Cotizar este camión</span>
+          </div>
+        </button>
+        <button type="button" class="fx-slide" data-vehicle="suv">
+          <div class="fx-art"><img src="vehicle-suv.png" alt="Large SUV" loading="lazy"/></div>
+          <div class="fx-info">
+            <h3>Large SUV</h3>
+            <div class="tag" data-lang="en">The enclosed quick run</div><div class="tag" data-lang="es">El viaje rápido y cerrado</div>
+            <div class="fx-spec">
+              <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 800 lbs</b></div>
+              <div><span data-lang="en">Cargo</span><span data-lang="es">Espacio</span><b>Enclosed, weather-safe</b></div>
+            </div>
+            <p data-lang="en">Boxes, fittings, panels, tankless heaters, fragile finishes that need to stay dry.</p>
+            <p data-lang="es">Cajas, fittings, paneles, calentadores, acabados frágiles que deben ir secos.</p>
+            <span class="fx-go" data-lang="en">Price this SUV</span><span class="fx-go" data-lang="es">Cotizar esta SUV</span>
+          </div>
+        </button>
+        <button type="button" class="fx-slide" data-vehicle="van">
+          <div class="fx-art"><img src="vehicle-van.png" alt="Cargo van" loading="lazy"/></div>
+          <div class="fx-info">
+            <h3>Cargo Van</h3>
+            <div class="tag" data-lang="en">The weather-proof workhorse</div><div class="tag" data-lang="es">El caballo de batalla cerrado</div>
+            <div class="fx-spec">
+              <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 3,000 lbs</b></div>
+              <div><span data-lang="en">Cargo</span><span data-lang="es">Espacio</span><b>Enclosed, secure</b></div>
+            </div>
+            <p data-lang="en">Flooring boxes, fixtures, electrical, anything that can't ride open.</p>
+            <p data-lang="es">Cajas de piso, fixtures, eléctrico, lo que no puede ir descubierto.</p>
+            <span class="fx-go" data-lang="en">Price this van</span><span class="fx-go" data-lang="es">Cotizar esta van</span>
+          </div>
+        </button>
+        <button type="button" class="fx-slide" data-vehicle="box">
+          <div class="fx-art"><img src="vehicle-box.png" alt="Box truck" loading="lazy"/></div>
+          <div class="fx-info">
+            <h3>Box Truck</h3>
+            <div class="tag" data-lang="en">The pallet mover</div><div class="tag" data-lang="es">El movedor de pallets</div>
+            <div class="fx-spec">
+              <div><span data-lang="en">Payload</span><span data-lang="es">Carga</span><b>Up to 8,000 lbs</b></div>
+              <div><span data-lang="en">Extras</span><span data-lang="es">Extras</span><b>Liftgate available</b></div>
+            </div>
+            <p data-lang="en">Full pallets, condensers, pipe bundles, bulk orders your fleet can't break away for.</p>
+            <p data-lang="es">Pallets completos, condensadores, tubería, pedidos grandes que tu flota no alcanza.</p>
+            <span class="fx-go" data-lang="en">Quote this load</span><span class="fx-go" data-lang="es">Cotizar esta carga</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="fx-dots" id="fxDots"></div>
   </div>
 </section>
 
@@ -559,6 +1049,21 @@ footer a:hover{color:var(--orange)}
   </div>
 </section>
 
+
+<!-- ══════════ CIERRE ══════════ -->
+<section class="cx" style="padding-left:0;padding-right:0">
+  <div class="wrapX">
+    <h2 data-lang="en">Keep us in your phone for the afternoon it breaks.</h2>
+    <h2 data-lang="es">Tennos en tu teléfono para la tarde que se cae.</h2>
+    <p data-lang="en">No contract. No card on file. Opening the account costs nothing, and keeping it costs nothing.</p>
+    <p data-lang="es">Sin contrato. Sin tarjeta en archivo. Abrir la cuenta no cuesta nada, y mantenerla tampoco.</p>
+    <div class="cx-cta">
+      <button type="button" class="b1" onclick="acctClick()" data-lang="en">Open an account</button>
+      <button type="button" class="b1" onclick="acctClick()" data-lang="es">Abrir una cuenta</button>
+    </div>
+  </div>
+</section>
+
 <!-- QUOTE OVERLAY -->
 <div id="qov" role="dialog" aria-modal="true">
   <div class="q-sheet">
@@ -567,7 +1072,7 @@ footer a:hover{color:var(--orange)}
       <span class="art" id="qArt" style="width:96px;height:56px;display:inline-flex;align-items:center"><img src="vehicle-pickup.png" alt="" style="max-width:100%;max-height:56px;object-fit:contain"/></span>
       <div>
         <h3 id="qTitle">Pickup Truck</h3>
-        <div class="mono" id="qRates">STARTING AT $95 · UP TO 1,500 LBS</div>
+        <div class="mono" id="qRates">UP TO 1,500 LBS</div>
       </div>
     </div>
     <p class="q-motiv" id="qMotivEN" data-lang="en">Tell us what this <span id="qNameEN">pickup</span> is carrying — we'll price it in seconds.</p>
@@ -832,7 +1337,7 @@ window.openQuote = function(v){
     if (v === 'box') {
       setTxt('qRates', (esNow ? 'COTIZADO POR CARGA \u00B7 ' : 'QUOTED PER LOAD \u00B7 ') + d.cap);
     } else {
-      setTxt('qRates', 'STARTING AT $'+d.start+' \u00B7 '+d.cap);
+      setTxt('qRates', d.cap);
     }
     var calcWrap = document.getElementById('qCalcWrap');
     var boxNote  = document.getElementById('qBoxNote');
@@ -1205,6 +1710,30 @@ window.openHistory = async function(){
   }catch(e){}
 };
 window._fb = {db, addDoc, collection};
+</script>
+
+<script>
+/* Carrusel de flota. Cada slide conserva data-vehicle, asi que el clic
+   sigue abriendo el cotizador por la delegacion de eventos existente. */
+(function(){
+  var track=document.getElementById('fxTrack'); if(!track) return;
+  var slides=track.children, n=slides.length, i=0;
+  var dots=document.getElementById('fxDots'), count=document.getElementById('fxCount');
+  for(var k=0;k<n;k++){ var d=document.createElement('button'); d.type='button'; d.setAttribute('aria-label','Vehicle '+(k+1)); (function(j){ d.onclick=function(){go(j);}; })(k); dots.appendChild(d); }
+  function go(j){
+    i=(j+n)%n;
+    track.style.transform='translateX(-'+(i*100)+'%)';
+    count.textContent=(i+1)+' / '+n;
+    for(var k=0;k<n;k++){ dots.children[k].classList.toggle('on',k===i); slides[k].tabIndex=(k===i?0:-1); slides[k].setAttribute('aria-hidden',k===i?'false':'true'); }
+  }
+  document.getElementById('fxPrev').onclick=function(){go(i-1);};
+  document.getElementById('fxNext').onclick=function(){go(i+1);};
+  track.parentNode.addEventListener('keydown',function(e){ if(e.key==='ArrowLeft'){go(i-1);} if(e.key==='ArrowRight'){go(i+1);} });
+  var x0=null;
+  track.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+  track.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>45){ e.preventDefault(); go(dx<0?i+1:i-1);} x0=null; });
+  go(0);
+})();
 </script>
 </body>
 </html>
